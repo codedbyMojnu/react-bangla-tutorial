@@ -1,58 +1,82 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./donate.module.css";
+
+const bankAccount = "0100255607094";
+const mobileNumber = "01788262433";
+const btcAddress = "0xb2066847163c0a1d21cbb8a38eec7632f1f071e5";
+const litecoinAddress = "LRYT3fVyAEUWcPhHpuJtL3bszAjqKetbKx";
+const bitcoinAddress = "1CqRZFJkMCZWpUwr9aipNdpD4XymTxZ1MC";
+
+function CopyButton({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      className={styles.copyButton}
+      onClick={() => {
+        navigator.clipboard.writeText(value);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1200);
+      }}
+      aria-label="Copy to clipboard"
+    >
+      {copied ? "✓" : "📋"}
+    </button>
+  );
+}
 
 const Donate: React.FC = () => {
   return (
     <div className={styles.donateContainer}>
       <div className={styles.donateCard}>
-        <h2 className={styles.donateTitle}>
-          ☕ আপনার একটু ছোট ডোনেশন দিয়ে অনেক কিছু সম্ভব!
-        </h2>
+        <div className={styles.headerIcon}>☕</div>
+        <h2 className={styles.donateTitle}>আপনার ছোট ডোনেশন, বড় অনুপ্রেরণা!</h2>
         <p className={styles.donateText}>
-          আমি React ডকুমেন্টেশন বাংলা ভাষায় অনুবাদ করতেছি বিগিনারদের জন্য।{" "}
-          <strong className={styles.highlight}>
-            আমি প্রতিনিয়ত ব্যবহারযোগ্য নতুন নতুন ফিচার ও কোড
-          </strong>{" "}
-          আপনাদের সাথে শেয়ার করি।
-        </p>
-        <p className={styles.donateText}>
-          এই কাজগুলো করতে আমার প্রতিদিন প্রচুর সময়, ধৈর্য, ও ইন্টারনেট খরচ হয়।
-          আপনি যদি চান, একটি কফির সমমূল্যের{" "}
-          <strong className={styles.highlight}>ছোট ডোনেশন</strong>
-          করে আমাকে আরও উৎসাহ দিতে পারেন।
-        </p>
-        <p className={styles.donateText}>
-          🏦{" "}
-          <strong>
-            জনতা ব্যাংক (পাবনা বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয় শাখা)
-          </strong>
+          React ডকুমেন্টেশন বাংলায় অনুবাদ ও নতুন ফিচার শেয়ার করতে সময়, শ্রম ও খরচ হয়।
           <br />
-          হিসাব নাম: Md. Mojnu Miah
-          <br />
-          হিসাব নম্বর:{" "}
-          <strong className={styles.greenText}>015022507014</strong>
+          <span className={styles.highlight}>আপনার ডোনেশন এই উদ্যোগকে এগিয়ে নিতে সাহায্য করবে।</span>
         </p>
-        <p className={styles.donateText}>
-          📲 <strong>Bkash / Nagad / Rocket (Personal):</strong> 01788262433
-        </p>
-        <p className={styles.donateText}>
-          💰 <strong>ক্রিপ্টো ওয়ালেট:</strong>
-          <br />
-          🔸 BTC (BNB Smart Chain):{" "}
-          <code>0xb2066847163c0a1d21cbb8a38eec7632f1f071e5</code>
-          <br />
-          🔸 Litecoin: <code>LRYT3fVyAEUWcPhHpuJtL3bszAjqKetbKx</code>
-          <br />
-          🔸 Bitcoin: <code>1CqRZFJkMCZWpUwr9aipNdpD4XymTxZ1MC</code>
-        </p>
-
+        <div className={styles.paymentSection}>
+          <div className={styles.paymentGroup}>
+            <div className={styles.paymentLabel}>🏦 ব্যাংক (Janata Bank)</div>
+            <div className={styles.paymentInfo}>
+              <span>Md. Mojnu Miah</span>
+              <span className={styles.greenText}>{bankAccount}</span>
+              <CopyButton value={bankAccount} />
+            </div>
+          </div>
+          <div className={styles.paymentGroup}>
+            <div className={styles.paymentLabel}>📲 Bkash / Nagad / Rocket</div>
+            <div className={styles.paymentInfo}>
+              <span className={styles.greenText}>{mobileNumber}</span>
+              <CopyButton value={mobileNumber} />
+            </div>
+          </div>
+          <div className={styles.paymentLabel}>💰 ক্রিপ্টো ওয়ালেট</div>
+          <div className={styles.paymentInfo}>
+            <span>BTC (BNB): <code>{btcAddress}</code> <CopyButton value={btcAddress} /></span>
+          </div>
+          <div className={styles.paymentInfo}>
+            <span>Litecoin: <code>{litecoinAddress}</code> <CopyButton value={litecoinAddress} /></span>
+          </div>
+          <div className={styles.paymentInfo}>
+            <span>Bitcoin: <code>{bitcoinAddress}</code> <CopyButton value={bitcoinAddress} /></span>
+          </div>
+        </div>
+        <a
+          href="https://wa.me/01788262433"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.contactButton}
+        >
+          💬 WhatsApp এ যোগাযোগ
+        </a>
         <a
           href="https://wa.me/01788262433"
           target="_blank"
           rel="noopener noreferrer"
           className={styles.donateButton}
         >
-          💬 WhatsApp এ যোগাযোগ করো
+          ডোনেট করুন
         </a>
       </div>
     </div>

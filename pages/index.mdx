@@ -1,3 +1,5 @@
+import GiscusComments from "../components/GiscusComments";
+
 ```jsx
 function Welcome() {
   return <h1>React.js Bangla Tutorial এ আপনাকে স্বাগতম!</h1>;
@@ -5,6 +7,8 @@ function Welcome() {
 ```
 
 এই টিউটোরিয়ালটি **React এর অফিসিয়াল ডকুমেন্টেশন** ফলো করে তৈরি করা হয়েছে, যা আপনাকে React.js গভীরভাবে শিখতে সাহায্য করবে।
+
+<Donate />
 
 > প্রথমেই বলা নেয়া ভালো, প্রাকটিস না করে শুধু পড়লে বা ভিডিও দেখলে সারাজীবনেও কেউ প্রোগ্রামার/ডেভেলপার হতে পারবে না।
 
@@ -181,7 +185,7 @@ function SearchableVideoList({ videos }) {
       <SearchInput value={searchText} onChange={setSearchText} />
       <VideoList
         videos={foundVideos}
-        emptyHeading={`No matches for “${searchText}”`}
+        emptyHeading={`No matches for "${searchText}"`}
       />
     </>
   );
@@ -393,7 +397,7 @@ root.render(<NavigationBar />);
 <nav id="navigation"></nav>
 ```
 
-এখন React সেই `<nav>` এর ভিতরে “Hello from React!” দেখাবে।
+এখন React সেই `<nav>` এর ভিতরে "Hello from React!" দেখাবে।
 
 ---
 
@@ -532,3 +536,14 @@ React একটি জনপ্রিয় জাভাস্ক্রিপ্
 
 - অফিসিয়াল ডকুমেন্টেশন: [https://react.dev/](https://react.dev/)
 - বাংলা ভিডিও সিরিজ: [React Bangla Tutorial](https://www.youtube.com/watch?v=JSLTS3dfHKU&list=PLRFcjW6Dq28m95keSmOdGxvQqFvKsNwri&ab_channel=tapaScriptBangla)
+
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

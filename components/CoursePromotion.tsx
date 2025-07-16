@@ -6,20 +6,21 @@ const CoursePromotion: React.FC = () => {
     <div className={styles.courseContainer}>
       <div className={styles.courseCard}>
         <h2 className={styles.courseTitle}>💡 শেখার সুযোগ!</h2>
+        
         <p className={styles.courseText}>
           আমার কাছে{" "}
           <strong className={styles.courseHighlight}>
             HTML, CSS, Tailwind CSS, JavaScript, React, Git and Github
           </strong>{" "}
-          শিখতে নিচের WhatsApp নাম্বারে যোগাযোগ কর।
+          শিখতে যোগাযোগ কর।
         </p>
         <p className={styles.courseText}>
           মাসিক{" "}
           <span className={styles.courseHighlight + " " + styles.greenText}>
-            ৫০০০ টাকা
+            ১৫০০০ টাকা
           </span>{" "}
           নিব, সপ্তাহে <span className="courseHighlight blueText">৩ দিন</span>{" "}
-          ক্লাস করাব।
+          শিক্ষার্থীর বাসায় গিয়ে অফলাইনে করাব।
         </p>
         <p className="courseText">
           কোর্স ডিউরেশন{" "}
