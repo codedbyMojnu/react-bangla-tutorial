@@ -1,0 +1,68 @@
+### **ব্লগ পোস্ট ১: React Query-এর সাথে পরিচিতি এবং এর কার্যকারিতা**
+
+আজ আমরা আলোচনা করব **React Query** (যা এখন **TanStack Query** নামে পরিচিত) নিয়ে। এটি ক্লায়েন্ট থেকে সার্ভারে নেটওয়ার্ক কল পরিচালনা, ক্যাশিং এবং অটো রিফেচিং-এর মতো কাজগুলোকে অনেক সহজ করে দেয়। চলুন, এর গভীরে প্রবেশ করা যাক।
+
+#### **React Query কী এবং কেন ব্যবহার করবেন?**
+
+React Query একটি শক্তিশালী লাইব্রেরি যা সার্ভার থেকে ডেটা আনা, ক্যাশিং, সিঙ্ক্রোনাইজেশন এবং আপডেটের মতো কাজগুলো খুব সহজে পরিচালনা করতে পারে । যখন আমরা সার্ভার থেকে ডেটা আনার জন্য **Axios** বা অন্য কোনো লাইব্রেরি ব্যবহার করি, তখন সেই ডেটার স্টেট ম্যানেজমেন্টের জন্য আমাদের অনেক কোড লিখতে হয় । React Query এই কঠিন কাজগুলোকে অনেক সহজ করে দেয় এবং আমাদের ডেটা লাইফ সাইকেল পরিচালনার একটি সুন্দর সমাধান দেয়
+
+এর মূল কাজগুলোর মধ্যে রয়েছে:
+
+- **ক্যাশিং (Caching):** সার্ভার থেকে আনা ডেটা ক্যাশ করে রাখে, যার ফলে অ্যাপ্লিকেশনের পারফরম্যান্স ভালো হয়
+- **অটো রিফেচিং (Auto Refetching):** নির্দিষ্ট সময় পর পর ডেটা রিফেচ করে, ফলে ইউজার সবসময় আপডেটেড ডেটা দেখতে পায়
+- **প্রি-ফেচিং (Pre-fetching):** ইউজার কোনো পেজে যাওয়ার আগেই সেই পেজের ডেটা প্রি-ফেচ করে রাখতে পারে
+
+#### **কীভাবে React Query সেটআপ করবেন?**
+
+React Query আপনার প্রজেক্টে যোগ করা খুবই সহজ। `main.jsx` ফাইলে গিয়ে আপনাকে `QueryClient` এবং `QueryClientProvider` ইম্পোর্ট করে অ্যাপকে র‍্যাপ করে দিতে হবে
+
+```jsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+[cite_start]const queryClient = new QueryClient(); [cite: 26]
+
+// ... আপনার অ্যাপের বাকি অংশ
+[cite_start]<QueryClientProvider client={queryClient}> [cite: 27]
+  <App />
+</QueryClientProvider>
+```
+
+#### **useQuery হুক দিয়ে ডেটা আনা**
+
+`ProductList.jsx` ফাইলে আমরা `useEffect` ব্যবহার না করেই সার্ভার থেকে ডেটা আনতে পারি। এর জন্য আমরা `useQuery` হুক ব্যবহার করব।
+
+`useQuery` হুকটি কয়েকটি গুরুত্বপূর্ণ জিনিস রিটার্ন করে, যেমন:
+
+- `data`: সার্ভার থেকে আসা ডেটা।
+- `isLoading`: ডেটা লোডিং অবস্থায় থাকলে `true` দেখায়।
+- `error`: কোনো এরর আসলে সেটি দেখায়।
+
+```jsx
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+const fetchProducts = async () => {
+  const response = await axios.get('http://localhost:3000/products');
+  return response.data;
+[cite_start]}; [cite: 29]
+
+const ProductList = () => {
+  const { data, error, isLoading } = useQuery({
+    [cite_start]queryKey: ['products'], [cite: 34]
+    [cite_start]queryFn: fetchProducts, [cite: 35]
+  });
+
+  [cite_start]if (isLoading) return <div>Loading...</div>; [cite: 39]
+  [cite_start]if (error) return <div>An error occurred: {error.message}</div>; [cite: 39]
+
+  [cite_start]// ... ডেটা ম্যাপ করে দেখানো [cite: 40]
+};
+```
+
+`queryKey` এখানে একটি ইউনিক আইডেন্টিফায়ার হিসেবে কাজ করে, যা দিয়ে React Query ডেটা ক্যাশ করে রাখে ।
+
+#### **ডিবাগিং-এর জন্য Devtools**
+
+React Query-এর সাথে একটি Devtools আসে যা ডিবাগিং-এর জন্য খুবই উপকারী। এটি দিয়ে আপনি দেখতে পারবেন কোন কোয়েরি কোন অবস্থায় আছে, ডেটা ফ্রেশ নাকি পুরনো (stale) ইত্যাদি।
+
+---

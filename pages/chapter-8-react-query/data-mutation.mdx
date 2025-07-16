@@ -1,0 +1,88 @@
+আপনার আগ্রহ এবং অনুপ্রেরণায় আমি সত্যিই আনন্দিত\! চলুন, আপনার রিপোজিটরি এবং ডকুমেন্টের গভীর বিশ্লেষণ থেকে প্রাপ্ত তথ্য দিয়ে আমাদের সিরিজের তৃতীয় ব্লগ পোস্টটি শুরু করা যাক।
+
+---
+
+### **ব্লগ পোস্ট ৩: React Query দিয়ে ডেটা পরিবর্তন (Mutations): যোগ, আপডেট এবং ডিলিট**
+
+আগের দুটি পর্বে আমরা দেখেছি কীভাবে React Query ব্যবহার করে সার্ভার থেকে ডেটা আনা যায় এবং সেই ডেটার অবস্থা পরিচালনা করা হয়। এখন আমরা ডেটা পরিবর্তনের জগতে প্রবেশ করব। অর্থাৎ, সার্ভারে কীভাবে নতুন ডেটা যোগ (Create), mevcut ডেটা আপডেট (Update) এবং অপ্রয়োজনীয় ডেটা মুছে ফেলা (Delete) যায়, তা শিখব। এই কাজগুলোর জন্য React Query আমাদের `useMutation` নামে একটি অসাধারণ হুক দিয়েছে।
+
+#### **`useMutation` হুক: সার্ভার স্টেট পরিবর্তনের হাতিয়ার**
+
+যখনই আমরা সার্ভারের ডেটা পরিবর্তন করতে চাই (যেমন একটি নতুন প্রোডাক্ট যোগ করা), আমাদের একটি `POST`, `PUT`, বা `DELETE` রিকোয়েস্ট পাঠাতে হয়। `useMutation` হুক এই ধরনের কাজগুলো খুব সুন্দরভাবে পরিচালনা করে।
+
+`useQuery`-র মতো `useMutation` ও বেশ কিছু দরকারি স্টেট এবং কলব্যাক ফাংশন রিটার্ন করে, যেমন:
+
+- `mutate`: এই ফাংশনটি কল করে আমরা সার্ভারে ডেটা পাঠানোর প্রক্রিয়া শুরু করি।
+- `isPending` বা `isLoading`: মিউটেশনটি চলছে কিনা তা জানায়।
+- `isError`: কোনো ভুল হলে `true` হয়।
+- `isSuccess`: সফলভাবে সম্পন্ন হলে `true` হয়।
+
+#### **উদাহরণ: একটি নতুন প্রোডাক্ট যোগ করা**
+
+[cite\_start]ধরা যাক, আমাদের একটি "Add Product" ফরম আছে [cite: 13]। ইউজার যখন এই ফরমে তথ্য দিয়ে সাবমিট করবে, আমরা `useMutation` ব্যবহার করে সেই ডেটা সার্ভারে পাঠাব।
+
+**১. মিউটেশন ফাংশন তৈরি:**
+
+প্রথমে আমরা একটি ফাংশন তৈরি করব যা `axios` ব্যবহার করে সার্ভারে `POST` রিকোয়েস্ট পাঠাবে।
+
+```jsx
+import axios from "axios";
+
+const addProduct = async (newProduct) => {
+  const response = await axios.post(
+    "http://localhost:3000/products",
+    newProduct
+  );
+  return response.data;
+};
+```
+
+**২. কম্পোনেন্টে `useMutation` ব্যবহার:**
+
+এখন আমাদের `AddProduct.jsx` কম্পোনেন্টে `useMutation` হুকটি ব্যবহার করব।
+
+```jsx
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const AddProduct = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: addProduct,
+    // সফল হলে যা ঘটবে
+    onSuccess: () => {
+      // 'products' কোয়েরিটিকে ইনভ্যালিডেট করে দেওয়া
+      // যাতে প্রোডাক্ট লিস্ট আবার নতুন করে লোড হয়
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const productData = {
+      /* ফরম থেকে পাওয়া ডেটা */
+    };
+    mutate(productData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* ফরমের ইনপুট ফিল্ড */}
+      <button type="submit" disabled={isPending}>
+        {isPending ? "Adding..." : "Add Product"}
+      </button>
+      {isError && <div>An error occurred: {error.message}</div>}
+    </form>
+  );
+};
+```
+
+#### **`invalidateQueries`: ডেটা সিঙ্ক্রোনাইজেশনের জাদুকর**
+
+উপরের কোডে `onSuccess` কলব্যাকের ভেতরে `queryClient.invalidateQueries({ queryKey: ['products'] })` লাইনটি খুবই গুরুত্বপূর্ণ।
+
+যখন আমরা একটি নতুন প্রোডাক্ট যোগ করি, আমাদের প্রোডাক্ট লিস্টের ডেটা পুরনো হয়ে যায়। আমরা চাই নতুন প্রোডাক্টটি যোগ হওয়ার সাথে সাথেই যেন প্রোডাক্ট লিস্টে সেটি দেখা যায়। `invalidateQueries` ঠিক এই কাজটিই করে। এটি `['products']` `queryKey` যুক্ত কোয়েরিটিকে "stale" বা পুরনো হিসেবে মার্ক করে দেয়। ফলে, React Query স্বয়ংক্রিয়ভাবে ওই কোয়েরিটি রিফেচ করে এবং আমাদের UI লেটেস্ট ডেটা দিয়ে আপডেট হয়ে যায়।
+
+একইভাবে, আমরা প্রোডাক্ট **আপডেট** এবং **ডিলিট** করার জন্যও `useMutation` ব্যবহার করতে পারি। [cite\_start]শুধু আমাদের `mutationFn` পরিবর্তন করে `PUT` বা `DELETE` রিকোয়েস্ট পাঠাতে হবে এবং `onSuccess`-এ সংশ্লিষ্ট কোয়েরি ইনভ্যালিডেট করতে হবে। [cite: 11]
+
+---

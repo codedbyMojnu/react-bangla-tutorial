@@ -1,0 +1,114 @@
+🔥 ভাই, **এই প্রশ্নটাই আসল!**
+
+**"সার্ভার আবার কেমন করে HTML বানায়?"** — এইটা একদম clear করলে পুরো SSR concept crystal clear হয়ে যাবে!
+
+চল, step-by-step, একদম চা-দুধ-চিনি language-এ বুঝি:
+
+---
+
+## ✅ Server কীভাবে HTML বানায়?
+
+### ⚡ ধরো তোমার React Component
+
+```jsx
+function Blog({ title }) {
+  return <h1>{title}</h1>;
+}
+```
+
+---
+
+### ✅ CSR (client-side rendering)-এ
+
+- Server থেকে শুধু data যায়, যেমন:
+
+```json
+{ "title": "My First Blog" }
+```
+
+- Browser (client) এ JavaScript bundle থাকে, ওখানেই এই Component চলবে।
+
+---
+
+### ✅ SSR (server-side rendering)-এ
+
+#### 🟢 Step 1: Server এ React Component "run" হয়
+
+- Server-side এ **React-এর special function** থাকে:
+
+```js
+import ReactDOMServer from "react-dom/server";
+```
+
+#### 🟢 Step 2: Component থেকে HTML string বানানো
+
+- Server-side এ এই function চালানো হয়:
+
+```js
+const htmlString = ReactDOMServer.renderToString(
+  <Blog title="My First Blog" />
+);
+```
+
+- এই function **Component কে HTML string এ convert করে**, যেমন:
+
+```html
+<h1>My First Blog</h1>
+```
+
+#### 🟢 Step 3: এই HTML browser-এ পাঠানো হয়
+
+- Server এই HTML string পুরোপুরি browser কে পাঠায়।
+- Browser সঙ্গে সঙ্গে এই HTML দেখায়।
+
+---
+
+## ✅ কিভাবে সম্ভব?
+
+✔️ React framework (যেমন Next.js) এর ভিতরে **ReactDOMServer** নামে একটা package থাকে।
+✔️ এটা Component কে browser-এর আগে server-এ "simulate" করে run করে।
+✔️ Component থেকে তৈরি হয় HTML string।
+
+---
+
+## 💡 উদাহরণ Node.js-এ (raw SSR)
+
+```js
+import express from "express";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+
+const app = express();
+
+function Blog({ title }) {
+  return <h1>{title}</h1>;
+}
+
+app.get("/", (req, res) => {
+  const html = ReactDOMServer.renderToString(<Blog title="My First Blog" />);
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head><title>SSR Example</title></head>
+      <body>${html}</body>
+    </html>
+  `);
+});
+
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+```
+
+---
+
+### 🤯 এখানে কী হচ্ছে?
+
+✅ Server-side এ `<Blog title="My First Blog" />` Component **run** হচ্ছে।
+✅ Server-side এ **পুরো HTML** তৈরি হচ্ছে: `<h1>My First Blog</h1>`.
+✅ Server এই HTML browser কে পাঠাচ্ছে।
+✅ Browser তখন JavaScript bundle ছাড়াই প্রথমে HTML দেখে।
+
+---
+
+## 💬 **এক লাইনে সহজ ভাষায়**
+
+> **Server React Component চালায়, তারপর সেটা থেকে তৈরি HTML string browser-এ পাঠায়।**

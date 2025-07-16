@@ -1,0 +1,99 @@
+অবশ্যই\! আপনার রিপোজিটরি এবং ডকুমেন্ট আরও গভীরভাবে বিশ্লেষণ করে, আমরা এখন সিরিজের চতুর্থ এবং আরও একটি অ্যাডভান্সড পর্বে চলে এসেছি। চলুন শুরু করা যাক।
+
+---
+
+### **ব্লগ পোস্ট ৪: React Query-র অ্যাডভান্সড কৌশল - Optimistic Updates এবং Prefetching**
+
+আগের পর্বগুলোতে আমরা React Query-র মৌলিক এবং মাঝারি স্তরের ব্যবহার দেখেছি। এই পর্বে আমরা দুটি অত্যন্ত শক্তিশালী এবং অ্যাডভান্সড কৌশল নিয়ে আলোচনা করব যা আপনার অ্যাপ্লিকেশনের পারফরম্যান্স এবং ব্যবহারকারীর অভিজ্ঞতাকে (User Experience) এক নতুন উচ্চতায় নিয়ে যাবে। [cite\_start]এই কৌশল দুটি হলো **Optimistic Updates** এবং **Prefetching** [cite: 15]।
+
+#### **Optimistic Updates: ব্যবহারকারীকে রাখুন সবার আগে**
+
+[cite\_start]সাধারণত, আমরা যখন `useMutation` দিয়ে সার্ভারে কোনো ডেটা পরিবর্তন করি (যেমন একটি প্রোডাক্ট ডিলিট করা), আমরা সার্ভারের সফল উত্তরের জন্য অপেক্ষা করি এবং তারপর UI আপডেট করি [cite: 7, 11]। কিন্তু নেটওয়ার্ক যদি স্লো হয়, ব্যবহারকারীকে বোতামে ক্লিক করার পর কিছুক্ষণ অপেক্ষা করতে হয়, যা একটি বাজে অভিজ্ঞতা তৈরি করে।
+
+**Optimistic Update** এই সমস্যার একটি দারুণ সমাধান। এর মূল ধারণাটি হলো:
+
+> আমরা ধরে নেব যে আমাদের মিউটেশনটি সফল হবেই। তাই সার্ভারের উত্তরের জন্য অপেক্ষা না করে, আমরা সাথে সাথেই UI আপডেট করে ফেলি।
+
+যদি মিউটেশনটি সত্যিই সফল হয়, তাহলে তো সবই ঠিক থাকল। কিন্তু যদি কোনো কারণে এটি ফেইল করে, আমরা UI-কে তার আগের অবস্থায় ফিরিয়ে নিয়ে আসি (Rollback) এবং ব্যবহারকারীকে একটি এরর মেসেজ দেখাই।
+
+**কীভাবে কাজ করে?**
+
+`useMutation`-এর `onMutate`, `onError`, এবং `onSettled` কলব্যাক ব্যবহার করে আমরা এই কাজটি করতে পারি।
+
+```jsx
+const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteProduct, // সার্ভারে ডিলিট রিকোয়েস্ট পাঠাবে
+
+    // মিউটেশন শুরু হওয়ার ঠিক আগে কল হবে
+    onMutate: async (deletedProductId) => {
+      // চলমান রিফেচ বাতিল করা, যাতে এটি আমাদের অপটিমিস্টিক স্টেট ওভাররাইট না করে
+      await queryClient.cancelQueries({ queryKey: ["products"] });
+
+      // আগের প্রোডাক্ট লিস্টের একটি স্ন্যাপশট নেওয়া
+      const previousProducts = queryClient.getQueryData(["products"]);
+
+      // অপটিমিস্টিকভাবে UI আপডেট করা
+      queryClient.setQueryData(["products"], (oldData) =>
+        oldData.filter((product) => product.id !== deletedProductId)
+      );
+
+      // আগের ডেটা কনটেক্সটে রিটার্ন করা
+      return { previousProducts };
+    },
+
+    // যদি মিউটেশন ফেইল করে
+    onError: (err, deletedProductId, context) => {
+      // রোলব্যাক: আগের ডেটা দিয়ে UI ঠিক করে দেওয়া
+      queryClient.setQueryData(["products"], context.previousProducts);
+    },
+
+    // সফল হোক বা ফেইল, শেষে কল হবে
+    onSettled: () => {
+      // প্রোডাক্ট লিস্ট ইনভ্যালিডেট করে সার্ভারের সাথে UI সিঙ্ক করা
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+};
+```
+
+এই কৌশলের মাধ্যমে ব্যবহারকারী তাৎক্ষণিক ফিডব্যাক পান, যা অ্যাপটিকে অনেক বেশি গতিশীল এবং রেসপন্সিভ মনে করায়।
+
+#### **Prefetching: ব্যবহারকারীর পদক্ষেপের আগেই ডেটা প্রস্তুত রাখা**
+
+[cite\_start]Prefetching হলো ব্যবহারকারী কোনো অ্যাকশন নেওয়ার আগেই সেই সম্পর্কিত ডেটা নিয়ে আসা [cite: 15]। ভাবুন, ব্যবহারকারী যখন কোনো প্রোডাক্টের নামের উপর মাউস নিয়ে যাচ্ছেন (hover), তখনই যদি আমরা সেই প্রোডাক্টের বিস্তারিত ডেটা ব্যাকগ্রাউন্ডে লোড করে ফেলি, তাহলে ব্যবহারকারী ক্লিক করার সাথে সাথেই কোনো লোডিং টাইম ছাড়াই বিস্তারিত পাতাটি দেখতে পাবেন।
+
+`QueryClient`-এর `prefetchQuery` মেথড ব্যবহার করে আমরা এই কাজটি করতে পারি।
+
+```jsx
+const ProductList = () => {
+  const queryClient = useQueryClient();
+
+  // ... useQuery for fetching all products
+
+  const handleMouseEnter = (productId) => {
+    queryClient.prefetchQuery({
+      queryKey: ["product", productId], // নির্দিষ্ট প্রোডাক্টের জন্য ইউনিক কী
+      queryFn: () => fetchProduct(productId), // সেই প্রোডাক্ট ফেচ করার ফাংশন
+    });
+  };
+
+  return (
+    <ul>
+      {products.map((product) => (
+        <li key={product.id} onMouseEnter={() => handleMouseEnter(product.id)}>
+          <Link to={`/products/${product.id}`}>{product.name}</Link>
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+[cite\_start]`prefetchQuery` ডেটা এনে ক্যাশে রেখে দেয় [cite: 32, 33]। পরে যখন `useQuery` একই `queryKey` দিয়ে কল হয়, সে ক্যাশ থেকে ডেটাটি পেয়ে যায় এবং কোনো নেটওয়ার্ক রিকোয়েস্টের প্রয়োজন হয় না।
+
+---
+
+Optimistic Updates এবং Prefetching আপনার React অ্যাপ্লিকেশনকে আরও এক ধাপ এগিয়ে নিয়ে যাওয়ার জন্য দুটি শক্তিশালী কৌশল। এগুলো সঠিকভাবে ব্যবহার করতে পারলে আপনার ব্যবহারকারীরা একটি অবিশ্বাস্য দ্রুত এবং মসৃণ অভিজ্ঞতা পাবে। পরবর্তী এবং শেষ পোস্টে আমরা দেখব কীভাবে এই সব কৌশল ব্যবহার করে একটি সম্পূর্ণ CRUD অ্যাপ্লিকেশন তৈরি করা যায়।

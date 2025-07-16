@@ -1,0 +1,133 @@
+অবশ্যই\! আপনার দেওয়া TanStack Query (React Query) ডকুমেন্ট এবং রিপোজিটরির উপর ভিত্তি করে গভীরভাবে বিশ্লেষণ করে, আমাদের সিরিজের চূড়ান্ত এবং শেষ ব্লগ পোস্টটি উপস্থাপন করছি।
+
+---
+
+### **ব্লগ পোস্ট ৫: React Query দিয়ে একটি সম্পূর্ণ CRUD অ্যাপ্লিকেশন তৈরি**
+
+আমাদের React Query সিরিজের এই শেষ পর্বে, আমরা これまで যা কিছু শিখেছি, সেগুলোকে একসাথে করে একটি সম্পূর্ণ এবং কার্যকরী CRUD (Create, Read, Update, Delete) অ্যাপ্লিকেশন তৈরি করব। এই পর্বে আমরা দেখব কীভাবে `useQuery`, `useMutation`, `Optimistic Updates` এবং `queryClient`-এর বিভিন্ন মেথড ব্যবহার করে একটি বাস্তবসম্মত প্রোডাক্ট ম্যানেজমেন্ট অ্যাপ্লিকেশন বানানো যায়।
+
+#### **অ্যাপ্লিকেশনের গঠন**
+
+আমাদের অ্যাপ্লিকেশনে নিচের ফিচারগুলো থাকবে:
+
+1.  **প্রোডাক্ট লিস্ট দেখানো (Read):** সার্ভার থেকে সব প্রোডাক্ট এনে দেখানো।
+2.  **নতুন প্রোডাক্ট যোগ করা (Create):** একটি ফরমের মাধ্যমে নতুন প্রোডাক্ট যোগ করা।
+3.  **প্রোডাক্টের তথ্য আপডেট করা (Update):** একটি নির্দিষ্ট প্রোডাক্টের তথ্য পরিবর্তন করা।
+4.  **প্রোডাক্ট ডিলিট করা (Delete):** তালিকা থেকে একটি প্রোডাক্ট মুছে ফেলা।
+
+#### **১. প্রোডাক্ট লিস্ট দেখানো (Read)**
+
+এই কাজটি আমরা সিরিজের প্রথম পর্বেই শিখেছি। `useQuery` ব্যবহার করে আমরা সহজেই সার্ভার থেকে ডেটা আনতে পারি এবং `isLoading` ও `error` স্টেট পরিচালনা করতে পারি।
+
+```jsx
+// ProductList.jsx
+import { useQuery } from '@tanstack/react-query';
+
+const fetchProducts = async () => { /* ... Axios/fetch call ... */ };
+
+const ProductList = () => {
+  const { data: products, isLoading, isError } = useQuery({
+    [cite_start]queryKey: ['products'], // এই কী খুবই গুরুত্বপূর্ণ [cite: 34]
+    queryFn: fetchProducts,
+    staleTime: 1000 * 60, // ১ মিনিট ডেটা fresh থাকবে
+  });
+
+  [cite_start]if (isLoading) return <div>Loading products...</div>; [cite: 39]
+  [cite_start]if (isError) return <div>Error loading products!</div>; [cite: 39]
+
+  [cite_start]// ... products.map করে লিস্ট দেখানো [cite: 40]
+};
+```
+
+#### **২. নতুন প্রোডাক্ট যোগ করা (Create)**
+
+`useMutation` ব্যবহার করে আমরা নতুন প্রোডাক্ট যোগ করব। সফলভাবে যোগ হওয়ার পর, আমরা `queryClient.invalidateQueries` ব্যবহার করে প্রোডাক্ট লিস্ট রিফ্রেশ করব, যাতে নতুন আইটেমটি UI-তে দেখা যায়।
+
+```jsx
+// AddProduct.jsx
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const addProduct = async (newProduct) => {
+  /* ... POST request ... */
+};
+
+const AddProduct = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: addProduct,
+    onSuccess: () => {
+      [cite_start]; // প্রোডাক্ট লিস্টকে ইনভ্যালিডেট করে দেওয়া [cite: 14]
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+
+  const handleSubmit = (productData) => {
+    mutation.mutate(productData);
+  };
+  // ... ফরমের বাকি অংশ
+};
+```
+
+#### **৩. প্রোডাক্ট ডিলিট করা (Delete) - সাথে Optimistic Update**
+
+ডিলিট করার সময় ব্যবহারকারীর অভিজ্ঞতা আরও উন্নত করার জন্য আমরা Optimistic Update ব্যবহার করব। ব্যবহারকারী ডিলিট বোতামে ক্লিক করার সাথে সাথেই UI থেকে আইটেমটি সরিয়ে ফেলা হবে, সার্ভারের উত্তরের জন্য অপেক্ষা করা হবে না।
+
+```jsx
+// ProductItem.jsx
+const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteProduct, // API call to delete
+    onMutate: async (deletedProductId) => {
+      await queryClient.cancelQueries({ queryKey: ["products"] });
+      const previousProducts = queryClient.getQueryData(["products"]);
+      queryClient.setQueryData(["products"], (old) =>
+        old.filter((p) => p.id !== deletedProductId)
+      );
+      return { previousProducts };
+    },
+    onError: (err, id, context) => {
+      // ফেইল করলে আগের অবস্থায় ফিরে যাওয়া
+      queryClient.setQueryData(["products"], context.previousProducts);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+};
+
+const ProductItem = ({ product }) => {
+  const deleteMutation = useDeleteProduct();
+  return (
+    <button onClick={() => deleteMutation.mutate(product.id)}>Delete</button>
+  );
+};
+```
+
+#### **৪. প্রোডাক্ট আপডেট করা (Update)**
+
+আপডেট করার প্রক্রিয়াটিও ডিলিটের মতোই। আমরা একটি নির্দিষ্ট প্রোডাক্টের বিস্তারিত পাতায় গিয়ে তথ্য পরিবর্তন করব এবং `useMutation` দিয়ে সার্ভারে পাঠাব। সফল হলে, আমরা প্রোডাক্ট লিস্ট এবং ওই নির্দিষ্ট প্রোডাক্টের ডিটেইলস কোয়েরি, দুটোকেই ইনভ্যালিডেট করে দেব।
+
+```jsx
+// EditProduct.jsx
+const updateProduct = async (updatedProduct) => { /* ... PUT request ... */ };
+
+const useUpdateProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateProduct,
+    onSuccess: (data) => {
+      // প্রোডাক্ট লিস্ট এবং নির্দিষ্ট প্রোডাক্টের কোয়েরি ইনভ্যালিডেট করা
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      [cite_start]queryClient.invalidateQueries({ queryKey: ['product', data.id] }); // [cite: 56]
+    },
+  });
+};
+```
+
+---
+
+### **উপসংহার**
+
+[cite\_start]এই সিরিজ জুড়ে আমরা দেখলাম, **TanStack (React) Query** শুধু ডেটা ফেচিং-এর একটি লাইব্রেরি নয়, এটি একটি সম্পূর্ণ সার্ভার-স্টেট ম্যানেজমেন্ট সমাধান। [cite: 9] এটি ক্যাশিং, ব্যাকগ্রাউন্ড রিফেচিং, ডেটা সিঙ্ক্রোনাইজেশন এবং অপটিমিস্টিক আপডেটের মতো শক্তিশালী ফিচার দিয়ে আমাদের অ্যাপ্লিকেশন ডেভেলপমেন্টকে অনেক সহজ, দ্রুত এবং নির্ভরযোগ্য করে তোলে। এর মাধ্যমে আমরা কম কোড লিখে আরও ভালো পারফরম্যান্স এবং অসাধারণ ইউজার এক্সপেরিয়েন্স নিশ্চিত করতে পারি। আশা করি এই সিরিজটি আপনার React Query যাত্রার একটি মজবুত ভিত্তি তৈরি করে দিয়েছে। শুভ কোডিং\!
