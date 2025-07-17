@@ -1,32 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const STORAGE_KEY_PREFIX = "reading-progress-";
-
-function getStorageKey(pathname: string) {
-  return STORAGE_KEY_PREFIX + pathname;
-}
-
 const ProgressBar: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const ticking = useRef(false);
-
-  // Restore progress from localStorage on mount
-  useEffect(() => {
-    const key = getStorageKey(window.location.pathname);
-    const saved = localStorage.getItem(key);
-    if (saved) {
-      setProgress(Number(saved));
-      // Optionally scroll to saved position
-      const scrollY = (document.body.scrollHeight - window.innerHeight) * Number(saved);
-      window.scrollTo({ top: scrollY, behavior: "auto" });
-    }
-  }, []);
-
-  // Save progress to localStorage
-  useEffect(() => {
-    const key = getStorageKey(window.location.pathname);
-    localStorage.setItem(key, progress.toString());
-  }, [progress]);
 
   // Update progress on scroll
   useEffect(() => {
@@ -35,7 +11,8 @@ const ProgressBar: React.FC = () => {
         window.requestAnimationFrame(() => {
           const scrollTop = window.scrollY;
           const docHeight = document.body.scrollHeight - window.innerHeight;
-          const percent = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+          const percent =
+            docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
           setProgress(percent);
           ticking.current = false;
         });
@@ -49,8 +26,8 @@ const ProgressBar: React.FC = () => {
   return (
     <div
       style={{
-        position: "fixed",
-        top: 0,
+        position: "relative",
+        top: 8,
         left: 0,
         width: "100%",
         height: "4px",
@@ -70,4 +47,4 @@ const ProgressBar: React.FC = () => {
   );
 };
 
-export default ProgressBar; 
+export default ProgressBar;

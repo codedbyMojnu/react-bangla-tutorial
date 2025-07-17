@@ -1,9 +1,15 @@
 import { DocsThemeConfig } from "nextra-theme-docs";
 import Donate from "./components/Donate";
 import Logo from "./components/Logo";
+import ProgressBar from "./components/ProgressBar";
 
 const config: DocsThemeConfig = {
-  logo: <Logo />,
+  logo: (
+    <div>
+      <Logo />
+      <ProgressBar />
+    </div>
+  ),
   project: {
     link: "https://github.com/codebymojnu/react-bangla-tutorial",
   },
@@ -15,6 +21,7 @@ const config: DocsThemeConfig = {
   footer: {
     text: "React Bangla Tutorial",
   },
+
   components: {
     Donate,
   },
