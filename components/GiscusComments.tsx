@@ -41,4 +41,4 @@ const GiscusComments: React.FC<GiscusCommentsProps> = ({
   );
 };
 
-export default GiscusComments; 
+export default GiscusComments;

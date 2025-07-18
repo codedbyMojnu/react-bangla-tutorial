@@ -1,0 +1,3 @@
+feat: SEO optimization for file paths and metadata
+
+Renamed files and folders for SEO-friendly URLs and updated meta tags in theme.config.tsx and package.json for improved Google ranking.

@@ -1,3 +1,5 @@
+import GiscusComments from "../../components/GiscusComments";
+
 ## স্টেট আপডেটের সিরিজকে কিউ করা
 
 স্টেট ভেরিয়েবল সেট করা মানে হল- পরবর্তী রেন্ডারের জন্য এটি কিউ তৈরি করা। কিন্তু কখনও কখনও আপনি পরবর্তী রেন্ডারের আগের মানের উপর একাধিক অপারেশন করতে চান। এটি করতে, আপনাকে বুঝতে হবে কীভাবে React স্টেট আপডেটগুলিকে ব্যাচ করে।
@@ -87,22 +89,6 @@ export default function Counter() {
 - পরবর্তী রেন্ডারের সময়, React কিউটির মধ্য দিয়ে যায় এবং আপনাকে চূড়ান্ত আপডেট করা স্টেট প্রদান করে।
 
 ```jsx
-setNumber((n) => n + 1);
-setNumber((n) => n + 1);
-setNumber((n) => n + 1);
-```
-
-React ইভেন্ট হ্যান্ডলার চালানোর সময় এই লাইনগুলির মাধ্যমে কাজ করে:
-
-- `setNumber(n => n + 1)`: `n => n + 1` একটি ফাংশন। React এটি একটি কিউতে যোগ করে।
-- `setNumber(n => n + 1)`: `n => n + 1` একটি ফাংশন। React এটি একটি কিউতে যোগ করে।
-- `setNumber(n => n + 1)`: `n => n + 1` একটি ফাংশন। React এটি একটি কিউতে যোগ করে।
-
-যখন আপনি পরবর্তী রেন্ডারের সময় useState কল করেন, React কিউটির মধ্য দিয়ে যায়। পূর্বের `number` স্টেট ০ ছিল, তাই React এটিকে প্রথম আপডেটার ফাংশনে `n` আর্গুমেন্ট হিসেবে পাস করে। এরপর React আপনার পূর্ববর্তী আপডেটার ফাংশনের রিটার্ন মানটি নেয় এবং পরবর্তী আপডেটারে `n` হিসেবে পাস করে, এবং এভাবে এটি চলতে থাকে:
-
-### কিউ করা আপডেটের মাধ্যমে React কাজ করার উপায়:
-
-```jsx
 queued update	n	returns
 n => n + 1	0	0 + 1 = 1
 n => n + 1	1	1 + 1 = 2
@@ -158,7 +144,7 @@ event handler গুলো এক্সিকিউট হওয়ার পর, R
 It’s common to name the updater function argument by the first letters of the corresponding state variable:
 
 ```jsx
-setEnabled((e) => !e);
+enabled((e) => !e);
 setLastName((ln) => ln.reverse());
 setFriendCount((fc) => fc * 2);
 ```
@@ -170,3 +156,14 @@ If you prefer more verbose code, another common convention is to repeat the full
 In other words, you should treat any JavaScript object that you put into state as read-only.
 
 This example holds an object in state to represent the current pointer position. The red dot is supposed to move when you touch or move the cursor over the preview area. But the dot stays in the initial position:
+
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

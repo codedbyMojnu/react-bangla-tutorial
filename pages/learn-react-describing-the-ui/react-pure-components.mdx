@@ -1,3 +1,5 @@
+import GiscusComments from "../../components/GiscusComments.tsx";
+
 # Keeping Components Pure
 
 কিছু জাভাস্ক্রিপ্ট ফাংশন pure ফাংশন। pure ফাংশনগুলো শুধু ক্যালকুলেশন করে। আমরা কম্পোনেটগুলো এমন ভাবে লিখব, যাতে করে একটি নির্দিষ্ট কম্পোনেট এর কাজ নির্দিষ্ট হয়। নির্দিষ্ট ইনপুটের জন্য নির্দিষ্ট আউটপুট দেয়। গ্লোবাল ভেরিয়েবল ব্যবহার না করে কম্পোনেন্ট এর ভিতরেই ভেরিয়েবল নিবো।
@@ -97,3 +99,16 @@ export default App(){
 এখন আমাদের কম্পোনেন্টটি Pure. খাঁটি।
 
 > Pure functions don’t mutate variables outside of the function’s scope or objects that were created before the call—that makes them impure!
+
+import GiscusComments from "../../../components/GiscusComments.tsx";
+
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

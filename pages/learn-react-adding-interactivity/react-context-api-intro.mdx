@@ -1,3 +1,5 @@
+import GiscusComments from "../../components/GiscusComments";
+
 Let’s start **from zero knowledge** and build a solid understanding of the **React Context API**, step by step. I will explain everything in simple terms.
 
 ---
@@ -161,11 +163,6 @@ const Header = () => {
 export default Header;
 ```
 
-Here’s what’s happening:
-
-1. `useContext(UserContext)` fetches the `user` value from `UserContext`.
-2. The `user` object is displayed in the `Header` component.
-
 ---
 
 #### **5. Updating the Context**
@@ -266,8 +263,6 @@ The **React Context API** is a way to pass data through the component tree witho
 3. **Consume Context**: Use `useContext()` in function components or `Context.Consumer` in class components to access the value.
 
 ---
-
-### **Building an Advanced App with Multiple Context Providers**
 
 #### **Setup**: 
 We’ll create a `UserContext` for user info and a `ThemeContext` for managing the app's theme. The context values will come from external files.
@@ -479,3 +474,14 @@ export default ThemeSwitcher;
 Would you like to explore any part of this further?
 
 **Does this explanation make things clear? Would you like more examples or further simplification?** 😊
+
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

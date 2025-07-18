@@ -1,3 +1,4 @@
+import GiscusComments from "../../components/GiscusComments";
 import CoursePromotion from "../../components/CoursePromotion.tsx";
 
 ### **State: একটি কম্পোনেন্টের মেমোরি**
@@ -109,10 +110,10 @@ function Example() {
 import { useState } from "react";
 
 function App() {
-  const [index, setIndex] = useState(0); // state তৈরি করা হলো
+  const [index, setIndex] = useState(0);
 
   function handleClick() {
-    setIndex(index + 1); // state পরিবর্তন হচ্ছে
+    setIndex(index + 1);
   }
 
   return (
@@ -331,3 +332,14 @@ React-এর **state সাধারণ ভেরিয়েবলের মতো
 7. **State component-এর private:** যদি আপনি একটি component দুটি স্থানে render করেন, প্রতিটি কপি নিজস্ব state পাবে।
 
 <CoursePromotion />
+
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

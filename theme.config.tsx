@@ -1,5 +1,7 @@
 import { DocsThemeConfig } from "nextra-theme-docs";
+import CustomFooter from "./components/CustomFooter";
 import Donate from "./components/Donate";
+import GiscusComments from "./components/GiscusComments";
 import Logo from "./components/Logo";
 
 const config: DocsThemeConfig = {
@@ -13,19 +15,20 @@ const config: DocsThemeConfig = {
   docsRepositoryBase:
     "https://github.com/codedbyMojnu/react-bangla-tutorial/blob/main",
   footer: {
-    text: "React Bangla Tutorial",
+    component: <CustomFooter />,
   },
 
   components: {
     Donate,
+    GiscusComments,
   },
   useNextSeoProps() {
     if (typeof window !== "undefined" && window.location.pathname !== "/") {
       return {
-        titleTemplate: "%s – React Bangla Tutorial",
+        titleTemplate: "%s – React JS Bangla Tutorial",
       };
     }
-    return { titleTemplate: "React Bangla Tutorial" };
+    return { titleTemplate: "React JS Bangla Tutorial" };
   },
   head: (props: { title?: string; meta?: { description?: string } }) => {
     const { title, meta } = props;
@@ -44,11 +47,14 @@ const config: DocsThemeConfig = {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width" />
         <meta httpEquiv="Content-Language" content="bn" />
-        <meta name="keywords" content="React, Bangla, Tutorial, React JS, Frontend Development, Web Development, JavaScript, Programming, Bangladesh, Learn React, React in Bengali, React tutorial in Bangla, React project, React assignments, React hooks, React router, React query, Axios, React Hook Form, Next.js, Nextra, UI/UX, Developer career, Job posts, System design, Interview preparation" />
+        <meta
+          name="keywords"
+          content="React, Bangla, Tutorial, React JS, Frontend Development, Web Development, JavaScript, Programming, Bangladesh, Learn React, React in Bengali, React tutorial in Bangla, React project, React assignments, React hooks, React router, React query, Axios, React Hook Form, Next.js, Nextra, UI/UX, Developer career, Job posts, System design, Interview preparation"
+        />
         <link rel="canonical" href={url} />
         <meta property="og:url" content={url} />
-        <meta property="og:site_name" content="React Bangla Tutorial" />
-        <meta name="og:title" content={title || "React Bangla Tutorial"} />
+        <meta property="og:site_name" content="React JS Bangla Tutorial" />
+        <meta name="og:title" content={title || "React JS Bangla Tutorial"} />
         <meta name="description" content={description} />
         <meta property="og:description" content={description} />
       </>

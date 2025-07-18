@@ -1,3 +1,5 @@
+import GiscusComments from "../../components/GiscusComments";
+
 ## React কীভাবে জানে কোন state ফেরত দিতে হবে?
 
 আপনি হয়তো লক্ষ্য করেছেন যে, useState কল করার সময় কোন state ভেরিয়েবলের তথ্য পাওয়া যায় না। useState-তে কোনো "আইডেন্টিফায়ার" পাস করা হয় না, তাহলে এটি কীভাবে জানে কোন state ভেরিয়েবল ফেরত দিতে হবে? এটি কি আপনার ফাংশনগুলি পার্স করার মতো কোনো ম্যাজিক ব্যবহার করে? উত্তর হল, না।
@@ -199,31 +201,14 @@ let sculptureList = [
 
 // প্রাথমিক state এর সাথে UI মিলান।
 updateDOM();
-```
 
-### index.html
-
-```html
-<button id="nextButton">Next</button>
-<h3 id="header"></h3>
-<button id="moreButton"></button>
-<p id="description"></p>
-<img id="image" />
-
-<style>
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: sans-serif;
-    margin: 20px;
-    padding: 0;
-  }
-  button {
-    display: block;
-    margin-bottom: 10px;
-  }
-</style>
-```
-
-এই উদাহরণটি দেখায় কিভাবে useState অভ্যন্তরীণভাবে কাজ করতে পারে, এবং এটি কিভাবে প্রতিটি render-এর সময় একই ক্রমে কল হওয়ার উপর নির্ভর করে সঠিক state প্রদান করে।
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

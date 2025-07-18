@@ -44,55 +44,50 @@
 .thankYouNote {
   margin-top: 0.7rem;
   font-size: 0.92rem;
-  color: #10b981;
-  background: #f0fdf4;
-  border-radius: 0.3rem;
+  color: #333333; /* Darker text */
+  background: #e0e0e0; /* Simple light gray background */
+  border-radius: 0; /* Sharp corners */
   padding: 0.18rem 0.5rem;
   text-align: center;
   font-weight: 500;
-  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.07);
+  box-shadow: none; /* No shadow */
 }
 .signature {
   margin-top: 0.2rem;
   font-size: 0.85rem;
-  color: #2563eb;
+  color: #333333; /* Darker text */
   text-align: right;
-  font-family: "Pacifico", cursive, sans-serif;
-  opacity: 0.85;
+  font-family: "Times New Roman", serif; /* Classic font */
+  opacity: 1; /* No opacity */
 }
 .donateCard {
-  background: linear-gradient(120deg, #f0fdf4 60%, #e0f2fe 100%);
-  border-radius: 1.1rem;
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.13),
-    0 2px 8px rgba(37, 99, 235, 0.09);
+  background: #f0f0f0; /* Simple light gray background */
+  border-radius: 0; /* Sharp corners */
+  border: 1px solid #cccccc; /* Simple border */
+  box-shadow: none; /* No shadow */
   padding: 1.2rem 1.1rem;
   max-width: 400px;
   width: 100%;
   position: relative;
   overflow: hidden;
-  transition: box-shadow 0.2s;
 }
-.donateCard:hover {
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.18),
-    0 4px 16px rgba(37, 99, 235, 0.13);
-  transform: translateY(-2px) scale(1.01);
-}
+
 .donateButton {
-  background: linear-gradient(135deg, #10b981 60%, #2563eb 100%);
+  background: #000080; /* Dark blue, common in old web */
   color: white;
   padding: 0.5rem 1.2rem;
-  border-radius: 0.6rem;
+  border-radius: 0; /* Sharp corners */
   font-size: 1rem;
   font-weight: 700;
   margin-top: 0.6rem;
-  border: none;
+  border: 1px solid #000000; /* Simple black border */
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.13);
+  transition: none; /* No transition */
+  box-shadow: none; /* No shadow */
   letter-spacing: 0.01em;
 }
 .donateButton:disabled {
-  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+  background: #808080; /* Gray for disabled */
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -131,14 +126,14 @@
 }
 
 .greenText {
-  color: #10b981;
-  font-weight: 600;
+  color: #000000; /* Black text */
+  font-weight: normal; /* Normal weight */
   font-size: 0.8rem;
   font-family: "Courier New", monospace;
-  background: #f0fdf4;
-  padding: 0.08rem 0.2rem;
-  border-radius: 0.15rem;
-  border: 1px solid #dcfce7;
+  background: none; /* No background */
+  padding: 0; /* No padding */
+  border-radius: 0; /* Sharp corners */
+  border: none; /* No border */
 }
 
 .paymentSection {
@@ -151,38 +146,36 @@
 }
 
 .paymentLabel {
-  font-weight: 600;
-  color: #1e40af;
+  font-weight: bold; /* Bold text */
+  color: #000000; /* Black text */
   margin-bottom: 0.1rem;
   font-size: 0.78rem;
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
+  display: block; /* Block display */
+  gap: 0; /* No gap */
 }
 
 .paymentInfo {
-  display: flex;
-  align-items: center;
-  gap: 0.18rem;
+  display: block; /* Block display */
+  gap: 0; /* No gap */
   font-size: 0.75rem;
-  color: #374151;
-  flex-wrap: wrap;
-  word-break: break-all;
-  background: #f8fafc;
-  padding: 0.13rem 0.3rem;
-  border-radius: 0.18rem;
-  border: 1px solid #e2e8f0;
+  color: #333333; /* Darker text */
+  flex-wrap: nowrap; /* No wrap */
+  word-break: normal; /* Normal word break */
+  background: none; /* No background */
+  padding: 0; /* No padding */
+  border-radius: 0; /* Sharp corners */
+  border: none; /* No border */
 }
 
 .copyButton {
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-  border: 1px solid #7dd3fc;
-  border-radius: 0.18rem;
+  background: #cccccc; /* Gray background */
+  border: 1px solid #666666; /* Darker border */
+  border-radius: 0; /* Sharp corners */
   padding: 0.08rem 0.25rem;
   font-size: 0.9rem;
   cursor: pointer;
-  color: #2563eb;
-  transition: all 0.2s ease;
+  color: #000000; /* Black text */
+  transition: none; /* No transition */
   min-width: 1.3rem;
   height: 1.3rem;
   display: flex;
@@ -190,10 +183,10 @@
   justify-content: center;
 }
 .copyButton:hover {
-  background: linear-gradient(135deg, #bae6fd 0%, #7dd3fc 100%);
-  color: #10b981;
-  transform: scale(1.08);
-  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.1);
+  background: #999999; /* Darker gray on hover */
+  color: #000000; /* Black text on hover */
+  transform: none; /* No transform */
+  box-shadow: none; /* No shadow */
 }
 
 @media (max-width: 600px) {
