@@ -1,9 +1,0 @@
-{
-  "reacting-to-input-with-state": "স্টেট দিয়ে ইনপুটের প্রতিক্রিয়া",
-  "choosing-the-state-structure": "State এর স্ট্রাকচার ঠিকভাবে নির্বাচন করা",
-  "lifting-state-up": "State কে Parent কম্পোনেন্টে নিয়ে যাওয়া",
-  "preserving-and-resetting-state": "কখন State সংরক্ষণ করব এবং রিসেট করব",
-  "context-api": "Context API",
-  "reducer-context-recap-1": "Reducer এবং Context API এর রিক্যাপ",
-  "reducer-and-context-simple-example": "Reducer এবং Context API একটি সহজ উদাহরণ"
-}

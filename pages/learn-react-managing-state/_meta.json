@@ -1,0 +1,9 @@
+{
+  "react-reacting-to-input-with-state": "স্টেট দিয়ে ইনপুটের প্রতিক্রিয়া",
+  "react-choosing-state-structure": "State এর স্ট্রাকচার ঠিকভাবে নির্বাচন করা",
+  "react-lifting-state-up": "State কে Parent কম্পোনেন্টে নিয়ে যাওয়া",
+  "react-preserving-and-resetting-state": "কখন State সংরক্ষণ করব এবং রিসেট করব",
+  "react-context-api-deep-dive": "Context API",
+  "react-reducer-context-recap": "Reducer এবং Context API এর রিক্যাপ",
+  "react-reducer-with-context-example": "Reducer এবং Context API একটি সহজ উদাহরণ"
+}

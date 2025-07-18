@@ -1,0 +1,10 @@
+{
+  "your-first-react-component": "Component হলো App-এর বিল্ডিং ব্লক: চলো প্রথম কম্পোনেন্ট তৈরি করি",
+  "react-import-export-components": "কোড Reusability সিস্টেম: Import এবং Export এর খেল!",
+  "react-writing-markup-with-jsx": "JSX দিয়ে Markup বানাও: Facebook টিমের নতুন ভাষায় সাজাও UI",
+  "react-jsx-with-javascript": "JSX-এর ভেতর JavaScript: kurly brackets দিয়ে ক্ষমতা দেখায়",
+  "react-passing-props": "ডেটা পাসিং আর ভয় নয়: Props দিয়ে কম্পোনেন্টে  ডাটা পাঠাও",
+  "react-conditional-rendering": "কন্ডিশনাল রেন্ডারিং- শর্ত সাপেক্ষে কম্পোনেন্ট দেখাও এবং লুকাও",
+  "react-rendering-lists": "এক ক্লিকেই ১০০ প্রোফাইল দেখাই: লিস্ট থেকে UI তৈরির জাদু",
+  "react-pure-components": "পিউর কম্পোনেন্টস: সহজ, পরিষ্কার আর বাগ-ফ্রি কোডের রহস্য"
+}
