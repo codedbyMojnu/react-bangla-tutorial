@@ -15,7 +15,7 @@ function CopyButton({ value }: { value: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 1200);
       }}
-      aria-label="Copy to clipboard"
+      aria-label="কপি করুন"
     >
       {copied ? "✓" : "📋"}
     </button>
@@ -26,24 +26,9 @@ const Donate: React.FC = () => {
   return (
     <div className={styles.donateContainer}>
       <div className={styles.donateCard}>
-        <div className={styles.avatarSection}>
-          {/* Replace with a real image if available */}
-          <div className={styles.avatarPlaceholder}>🌟</div>
-        </div>
-
-        <h2 className={styles.donateTitle}>☕ Support Our Mission</h2>
-        <p className={styles.donateText}>
-          <span className={styles.heart}>❤️</span>
-          <strong>Every little bit helps!</strong> Your donation fuels the
-          translation of React documentation into Bangla and the sharing of new
-          features with the community. <br />
-          <span className={styles.highlight}>
-            Together, we can make learning accessible for everyone.
-          </span>
-        </p>
         <div className={styles.textCenter}>
           <button className={styles.donateButton} disabled>
-            ডোনেট করুন
+            অনুদান দিন
           </button>
         </div>
         <div className={styles.paymentSection}>
@@ -74,9 +59,10 @@ const Donate: React.FC = () => {
           <span role="img" aria-label="thank you">
             🙏
           </span>{" "}
-          Thank you for believing in this mission. Your support means the world!
+          আমাদের এই মিশনে বিশ্বাস রাখার জন্য আপনাকে ধন্যবাদ। আপনার সমর্থন আমাদের
+          কাছে অমূল্য! আপনার সামান্য অনুদানও আমাদের জন্য অনেক বড়!
         </div>
-        <div className={styles.signature}>— Mojnu Miah</div>
+        <div className={styles.signature}>— Mojnu</div>
       </div>
     </div>
   );

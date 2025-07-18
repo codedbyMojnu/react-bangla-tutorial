@@ -26,8 +26,8 @@ const ProgressBar: React.FC = () => {
   return (
     <div
       style={{
-        position: "relative",
-        top: 8,
+        position: "fixed",
+        top: 64, // Adjust this value to match your header's height
         left: 0,
         width: "100%",
         height: "4px",
