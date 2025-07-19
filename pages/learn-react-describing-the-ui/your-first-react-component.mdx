@@ -1,8 +1,3 @@
----
- title: Write Your First React Component
- description: First React Component. React Course, React Tutorial.
----
-
 ## তোমার প্রথম কম্পোনেন্টটি বানাও
 
 **কম্পোনেন্ট (Component)** হলো React-এর সবচেয়ে গুরুত্বপূর্ণ জিনিসগুলোর একটা। তুমি যে সুন্দর সুন্দর ইউজার ইন্টারফেস (UI) বানাবে, তার ভিত্তিই হলো এই কম্পোনেন্ট। তাই, চলো এই দারুণ জিনিসটা দিয়েই আমাদের React-এর যাত্রা শুরু করা যাক\!
@@ -184,7 +179,7 @@ img {
 }
 ```
 
-ফাংশন ডেফিনিশনের আগে `export default` যোগ করলেই সমস্যা সমাধান হয়ে যাবে।
+<Reveal label="Click to see the solution">
 
 ```js
 export default function Profile() {
@@ -197,6 +192,8 @@ img {
   height: 181px;
 }
 ```
+
+</Reveal>
 
 #### ২. return স্টেটমেন্টটি ঠিক করো
 
@@ -217,7 +214,7 @@ img {
 }
 ```
 
-তুমি দুইভাবে এটা ঠিক করতে পারো। প্রথমত, মার্কআপটিকে `return`-এর সাথে একই লাইনে নিয়ে আসতে পারো:
+<Reveal label="Click to see the solution">
 
 ```js
 export default function Profile() {
@@ -231,19 +228,7 @@ img {
 }
 ```
 
-অথবা, `return`-এর ঠিক পরেই প্রথম বন্ধনী `()` দিয়ে মার্কআপটিকে মুড়িয়ে দিতে পারো:
-
-```js
-export default function Profile() {
-  return <img src="https://i.imgur.com/jA8hHMpm.jpg" alt="Katsuko Saruhashi" />;
-}
-```
-
-```css
-img {
-  height: 180px;
-}
-```
+</Reveal>
 
 #### ৩. ভুলটি খুঁজে বের করো
 
@@ -273,9 +258,7 @@ img {
 }
 ```
 
-React কম্পোনেন্টের নাম অবশ্যই **বড় হাতের অক্ষর** দিয়ে শুরু হতে হবে।
-
-`function profile()`-কে `function Profile()` এবং `<profile />`-কে `<Profile />`-এ পরিবর্তন করতে হবে:
+<Reveal label="Click to see the solution">
 
 ```js
 function Profile() {
@@ -300,6 +283,8 @@ img {
 }
 ```
 
+</Reveal>
+
 #### ৪. তোমার নিজের কম্পোনেন্ট
 
 এবার একদম প্রথম থেকে নিজে একটি কম্পোনেন্ট লেখো। তুমি যেকোনো বৈধ নাম দিতে পারো এবং যেকোনো মার্কআপ রিটার্ন করতে পারো। যদি কোনো আইডিয়া না পাও, তাহলে `Congratulations` নামে একটি কম্পোনেন্ট বানিয়ে `<h1>দারুণ হয়েছে!</h1>` দেখাতে পারো। এক্সপোর্ট করতে কিন্তু ভুলো না\!
@@ -308,8 +293,26 @@ img {
 // তোমার কম্পোনেন্টটি নিচে লেখো!
 ```
 
+<Reveal label="Click to see a sample solution">
+
 ```js
 export default function Congratulations() {
   return <h1>দারুণ হয়েছে!</h1>;
 }
 ```
+
+</Reveal>
+
+<hr />
+<Donate />
+<hr />
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

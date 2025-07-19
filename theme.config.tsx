@@ -3,6 +3,7 @@ import CustomFooter from "./components/CustomFooter";
 import Donate from "./components/Donate";
 import GiscusComments from "./components/GiscusComments";
 import Logo from "./components/Logo";
+import Reveal from "./components/Reveal";
 
 const config: DocsThemeConfig = {
   logo: <Logo />,
@@ -21,6 +22,7 @@ const config: DocsThemeConfig = {
   components: {
     Donate,
     GiscusComments,
+    Reveal,
   },
   useNextSeoProps() {
     if (typeof window !== "undefined" && window.location.pathname !== "/") {
