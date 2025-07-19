@@ -1,5 +1,3 @@
-import GiscusComments from "../../components/GiscusComments";
-
 অবশ্যই, আপনার দেওয়া ডকুমেন্টটি অনুসরণ করে, একটি সহজবোধ্য এবং বিস্তারিত ব্লগ পোস্ট তৈরি করছি। পোস্টটি তিনটি পর্বে ভাগ করা হলো, ঠিক যেমন আপনি চেয়েছেন। আমি চেষ্টা করেছি ভাষা যতটা সম্ভব সহজ রাখতে, যেন মনে হয় আপনার পাশে বসে কোনো বড় ভাই আপনাকে বিষয়গুলো বুঝিয়ে দিচ্ছে।
 
 ---
@@ -285,20 +283,22 @@ export default function Form() {
            {" "}
       <label>
                 First name:        {" "}
-        <input value={person.firstName} onChange={handleFirstNameChange} />     {" "}
+        <input value={person.firstName} onChange={handleFirstNameChange} />   
+         {" "}
       </label>
             <label>
                 Last name:        {" "}
-        <input value={person.lastName} onChange={handleLastNameChange} />     {" "}
-      </label>     {" "}
-      <label>
+        <input value={person.lastName} onChange={handleLastNameChange} />   
+         {" "}
+      </label>      <label>
                 Email:        {" "}
         <input value={person.email} onChange={handleEmailChange} />     {" "}
-      </label>
-            <p>
+      </label>     {" "}
+      <p>
                 {person.firstName}         {person.lastName}         (
         {person.email})      {" "}
-      </p>   {" "}
+      </p>
+         {" "}
     </>
   );
 }
@@ -466,23 +466,25 @@ export default function Form() {
       </label>
             <label>
                 Title:        {" "}
-        <input value={person.artwork.title} onChange={handleTitleChange} />     {" "}
+        <input value={person.artwork.title} onChange={handleTitleChange} />   
+         {" "}
+      </label>      <label>
+                City:        {" "}
+        <input value={person.artwork.city} onChange={handleCityChange} />   
+         {" "}
       </label>     {" "}
       <label>
-                City:        {" "}
-        <input value={person.artwork.city} onChange={handleCityChange} />     {" "}
-      </label>
-            <label>
                 Image:        {" "}
-        <input value={person.artwork.image} onChange={handleImageChange} />     {" "}
-      </label>     {" "}
+        <input value={person.artwork.image} onChange={handleImageChange} />   
+         {" "}
+      </label>
+           {" "}
       <p>
                 <i>{person.artwork.title}</i>        {" by "}       {" "}
         {person.name}
                 <br />        (located in {person.artwork.city})      {" "}
       </p>
-            <img src={person.artwork.image} alt={person.artwork.title} /> 
-       {" "}
+            <img src={person.artwork.image} alt={person.artwork.title} />   {" "}
     </>
   );
 }
@@ -585,21 +587,19 @@ export default function Scoreboard() {
     <>
            {" "}
       <label>
-                Score: <b>{player.score}</b>                <button
-          onClick={handlePlusClick}
-        >
-                    +1        {" "}
-        </button>     {" "}
+                Score: <b>{player.score}</b>               {" "}
+        <button onClick={handlePlusClick}>          +1         </button>   
+         {" "}
       </label>
             <label>
                 First name:        {" "}
-        <input value={player.firstName} onChange={handleFirstNameChange} />     {" "}
-      </label>     {" "}
-      <label>
+        <input value={player.firstName} onChange={handleFirstNameChange} />   
+         {" "}
+      </label>      <label>
                 Last name:        {" "}
-        <input value={player.lastName} onChange={handleLastNameChange} />     {" "}
-      </label>
-         {" "}
+        <input value={player.lastName} onChange={handleLastNameChange} />   
+         {" "}
+      </label>   {" "}
     </>
   );
 }
@@ -653,21 +653,19 @@ export default function Scoreboard() {
     <>
            {" "}
       <label>
-                Score: <b>{player.score}</b>                <button
-          onClick={handlePlusClick}
-        >
-                    +1        {" "}
-        </button>     {" "}
+                Score: <b>{player.score}</b>               {" "}
+        <button onClick={handlePlusClick}>          +1         </button>   
+         {" "}
       </label>
             <label>
                 First name:        {" "}
-        <input value={player.firstName} onChange={handleFirstNameChange} />     {" "}
-      </label>     {" "}
-      <label>
+        <input value={player.firstName} onChange={handleFirstNameChange} />   
+         {" "}
+      </label>      <label>
                 Last name:        {" "}
-        <input value={player.lastName} onChange={handleLastNameChange} />     {" "}
-      </label>
-         {" "}
+        <input value={player.lastName} onChange={handleLastNameChange} />   
+         {" "}
+      </label>   {" "}
     </>
   );
 }
@@ -731,15 +729,17 @@ export default function Canvas() {
     <>
            {" "}
       <select value={shape.color} onChange={handleColorChange}>
-                <option value="orange">orange</option>        <option value="lightpink">
-          lightpink
-        </option>        <option value="aliceblue">aliceblue</option>     {" "}
+                <option value="orange">orange</option>       {" "}
+        <option value="lightpink">lightpink</option>       {" "}
+        <option value="aliceblue">aliceblue</option>     {" "}
       </select>
-            <Background position={initialPosition} />     {" "}
-      <Box color={shape.color} position={shape.position} onMove={handleMove}>
+            <Background position={initialPosition} />      <Box
+        color={shape.color}
+        position={shape.position}
+        onMove={handleMove}
+      >
                 Drag me!      {" "}
-      </Box>
-         {" "}
+      </Box>   {" "}
     </>
   );
 }
@@ -871,15 +871,17 @@ export default function Canvas() {
     <>
            {" "}
       <select value={shape.color} onChange={handleColorChange}>
-                <option value="orange">orange</option>        <option value="lightpink">
-          lightpink
-        </option>        <option value="aliceblue">aliceblue</option>     {" "}
+                <option value="orange">orange</option>       {" "}
+        <option value="lightpink">lightpink</option>       {" "}
+        <option value="aliceblue">aliceblue</option>     {" "}
       </select>
-            <Background position={initialPosition} />     {" "}
-      <Box color={shape.color} position={shape.position} onMove={handleMove}>
+            <Background position={initialPosition} />      <Box
+        color={shape.color}
+        position={shape.position}
+        onMove={handleMove}
+      >
                 Drag me!      {" "}
-      </Box>
-         {" "}
+      </Box>   {" "}
     </>
   );
 }
