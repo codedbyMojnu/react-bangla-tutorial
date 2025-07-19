@@ -42,4 +42,19 @@
     border: 1px solid #374151;
     color: #f3f4f6;
   }
+}
+
+:global(.dark) .revealButton {
+  background: #23272f;
+  border: 1px solid #374151;
+  color: #f3f4f6;
+}
+:global(.dark) .revealButton:hover {
+  background: #374151;
+  color: #fbbf24;
+}
+:global(.dark) .revealContent {
+  background: #181a1b;
+  border: 1px solid #374151;
+  color: #f3f4f6;
 } 

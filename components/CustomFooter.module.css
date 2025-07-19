@@ -1,0 +1,22 @@
+.footer {
+  padding: 2rem;
+  border-top: 1px solid #eaeaea;
+  text-align: center;
+  background: #fff;
+  color: #222;
+  transition: background 0.2s, color 0.2s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer {
+    background: #181a1b;
+    border-top: 1px solid #374151;
+    color: #f3f4f6;
+  }
+}
+
+:global(.dark) .footer {
+  background: #181a1b;
+  border-top: 1px solid #374151;
+  color: #f3f4f6;
+} 

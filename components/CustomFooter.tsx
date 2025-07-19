@@ -1,13 +1,8 @@
-import React from 'react';
+import styles from './CustomFooter.module.css';
 
 const CustomFooter = () => {
   return (
-    <footer style={{
-      padding: '2rem',
-      borderTop: '1px solid #eaeaea',
-      textAlign: 'center',
-      background: '#fff',
-    }}>
+    <footer className={styles.footer}>
       <p>© {new Date().getFullYear()} React JS Bangla Tutorial.</p>
     </footer>
   );
