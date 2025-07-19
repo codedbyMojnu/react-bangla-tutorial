@@ -1,0 +1,45 @@
+.revealContainer {
+  margin: 1em 0;
+}
+
+.revealButton {
+  background: #f3f4f6;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1e293b;
+  transition: background 0.2s, color 0.2s;
+}
+.revealButton:hover {
+  background: #e0e7ef;
+  color: #2563eb;
+}
+
+.revealContent {
+  margin-top: 0.5em;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 1em;
+  transition: all 0.2s;
+  color: #1e293b;
+}
+
+@media (prefers-color-scheme: dark) {
+  .revealButton {
+    background: #23272f;
+    border: 1px solid #374151;
+    color: #f3f4f6;
+  }
+  .revealButton:hover {
+    background: #374151;
+    color: #fbbf24;
+  }
+  .revealContent {
+    background: #181a1b;
+    border: 1px solid #374151;
+    color: #f3f4f6;
+  }
+} 

@@ -6,8 +6,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 1.2rem 0.5rem;
+  background: linear-gradient(135deg, #f0fdfa 0%, #fef6e4 100%);
 }
 
 .avatarSection {
@@ -15,23 +15,20 @@
   justify-content: center;
   margin-bottom: 0.3rem;
 }
-.avatarPlaceholder {
-  width: 3.2rem;
-  height: 3.2rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
-  margin-bottom: 0.2rem;
+.heartIcon {
+  font-size: 2.5rem;
+  color: #ef4444;
+  animation: pulse 1.5s infinite alternate;
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.12); }
 }
 .donateTitle {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
   letter-spacing: 0.01em;
   text-align: center;
 }
@@ -42,23 +39,23 @@
   margin-right: 0.1em;
 }
 .thankYouNote {
-  margin-top: 0.7rem;
-  font-size: 0.92rem;
-  color: #333333; /* Darker text */
-  background: #e0e0e0; /* Simple light gray background */
-  border-radius: 0; /* Sharp corners */
-  padding: 0.18rem 0.5rem;
+  margin-top: 1.1rem;
+  font-size: 1.05rem;
+  color: #fff;
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e42 100%);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
   text-align: center;
-  font-weight: 500;
-  box-shadow: none; /* No shadow */
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.08);
 }
 .signature {
-  margin-top: 0.2rem;
-  font-size: 0.85rem;
-  color: #333333; /* Darker text */
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #7c4700;
   text-align: right;
-  font-family: "Times New Roman", serif; /* Classic font */
-  opacity: 1; /* No opacity */
+  font-family: "Times New Roman", serif;
+  opacity: 0.85;
 }
 .donateCard {
   background: #f0f0f0; /* Simple light gray background */
@@ -73,24 +70,27 @@
 }
 
 .donateButton {
-  background: #000080; /* Dark blue, common in old web */
-  color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 0; /* Sharp corners */
-  font-size: 1rem;
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e42 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  margin-top: 0.6rem;
-
+  margin: 0.7rem auto 1.1rem auto;
   cursor: pointer;
-  transition: none; /* No transition */
-  box-shadow: none; /* No shadow */
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.08);
   letter-spacing: 0.01em;
+  display: block;
+  transition: background 0.2s;
 }
 .donateButton:disabled {
-  background: #808080; /* Gray for disabled */
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+.donateButton:hover {
+  background: linear-gradient(90deg, #f59e42 0%, #fbbf24 100%);
 }
 
 .headerIcon {
@@ -110,30 +110,31 @@
 
 .donateText {
   color: #374151;
-  font-size: 0.78rem;
-  line-height: 1.2rem;
-  margin-bottom: 0.7rem;
+  font-size: 1rem;
+  line-height: 1.6rem;
+  margin-bottom: 1rem;
   font-weight: 400;
+  text-align: center;
 }
 
 .highlight {
   font-weight: 600;
-  color: #2563eb;
-  background: linear-gradient(90deg, #dbeafe 0%, #e0f2fe 100%);
+  color: #d97706;
+  background: linear-gradient(90deg, #fef3c7 0%, #f0fdfa 100%);
   padding: 0.08rem 0.2rem;
   border-radius: 0.2rem;
   display: inline-block;
 }
 
 .greenText {
-  color: #000000; /* Black text */
-  font-weight: normal; /* Normal weight */
-  font-size: 0.8rem;
+  color: #059669;
+  font-weight: 600;
+  font-size: 0.98rem;
   font-family: "Courier New", monospace;
-  background: none; /* No background */
-  padding: 0; /* No padding */
-  border-radius: 0; /* Sharp corners */
-  border: none; /* No border */
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  border: none;
 }
 
 .paymentSection {
@@ -142,18 +143,29 @@
 }
 
 .paymentGroup {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.7rem;
 }
 
 .paymentLabel {
-  font-weight: bold; /* Bold text */
-  color: #000000; /* Black text */
+  font-weight: bold;
+  color: #000000;
   margin-bottom: 0.1rem;
-  font-size: 0.78rem;
-  display: block; /* Block display */
-  gap: 0; /* No gap */
+  font-size: 0.93rem;
+  display: block;
 }
 
+.paymentInfoCard {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  background: #f0fdfa;
+  border-radius: 6px;
+  padding: 0.4em 0.7em;
+  margin-top: 0.15em;
+  margin-bottom: 0.2em;
+  font-size: 0.93rem;
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.07);
+}
 .paymentInfo {
   display: block; /* Block display */
   gap: 0; /* No gap */
@@ -168,35 +180,63 @@
 }
 
 .copyButton {
-  background: #cccccc; /* Gray background */
-  border: 1px solid #666666; /* Darker border */
-  border-radius: 0; /* Sharp corners */
-  padding: 0.25rem;
-  font-size: 0.9rem;
+  background: #e0e7ef;
+  border: 1px solid #a7b6c2;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
   cursor: pointer;
-  color: #000000; /* Black text */
-  transition: none; /* No transition */
-  min-width: 1.3rem;
+  color: #2563eb;
+  transition: background 0.15s;
+  min-width: 1.5rem;
   margin-left: 6px;
   display: inline-block;
 }
 .copyButton:hover {
-  background: #999999; /* Darker gray on hover */
-  color: #000000; /* Black text on hover */
-  transform: none; /* No transform */
-  box-shadow: none; /* No shadow */
+  background: #bae6fd;
+  color: #1e293b;
+}
+
+.whyDonateSection {
+  background: #fffbe9;
+  border-left: 4px solid #fbbf24;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.2rem;
+  margin-top: 0.2rem;
+}
+.whyDonateTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #d97706;
+  margin-bottom: 0.2rem;
+}
+.whyDonateText {
+  color: #7c4700;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+.impactLine {
+  display: block;
+  margin-top: 0.5em;
+  color: #f59e42;
+  font-weight: 600;
 }
 
 @media (max-width: 600px) {
   .donateCard {
     padding: 0.6rem 0.3rem;
-    max-width: 200px;
+    max-width: 98vw;
   }
   .donateText {
-    font-size: 0.7rem;
-    line-height: 1.1;
+    font-size: 0.9rem;
+    line-height: 1.3;
   }
-  .paymentInfo {
-    font-size: 0.68rem;
+  .paymentInfoCard {
+    font-size: 0.85rem;
+    padding: 0.3em 0.4em;
+  }
+  .whyDonateSection {
+    padding: 0.5rem 0.5rem;
   }
 }

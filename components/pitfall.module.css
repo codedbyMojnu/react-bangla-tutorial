@@ -1,0 +1,37 @@
+.pitfallBox {
+  display: flex;
+  align-items: flex-start;
+  background: #fff8e1;
+  border: 1.5px solid #ffb300;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 24px 0;
+  box-shadow: 0 2px 8px rgba(255, 179, 0, 0.08);
+}
+.icon {
+  font-size: 2rem;
+  margin-right: 16px;
+  color: #ff9800;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.content {
+  flex: 1;
+  color: #6d4c00;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pitfallBox {
+    background: #2d2100;
+    border-color: #ffb300;
+    box-shadow: 0 2px 8px rgba(255, 179, 0, 0.12);
+  }
+  .icon {
+    color: #ffb74d;
+  }
+  .content {
+    color: #ffe082;
+  }
+} 

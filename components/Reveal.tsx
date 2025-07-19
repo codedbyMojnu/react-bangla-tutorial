@@ -1,19 +1,13 @@
 import { useState } from 'react';
+import styles from './Reveal.module.css';
 
 export default function Reveal({ children, label = 'Click to see the solution' }: { children: React.ReactNode, label?: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ margin: '1em 0' }}>
+    <div className={styles.revealContainer}>
       <button
         onClick={() => setOpen((v) => !v)}
-        style={{
-          background: '#eee',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          padding: '0.5em 1em',
-          cursor: 'pointer',
-          fontWeight: 500,
-        }}
+        className={styles.revealButton}
         aria-expanded={open ? 'true' : 'false'}
         aria-controls="reveal-content"
       >
@@ -22,14 +16,7 @@ export default function Reveal({ children, label = 'Click to see the solution' }
       {open && (
         <div
           id="reveal-content"
-          style={{
-            marginTop: '0.5em',
-            background: '#f9f9f9',
-            border: '1px solid #eee',
-            borderRadius: '4px',
-            padding: '1em',
-            transition: 'all 0.2s',
-          }}
+          className={styles.revealContent}
         >
           {children}
         </div>
