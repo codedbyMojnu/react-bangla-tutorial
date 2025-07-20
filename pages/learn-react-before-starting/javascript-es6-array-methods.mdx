@@ -3,7 +3,7 @@ title: "Learning JavaScript Array Methods the Simple Way"
 description: "Easy Guide to JavaScript Array Methods for Beginners. Understand how to use find, filter, map, reduce, and more with clear, simple examples."
 ---
 
-### **জাভাস্ক্রিপ্ট অ্যারে মেথডস: সহজ ভাষায় A to Z (পর্ব ১)**
+## জাভাস্ক্রিপ্ট অ্যারে মেথডস: সহজ ভাষায়
 
 জাভাস্ক্রিপ্টে কাজ করার সময় অ্যারে (Array) আমাদের নিত্যদিনের সঙ্গী। অ্যারে হলো একটি বিশেষ ভেরিয়েবল, যা একটি লিস্টের মতো করে অনেকগুলো মান (value) একসাথে ধরে রাখতে পারে। এই অ্যারে নিয়ে ভালোভাবে কাজ করার জন্য জাভাস্ক্রিপ্ট আমাদের অনেকগুলো বিল্ট-ইন মেথড বা টুলস দিয়েছে।
 
@@ -20,7 +20,7 @@ description: "Easy Guide to JavaScript Array Methods for Beginners. Understand h
     const friends = ["abul", "baker", "arrafat", "mojnu"];
     const result = friends.find((name) => name === "arrafat");
     console.log(result);
-    [cite_start]; // আউটপুট: arrafat
+    // আউটপুট: arrafat
     ```
 
 - **`findIndex()` মেথড:** এটি `find()` এর মতোই কাজ করে, কিন্তু এটি উপাদানটি রিটার্ন না করে তার ইন্ডেক্স (Index) বা অবস্থান নম্বরটি রিটার্ন করে।
@@ -35,13 +35,15 @@ description: "Easy Guide to JavaScript Array Methods for Beginners. Understand h
 
   ```javascript
   const students = [
-      { name: "Asha", gender: "female" },
-      { name: "Mojnu", gender: "male" },
-      { name: "Debi", gender: "female" },
-      { name: "Munni", gender: "female" }
+    { name: "Asha", gender: "female" },
+    { name: "Mojnu", gender: "male" },
+    { name: "Debi", gender: "female" },
+    { name: "Munni", gender: "female" },
   ];
 
-  [cite_start]const femaleStudents = students.filter(student => student.gender === "female");
+  const femaleStudents = students.filter(
+    (student) => student.gender === "female"
+  );
   console.log(femaleStudents);
   // আউটপুট হবে একটি নতুন অ্যারে, যেখানে শুধু ছাত্রীদের অবজেক্টগুলো থাকবে।
   ```
@@ -56,10 +58,10 @@ description: "Easy Guide to JavaScript Array Methods for Beginners. Understand h
   ```javascript
   const names = ["debi", "asha", "munni", "mojnu", "mintu"];
   const firstPart = names.slice(0, 3);
-  [cite_start]; // ['debi', 'asha', 'munni']
+  // ['debi', 'asha', 'munni']
   const secondPart = names.slice(3); // ['mojnu', 'mintu']
   console.log(secondPart);
-  [cite_start]; // আউটপুট: ['mojnu', 'mintu'] [cite: 18, 19]
+  // আউটপুট: ['mojnu', 'mintu'] [cite: 18, 19]
   ```
 
 #### **বোনাস মেথড: `join()` ও `split()`**
@@ -81,11 +83,11 @@ description: "Easy Guide to JavaScript Array Methods for Beginners. Understand h
 
   ```javascript
   const profiles = [
-      { name: 'mojnu', phone: '017...' },
-      { name: 'asha', phone: '018...' }
+    { name: "mojnu", phone: "017..." },
+    { name: "asha", phone: "018..." },
   ];
 
-  [cite_start]const userNames = profiles.map(profile => profile.name); [cite: 32]
+  const userNames = profiles.map((profile) => profile.name);
   console.log(userNames); // আউটপুট: ['mojnu', 'asha']
   ```
 
@@ -106,10 +108,10 @@ description: "Easy Guide to JavaScript Array Methods for Beginners. Understand h
 - **উদাহরণ:** ফল এবং সবজির দুটি আলাদা লিস্টকে এক করা।
 
   ```javascript
-  [cite_start]const fruits = ["Palm", "Apple", "Mango"];
-  [cite_start]const vegetables = ['carrot', 'Tomato'];
+  const fruits = ["Palm", "Apple", "Mango"];
+  const vegetables = ["carrot", "Tomato"];
 
-  [cite_start]const combined = fruits.concat(vegetables);
+  const combined = fruits.concat(vegetables);
   console.log(combined); // আউটপুট: ["Palm", "Apple", "Mango", "carrot", "Tomato"]
   ```
 
@@ -126,43 +128,42 @@ description: "Easy Guide to JavaScript Array Methods for Beginners. Understand h
 
 ---
 
-### **জাভাস্ক্রিপ্ট অ্যারে ও অবজেক্ট: শক্তিশালী ইটারেশন ও ডেটা ম্যানেজমেন্ট (পর্ব ৩)**
-
-শেষ পর্বে আমরা অ্যারের আরও কিছু শক্তিশালী মেথড এবং অবজেক্ট নিয়ে কাজ করার কিছু কৌশল শিখব।
-
 #### **১. `reduce()`: পুরো অ্যারে থেকে একটি মাত্র মান তৈরি**
 
-`reduce()` মেথডটি একটু অন্যরকম। এটি একটি অ্যারের সমস্ত উপাদানের উপর একটি ফাংশন চালায় এবং সবশেষে একটি মাত্র মান (single value) রিটার্ন করে। [cite: 34] যেমন, একটি অ্যারের সব সংখ্যার যোগফল বা গুণফল বের করা, অথবা একটি শপিং কার্টের মোট দাম হিসাব করা। [cite: 34, 38]
+`reduce()` মেথডটি একটু অন্যরকম। এটি একটি অ্যারের সমস্ত উপাদানের উপর একটি ফাংশন চালায় এবং সবশেষে একটি মাত্র মান (single value) রিটার্ন করে। যেমন, একটি অ্যারের সব সংখ্যার যোগফল বা গুণফল বের করা, অথবা একটি শপিং কার্টের মোট দাম হিসাব করা।
 
-- `reduce()` মেথড একটি কলব্যাক ফাংশন নেয়, যার দুটি প্রধান প্যারামিটার থাকে: `accumulator` এবং `currentValue`। [cite: 34] `accumulator` হলো জমাকৃত মান, আর `currentValue` হলো অ্যারের বর্তমান উপাদান।
-- **উদাহরণ:** একটি শপিং কার্টের মোট মূল্য বের করা। [cite: 38]
+- `reduce()` মেথড একটি কলব্যাক ফাংশন নেয়, যার দুটি প্রধান প্যারামিটার থাকে: `accumulator` এবং `currentValue`। `accumulator` হলো জমাকৃত মান, আর `currentValue` হলো অ্যারের বর্তমান উপাদান।
+- **উদাহরণ:** একটি শপিং কার্টের মোট মূল্য বের করা।
 
   ```javascript
   const products = [
       { bookName: "Rich dad Poor dad", price: 100 },
       { bookName: "Chokher Bali", price: 200 },
       { bookName: "Biye", price: 280 }
-  [cite_start]]; [cite: 39]
+  ;
 
-  [cite_start]const totalPrice = products.reduce((acc, current) => acc + current.price, 0); [cite: 39]
+  const totalPrice = products.reduce((acc, current) => acc + current.price, 0);
   console.log(totalPrice); // আউটপুট: 580
   ```
 
 #### **২. `forEach()`: প্রতিটির জন্য কিছু একটা করা**
 
-`forEach()` মেথডটি `map()` এর মতোই অ্যারের প্রতিটি উপাদানের উপর দিয়ে যায়, কিন্তু এটি কোনো নতুন অ্যারে রিটার্ন করে না। [cite: 41] এর মূল কাজ হলো অ্যারের প্রতিটি উপাদান নিয়ে কোনো একটি নির্দিষ্ট কাজ সম্পাদন করা, যেমন—কনসোলে লগ করা বা UI-তে কোনো লিস্ট দেখানো। [cite: 41]
+`forEach()` মেথডটি `map()` এর মতোই অ্যারের প্রতিটি উপাদানের উপর দিয়ে যায়, কিন্তু এটি কোনো নতুন অ্যারে রিটার্ন করে না। এর মূল কাজ হলো অ্যারের প্রতিটি উপাদান নিয়ে কোনো একটি নির্দিষ্ট কাজ সম্পাদন করা, যেমন—কনসোলে লগ করা বা UI-তে কোনো লিস্ট দেখানো।
 
 - **উদাহরণ:** প্রোডাক্টের তালিকা UI-তে দেখানো।
 
   ```javascript
-  [cite_start]const products = [{name: 'Snow', price: 120}, {name: 'Detol Shop', price: 60}]; [cite: 42]
+  const products = [
+    { name: "Snow", price: 120 },
+    { name: "Detol Shop", price: 60 },
+  ];
 
-  products.forEach(product => {
-      // এই কোড প্রতিটি প্রোডাক্টের জন্য একটি করে লিস্ট আইটেম তৈরি করে UI-তে যোগ করবে
-      let item = document.createElement('li');
-      item.innerText = product.name;
-      document.body.appendChild(item);
-  [cite_start]}); [cite: 42]
+  products.forEach((product) => {
+    // এই কোড প্রতিটি প্রোডাক্টের জন্য একটি করে লিস্ট আইটেম তৈরি করে UI-তে যোগ করবে
+    let item = document.createElement("li");
+    item.innerText = product.name;
+    document.body.appendChild(item);
+  });
   ```
 
 #### **৩. লুপ (Loop): `for...of` এবং `for...in`**
@@ -178,8 +179,7 @@ description: "Easy Guide to JavaScript Array Methods for Beginners. Understand h
 - **`Object.values(obj)`:** এটি অবজেক্টের সবগুলো 'ভ্যালু' (value) নিয়ে একটি অ্যারে রিটার্ন করে।
 - **`Object.entries(obj)`:** এটি অবজেক্টের 'কি' এবং 'ভ্যালু' কে জোড়ায় জোড়ায় একটি অ্যারের মধ্যে রেখে নতুন একটি অ্যারে রিটার্ন করে।
 
-আশা করি, এই তিন পর্বের গাইডটি আপনাকে জাভাস্ক্রিপ্টের অ্যারে এবং অবজেক্ট মেথডগুলো সহজে বুঝতে সাহায্য করবে। এগুলো নিয়মিত ব্যবহার করলেই আপনি এগুলোর আসল শক্তি অনুভব করতে পারবেন。
-
+<Donate />
 <GiscusComments
   repo="codedbyMojnu/react-bangla-tutorial"
   repoId="R_kgDOLDE87Q"
