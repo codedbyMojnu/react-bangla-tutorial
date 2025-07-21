@@ -1,0 +1,493 @@
+অবশ্যই\! আপনার দেওয়া React-এর এই গুরুত্বপূর্ণ অধ্যায়টি আমি একজন দক্ষ ইঞ্জিনিয়ারিং বড় ভাইয়ের মতো করে সহজ, সরল ও প্রাঞ্জল ভাষায় গুছিয়ে দিচ্ছি।
+
+---
+
+---
+
+## title: React-এর মতো করে ভাবা (Thinking in React)
+
+\<Intro\>
+React তোমার ডিজাইন এবং অ্যাপ তৈরির চিন্তাভাবনাকে বদলে দিতে পারে। যখন তুমি React দিয়ে একটি ইউজার ইন্টারফেস (UI) তৈরি করবে, তখন প্রথমে সেটিকে **কম্পোনেন্ট (component)** নামক ছোট ছোট অংশে ভাগ করে নেবে। এরপর, প্রতিটি কম্পোনেন্টের বিভিন্ন অবস্থা (visual states) কেমন হবে তা বর্ণনা করবে। সবশেষে, তুমি কম্পোনেন্টগুলোকে একসাথে জুড়ে দেবে যাতে তাদের মধ্যে ডেটা প্রবাহিত হতে পারে। এই টিউটোরিয়ালে, আমরা তোমাকে React দিয়ে একটি সার্চ করা যায় এমন প্রোডাক্ট টেবিল তৈরির সম্পূর্ণ চিন্তার প্রক্রিয়াটি ধাপে ধাপে দেখাব।
+\</Intro\>
+
+## একটি মকআপ (mockup) দিয়ে শুরু করা যাক
+
+ধরো, তোমার কাছে একটি JSON API এবং একজন ডিজাইনারের কাছ থেকে পাওয়া একটি মকআপ বা নকশা আছে।
+
+JSON API থেকে নিচের মতো ডেটা পাওয়া যায়:
+
+```json
+[
+  { "category": "Fruits", "price": "$1", "stocked": true, "name": "Apple" },
+  {
+    "category": "Fruits",
+    "price": "$1",
+    "stocked": true,
+    "name": "Dragonfruit"
+  },
+  {
+    "category": "Fruits",
+    "price": "$2",
+    "stocked": false,
+    "name": "Passionfruit"
+  },
+  {
+    "category": "Vegetables",
+    "price": "$2",
+    "stocked": true,
+    "name": "Spinach"
+  },
+  {
+    "category": "Vegetables",
+    "price": "$4",
+    "stocked": false,
+    "name": "Pumpkin"
+  },
+  { "category": "Vegetables", "price": "$1", "stocked": true, "name": "Peas" }
+]
+```
+
+আর ডিজাইনারের দেওয়া মকআপটি দেখতে এমন:
+
+\<img src="/images/docs/s_thinking-in-react_ui.png" width="300" style={{margin: '0 auto'}} /\>
+
+React-এ কোনো UI তৈরি করতে, তুমি সাধারণত নিচের পাঁচটি ধাপ অনুসরণ করবে।
+
+---
+
+### ধাপ ১: UI-কে কম্পোনেন্ট হায়ারার্কিতে (hierarchy) ভাগ করা
+
+প্রথম কাজ হলো, মকআপের প্রতিটি কম্পোনেন্ট এবং সাব-কম্পোনেন্টের চারপাশে বক্স এঁকে তাদের নাম দেওয়া। যদি তুমি কোনো ডিজাইনারের সাথে কাজ করো, তাহলে হয়তো তিনি তার ডিজাইন টুলে এই নামগুলো আগেই দিয়ে রেখেছেন। তাকে জিজ্ঞেস করে নিতে পারো\!
+
+একটি ডিজাইনকে কম্পোনেন্টে ভাগ করার জন্য তুমি বিভিন্ন কৌশল ব্যবহার করতে পারো:
+
+- **প্রোগ্রামিং-এর দৃষ্টিকোণ থেকে:** নতুন ফাংশন বা অবজেক্ট তৈরির সময় যে নীতি ব্যবহার করো, এখানেও তাই করবে। যেমন, **সিঙ্গেল রেসপন্সিবিলিটি প্রিন্সিপল (single responsibility principle)** অনুযায়ী, প্রত্যেকটা কম্পোনেন্টের উচিত শুধু একটা কাজ করা। যদি কোনো কম্পোনেন্ট বেশি বড় হয়ে যায়, তবে তাকে আরও ছোট ছোট সাব-কম্পোনেন্টে ভাগ করে ফেলা উচিত।
+- **CSS-এর দৃষ্টিকোণ থেকে:** তুমি কোন অংশগুলোর জন্য আলাদা CSS ক্লাস লিখতে, তা চিন্তা করতে পারো।
+- **ডিজাইন-এর দৃষ্টিকোণ থেকে:** ডিজাইনের লেয়ারগুলোকে কীভাবে সাজানো হয়েছে, তা দেখতে পারো।
+
+যদি তোমার JSON ডেটা ভালোভাবে স্ট্রাকচার করা থাকে, তাহলে দেখবে যে এটি স্বাভাবিকভাবেই তোমার UI-এর কম্পোনেন্ট স্ট্রাকচারের সাথে মিলে যাচ্ছে।
+
+এই স্ক্রিনে আমরা পাঁচটি কম্পোনেন্ট দেখতে পাচ্ছি:
+
+\<FullWidth\>
+\<CodeDiagram flip\>
+
+\<img src="/images/docs/s_thinking-in-react_ui_outline.png" width="500" style={{margin: '0 auto'}} /\>
+
+1.  `FilterableProductTable` (ধূসর): পুরো অ্যাপটিকে ধারণ করে।
+2.  `SearchBar` (নীল): ইউজারের ইনপুট গ্রহণ করে।
+3.  `ProductTable` (ল্যাভেন্ডার): ইউজারের ইনপুট অনুযায়ী তালিকাটি দেখায় এবং ফিল্টার করে।
+4.  `ProductCategoryRow` (সবুজ): প্রতিটি ক্যাটাগরির জন্য একটি হেডিং দেখায়।
+5.  `ProductRow` (হলুদ): প্রতিটি প্রোডাক্টের জন্য একটি সারি দেখায়।
+
+\</CodeDiagram\>
+\</FullWidth\>
+
+সব কম্পোনেন্ট চিহ্নিত করার পর, সেগুলোকে একটি হায়ারার্কি বা ফ্যামিলি ট্রি-এর মতো করে সাজিয়ে নাও। যে কম্পোনেন্ট যার ভেতরে থাকবে, সে তার চাইল্ড হিসেবে বিবেচিত হবে:
+
+- `FilterableProductTable`
+  - `SearchBar`
+  - `ProductTable`
+    - `ProductCategoryRow`
+    - `ProductRow`
+
+---
+
+### ধাপ ২: React-এ একটি স্ট্যাটিক সংস্করণ তৈরি করা
+
+এখন তোমার কম্পোনেন্ট হায়ারার্কি তৈরি, এবার অ্যাপটি বানানোর পালা। সবচেয়ে সহজ উপায় হলো, কোনো ধরনের ইন্টারেক্টিভিটি যোগ না করে প্রথমে একটি স্ট্যাটিক সংস্করণ তৈরি করা যা শুধু ডেটা দেখাবে। আগে কাঠামো বানিয়ে নিলে, পরে ইন্টারেক্টিভিটি যোগ করা অনেক সহজ হয়।
+
+> **একটা সহজ নীতি:** স্ট্যাটিক সংস্করণ বানাতে অনেক টাইপিং লাগে কিন্তু চিন্তা কম; আর ইন্টারেক্টিভিটি যোগ করতে চিন্তা বেশি লাগে কিন্তু টাইপিং কম।
+
+এই ধাপে তুমি শুধু ডেটা পাস করার জন্য **[props](https://www.google.com/search?q=/learn/passing-props-to-a-component)** ব্যবহার করবে। **[State](https://www.google.com/search?q=/learn/state-a-components-memory)** এখন একদমই ব্যবহার করবে না। State শুধুমাত্র সেই ডেটার জন্য যা সময়ের সাথে পরিবর্তিত হয়।
+
+তুমি উপর থেকে নিচে (`FilterableProductTable` থেকে শুরু করে) অথবা নিচ থেকে উপরে (`ProductRow` থেকে শুরু করে)—যেকোনো দিক থেকে কাজ শুরু করতে পারো।
+
+\<Sandpack\>
+
+```jsx src/App.js
+function ProductCategoryRow({ category }) {
+  return (
+    <tr>
+      <th colSpan="2">{category}</th>
+    </tr>
+  );
+}
+
+function ProductRow({ product }) {
+  const name = product.stocked ? (
+    product.name
+  ) : (
+    <span style={{ color: "red" }}>{product.name}</span>
+  );
+
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>{product.price}</td>
+    </tr>
+  );
+}
+
+function ProductTable({ products }) {
+  const rows = [];
+  let lastCategory = null;
+
+  products.forEach((product) => {
+    if (product.category !== lastCategory) {
+      rows.push(
+        <ProductCategoryRow
+          category={product.category}
+          key={product.category}
+        />
+      );
+    }
+    rows.push(<ProductRow product={product} key={product.name} />);
+    lastCategory = product.category;
+  });
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </table>
+  );
+}
+
+function SearchBar() {
+  return (
+    <form>
+      <input type="text" placeholder="Search..." />
+      <label>
+        <input type="checkbox" /> Only show products in stock
+      </label>
+    </form>
+  );
+}
+
+function FilterableProductTable({ products }) {
+  return (
+    <div>
+      <SearchBar />
+      <ProductTable products={products} />
+    </div>
+  );
+}
+
+const PRODUCTS = [
+  { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
+  { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
+  { category: "Fruits", price: "$2", stocked: false, name: "Passionfruit" },
+  { category: "Vegetables", price: "$2", stocked: true, name: "Spinach" },
+  { category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin" },
+  { category: "Vegetables", price: "$1", stocked: true, name: "Peas" },
+];
+
+export default function App() {
+  return <FilterableProductTable products={PRODUCTS} />;
+}
+```
+
+```css
+body {
+  padding: 5px;
+}
+label {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+th {
+  padding-top: 10px;
+}
+td {
+  padding: 2px;
+  padding-right: 40px;
+}
+```
+
+\</Sandpack\>
+
+এই ধাপ শেষে, তোমার কাছে ডেটা রেন্ডার করার জন্য একটি পুনঃব্যবহারযোগ্য কম্পোনেন্ট লাইব্রেরি থাকবে। ডেটা উপর থেকে নিচের দিকে প্রবাহিত হবে, যাকে **one-way data flow** বলে।
+
+\<Pitfall\>
+
+এই ধাপে কোনো state ব্যবহার করা যাবে না। ওটা পরের ধাপের জন্য\!
+
+\</Pitfall\>
+
+---
+
+### ধাপ ৩: UI স্টেট-এর সর্বনিম্ন কিন্তু সম্পূর্ণ রূপ খুঁজে বের করা
+
+UI-কে ইন্টারেক্টিভ করতে হলে, ইউজারকে ডেটা পরিবর্তন করার সুযোগ দিতে হবে। এর জন্য আমরা **state** ব্যবহার করব।
+
+State হলো সেই ন্যূনতম পরিবর্তনশীল ডেটা যা তোমার অ্যাপকে মনে রাখতে হবে। State তৈরির সবচেয়ে গুরুত্বপূর্ণ নীতি হলো **DRY (Don't Repeat Yourself)**। তোমার অ্যাপের জন্য প্রয়োজনীয় স্টেট-এর একেবারে न्यूनतम রূপটি খুঁজে বের করো এবং বাকি সবকিছু প্রয়োজন অনুযায়ী গণনা (compute) করে নাও।
+
+এখন আমাদের অ্যাপের ডেটাগুলো নিয়ে ভাবা যাক:
+১. প্রোডাক্টের মূল তালিকা।
+২. ইউজারের লেখা সার্চ টেক্সট।
+৩. চেকবক্সের ভ্যালু (টিক দেওয়া আছে কি নেই)।
+৪. ফিল্টার করা প্রোডাক্টের তালিকা।
+
+এদের মধ্যে কোনটি state? চলো, যেগুলো state নয়, সেগুলো চিহ্নিত করি:
+
+- **সময়ের সাথে কি এটি অপরিবর্তিত থাকে?** যদি তাই হয়, তবে এটি state নয়। (যেমন, প্রোডাক্টের মূল তালিকা)
+- **এটি কি প্যারেন্ট থেকে props হিসেবে আসে?** যদি তাই হয়, তবে এটি state নয়। (যেমন, প্রোডাক্টের মূল তালিকা)
+- **তুমি কি এটিকে বিদ্যমান স্টেট বা props থেকে গণনা করতে পারো?** যদি পারো, তবে এটি _অবশ্যই_ state নয়\! (যেমন, ফিল্টার করা তালিকা)
+
+এই প্রশ্নগুলোর পর যা অবশিষ্ট থাকবে, সম্ভবত সেটাই state।
+
+তাহলে দেখা যাচ্ছে, শুধুমাত্র **সার্চ টেক্সট** এবং **চেকবক্সের ভ্যালু** হলো আমাদের state\!
+
+---
+
+### ধাপ ৪: তোমার স্টেট কোথায় থাকা উচিত তা চিহ্নিত করা
+
+এখন তোমাকে খুঁজে বের করতে হবে কোন কম্পোনেন্ট এই state-এর মালিক বা এটিকে পরিবর্তন করার জন্য দায়ী থাকবে।
+
+প্রতিটি state-এর জন্য এই কৌশলটি অনুসরণ করো:
+১. সেই state ব্যবহার করে রেন্ডার করে এমন _সব_ কম্পোনেন্টকে চিহ্নিত করো।
+২. তাদের সবচেয়ে কাছের **কমন প্যারেন্ট (common parent)** কম্পোনেন্টটি খুঁজে বের করো।
+৩. সিদ্ধান্ত নাও state কোথায় থাকবে: \* প্রায়শই, তুমি state-কে সরাসরি তাদের কমন প্যারেন্টে রাখতে পারো। \* প্রয়োজনে কমন প্যারেন্টের উপরের কোনো কম্পোনেন্টেও রাখতে পারো।
+
+আমাদের অ্যাপ্লিকেশনের ক্ষেত্রে:
+১. কোন কম্পোনেন্টগুলো state ব্যবহার করে? \* `ProductTable`-কে তালিকা ফিল্টার করার জন্য state দরকার। \* `SearchBar`-কে সার্চ টেক্সট এবং চেকবক্সের ভ্যালু দেখানোর জন্য state দরকার।
+২. এদের কমন প্যারেন্ট কে? \* `FilterableProductTable`।
+৩. state কোথায় থাকবে? \* আমরা ফিল্টার টেক্সট এবং চেকবক্সের state `FilterableProductTable`-এ রাখব।
+
+এখন `FilterableProductTable` কম্পোনেন্টে `useState()` হুক ব্যবহার করে state যোগ করি এবং props হিসেবে নিচের দিকে পাস করি:
+
+```js
+import { useState } from "react";
+
+function FilterableProductTable({ products }) {
+  const [filterText, setFilterText] = useState("");
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  return (
+    <div>
+      <SearchBar filterText={filterText} inStockOnly={inStockOnly} />
+      <ProductTable
+        products={products}
+        filterText={filterText}
+        inStockOnly={inStockOnly}
+      />
+    </div>
+  );
+}
+```
+
+---
+
+### ধাপ ৫: বিপরীত ডেটা প্রবাহ (inverse data flow) যোগ করা
+
+এখন তোমার অ্যাপটি ওপর থেকে নিচের দিকে props এবং state প্রবাহিত হয়ে সঠিকভাবে রেন্ডার হচ্ছে। কিন্তু ইউজারের ইনপুট অনুযায়ী state পরিবর্তন করতে হলে, ডেটা প্রবাহকে উল্টো দিকেও চালনা করতে হবে: নিচের ফর্ম কম্পোনেন্টগুলোকে উপরের `FilterableProductTable`-এর state আপডেট করতে হবে।
+
+এই কাজটি করার জন্য, `FilterableProductTable` থেকে state পরিবর্তন করার ফাংশনগুলোকেও (`setFilterText`, `setInStockOnly`) নিচের দিকে props হিসেবে পাস করতে হবে।
+
+```js
+function FilterableProductTable({ products }) {
+  const [filterText, setFilterText] = useState("");
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  return (
+    <div>
+      <SearchBar
+        filterText={filterText}
+        inStockOnly={inStockOnly}
+        onFilterTextChange={setFilterText}
+        onInStockOnlyChange={setInStockOnly}
+      />
+      {/* ... */}
+    </div>
+  );
+}
+```
+
+এরপর, `SearchBar` কম্পোনেন্টের ভেতরে `onChange` ইভেন্ট হ্যান্ডলার যোগ করতে হবে, যা প্যারেন্টের state আপডেট করবে:
+
+```js
+function SearchBar({
+  filterText,
+  inStockOnly,
+  onFilterTextChange,
+  onInStockOnlyChange,
+}) {
+  return (
+    <form>
+      <input
+        type="text"
+        value={filterText}
+        placeholder="Search..."
+        onChange={(e) => onFilterTextChange(e.target.value)}
+      />
+      <label>
+        <input
+          type="checkbox"
+          checked={inStockOnly}
+          onChange={(e) => onInStockOnlyChange(e.target.checked)}
+        />{" "}
+        Only show products in stock
+      </label>
+    </form>
+  );
+}
+```
+
+এখন তোমার অ্যাপ্লিকেশনটি সম্পূর্ণরূপে কাজ করবে\!
+
+\<Sandpack\>
+
+```jsx src/App.js
+import { useState } from "react";
+
+function FilterableProductTable({ products }) {
+  const [filterText, setFilterText] = useState("");
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  return (
+    <div>
+      <SearchBar
+        filterText={filterText}
+        inStockOnly={inStockOnly}
+        onFilterTextChange={setFilterText}
+        onInStockOnlyChange={setInStockOnly}
+      />
+      <ProductTable
+        products={products}
+        filterText={filterText}
+        inStockOnly={inStockOnly}
+      />
+    </div>
+  );
+}
+
+function ProductCategoryRow({ category }) {
+  return (
+    <tr>
+      <th colSpan="2">{category}</th>
+    </tr>
+  );
+}
+
+function ProductRow({ product }) {
+  const name = product.stocked ? (
+    product.name
+  ) : (
+    <span style={{ color: "red" }}>{product.name}</span>
+  );
+
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>{product.price}</td>
+    </tr>
+  );
+}
+
+function ProductTable({ products, filterText, inStockOnly }) {
+  const rows = [];
+  let lastCategory = null;
+
+  products.forEach((product) => {
+    if (product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+      return;
+    }
+    if (inStockOnly && !product.stocked) {
+      return;
+    }
+    if (product.category !== lastCategory) {
+      rows.push(
+        <ProductCategoryRow
+          category={product.category}
+          key={product.category}
+        />
+      );
+    }
+    rows.push(<ProductRow product={product} key={product.name} />);
+    lastCategory = product.category;
+  });
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </table>
+  );
+}
+
+function SearchBar({
+  filterText,
+  inStockOnly,
+  onFilterTextChange,
+  onInStockOnlyChange,
+}) {
+  return (
+    <form>
+      <input
+        type="text"
+        value={filterText}
+        placeholder="Search..."
+        onChange={(e) => onFilterTextChange(e.target.value)}
+      />
+      <label>
+        <input
+          type="checkbox"
+          checked={inStockOnly}
+          onChange={(e) => onInStockOnlyChange(e.target.checked)}
+        />{" "}
+        Only show products in stock
+      </label>
+    </form>
+  );
+}
+
+const PRODUCTS = [
+  { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
+  { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
+  { category: "Fruits", price: "$2", stocked: false, name: "Passionfruit" },
+  { category: "Vegetables", price: "$2", stocked: true, name: "Spinach" },
+  { category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin" },
+  { category: "Vegetables", price: "$1", stocked: true, name: "Peas" },
+];
+
+export default function App() {
+  return <FilterableProductTable products={PRODUCTS} />;
+}
+```
+
+```css
+body {
+  padding: 5px;
+}
+label {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+th {
+  padding: 4px;
+}
+td {
+  padding: 2px;
+}
+```
+
+\</Sandpack\>
+
+---
+
+### এরপর কী?
+
+এই টিউটোরিয়ালটি React দিয়ে কম্পোনেন্ট ও অ্যাপ্লিকেশন তৈরির চিন্তার প্রক্রিয়া সম্পর্কে একটি সংক্ষিপ্ত ধারণা দিল। এখন তুমি একটি **[React প্রজেক্ট শুরু করতে পারো](https://www.google.com/search?q=/learn/installation)** অথবা এই টিউটোরিয়ালে ব্যবহৃত **[সব সিনট্যাক্স সম্পর্কে আরও গভীরে জানতে পারো](https://www.google.com/search?q=/learn/describing-the-ui)**।

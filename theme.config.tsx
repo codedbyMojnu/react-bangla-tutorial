@@ -2,6 +2,7 @@ import { DocsThemeConfig } from "nextra-theme-docs";
 import CustomFooter from "./components/CustomFooter";
 import Donate from "./components/Donate";
 import GiscusComments from "./components/GiscusComments";
+import LiveCodeEditor from "./components/LiveCodeEditor";
 import Logo from "./components/Logo";
 import Pitfall from "./components/Pitfall";
 import Reveal from "./components/Reveal";
@@ -25,6 +26,7 @@ const config: DocsThemeConfig = {
     GiscusComments,
     Reveal,
     Pitfall,
+    LiveCodeEditor,
   },
   useNextSeoProps() {
     if (typeof window !== "undefined" && window.location.pathname !== "/") {
