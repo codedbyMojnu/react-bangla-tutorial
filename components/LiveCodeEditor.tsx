@@ -1,7 +1,7 @@
 import {
-    Sandpack,
-    SandpackPredefinedTemplate,
-    SandpackThemeProp,
+  Sandpack,
+  SandpackPredefinedTemplate,
+  SandpackThemeProp,
 } from "@codesandbox/sandpack-react";
 
 interface LiveCodeEditorProps {
@@ -34,11 +34,13 @@ export default function LiveCodeEditor({
   },
 }: LiveCodeEditorProps) {
   return (
-    <Sandpack
-      template={template}
-      theme={theme}
-      files={files}
-      options={options}
-    />
+    <div style={{ marginTop: "30px", marginBottom: "20px" }}>
+      <Sandpack
+        template={template}
+        theme={theme}
+        files={files}
+        options={options}
+      />
+    </div>
   );
 }
