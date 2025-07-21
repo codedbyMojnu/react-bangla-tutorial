@@ -1,7 +1,15 @@
-import { Sandpack, SandpackPredefinedTemplate, SandpackThemeProp } from "@codesandbox/sandpack-react";
+import {
+  Sandpack,
+  SandpackPredefinedTemplate,
+  SandpackThemeProp,
+} from "@codesandbox/sandpack-react";
 
 interface LiveCodeEditorProps {
-  files: Record<string, string | { code: string; readOnly?: boolean; active?: boolean; hidden?: boolean }>;
+  files: Record<
+    string,
+    | string
+    | { code: string; readOnly?: boolean; active?: boolean; hidden?: boolean }
+  >;
   template?: SandpackPredefinedTemplate;
   theme?: SandpackThemeProp;
   options?: {

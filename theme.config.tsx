@@ -1,11 +1,22 @@
+import dynamic from "next/dynamic";
 import { DocsThemeConfig } from "nextra-theme-docs";
-import CustomFooter from "./components/CustomFooter";
-import Donate from "./components/Donate";
-import GiscusComments from "./components/GiscusComments";
-import LiveCodeEditor from "./components/LiveCodeEditor";
 import Logo from "./components/Logo";
-import Pitfall from "./components/Pitfall";
-import Reveal from "./components/Reveal";
+
+const GiscusComments = dynamic(() => import("./components/GiscusComments"), {
+  ssr: false,
+}) as React.FC<any>;
+const LiveCodeEditor = dynamic(() => import("./components/LiveCodeEditor"), {
+  ssr: false,
+}) as React.FC<any>;
+const Donate = dynamic(() => import("./components/Donate"), {
+  ssr: false,
+}) as React.FC<any>;
+const Pitfall = dynamic(() => import("./components/Pitfall"), {
+  ssr: false,
+}) as React.FC<any>;
+const Reveal = dynamic(() => import("./components/Reveal"), {
+  ssr: false,
+}) as React.FC<any>;
 
 const config: DocsThemeConfig = {
   logo: <Logo />,
@@ -18,9 +29,8 @@ const config: DocsThemeConfig = {
   docsRepositoryBase:
     "https://github.com/codedbyMojnu/react-bangla-tutorial/blob/main",
   footer: {
-    component: <CustomFooter />,
+    text: `© ${new Date().getFullYear()} React JS Bangla Tutorial.`,
   },
-
   components: {
     Donate,
     GiscusComments,
@@ -40,7 +50,7 @@ const config: DocsThemeConfig = {
     const { title, meta } = props;
     const description =
       meta?.description ||
-      "React Bangla Tutorial - স্টেপ বাই স্টেপ ফলো করে রিয়েক্ট শিখুন। বাংলাদেশের ডেভেলপারদের জন্য সম্পূর্ণ বাংলা ভাষায় রিয়েক্ট জেএস টিউটোরিয়াল, ফ্রন্টএন্ড ডেভেলপমেন্ট গাইড, এবং প্রোজেক্ট ভিত্তিক শিক্ষা।";
+      "React JS Bangla Tutorial - স্টেপ বাই স্টেপ ফলো করে বাংলা ভাষায় রিয়েক্ট জেএস শিখুন।";
     const url =
       typeof window !== "undefined"
         ? `https://react-bangla.vercel.app${window.location.pathname}`
