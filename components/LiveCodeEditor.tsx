@@ -1,7 +1,7 @@
 import {
-  Sandpack,
-  SandpackPredefinedTemplate,
-  SandpackThemeProp,
+    Sandpack,
+    SandpackPredefinedTemplate,
+    SandpackThemeProp,
 } from "@codesandbox/sandpack-react";
 
 interface LiveCodeEditorProps {
