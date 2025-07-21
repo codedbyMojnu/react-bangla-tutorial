@@ -1,9 +1,28 @@
-import styles from "./Logo.module.css";
-
 const Logo = () => {
   return (
-    <div className={styles.logo_container}>
-      <span className={styles.logo_first_letter}>React JS Bangla Tutorial</span>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <span
+        style={{
+          fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
+          fontWeight: 700,
+          fontSize: "20px",
+          color: "#2563EB",
+          letterSpacing: "0.04em",
+        }}
+      >
+        React JS
+      </span>
+      <span
+        style={{
+          marginLeft: "10px",
+          fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
+          fontWeight: 500,
+          fontSize: "19px",
+          letterSpacing: "0.02em",
+        }}
+      >
+        Bangla Tutorial
+      </span>
     </div>
   );
 };
