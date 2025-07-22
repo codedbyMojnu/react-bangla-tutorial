@@ -80,14 +80,6 @@ const Donate: React.FC = () => {
               <CopyButton value={bankAccount} />
             </div>
           </div>
-
-          <div className={styles.paymentGroup}>
-            <div className={styles.paymentLabel}>💰 Litecoin ঠিকানা</div>
-            <div className={styles.paymentInfoCard}>
-              <span className={styles.cryptoAddress}>{litecoinAddress}</span>
-              <CopyButton value={litecoinAddress} />
-            </div>
-          </div>
         </div>
 
         <div className={styles.signature}>— আপনার শুভাকাঙ্ক্ষী, মজনু</div>

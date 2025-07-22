@@ -1,6 +1,6 @@
 const Logo = () => {
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div>
       <span
         style={{
           fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
@@ -16,8 +16,8 @@ const Logo = () => {
         style={{
           marginLeft: "10px",
           fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
-          fontWeight: 500,
-          fontSize: "19px",
+
+          fontSize: "16px",
           letterSpacing: "0.02em",
         }}
       >
