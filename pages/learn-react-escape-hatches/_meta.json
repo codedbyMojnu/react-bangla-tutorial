@@ -1,10 +1,10 @@
 {
-  "react-referencing-values-with-refs": "ref ব্যবহার করে মান সংরক্ষণ",
-  "react-manipulating-dom-with-refs": "ref দিয়ে DOM নিয়ন্ত্রন",
-  "react-synchronizing-with-useeffect": "React বাইরের জিনিসপত্রের সাথে সিংক করি",
-  "react-you-might-not-need-useeffect": "তোমার হয়তো useEffect দরকারই নেই",
-  "react-useeffect-event-listeners-example": "একটি টুগল ফিচার",
-  "react-custom-hook-online-status": "ফিচার- ইউজার অনলাইন নাকি অফলাইন",
-  "react-fetching-data-without-useeffect": "ডাটা ফেচ করার আদ্যপান্ত জানি",
-  "react-useref-dom-manipulation-example": "ফিচার- refs দিয়ে বর্ডার চেঞ্জ করি"
+  "referencing-values-with-refs": "Referencing Values with Refs",
+  "manipulating-dom-with-refs": "Manipulating the DOM with Refs",
+  "synchronizing-with-useeffect": "Synchronizing with useEffect",
+  "you-might-not-need-an-effect": "You Might Not Need an Effect",
+  "lifecycle-of-reactive-effects": "Lifecycle of Reactive Effects",
+  "separating-events-from-effect": "Separating Events From Effects",
+  "removing-effect-dependencies": "Removing Effect Dependencies",
+  "reusing-logic-with-custom-hooks": "Reusing Logic with Custom Hooks"
 }

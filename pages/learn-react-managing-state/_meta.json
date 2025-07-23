@@ -1,9 +1,9 @@
 {
-  "react-reacting-to-input-with-state": "স্টেট দিয়ে ইনপুটের প্রতিক্রিয়া",
-  "react-choosing-state-structure": "State এর স্ট্রাকচার ঠিকভাবে নির্বাচন করা",
-  "react-lifting-state-up": "State কে Parent কম্পোনেন্টে নিয়ে যাওয়া",
-  "react-preserving-and-resetting-state": "কখন State সংরক্ষণ করব এবং রিসেট করব",
-  "react-context-api-deep-dive": "Context API",
-  "react-reducer-context-recap": "Reducer এবং Context API এর রিক্যাপ",
-  "react-reducer-with-context-example": "Reducer এবং Context API একটি সহজ উদাহরণ"
+  "reacting-to-input-with-state": "Reacting to Input with State",
+  "choosing-the-state-structure": "Choosing the State Structure",
+  "sharing-state-between-components": "Sharing State Between Components",
+  "preserving-and-resetting-state": "Preserving and Resetting State",
+  "extracting-state-logic-into-a-reducer": "Extracting State Logic into a Reducer",
+  "passing-data-deeply-with-context": "Passing Data Deeply with Context",
+  "scaling-up-with-reducer-and-context": "Scaling Up with Reducer and Context"
 }

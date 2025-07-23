@@ -1,12 +1,9 @@
 {
-  "react-responding-to-events": "ইভেন্ট হ্যান্ডেলার দিয়ে ইউজার একশন হ্যান্ডেল কর",
-  "react-state-as-component-memory": "স্টেট হলো React কম্পোনেন্টের মেমরি",
-  "react-state-deep-dive": "State- React এ কিভাবে কাজ করে",
-  "react-render-and-commit-phase": "কখন একটি কম্পোনেন্ট রেন্ডার হয় এবং UI আকে",
-  "react-state-as-a-snapshot": "স্টেট হলো সফটওয়ারের ভিন্ন ভিন্ন অবস্থার স্ক্রিনশট",
-  "react-queueing-state-updates": "একাধিক স্টেট আপডেট ব্যাচিং করে হয়",
-  "react-updating-objects-in-state": "স্টেটের অবজেক্ট আপডেট কিভাবে করব",
-  "react-context-api-intro": "Context API দিয়ে Caching State কর",
-  "react-usereducer-hook": "স্টেট লজিক Reducer এ এক্সট্রাক্ট কর",
-  "react-usereducer-example": "উদাহরণ- Reducer দিয়ে স্টেট লেখা"
+  "responding-to-events": "Responding to Events",
+  "state-a-component-memory": "State: A Component's Memory",
+  "render-and-commit-phase": "Render and Commit Phase",
+  "state-as-a-snapshot": "State as a Snapshot",
+  "queueing-a-series-of-state-updates": "Queueing a Series of State Updates",
+  "updating-arrays-in-state": "Updating Arrays in State",
+  "updating-objects-in-state": "Updating Objects in State"
 }
