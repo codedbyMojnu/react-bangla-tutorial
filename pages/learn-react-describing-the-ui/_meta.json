@@ -6,5 +6,6 @@
   "passing-props-to-a-component": "Passing Props to a Component",
   "conditional-rendering": "Conditional Rendering",
   "rendering-lists": "Rendering Lists",
-  "keeping-components-pure": "Keeping Components Pure"
+  "keeping-components-pure": "Keeping Components Pure",
+  "understanding-your-ui-as-a-tree": "Understanding Your UI as a Tree"
 }
