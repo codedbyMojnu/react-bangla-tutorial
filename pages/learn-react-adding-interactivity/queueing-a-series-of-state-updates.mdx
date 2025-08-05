@@ -115,11 +115,14 @@ React ৩ কে চূড়ান্ত ফলাফল হিসেবে স
 
 React stores 6 as the final result and returns it from useState.
 
-নোটঃ তুমি এখানে লক্ষ্য কর যে, setNumber(5) কাজ করছে এইভাবে setNumber(n => 5) but এখানে n is unused.
+<Pitfall>
+  নোটঃ তুমি এখানে লক্ষ্য কর যে, setNumber(5) কাজ করছে এইভাবে setNumber(n => 5)
+  but এখানে n is unused here
+</Pitfall>
 
-## What happens if you replace state after updating it
+## স্টেপ আপডেট করার পর, স্টেপ রিপ্লেস করে দিলে কি ঘটবে
 
-Let’s try one more example. What do you think number will be in the next render?
+নিচের উদাহরণটি দেখি। তোমার কি মনে হয়- নেক্সট রেন্ডারে কি হবে?
 
 ````<button onClick={() => {
   setNumber(number + 5);
@@ -130,12 +133,12 @@ Let’s try one more example. What do you think number will be in the next rende
 
 Then React stores 42 as the final result and returns it from useState.
 
-To summarize, here’s how you can think of what you’re passing to the setNumber state setter:
+তাহলে এখন আমরা সামারাইজ করি, সেটার ফাংশন এ কখন ও কিভাবে প্যারামিটার পাস হবে:
 
-1. **An updater function** (e.g. n => n + 1) এর আগে `setState` কল করলে- এই আপডেটার ফাংশন পূর্বের ভেলুটা ধরবে রেন্ডার না হয়েও এবং কিউতে এড করবে।
-2. **Any other value** (e.g. number 5) adds “replace with 5” to the queue, ignoring what’s already queued.
+1. **An updater function** (e.g. n => n + 1) এর আগে `setState` কল করলে- এই আপডেটার ফাংশনটি পূর্বের ভেলুটা ধরবে এবং রেন্ডার না করেও এবং কিউতে এড করবে।
+2. **Any other value** (e.g. number 5) “5 দিয়ে প্রতিস্থাপন” করে কিউতে যোগ করবে, এবং আগের কিউ এ ভেলু কি ছিল সেটি ভুলে যাবে.
 
-event handler গুলো এক্সিকিউট হওয়ার পর, React will trigger a re-render. During the re-render, React will process the queue. Updater functions run during rendering, so updater functions must be pure and only return the result. Don’t try to set state from inside of them or run other side effects. In Strict Mode, React will run each updater function twice (but discard the second result) to help you find mistakes.
+**সমস্ত ইভেন্ট হ্যান্ডেলার ফাংশন গুলো এক্সিকিউট হওয়ার পর**, React কম্পোনেন্টটি নতুন করে রি-রেন্ডার হবে. এই রি-রেন্ডারের সময়, React কিউ প্রসেস শুরু করবে. Updater functions রেন্ডারিং এর সময়েই রান হবে, তাই updater functions অবশ্যই পিউর ও একটি রেজাল্ট রিটার্ন করব. Don’t try to set state from inside of them or run other side effects. In Strict Mode, React will run each updater function twice (but discard the second result) to help you find mistakes.
 
 ## Naming conventions
 
