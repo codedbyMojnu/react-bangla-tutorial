@@ -9,6 +9,7 @@
   "learn-react-escape-hatches": "🧭 Escape Hatches",
   "react-suspense": "⏳ React Suspense",
   "react-lazy-loading": "Lazy Loading",
+  "framer-motion-animation": "🎞️ Framer Motion. Animation",
   "react-router-tutorial": "🗺️ React Router",
   "axios-http-requests-tutorial": "📡 Axios HTTP",
   "react-hook-form-guide": "✍️ React Hook Form",
@@ -22,7 +23,7 @@
   "my-react-projects": "🎁 Some of My Projects",
   "javascript-fundamentals": "📜 JavaScript Fundamentals",
 
-  "about-me": {
+  "about": {
     "title": "👤 About",
     "type": "page"
   },
