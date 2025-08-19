@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { DocsThemeConfig } from "nextra-theme-docs";
+import AudioPlayer from "./components/AudioPlayer";
 import Logo from "./components/Logo";
 
 const GiscusComments = dynamic(() => import("./components/GiscusComments"), {
@@ -37,6 +38,7 @@ const config: DocsThemeConfig = {
     Reveal,
     Pitfall,
     LiveCodeEditor,
+    AudioPlayer,
   },
   useNextSeoProps() {
     if (typeof window !== "undefined" && window.location.pathname !== "/") {

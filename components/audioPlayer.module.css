@@ -1,0 +1,35 @@
+.audioContainer {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.audioCard {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.audioHeader {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.audioPlayer {
+  width: 100%;
+  outline: none;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.audioFooter {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
