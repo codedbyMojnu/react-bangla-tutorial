@@ -1,0 +1,92 @@
+---
+title: লিঙ্কিং এবং নেভিগেশন
+description: বিল্ট-ইন নেভিগেশন অপ্টিমাইজেশন কীভাবে কাজ করে তা শিখুন, যেমন প্রিফেচিং, প্রিরেন্ডারিং এবং ক্লায়েন্ট-সাইড নেভিগেশন। এছাড়াও ডাইনামিক রুট এবং স্লো নেটওয়ার্কের জন্য নেভিগেশন কীভাবে অপ্টিমাইজ করবেন তা জানুন।
+related:
+  links:
+    - app/api-reference/components/link
+    - app/api-reference/file-conventions/loading
+    - app/guides/prefetching
+---
+
+Next.js-এ রুটগুলো ডিফল্টভাবে সার্ভার থেকে রেন্ডার হয়। এর মানে হলো, অনেক সময় ক্লায়েন্টকে নতুন রুট দেখানোর আগে সার্ভারের রেসপন্সের জন্য অপেক্ষা করতে হয়। Next.js-এ বিল্ট-ইনভাবে [Prefetching](#prefetching), [Streaming](#streaming), এবং [Client-side Transitions](#client-side-transitions) আছে, যা নেভিগেশনকে দ্রুত ও রেসপন্সিভ রাখে।
+
+এই গাইডে আমরা দেখব Next.js-এ নেভিগেশন কীভাবে কাজ করে এবং কীভাবে এটিকে [ডাইনামিক রুট](#dynamic-routes-without-loadingtsx) ও [স্লো নেটওয়ার্ক](#slow-networks)-এর জন্য অপ্টিমাইজ করা যায়।
+
+## নেভিগেশন কীভাবে কাজ করে
+
+Next.js-এ নেভিগেশন বুঝতে হলে কিছু কনসেপ্ট জানা দরকার:
+
+- [Server Rendering](#server-rendering)
+- [Prefetching](#prefetching)
+- [Streaming](#streaming)
+- [Client-side transitions](#client-side-transitions)
+
+### Server Rendering
+
+Next.js-এ [Layouts এবং Pages](/docs/app/getting-started/layouts-and-pages) ডিফল্টভাবে [React Server Components](https://react.dev/reference/rsc/server-components)। প্রথমবার ভিজিট করা এবং পরের নেভিগেশনগুলোতে, [Server Component Payload](/docs/app/getting-started/server-and-client-components#how-do-server-and-client-components-work-in-nextjs) সার্ভারে জেনারেট হয় এবং তারপর ক্লায়েন্টে পাঠানো হয়।
+
+সার্ভার রেন্ডারিংয়ের দুই ধরনের পদ্ধতি আছে, নির্ভর করে _কখন_ এটা হচ্ছে:
+
+- **Static Rendering (অথবা Prerendering)** → এটি বিল্ড টাইমে বা [Revalidation](/docs/app/getting-started/caching-and-revalidating)-এর সময় হয়, এবং রেজাল্ট ক্যাশে রাখা হয়।
+- **Dynamic Rendering** → এটি রিকোয়েস্ট টাইমে হয়, মানে ক্লায়েন্ট রিকোয়েস্ট করার সময় সার্ভার থেকে জেনারেট হয়।
+
+সার্ভার রেন্ডারিংয়ের ট্রেড-অফ হলো, ক্লায়েন্টকে নতুন রুট দেখানোর আগে সার্ভারের রেসপন্সের জন্য অপেক্ষা করতে হয়। Next.js এই দেরি কমানোর জন্য [Prefetching](#prefetching) এবং [Client-side transitions](#client-side-transitions) ব্যবহার করে।
+
+> **ভালো করে জানা উচিত**: প্রথম ভিজিটের জন্যও HTML জেনারেট হয়।
+
+### Prefetching
+
+Prefetching মানে হলো, ব্যবহারকারী ক্লিক করার আগেই ব্যাকগ্রাউন্ডে রুট লোড করে রাখা। ফলে যখন ব্যবহারকারী লিঙ্কে ক্লিক করে, তখনই ডেটা প্রস্তুত থাকে এবং নেভিগেশন প্রায় ইনস্ট্যান্ট মনে হয়।
+
+Next.js স্বয়ংক্রিয়ভাবে সেই রুটগুলো Prefetch করে যেগুলো [`<Link>` কম্পোনেন্ট](/docs/app/api-reference/components/link) দিয়ে লিঙ্ক করা আছে এবং যখনই সেগুলো ব্যবহারকারীর ভিউপোর্টে আসে।
+
+```tsx filename="app/layout.tsx" switcher
+import Link from "next/link";
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <html>
+      <body>
+        <nav>
+          {/* লিঙ্ক হোভার করলে বা ভিউপোর্টে আসলে Prefetch হবে */}
+          <Link href="/blog">Blog</Link>
+          {/* Prefetch হবে না */}
+          <a href="/contact">Contact</a>
+        </nav>
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+```jsx filename="app/layout.js" switcher
+import Link from "next/link";
+
+export default function Layout() {
+  return (
+    <html>
+      <body>
+        <nav>
+          {/* লিঙ্ক হোভার করলে বা ভিউপোর্টে আসলে Prefetch হবে */}
+          <Link href="/blog">Blog</Link>
+          {/* Prefetch হবে না */}
+          <a href="/contact">Contact</a>
+        </nav>
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+Prefetch-এর পরিমাণ নির্ভর করে রুটটি স্ট্যাটিক নাকি ডাইনামিক তার ওপর:
+
+- **Static Route** → পুরো রুট Prefetch হয়।
+- **Dynamic Route** → Prefetch স্কিপ হয়, অথবা যদি [`loading.tsx`](/docs/app/api-reference/file-conventions/loading) থাকে তবে আংশিক Prefetch হয়।
+
+Dynamic Route Prefetch স্কিপ বা আংশিক Prefetch করার মাধ্যমে Next.js অপ্রয়োজনীয় সার্ভার লোড এড়ায় (যে রুট ব্যবহারকারী হয়তো কখনো ভিজিটই করবে না)। তবে সমস্যা হলো, সার্ভারের রেসপন্স না আসা পর্যন্ত ব্যবহারকারী মনে করতে পারে অ্যাপ কাজ করছে না।
+
+ডাইনামিক রুটে নেভিগেশনের অভিজ্ঞতা আরও ভালো করতে আপনি [Streaming](#streaming) ব্যবহার করতে পারেন।
+
+---
