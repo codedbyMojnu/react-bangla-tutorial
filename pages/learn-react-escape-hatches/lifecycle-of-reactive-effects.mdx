@@ -9,6 +9,11 @@ React-এর প্রতিটি Component-এর একটি জীবনচ
 
 এই শুরু এবং বন্ধ হওয়ার চক্রটি useEffect এ একবার বা একাধিকবার ঘটতে পারে। state এবং props চেঞ্জের মাধ্যমে।
 
+<AudioPlayer
+  src="/audios/lifecycle-of-reactive-effects.wav"
+  title="Reactive Effect এর জীবনচক্র"
+/>
+
 ---
 
 ### একটি চ্যাটরুম
@@ -115,6 +120,11 @@ useEffect(() => {
 
 ---
 
+<PdfDownloader
+  src="/pdf/lifecycle-of-reactive-effects.pdf"
+  title="Reactive Effect এর জীবনচক্র"
+/>
+
 ### সারসংক্ষেপ
 
 - Component-এর lifecycle (mount, update, unmount) নিয়ে না ভেবে Effect-এর **"শুরু"** এবং **"বন্ধ"** হওয়ার চক্র নিয়ে ভাবুন।
@@ -122,3 +132,16 @@ useEffect(() => {
 - **Dependency array** ঠিক করে দেয় কখন একটি Effect আবার re-synchronize (বন্ধ হয়ে চালু) হবে।
 - `useEffect`-এর ভেতরে ব্যবহৃত সব **reactive value** (props, state) অবশ্যই dependency array-তে উল্লেখ করতে হবে।
 - প্রতিটি সম্পর্কহীন কাজের জন্য **আলাদা `useEffect`** ব্যবহার করুন।
+
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>
+
+<Donate />

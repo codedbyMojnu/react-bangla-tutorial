@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { DocsThemeConfig } from "nextra-theme-docs";
 import AudioPlayer from "./components/AudioPlayer";
 import Logo from "./components/Logo";
+import PdfDownloader from "./components/PdfDownloader";
 
 const GiscusComments = dynamic(() => import("./components/GiscusComments"), {
   ssr: false,
@@ -39,6 +40,7 @@ const config: DocsThemeConfig = {
     Pitfall,
     LiveCodeEditor,
     AudioPlayer,
+    PdfDownloader,
   },
   useNextSeoProps() {
     if (typeof window !== "undefined" && window.location.pathname !== "/") {

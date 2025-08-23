@@ -1,0 +1,42 @@
+.pdfContainer {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pdfCard {
+  background: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  width: 320px;
+}
+
+.pdfHeader {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.pdfButton {
+  display: inline-block;
+  background: #4cafef;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.pdfButton:hover {
+  background: #2196f3;
+}
+
+.pdfFooter {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
