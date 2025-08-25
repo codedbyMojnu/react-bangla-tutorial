@@ -98,11 +98,44 @@ react-bangla-tutorial/
 
 ---
 
+## 👋 ভিজিটরদের জন্য বিশেষ অনুরোধ
+
+আপনি যদি এই রিপোজিটরিটি ভিজিট করে থাকেন তবে দয়া করে ⭐ **Star দিন** অথবা 🍴 **Fork করুন**।  
+👉 এতে আমি জানতে পারব কে কে এখানে এসেছেন, কারণ আপনার GitHub Username তখন স্টার/ফর্ক লিস্টে দেখা যাবে।
+
+আর যদি শুধু জানাতে চান — 📝 **একটা Issue ওপেন করে লিখুন “আমি এই রিপো ভিজিট করেছি”**।  
+এতে আপনার নামও Contributors হিসেবে দেখা যাবে। 🎉
+
+---
+
+## 🙌 Contributors Wall
+
+এই প্রজেক্টে যারা অবদান রেখেছেন, তাদেরকে ধন্যবাদ! 💙
+
+<a href="https://github.com/codedbyMojnu/react-bangla-tutorial/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=codedbyMojnu/react-bangla-tutorial" />
+</a>
+
+---
+
+## ⭐ Stargazers Wall
+
+যারা এই রিপো ⭐ **Star** দিয়েছেন — আপনাদের ধন্যবাদ! 🙏
+
+[![Stargazers repo roster for @codedbyMojnu/react-bangla-tutorial](https://bytecrank.com/nastyox/reporoster/php/stargazersSVG.php?user=codedbyMojnu&repo=react-bangla-tutorial)](https://github.com/codedbyMojnu/react-bangla-tutorial/stargazers)
+
+---
+
+## 🍴 Forkers Wall
+
+যারা এই রিপো 🍴 **Fork** করেছেন — আপনারাও আমাদের পরিবারের অংশ! 🚀
+
+[![Forkers repo roster for @codedbyMojnu/react-bangla-tutorial](https://bytecrank.com/nastyox/reporoster/php/forkersSVG.php?user=codedbyMojnu&repo=react-bangla-tutorial)](https://github.com/codedbyMojnu/react-bangla-tutorial/network/members)
+
 ## 📚 অন্যান্য রিসোর্স
 
 - 📘 [React অফিসিয়াল ডকুমেন্টেশন](https://react.dev/)
 - 🎥 [LWS React Bangla Course](https://learnwithsumit.com/rnext)
-- 💻 [React Bangla Tutorial কোড রিপোজিটরি](https://github.com/codebymojnu/react-bangla-tutorial-code)
 
 <hr/>
 
