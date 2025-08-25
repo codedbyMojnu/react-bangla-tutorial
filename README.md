@@ -4,7 +4,17 @@
 
 📘 **লাইভ টিউটোরিয়াল সাইট:** [react-bangla.vercel.app](https://react-bangla.vercel.app)
 
-<hr/>
+---
+
+<!-- SEO & Social Meta -->
+<meta name="description" content="React Bangla Tutorial - সহজ বাংলায় React শেখার জন্য ওপেন সোর্স গাইড। লাইভ টিউটোরিয়াল এবং উদাহরণ সহ।">
+<meta property="og:title" content="React Bangla Tutorial 🇧🇩">
+<meta property="og:description" content="React Bangla Tutorial - সহজ বাংলায় React শেখার জন্য ওপেন সোর্স গাইড।">
+<meta property="og:url" content="https://github.com/codedbyMojnu/react-bangla-tutorial">
+<meta property="og:image" content="https://contrib.rocks/image?repo=codedbyMojnu/react-bangla-tutorial">
+<meta name="twitter:card" content="summary_large_image">
+
+---
 
 ## ✨ React Bangla Tutorial এ কি কি পাবেন-
 
