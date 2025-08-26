@@ -1,13 +1,56 @@
-# **Framer Motion: React-এ দারুণ স্মুথ অ্যানিমেশন 🚀**
+---
+title: Framer Motion Animation | React Bangla Tutorial
+description: Framer Motion দিয়ে React-এ সহজ ও স্মুথ অ্যানিমেশন শেখার বাংলা টিউটোরিয়াল। ইনস্টলেশন, বেসিক থেকে অ্যাডভান্সড উদাহরণ, লাইভ কোড, এবং Next.js SEO সহ।
+openGraph:
+  title: Framer Motion Animation | React Bangla Tutorial
+  description: Framer Motion দিয়ে React-এ সহজ ও স্মুথ অ্যানিমেশন শেখার বাংলা টিউটোরিয়াল। ইনস্টলেশন, বেসিক থেকে অ্যাডভান্সড উদাহরণ, লাইভ কোড, এবং Next.js SEO সহ।
+  url: https://react-bangla.vercel.app/framer-motion-animation
+  siteName: React Bangla Tutorial
+  images:
+    - url: https://react-bangla.vercel.app/og-image.png
+      width: 1200
+      height: 630
+      alt: Framer Motion Animation
+  locale: bn_BD
+  type: article
+twitter:
+  card: summary_large_image
+  title: Framer Motion Animation | React Bangla Tutorial
+  description: Framer Motion দিয়ে React-এ সহজ ও স্মুথ অ্যানিমেশন শেখার বাংলা টিউটোরিয়াল।
+  images:
+    - https://react-bangla.vercel.app/og-image.png
+---
 
-Framer Motion হলো React এর জন্য সবচেয়ে সহজ, শক্তিশালী এবং প্রোডাকশন-রেডি অ্যানিমেশন লাইব্রেরি।
-এটি দিয়ে CSS `@keyframes` এর জটিলতা ছাড়াই খুব সুন্দর অ্যানিমেশন তৈরি করা যায়।
+import basicAnimationAppCode from "!raw-loader!../example/basic-animation/App.jsx";
+import basicAnimationCode from "!raw-loader!../example/basic-animation/BasicAnimation.jsx";
+import counterCode from "!raw-loader!../example/Counter.jsx";
+import dragExampleCode from "!raw-loader!../example/DragExample.jsx";
+import gestureAnimationCode from "!raw-loader!../example/GestureAnimation.jsx";
+import keyframeAnimationCode from "!raw-loader!../example/KeyframeAnimation.jsx";
+import pathAnimationCode from "!raw-loader!../example/PathAnimation.jsx";
+import scrollAnimationCode from "!raw-loader!../example/ScrollAnimation.jsx";
+import scrollRevealCode from "!raw-loader!../example/ScrollReveal.jsx";
+import springAnimationCode from "!raw-loader!../example/SpringAnimation.jsx";
+import staggerListCode from "!raw-loader!../example/StaggerList.jsx";
+
+# Framer Motion: React-এ স্মুথ অ্যানিমেশন খুব সহজে 🚀
+
+Framer Motion হলো React-এর জন্য সহজ ও শক্তিশালী অ্যানিমেশন লাইব্রেরি।  
+এই টিউটোরিয়ালে ধাপে ধাপে দেখানো আছে কিভাবে বেসিক থেকে অ্যাডভান্সড অ্যানিমেশন করবেন।
 
 ---
 
-## ১. ইনস্টলেশন
+## ১. Framer Motion কী?
 
-প্রথমেই আপনার React প্রজেক্টে Framer Motion যোগ করুন:
+Framer Motion হলো একটা ওপেন সোর্স React লাইব্রেরি।  
+এটা দিয়ে fade, scale, slide, drag, gesture, scroll—সব ধরনের অ্যানিমেশন সহজে করা যায়।  
+প্রোডাকশন-রেডি, পারফরম্যান্স ভালো, আর ডকুমেন্টেশনও সহজ।
+
+---
+
+## ২. Framer Motion ইনস্টল করুন
+
+প্রথমে আপনার React প্রজেক্টে Framer Motion যোগ করুন।
 
 ```bash
 npm install framer-motion
@@ -17,7 +60,10 @@ yarn add framer-motion
 
 ---
 
-## ২. বেসিক অ্যানিমেশন: fade-in + scale-up
+## ৩. বেসিক অ্যানিমেশন: Fade-in + Scale-up
+
+Framer Motion-এ `motion` নামে স্পেশাল কম্পোনেন্ট আছে।  
+এটা দিয়ে আপনি যেকোনো div, button, img ইত্যাদিতে অ্যানিমেশন দিতে পারবেন।
 
 ```jsx
 import { motion } from "framer-motion";
@@ -25,25 +71,55 @@ import { motion } from "framer-motion";
 export default function BasicAnimation() {
   return (
     <motion.div
-      className="w-40 h-40 bg-red-500 rounded-lg"
+      style={{
+        width: 160,
+        height: 160,
+        background: "#ef4444",
+        borderRadius: 12,
+      }}
       initial={{ opacity: 0, scale: 0.5 }} // শুরু অবস্থা
       animate={{ opacity: 1, scale: 1 }} // শেষ অবস্থা
-      transition={{ duration: 0.8 }} // সময়কাল (সেকেন্ড)
+      transition={{ duration: 0.8 }} // কত সময় লাগবে
     />
   );
 }
 ```
 
-**ব্যাখ্যা:**
-`initial` — প্রথম অবস্থা
-`animate` — অ্যানিমেশন শেষে অবস্থা
-`transition` — কত দ্রুত ও কীভাবে অ্যানিমেশন হবে
+- `initial` — অ্যানিমেশন শুরুতে কেমন থাকবে
+- `animate` — শেষে কেমন হবে
+- `transition` — কত সময়, কীভাবে হবে
 
 ---
 
-## ৩. Keyframe অ্যানিমেশন (একাধিক ধাপ)
+### লাইভ কোড দেখুন
 
-একাধিক ধাপের অ্যানিমেশন করতে `animate` প্রপ-এ অ্যারে ব্যবহার করুন:
+নিচে আপনি লাইভ কোড এডিটর পাবেন।  
+এখানে কোড বদলালে সাথে সাথে রেজাল্ট দেখতে পারবেন।
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+   "/App.js": {
+      code: basicAnimationAppCode,
+
+      active: true,
+    },
+    "/BasicAnimation.jsx": { code: basicAnimationCode },
+
+}}
+template="react"
+/>
+
+---
+
+## ৫. Keyframe অ্যানিমেশন (একাধিক ধাপ)
+
+একাধিক ধাপের অ্যানিমেশন করতে চাইলে,  
+`animate`-এ অ্যারে ব্যবহার করুন।
 
 ```jsx
 import { motion } from "framer-motion";
@@ -51,7 +127,12 @@ import { motion } from "framer-motion";
 export default function KeyframeAnimation() {
   return (
     <motion.div
-      className="w-40 h-40 bg-blue-500 rounded-lg"
+      style={{
+        width: 160,
+        height: 160,
+        background: "#3b82f6",
+        borderRadius: 12,
+      }}
       animate={{
         scale: [1, 1.5, 1, 1.5, 1],
         rotate: [0, 90, 0, -90, 0],
@@ -69,11 +150,39 @@ export default function KeyframeAnimation() {
 }
 ```
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/KeyframeAnimation.jsx": { code: keyframeAnimationCode },
+    "/App.js": {
+      code: `import React from "react";
+import KeyframeAnimation from "./KeyframeAnimation";
+
+export default function App() {
+  return (
+    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
+      <KeyframeAnimation />
+    </div>
+  );
+}`,
+      active: true
+    }
+  }}
+  template="react"
+/>
+
 ---
 
-## ৪. Gesture অ্যানিমেশন: Hover & Tap ইফেক্ট
+## ৬. Gesture অ্যানিমেশন: Hover & Tap
 
-ইউজারের ইন্টারঅ্যাকশনের জন্য `whileHover` ও `whileTap` ব্যবহার করুন:
+ইউজার যখন hover বা tap করবে, তখন অ্যানিমেশন দেখাতে  
+`whileHover` আর `whileTap` ব্যবহার করুন।
 
 ```jsx
 import { motion } from "framer-motion";
@@ -81,7 +190,15 @@ import { motion } from "framer-motion";
 export default function GestureAnimation() {
   return (
     <motion.button
-      className="px-6 py-3 bg-gray-800 text-white rounded-lg font-semibold"
+      style={{
+        padding: "16px 32px",
+        background: "#111827",
+        color: "#fff",
+        borderRadius: 8,
+        fontWeight: "bold",
+        border: "none",
+        fontSize: 18,
+      }}
       whileHover={{ scale: 1.1, rotate: 3 }}
       whileTap={{ scale: 0.9, rotate: -3 }}
       transition={{ type: "spring", stiffness: 300 }}
@@ -92,11 +209,39 @@ export default function GestureAnimation() {
 }
 ```
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/GestureAnimation.jsx": { code: gestureAnimationCode },
+    "/App.jsx": {
+      code: `import React from "react";
+import GestureAnimation from "./GestureAnimation";
+
+export default function App() {
+  return (
+    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
+      <GestureAnimation />
+    </div>
+  );
+}`,
+      active: true
+    }
+  }}
+  template="react"
+/>
+
 ---
 
-## ৫. Drag অ্যানিমেশন (সরানোর সুবিধা)
+## ৭. Drag অ্যানিমেশন (এলিমেন্ট সরানো)
 
-কোনো এলিমেন্টকে মাউস দিয়ে সরানোর সুবিধা দিতে:
+কোনো এলিমেন্টকে মাউস দিয়ে সরাতে চাইলে  
+`drag` প্রপ ব্যবহার করুন।
 
 ```jsx
 import { motion } from "framer-motion";
@@ -104,7 +249,12 @@ import { motion } from "framer-motion";
 export default function DragExample() {
   return (
     <motion.div
-      className="w-32 h-32 bg-green-500 rounded-lg"
+      style={{
+        width: 128,
+        height: 128,
+        background: "#22c55e",
+        borderRadius: 12,
+      }}
       drag
       dragConstraints={{ top: -50, left: -50, right: 50, bottom: 50 }}
     />
@@ -112,11 +262,39 @@ export default function DragExample() {
 }
 ```
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/DragExample.jsx": { code: dragExampleCode },
+    "/App.jsx": {
+      code: `import React from "react";
+import DragExample from "./DragExample";
+
+export default function App() {
+  return (
+    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
+      <DragExample />
+    </div>
+  );
+}`,
+      active: true
+    }
+  }}
+  template="react"
+/>
+
 ---
 
-## ৬. Variants দিয়ে স্ট্রাকচারড অ্যানিমেশন
+## ৮. Variants দিয়ে গ্রুপ অ্যানিমেশন
 
-একাধিক এলিমেন্টের জন্য সহজে অ্যানিমেশন নিয়ন্ত্রণ করতে Variants ব্যবহার করুন:
+একাধিক এলিমেন্টে একই অ্যানিমেশন দিতে Variants ব্যবহার করুন।  
+এতে কোড পরিষ্কার থাকে।
 
 ```jsx
 import { motion } from "framer-motion";
@@ -135,11 +313,11 @@ const itemVariants = {
 };
 
 export default function StaggerList() {
-  const items = ["প্রথম", "দ্বিতীয়", "তৃতীয়"];
+  const items = ["প্রথম", "দ্বিতীয়", "তৃতীয়"];
 
   return (
     <motion.ul
-      className="list-none p-0"
+      style={{ listStyle: "none", padding: 0 }}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -147,7 +325,13 @@ export default function StaggerList() {
       {items.map((item, index) => (
         <motion.li
           key={index}
-          className="p-4 bg-indigo-500 my-2 rounded text-white"
+          style={{
+            padding: 16,
+            background: "#6366f1",
+            margin: "8px 0",
+            borderRadius: 8,
+            color: "#fff",
+          }}
           variants={itemVariants}
         >
           {item}
@@ -158,11 +342,39 @@ export default function StaggerList() {
 }
 ```
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/StaggerList.jsx": { code: staggerListCode },
+    "/App.jsx": {
+      code: `import React from "react";
+import StaggerList from "./StaggerList";
+
+export default function App() {
+  return (
+    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
+      <StaggerList />
+    </div>
+  );
+}`,
+      active: true
+    }
+  }}
+  template="react"
+/>
+
 ---
 
-## ৭. Scroll-ভিত্তিক অ্যানিমেশন
+## ৯. Scroll-ভিত্তিক অ্যানিমেশন
 
-স্ক্রল অনুযায়ী অ্যানিমেশন দিতে `useScroll` ও `useTransform` ব্যবহার করা হয়:
+স্ক্রল করলে অ্যানিমেশন দিতে চাইলে  
+`useScroll` আর `useTransform` হুক ব্যবহার করুন।
 
 ```jsx
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -173,16 +385,37 @@ export default function ScrollAnimation() {
 
   return (
     <motion.div
-      style={{ scale }}
-      className="w-40 h-40 bg-pink-500 rounded-lg"
+      style={{
+        scale,
+        width: 160,
+        height: 160,
+        background: "#ec4899",
+        borderRadius: 12,
+      }}
     />
   );
 }
 ```
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/ScrollAnimation.jsx": { code: scrollAnimationCode, active: true },
+  }}
+  template="react"
+/>
+
 ---
 
-## ৮. React + Framer Motion দিয়ে Smooth Counter
+## ১০. Counter অ্যানিমেশন
+
+সংখ্যা স্মুথলি বাড়াতে চাইলে Motion Value ব্যবহার করুন।
 
 ```jsx
 import React, { useEffect } from "react";
@@ -198,16 +431,32 @@ export default function Counter() {
   }, []);
 
   return (
-    <div className="text-5xl font-bold">
+    <div style={{ fontSize: 40, fontWeight: "bold" }}>
       <motion.span>{rounded}</motion.span>
     </div>
   );
 }
 ```
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/Counter.jsx": { code: counterCode, active: true },
+  }}
+  template="react"
+/>
+
 ---
 
-## ৯. Scroll Reveal Animation (Fade + Slide)
+## ১১. Scroll Reveal Animation
+
+স্ক্রল করলে এলিমেন্ট আস্তে আস্তে আসবে।
 
 ```jsx
 import React from "react";
@@ -215,13 +464,22 @@ import { motion } from "framer-motion";
 
 const Box = ({ text }) => (
   <motion.div
-    className="w-32 h-32 m-4 rounded bg-pink-300 flex items-center justify-center"
+    style={{
+      width: 128,
+      height: 128,
+      margin: 16,
+      borderRadius: 8,
+      background: "#f9a8d4",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
     initial={{ opacity: 0, x: -50 }}
     whileInView={{ opacity: 1, x: 0 }}
     transition={{ duration: 1 }}
     viewport={{ once: true }}
   >
-    <span className="text-black text-xl">{text}</span>
+    <span style={{ color: "#111", fontSize: 20 }}>{text}</span>
   </motion.div>
 );
 
@@ -229,7 +487,14 @@ export default function ScrollReveal() {
   const items = ["হ্যালো", "আসসালামু আলাইকুম", "স্বাগতম", "শুভেচ্ছা", "আসুন"];
 
   return (
-    <div className="flex flex-col items-center py-10">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 40,
+      }}
+    >
       {items.map((item, i) => (
         <Box key={i} text={item} />
       ))}
@@ -238,59 +503,199 @@ export default function ScrollReveal() {
 }
 ```
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/ScrollReveal.jsx": { code: scrollRevealCode, active: true },
+  }}
+  template="react"
+/>
+
 ---
 
-## ১০. Stagger Animation (সুন্দর পরপর আসা এলিমেন্ট)
+## ১২. Spring Physics অ্যানিমেশন
+
+Spring অ্যানিমেশন দিয়ে প্রাকৃতিক গতি তৈরি করা যায়।
 
 ```jsx
 import { motion } from "framer-motion";
 
-const container = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.3 },
-  },
-};
-
-const item = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1 },
-};
-
-export default function StaggerExample() {
-  const list = ["প্রথম", "দ্বিতীয়", "তৃতীয়", "চতুর্থ"];
-
+export default function SpringAnimation() {
   return (
-    <motion.ul
-      variants={container}
-      initial="hidden"
-      animate="visible"
-      className="list-none p-0"
-    >
-      {list.map((text, idx) => (
-        <motion.li
-          key={idx}
-          variants={item}
-          className="bg-blue-500 text-white rounded p-4 my-2"
-        >
-          {text}
-        </motion.li>
-      ))}
-    </motion.ul>
+    <motion.div
+      style={{
+        width: 160,
+        height: 160,
+        background: "#f59e0b",
+        borderRadius: 12,
+      }}
+      animate={{
+        y: [0, -100, 0],
+        rotate: [0, 180, 360],
+      }}
+      transition={{
+        duration: 2,
+        ease: "easeInOut",
+        repeat: Infinity,
+        repeatType: "reverse",
+        type: "spring",
+        stiffness: 100,
+        damping: 10,
+      }}
+    />
   );
 }
 ```
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/SpringAnimation.jsx": { code: springAnimationCode, active: true },
+  }}
+  template="react"
+/>
+
 ---
 
-## সামারি ও টিপস
+## ১৩. SVG Path অ্যানিমেশন
 
-- React প্রজেক্টে অ্যানিমেশন যোগ করার সবচেয়ে সহজ ও পেশাদারী উপায় হলো Framer Motion।
-- Tailwind CSS এর সাথে খুব ভালো কম্বিনেশন।
-- Props দিয়ে ডিক্লেয়ারেটিভ অ্যানিমেশন কন্ট্রোল সহজ।
-- Variants & Stagger অ্যানিমেশন বড় প্রোজেক্টে কোডকে রিডেবল ও মেইনটেনেবল রাখে।
-- Gesture ও Drag ফিচার দিয়ে ইন্টারঅ্যাকশন অনেক স্মুথ হয়।
-- স্ক্রল বেসড অ্যানিমেশনও খুব সহজে বানানো যায়।
+SVG path-এ অ্যানিমেশন দিতে `motion.path` ব্যবহার করুন।
+
+```jsx
+import { motion } from "framer-motion";
+
+export default function PathAnimation() {
+  return (
+    <svg width="200" height="200" viewBox="0 0 200 200">
+      <motion.path
+        d="M 50 100 Q 100 50 150 100 T 250 100"
+        stroke="#8b5cf6"
+        strokeWidth="4"
+        fill="none"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 2, ease: "easeInOut" }}
+      />
+      <motion.circle
+        cx="50"
+        cy="100"
+        r="8"
+        fill="#8b5cf6"
+        initial={{ pathOffset: 0 }}
+        animate={{ pathOffset: 1 }}
+        transition={{ duration: 2, ease: "easeInOut" }}
+      />
+    </svg>
+  );
+}
+```
+
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest",
+    },
+  }}
+  files={{
+    "/PathAnimation.jsx": { code: pathAnimationCode, active: true },
+  }}
+  template="react"
+/>
 
 ---
+
+## লাইভ কোড: সরাসরি কোড পরিবর্তন করে ফলাফল দেখুন
+
+<LiveCodeEditor
+  customSetup={{
+    dependencies: {
+      "framer-motion": "latest"
+    }
+  }}
+  files={{
+    // keep the raw example files available
+    "/BasicAnimation.jsx": { code: basicAnimationCode },
+    "/KeyframeAnimation.jsx": { code: keyframeAnimationCode },
+    "/GestureAnimation.jsx": { code: gestureAnimationCode },
+    "/DragExample.jsx": { code: dragExampleCode },
+    "/StaggerList.jsx": { code: staggerListCode },
+    "/ScrollAnimation.jsx": { code: scrollAnimationCode },
+    "/Counter.jsx": { code: counterCode },
+    "/ScrollReveal.jsx": { code: scrollRevealCode },
+    "/SpringAnimation.jsx": { code: springAnimationCode },
+    "/PathAnimation.jsx": { code: pathAnimationCode },
+
+    // IMPORTANT: provide a clear entry file that imports an example and exports default App
+    "/App.jsx": {
+      code: `import React from "react";
+
+import BasicAnimation from "./BasicAnimation";
+
+/_
+Change which component is rendered here.
+For other examples, replace BasicAnimation with:
+KeyframeAnimation, GestureAnimation, DragExample, StaggerList, ScrollAnimation, Counter, ScrollReveal, SpringAnimation, PathAnimation
+_/
+
+export default function App() {
+  return (
+    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
+      <BasicAnimation />
+    </div>
+  );
+}
+`,
+      active: true
+    },
+
+    // optional CSS
+    "/styles.css": { code: "body { font-family: Inter, system-ui, -apple-system; }" }
+
+}}
+template="react"
+/>
+
+---
+
+## ১৪. কিছু দরকারি টিপস
+
+- Framer Motion দিয়ে অ্যানিমেশন করা খুবই সহজ।
+- Tailwind CSS বা সাধারণ CSS দুইভাবেই ব্যবহার করতে পারবেন。
+- Variants দিয়ে বড় প্রজেক্টে কোড পরিষ্কার রাখা যায়。
+- Gesture, Drag, Scroll—সব ধরনের ইন্টারঅ্যাকশন সহজে করা যায়。
+- ডকুমেন্টেশন পড়লে আরও মজা পাবেন: [framer.com/motion](https://www.framer.com/motion/)
+
+---
+
+## ১৩. আরও জানতে
+
+- [Framer Motion ডকুমেন্টেশন](https://www.framer.com/motion/)
+- [React Bangla Tutorial](https://react-bangla.vercel.app/)
+
+---
+
+<Donate />
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="light"
+  lang="bn"
+/>

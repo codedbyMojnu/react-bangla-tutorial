@@ -1,6 +1,7 @@
 import {
   Sandpack,
   SandpackPredefinedTemplate,
+  SandpackSetup,
   SandpackThemeProp,
 } from "@codesandbox/sandpack-react";
 
@@ -12,6 +13,7 @@ interface LiveCodeEditorProps {
   >;
   template?: SandpackPredefinedTemplate;
   theme?: SandpackThemeProp;
+  customSetup?: SandpackSetup;
   options?: {
     showNavigator?: boolean;
     showTabs?: boolean;
@@ -25,6 +27,7 @@ export default function LiveCodeEditor({
   files,
   template = "react",
   theme = "light",
+  customSetup,
   options = {
     showNavigator: true,
     showTabs: true,
@@ -39,6 +42,7 @@ export default function LiveCodeEditor({
         template={template}
         theme={theme}
         files={files}
+        customSetup={customSetup}
         options={options}
       />
     </div>
