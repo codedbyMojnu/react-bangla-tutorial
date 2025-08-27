@@ -31,7 +31,7 @@ const Donate: React.FC = () => {
         <div className={styles.paymentCard}>
           <p>
             <strong>01788262433</strong> <br />
-            (পার্সোনাল বিকাশ / নগদ / রকেট নম্বর)
+            (পার্সোনাল বিকাশ / নগদ / রকেট নম্বর (4))
           </p>
           <small>*Send Money অপশন ব্যবহার করুন</small>
         </div>

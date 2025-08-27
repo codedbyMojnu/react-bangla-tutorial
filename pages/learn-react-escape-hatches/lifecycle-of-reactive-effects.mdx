@@ -1,3 +1,10 @@
+import basicChatRoomCode from "!raw-loader!../../example/useEffect-lifecycle/BasicChatRoom.jsx";
+import cleanupDemoCode from "!raw-loader!../../example/useEffect-lifecycle/CleanupDemo.jsx";
+import dependencyArrayDemoCode from "!raw-loader!../../example/useEffect-lifecycle/DependencyArrayDemo.jsx";
+import reactiveValuesCode from "!raw-loader!../../example/useEffect-lifecycle/ReactiveValues.jsx";
+import roomSwitcherCode from "!raw-loader!../../example/useEffect-lifecycle/RoomSwitcher.jsx";
+import separateEffectsCode from "!raw-loader!../../example/useEffect-lifecycle/SeparateEffects.jsx";
+
 ## Effect-এর জীবনচক্র
 
 React-এর প্রতিটি Component-এর একটি জীবনচক্র থাকে, যা তিনটি ধাপে বিভক্ত: **Mount** (যখন প্রথম স্ক্রিনে আসে), **Update** (যখন state বা props বদলায়) এবং **Unmount** (যখন স্ক্রিন থেকে চলে যায়)।
@@ -46,6 +53,28 @@ function ChatRoom({ roomId }) {
 
 React নিজে থেকেই বাকিটা সামলে নেবে।
 
+### লাইভ কোড দেখুন
+
+<LiveCodeEditor
+  files={{
+    "/BasicChatRoom.jsx": { code: basicChatRoomCode },
+    "/App.js": {
+      code: `import React from "react";
+import BasicChatRoom from "./BasicChatRoom";
+
+export default function App() {
+  return (
+    <div style={{ padding: 24 }}>
+      <BasicChatRoom roomId="general" />
+    </div>
+  );
+}`,
+      active: true
+    }
+  }}
+  template="react"
+/>
+
 #### যখন রুম পরিবর্তন হয়
 
 ধরুন, ইউজার প্রথমে `"general"` রুমে ছিল। এরপর সে ড্রপডাউন থেকে `"travel"` রুম সিলেক্ট করল। তখন কী ঘটবে?
@@ -60,6 +89,29 @@ React দেখবে যে `roomId` পরিবর্তন হয়েছে�
 সবশেষে, যখন ইউজার চ্যাটরুম Component থেকেই বেরিয়ে যাবে (unmount), React শেষবারের মতো ডিসকানেক্ট ফাংশনটি চালিয়ে সবকিছু পরিষ্কার করে দেবে।
 
 এভাবে চিন্তা করলে আপনার কাজ অনেক সহজ হয়ে যাবে। আপনাকে শুধু React-কে **"শুরু"** এবং **"বন্ধ"** করার নিয়ম বলে দিতে হবে।
+
+### রুম পরিবর্তনের ডেমো
+
+<LiveCodeEditor
+  files={{
+    "/BasicChatRoom.jsx": { code: basicChatRoomCode },
+    "/RoomSwitcher.jsx": { code: roomSwitcherCode },
+    "/App.js": {
+      code: `import React from "react";
+import RoomSwitcher from "./RoomSwitcher";
+
+export default function App() {
+  return (
+    <div>
+      <RoomSwitcher />
+    </div>
+  );
+}`,
+      active: true
+    }
+  }}
+  template="react"
+/>
 
 ---
 
@@ -119,6 +171,80 @@ useEffect(() => {
 এভাবে ভাবুন: প্রতিটি `useEffect` হলো একটি স্বাধীন কাজের অংশ। একটিকে সরিয়ে ফেললেও যেন অন্যটির কোনো সমস্যা না হয়।
 
 ---
+
+### আলাদা Effects এর উদাহরণ
+
+<LiveCodeEditor
+  files={{
+    "/SeparateEffects.jsx": { code: separateEffectsCode }, 
+        "/App.js": {
+      code: `import React from "react";
+import SeparateEffects from "./SeparateEffects";
+
+export default function App() {
+  return (
+    <div>
+      <SeparateEffects />
+    </div>
+  );
+}`, active: true
+    }
+  }}
+  template="react"
+/>
+
+### Reactive Values এর বিস্তারিত উদাহরণ
+
+<LiveCodeEditor
+  files={{
+    "/ReactiveValues.jsx": { code: reactiveValuesCode },
+    "/App.js": {
+      code: `import React from "react";
+import ReactiveValues from "./ReactiveValues";
+
+export default function App() {
+  return (
+    <div>
+      <ReactiveValues />
+    </div>
+  );
+}`,
+      active: true
+    }
+  }}
+  template="react"
+/>
+
+### Cleanup Function এর গুরুত্ব
+
+<LiveCodeEditor
+  files={{
+    "/CleanupDemo.jsx": { code: cleanupDemoCode, active: true },
+  }}
+  template="react"
+/>
+
+### Dependency Array এর প্রভাব দেখুন
+
+<LiveCodeEditor
+  files={{
+    "/DependencyArrayDemo.jsx": { code: dependencyArrayDemoCode, active: true },
+    "/App.js": {
+      code: `import React from "react";
+import DependencyArrayDemo from "./DependencyArrayDemo";
+
+export default function App() {
+  return (
+    <div>
+      <DependencyArrayDemo />
+    </div>
+  );
+}`,
+      active: true
+    }
+  }}
+  template="react"
+/>
 
 <PdfDownloader
   src="/pdf/lifecycle-of-reactive-effects.pdf"
