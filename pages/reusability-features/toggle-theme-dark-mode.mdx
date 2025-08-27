@@ -1,0 +1,134 @@
+## 2️⃣ globals.css
+
+তোমার CSS structure ঠিক আছে, শুধু dark mode toggle এর জন্য `:root` এবং `.dark` class এর দুইটা সেট করতে হবে।
+
+```css
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
+  transition: background 0.3s ease, color 0.3s ease; /* smooth toggle */
+}
+```
+
+- `.dark` class তখন লাগবে যখন `next-themes` html/class-এ `dark` যোগ করবে।
+- CSS variables ব্যবহার করলে Tailwind classes এর রঙও auto update হবে।
+
+---
+
+## 3️⃣ ThemeProvider
+
+`providers.tsx` আগের মতোই:
+
+```tsx
+"use client";
+import { ThemeProvider } from "next-themes";
+import React, { useState, useEffect } from "react";
+
+export default function ThemeProviders({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return <>{children}</>;
+
+  return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      enableColorScheme
+    >
+      {children}
+    </ThemeProvider>
+  );
+}
+```
+
+---
+
+## 4️⃣ ThemeToggleButton
+
+```tsx
+"use client";
+import { useTheme } from "next-themes";
+import { Sun, Moon } from "lucide-react";
+import { useEffect, useState } from "react";
+
+export default function ThemeToggleButton() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
+  const isDark = theme === "dark";
+
+  return (
+    <button
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="p-2 rounded-full transition-colors duration-200 focus:outline-none"
+    >
+      {isDark ? <Sun /> : <Moon />}
+    </button>
+  );
+}
+```
+
+---
+
+## 5️⃣ Tailwind ব্যবহার
+
+- `bg-background text-foreground` ব্যবহার করো।
+- Dark mode toggle করলে `.dark` class যুক্ত হয় → CSS variables অনুযায়ী রঙ change হয়।
+- `transition` ব্যবহার করলে smooth toggle হবে।
+
+```tsx
+<div className="min-h-screen bg-background text-foreground transition-colors">
+  <Navbar />
+  <main className="p-8">
+    <h2 className="text-3xl font-bold mb-4">ডার্ক মোডে স্বাগতম!</h2>
+    <p>
+      এই ফিচারটি Next.js + Tailwind v4 + CSS variables ব্যবহার করে তৈরি হয়েছে।
+    </p>
+  </main>
+</div>
+```
+
+---
+
+### ✅ Summary
+
+1. Tailwind v4 + CSS variables ব্যবহার করলে `bg-background text-foreground` এবং `.dark {}` class দিয়েই Dark mode control হয়।
+2. `next-themes` ThemeProvider + mounted state → Flicker-free।
+3. CSS variable + Tailwind class → Smooth color transition।
+4. SEO বা SSR-এ সমস্যা নেই।
+
+<Donate />
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>
