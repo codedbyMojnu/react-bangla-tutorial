@@ -1,0 +1,65 @@
+.videoContainer {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.videoCard {
+  background: #000; /* Black background matches the player */
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 650px;
+  color: #fff;
+}
+
+.videoHeader {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.videoWrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+/* The actual iframe containing the video */
+.videoWrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Sits behind the overlays */
+}
+
+/*
+* THE HACK: This pseudo-element is the black bar that covers the title.
+* Adjust the 'height' if YouTube changes its UI.
+*/
+.videoWrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45px; /* <-- This is the height of the bar. May need to change in the future. */
+  background: #000; /* Must match the video player background */
+  z-index: 2; /* Sits on top of the iframe */
+}
+
+/* This is a transparent layer to capture right-clicks */
+.interactionOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3; /* Sits on top of everything */
+}
