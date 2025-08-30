@@ -1,0 +1,314 @@
+Next.js-এ ডেটা আনার (Fetching) প্রক্রিয়াটি সহজ বাংলা বাক্য এবং জাভাস্ক্রিপ্ট উদাহরণসহ নিচে বিস্তারিতভাবে বর্ণনা করা হলো।
+
+---
+
+## ডেটা আনা (Fetching Data)
+
+এই অংশে আমরা দেখব কিভাবে Server এবং Client Component-এ ডেটা আনা যায় এবং ডেটার উপর নির্ভরশীল কন্টেন্ট স্ট্রিম (stream) করা যায়।
+
+### Server Components-এ ডেটা আনা
+
+Server Components-এ আপনি দুইভাবে ডেটা আনতে পারেন:
+
+1.  `fetch` API ব্যবহার করে।
+2.  ORM (Object-Relational Mapping) বা সরাসরি ডাটাবেস ক্লায়েন্ট ব্যবহার করে।
+
+#### `fetch` API ব্যবহার করে
+
+`fetch` API ব্যবহার করতে, আপনার কম্পোনেন্টটিকে একটি `async` ফাংশনে পরিণত করুন এবং `fetch` কলটিকে `await` করুন।
+
+**উদাহরণ:**
+
+```jsx
+// app/blog/page.js
+
+// কম্পোনেন্টটিকে async ফাংশন বানানো হয়েছে
+export default async function Page() {
+  // fetch ব্যবহার করে API থেকে ডেটা আনা হচ্ছে
+  const res = await fetch("https://api.vercel.app/blog");
+  const posts = await res.json(); // ডেটা'কে JSON ফরম্যাটে রূপান্তর করা হচ্ছে
+
+  return (
+    <ul>
+      {/* posts অ্যারে'র প্রতিটি আইটেমকে ম্যাপ করে দেখানো হচ্ছে */}
+      {posts.map((post) => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+> **গুরুত্বপূর্ণ তথ্য:**
+>
+> - Next.js ডিফল্টভাবে `fetch`-এর ফলাফল ক্যাশ (cache) করে রাখে। এর ফলে পারফরম্যান্স ভালো হয়। যদি আপনি চান প্রতিবার নতুন ডেটা আসুক (dynamic rendering), তাহলে `fetch`-এর সাথে `{ cache: 'no-store' }` অপশনটি ব্যবহার করুন।
+> - ডেভেলপমেন্টের সময়, আপনি `next.config.js` ফাইলে `logging` চালু করে `fetch` কলগুলো দেখতে ও ডিবাগ করতে পারেন।
+
+#### ORM বা ডাটাবেস ব্যবহার করে
+
+যেহেতু Server Components সার্ভারে রেন্ডার হয়, তাই আপনি সরাসরি ও নিরাপদে ডাটাবেস থেকে ডেটা আনতে পারেন। এর জন্যও কম্পোনেন্টটিকে একটি `async` ফাংশন বানাতে হবে।
+
+**উদাহরণ:**
+
+```jsx
+// app/blog/page.js
+
+// আপনার ডাটাবেস ক্লায়েন্ট বা ORM ইম্পোর্ট করুন
+import { db, posts } from "@/lib/db";
+
+export default async function Page() {
+  // ডাটাবেস থেকে সরাসরি সব পোস্ট আনা হচ্ছে
+  const allPosts = await db.select().from(posts);
+
+  return (
+    <ul>
+      {allPosts.map((post) => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+### Client Components-এ ডেটা আনা
+
+Client Components-এ ডেটা আনার দুটি প্রচলিত উপায় আছে:
+
+1.  React-এর `use` হুক ব্যবহার করে।
+2.  অন্যান্য লাইব্রেরি যেমন **SWR** বা **React Query** ব্যবহার করে।
+
+#### `use` হুক দিয়ে ডেটা স্ট্রিমিং
+
+React-এর `use` হুক ব্যবহার করে আপনি সার্ভার থেকে ক্লায়েন্টে ডেটা স্ট্রিম করতে পারেন। প্রথমে Server Component-এ ডেটা আনার কাজটি শুরু করুন, কিন্তু `await` করবেন না। এরপর সেই `promise`-টি Client Component-এ `prop` হিসাবে পাঠিয়ে দিন।
+
+**সার্ভার কম্পোনেন্ট (Server Component):**
+
+```jsx
+// app/blog/page.js
+
+import Posts from "@/app/ui/posts";
+import { Suspense } from "react";
+
+// ডেটা আনার ফাংশন
+function getPosts() {
+  return fetch("https://api.vercel.app/blog").then((res) => res.json());
+}
+
+export default function Page() {
+  // এখানে ডেটা আনার ফাংশনকে await করা হয়নি, শুধু কল করা হয়েছে
+  const postsPromise = getPosts();
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      {/* Client Component-কে promise-টি prop হিসাবে পাস করা হচ্ছে */}
+      <Posts posts={postsPromise} />
+    </Suspense>
+  );
+}
+```
+
+এখন, Client Component-এ `use` হুক ব্যবহার করে ওই `promise`-এর ডেটা পড়ুন।
+
+**ক্লায়েন্ট কম্পোনেন্ট (Client Component):**
+
+```jsx
+// app/ui/posts.js
+
+"use client"; // এটি একটি ক্লায়েন্ট কম্পোনেন্ট
+
+import { use } from "react";
+
+export default function Posts({ posts }) {
+  // use হুক দিয়ে promise থেকে ডেটা পাওয়া পর্যন্ত অপেক্ষা করা হচ্ছে
+  const allPosts = use(posts);
+
+  return (
+    <ul>
+      {allPosts.map((post) => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+এখানে `<Posts>` কম্পোনেন্টটি `<Suspense>` দিয়ে মোড়ানো আছে। এর মানে হলো, ডেটা আসা পর্যন্ত `fallback` এ দেওয়া UI (`<div>Loading...</div>`) দেখানো হবে।
+
+#### অন্যান্য লাইব্রেরি ব্যবহার করে
+
+আপনি SWR বা React Query-এর মতো লাইব্রেরি ব্যবহার করে Client Components-এ সহজেই ডেটা আনতে পারেন। এই লাইব্রেরিগুলো ক্যাশিং, রিভ্যালিডেশন এবং অন্যান্য ফিচার দিয়ে থাকে।
+
+**SWR ব্যবহার করে উদাহরণ:**
+
+```jsx
+// app/blog/page.js
+
+"use client"; // এটি একটি ক্লায়েন্ট কম্পোনেন্ট
+
+import useSWR from "swr";
+
+// fetcher ফাংশন যা url থেকে ডেটা এনে JSON হিসাবে রিটার্ন করে
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
+export default function BlogPage() {
+  const { data, error, isLoading } = useSWR(
+    "https://api.vercel.app/blog",
+    fetcher
+  );
+
+  // ডেটা লোড হওয়ার সময় এই UI দেখানো হবে
+  if (isLoading) return <div>Loading...</div>;
+  // কোনো ভুল হলে এই UI দেখানো হবে
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <ul>
+      {data.map((post) => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+---
+
+## ডেটা স্ট্রিমিং (Streaming)
+
+ডেটা আসতে দেরি হলে পুরো পেজ লোড হতে সময় লাগে, যা ব্যবহারকারীর জন্য একটি খারাপ অভিজ্ঞতা। **Streaming** এর মাধ্যমে আপনি পেজের HTML অংশগুলোকে ছোট ছোট খণ্ডে ভাগ করে সার্ভার থেকে ক্লায়েন্টে পাঠাতে পারেন। এতে ব্যবহারকারী দ্রুত পেজের কিছু অংশ দেখতে পায় এবং বাকি অংশগুলো ব্যাকগ্রাউন্ডে লোড হতে থাকে। ⚙️
+
+আপনি দুইভাবে স্ট্রিমিং করতে পারেন:
+
+1.  `loading.js` ফাইল ব্যবহার করে।
+2.  `<Suspense>` কম্পোনেন্ট ব্যবহার করে।
+
+### `loading.js` ব্যবহার করে
+
+একটি রুটের **পুরো পেজ** স্ট্রিম করার জন্য আপনি সেই রুটের ফোল্ডারে একটি `loading.js` ফাইল তৈরি করতে পারেন। যেমন, `app/blog/page.js`-কে স্ট্রিম করতে হলে `app/blog/loading.js` ফাইলটি তৈরি করুন।
+
+```jsx
+// app/blog/loading.js
+
+export default function Loading() {
+  // এখানে আপনার লোডিং UI ডিজাইন করুন
+  return <div>Loading your blog posts...</div>;
+}
+```
+
+যখন ব্যবহারকারী এই রুটে আসবে, তখন ডেটা লোড হওয়া পর্যন্ত `loading.js`-এর UI দেখানো হবে। ডেটা লোড হয়ে গেলে স্বয়ংক্রিয়ভাবে মূল কন্টেন্ট দেখানো হবে।
+
+### `<Suspense>` ব্যবহার করে
+
+`<Suspense>` ব্যবহার করে আপনি পেজের নির্দিষ্ট অংশ স্ট্রিম করতে পারেন। এতে আপনি আরও বেশি নিয়ন্ত্রণ পাবেন। যেমন, পেজের হেডারটি সাথে সাথে দেখিয়ে দিলেন এবং ব্লগের পোস্ট তালিকাটি লোড হওয়ার জন্য অপেক্ষা করলেন।
+
+```jsx
+// app/blog/page.js
+
+import { Suspense } from "react";
+import BlogList from "@/components/BlogList";
+import BlogListSkeleton from "@/components/BlogListSkeleton"; // একটি কঙ্কাল UI
+
+export default function BlogPage() {
+  return (
+    <div>
+      {/* এই অংশটি ক্লায়েন্টে সাথে সাথে পাঠানো হবে */}
+      <header>
+        <h1>Welcome to the Blog</h1>
+      </header>
+      <main>
+        {/* Suspense দিয়ে মোড়ানো অংশটি স্ট্রিম হবে */}
+        <Suspense fallback={<BlogListSkeleton />}>
+          <BlogList />
+        </Suspense>
+      </main>
+    </div>
+  );
+}
+```
+
+এখানে, `<BlogList>` কম্পোনেন্টের ডেটা লোড হওয়ার আগ পর্যন্ত `<BlogListSkeleton />` দেখানো হবে।
+
+---
+
+## কিছু বিশেষ উদাহরণ
+
+### পর্যায়ক্রমিক ডেটা আনা (Sequential Data Fetching)
+
+যখন একটি ডেটা আনার অনুরোধ আরেকটি অনুরোধের ফলাফলের উপর নির্ভর করে, তখন তাকে Sequential Data Fetching বলে। যেমন, আর্টিস্টের তথ্য পাওয়ার পর তার প্লে-লিস্ট আনা।
+
+```jsx
+// app/artist/[username]/page.js
+
+// ... artist এবং playlist আনার ফাংশন ...
+
+export default async function Page({ params }) {
+  const { username } = await params;
+  // প্রথমে আর্টিস্টের তথ্য আনা হচ্ছে
+  const artist = await getArtist(username);
+
+  return (
+    <>
+      <h1>{artist.name}</h1>
+      <Suspense fallback={<div>Loading playlists...</div>}>
+        {/* আর্টিস্টের id পাওয়ার পর প্লে-লিস্ট আনা হচ্ছে */}
+        <Playlists artistID={artist.id} />
+      </Suspense>
+    </>
+  );
+}
+
+async function Playlists({ artistID }) {
+  // আর্টিস্টের ID ব্যবহার করে প্লে-লিস্ট আনা হচ্ছে
+  const playlists = await getArtistPlaylists(artistID);
+
+  return (
+    <ul>
+      {playlists.map((playlist) => (
+        <li key={playlist.id}>{playlist.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+এখানে, `<Playlists>` কম্পোনেন্টের ডেটা ফেচ করা শুরু হবে যখন `getArtist` ডেটা নিয়ে আসবে।
+
+### সমান্তরাল ডেটা আনা (Parallel Data Fetching)
+
+পারফরম্যান্স বাড়ানোর জন্য, আপনি একাধিক ডেটা অনুরোধ একই সাথে শুরু করতে পারেন। এটি বিশেষ করে তখন দরকার যখন একটি অনুরোধ অন্যটির উপর নির্ভরশীল নয়। `Promise.all` ব্যবহার করে এটি করা যায়।
+
+```jsx
+// app/artist/[username]/page.js
+
+import Albums from "./albums";
+
+async function getArtist(username) {
+  // ... artist ডেটা আনার কোড ...
+}
+
+async function getAlbums(username) {
+  // ... albums ডেটা আনার কোড ...
+}
+
+export default async function Page({ params }) {
+  const { username } = await params;
+
+  // দুটি অনুরোধ একসাথে শুরু করা হচ্ছে
+  const artistData = getArtist(username);
+  const albumsData = getAlbums(username);
+
+  // Promise.all দিয়ে দুটি অনুরোধের ফলাফল পাওয়ার জন্য অপেক্ষা করা হচ্ছে
+  const [artist, albums] = await Promise.all([artistData, albumsData]);
+
+  return (
+    <>
+      <h1>{artist.name}</h1>
+      <Albums list={albums} />
+    </>
+  );
+}
+```
+
+এই পদ্ধতিতে, `getArtist` এবং `getAlbums` ফাংশন দুটি একই সাথে চলতে শুরু করবে, ফলে মোট লোডিং টাইম কমে যাবে।
