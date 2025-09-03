@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect, useRef, useState } from "react";
 
 const ProgressBar: React.FC = () => {
   const [progress, setProgress] = useState(0);
@@ -7,7 +7,7 @@ const ProgressBar: React.FC = () => {
   const router = useRouter();
 
   // Hide progress bar on 404 pages
-  const is404Page = router.pathname === '/404' || router.asPath === '/404' || router.pathname.includes('404');
+  const is404Page = router.pathname === '/404' || router.asPath === '/404';
 
   // Update progress on scroll
   useEffect(() => {
