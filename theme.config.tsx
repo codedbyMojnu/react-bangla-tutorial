@@ -20,7 +20,7 @@ const Pitfall = dynamic(() => import("./components/Pitfall"), {
 const Reveal = dynamic(() => import("./components/Reveal"), {
   ssr: false,
 }) as React.FC<any>;
-const Custom404Page = dynamic(() => import("./pages/404.mdx").then(mod => ({ default: mod.Custom404Page })), {
+const Custom404Page = dynamic(() => import("./components/Custom404Page"), {
   ssr: false,
 }) as React.FC<any>;
 
