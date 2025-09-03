@@ -7,7 +7,7 @@ const ProgressBar: React.FC = () => {
   const router = useRouter();
 
   // Hide progress bar on 404 pages
-  const is404Page = router.pathname === '/404' || router.asPath === '/404';
+  const is404Page = router.pathname === '/404' || router.asPath === '/404' || router.pathname.includes('404');
 
   // Update progress on scroll
   useEffect(() => {

@@ -20,6 +20,9 @@ const Pitfall = dynamic(() => import("./components/Pitfall"), {
 const Reveal = dynamic(() => import("./components/Reveal"), {
   ssr: false,
 }) as React.FC<any>;
+const Custom404Page = dynamic(() => import("./pages/404.mdx").then(mod => ({ default: mod.Custom404Page })), {
+  ssr: false,
+}) as React.FC<any>;
 
 const config: DocsThemeConfig = {
   logo: <Logo />,
@@ -43,6 +46,7 @@ const config: DocsThemeConfig = {
     AudioPlayer,
     PdfDownloader,
     VideoPlayer,
+    Custom404Page,
   },
   useNextSeoProps() {
     if (typeof window !== "undefined" && window.location.pathname !== "/") {

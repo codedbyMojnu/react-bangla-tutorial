@@ -9,6 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <ProgressBar />
+
       <Component {...pageProps} />
       <Analytics />
       <SpeedInsights />
