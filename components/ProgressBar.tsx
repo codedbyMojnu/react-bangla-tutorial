@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 const ProgressBar: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const ticking = useRef(false);
+  const router = useRouter();
+
+  // Hide progress bar on 404 pages
+  const is404Page = router.pathname === '/404' || router.asPath === '/404';
 
   // Update progress on scroll
   useEffect(() => {
@@ -23,6 +28,11 @@ const ProgressBar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Don't render the progress bar on 404 pages
+  if (is404Page) {
+    return null;
+  }
+
   return (
     <div
       style={{
@@ -30,7 +40,7 @@ const ProgressBar: React.FC = () => {
         top: 64, // Adjust this value to match your header's height
         left: 0,
         width: "100%",
-        height: "4px",
+        height: "2px",
         background: "rgba(37,99,235,0.08)",
         zIndex: 9999,
       }}
