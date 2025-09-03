@@ -1,0 +1,576 @@
+---
+title: Getting Started with React | React দিয়ে শুরু করা
+description: Learn how to set up your development environment and create your first React application. Step by step guide in Bengali.
+---
+
+import { InteractiveQuiz } from '../../../components/learning/InteractiveQuiz'
+import { AdvancedPlayground } from '../../../components/playground/AdvancedPlayground'
+import { LearningAssistant } from '../../../components/learning/LearningAssistant'
+
+# 🚀 Getting Started with React | React দিয়ে শুরু করা
+
+**আপনার প্রথম React অ্যাপ্লিকেশন তৈরি করুন মাত্র কয়েক মিনিটে!**
+
+React শেখা শুরু করার জন্য আপনাকে প্রথমে আপনার কম্পিউটারে development environment সেটআপ করতে হবে। এই লেসনে আমরা দেখবো কিভাবে React এর জন্য সব কিছু প্রস্তুত করতে হয়।
+
+---
+
+## 📋 Prerequisites | পূর্বশর্ত
+
+React শেখার আগে এই বিষয়গুলো জানা থাকলে ভালো:
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+  gap: '1rem',
+  margin: '1.5rem 0'
+}}>
+
+<div style={{
+  background: '#f0fdf4',
+  border: '1px solid #16a34a',
+  padding: '1rem',
+  borderRadius: '8px'
+}}>
+
+### ✅ **HTML & CSS**
+- Basic HTML tags and structure
+- CSS styling and selectors
+- Responsive design basics
+
+</div>
+
+<div style={{
+  background: '#fffbeb',
+  border: '1px solid #f59e0b',
+  padding: '1rem',
+  borderRadius: '8px'
+}}>
+
+### ⚡ **JavaScript (ES6+)**
+- Variables and functions
+- Arrays and objects
+- Arrow functions
+- Destructuring
+
+</div>
+
+<div style={{
+  background: '#f0f9ff',
+  border: '1px solid #0ea5e9',
+  padding: '1rem',
+  borderRadius: '8px'
+}}>
+
+### 🛠️ **Development Tools**
+- Code editor (VS Code)
+- Terminal/Command Prompt
+- Package manager (npm/yarn)
+
+</div>
+
+</div>
+
+> **💡 Don't worry!** যদি এই বিষয়গুলো সম্পর্কে আপনার ধারণা কম থাকে, আমাদের [Prerequisites Tutorial](/tutorials/html-css-basics) দেখে নিতে পারেন।
+
+---
+
+## 🛠️ Development Environment Setup | ডেভেলপমেন্ট এনভায়রনমেন্ট সেটআপ
+
+### Step 1: Install Node.js | Node.js ইনস্টল করুন
+
+React অ্যাপ্লিকেশন চালানোর জন্য আপনার কম্পিউটারে Node.js থাকতে হবে।
+
+1. **[nodejs.org](https://nodejs.org/)** এ যান
+2. **LTS version** ডাউনলোড করুন
+3. ডাউনলোড হওয়া ফাইল রান করে ইনস্টল করুন
+
+**যাচাই করুন Installation সফল হয়েছে কিনা:**
+
+```bash
+node --version
+npm --version
+```
+
+### Step 2: Code Editor Setup | কোড এডিটর সেটআপ
+
+**VS Code** সবচেয়ে জনপ্রিয় এবং React development এর জন্য সেরা।
+
+**প্রয়োজনীয় Extensions:**
+- ES7+ React/Redux/React-Native snippets
+- Prettier - Code formatter
+- Auto Rename Tag
+- Bracket Pair Colorizer
+
+---
+
+## 🏗️ Creating Your First React App | প্রথম React অ্যাপ তৈরি করা
+
+### Method 1: Create React App (Recommended for Beginners)
+
+```bash
+# Create a new React app
+npx create-react-app my-first-app
+
+# Navigate to the project folder
+cd my-first-app
+
+# Start the development server
+npm start
+```
+
+### Method 2: Vite (Faster Alternative)
+
+```bash
+# Create with Vite
+npm create vite@latest my-react-app -- --template react
+
+# Navigate and install dependencies
+cd my-react-app
+npm install
+
+# Start development server
+npm run dev
+```
+
+<Pitfall>
+
+**সমস্যা হলে কী করবেন:**
+
+- **Permission Error**: `sudo` ব্যবহার করুন Linux/Mac এ
+- **Network Error**: Internet connection চেক করুন
+- **Old Node Version**: Node.js update করুন
+
+</Pitfall>
+
+---
+
+## 📁 Project Structure | প্রজেক্ট স্ট্রাকচার
+
+আপনার React app তৈরি হওয়ার পর এরকম structure দেখতে পাবেন:
+
+```
+my-first-app/
+├── public/
+│   ├── index.html      # Main HTML file
+│   └── favicon.ico     # App icon
+├── src/
+│   ├── App.js          # Main App component
+│   ├── index.js        # Entry point
+│   ├── App.css         # App styles
+│   └── index.css       # Global styles
+├── package.json        # Dependencies and scripts
+└── README.md          # Project documentation
+```
+
+### 🔍 Important Files Explained:
+
+<div style={{
+  background: '#f8fafc',
+  border: '1px solid #e2e8f0',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  margin: '1rem 0'
+}}>
+
+**📄 `public/index.html`** - এটি আপনার অ্যাপের main HTML file। React components এখানে render হয়।
+
+**⚛️ `src/App.js`** - এটি আপনার main React component। এখানেই আপনি আপনার অ্যাপের UI লিখবেন।
+
+**🚀 `src/index.js`** - এটি entry point। এখান থেকে React app শুরু হয়।
+
+**📦 `package.json`** - এখানে project এর সব dependencies এবং scripts আছে।
+
+</div>
+
+---
+
+## 💻 Your First React Component | প্রথম React কম্পোনেন্ট
+
+চলুন `src/App.js` file এ আমাদের প্রথম React component তৈরি করি:
+
+<AdvancedPlayground
+  lessonId="getting-started-first-component"
+  initialTemplate={{
+    id: 'first-react-app',
+    name: 'My First React App',
+    nameBn: 'আমার প্রথম React অ্যাপ',
+    description: 'Create your first React component',
+    descriptionBn: 'আপনার প্রথম React কম্পোনেন্ট তৈরি করুন',
+    category: 'basic',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `import React from 'react';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>🎉 আমার প্রথম React অ্যাপ!</h1>
+        <p>
+          Welcome to React Bangla Tutorial!
+        </p>
+        <p>
+          React শেখার জন্য আপনাকে স্বাগতম।
+        </p>
+        <a
+          href="https://react-bangla.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn More React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+export default App;`
+      },
+      '/App.css': {
+        name: 'App.css',
+        content: `.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 40px;
+  color: white;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.App-header h1 {
+  margin-bottom: 20px;
+  color: #61dafb;
+}
+
+.App-header p {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.App-header a {
+  color: #61dafb;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: 2px solid #61dafb;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.App-header a:hover {
+  background-color: #61dafb;
+  color: #282c34;
+}`
+      }
+    }
+  }}
+  customChallenges={[
+    {
+      id: 'change-title',
+      titleBn: 'টাইটেল পরিবর্তন করুন',
+      title: 'Change the Title',
+      descriptionBn: 'h1 এর ভিতরের টেক্সট পরিবর্তন করে আপনার নাম দিন',
+      description: 'Change the h1 text to include your name',
+      points: 50,
+      testCases: [
+        {
+          name: 'Has h1 tag',
+          test: (code) => code.includes('<h1>') && code.includes('</h1>'),
+          hintBn: 'h1 ট্যাগ ব্যবহার করুন',
+          hint: 'Use h1 tag'
+        }
+      ]
+    },
+    {
+      id: 'add-button',
+      titleBn: 'বাটন যোগ করুন',
+      title: 'Add a Button',
+      descriptionBn: 'একটি button element যোগ করুন',
+      description: 'Add a button element to the component',
+      points: 75,
+      testCases: [
+        {
+          name: 'Has button',
+          test: (code) => code.includes('<button'),
+          hintBn: 'button ট্যাগ ব্যবহার করুন',
+          hint: 'Use button tag'
+        }
+      ]
+    }
+  ]}
+/>
+
+---
+
+## 🧠 Understanding the Code | কোড বুঝা
+
+আসুন আমাদের React component এর প্রতিটি অংশ বুঝে নিই:
+
+### 1. Import Statements
+
+```javascript
+import React from 'react';
+import './App.css';
+```
+
+- `React` library import করছি
+- CSS file import করে styling যোগ করছি
+
+### 2. Function Component
+
+```javascript
+function App() {
+  // Component logic goes here
+  return (
+    // JSX goes here
+  );
+}
+```
+
+- `App` একটি **function component**
+- এটি JSX return করে যা UI describe করে
+
+### 3. JSX (JavaScript XML)
+
+```javascript
+<div className="App">
+  <h1>🎉 আমার প্রথম React অ্যাপ!</h1>
+  <p>Welcome to React!</p>
+</div>
+```
+
+- HTML এর মতো syntax কিন্তু JavaScript এর ভিতরে
+- `className` ব্যবহার করি `class` এর পরিবর্তে
+
+### 4. Export Statement
+
+```javascript
+export default App;
+```
+
+- Component কে export করি যাতে অন্য file থেকে import করা যায়
+
+---
+
+## 🎯 Quick Quiz | দ্রুত কুইজ
+
+আপনি React basics কতটুকু বুঝেছেন তা পরীক্ষা করুন:
+
+<InteractiveQuiz
+  lessonId="getting-started-quiz"
+  titleBn="Getting Started কুইজ"
+  title="Getting Started Quiz"
+  questions={[
+    {
+      id: "q1",
+      questionBn: "React অ্যাপ তৈরি করার জন্য কোন command ব্যবহার করি?",
+      question: "Which command is used to create a new React app?",
+      options: [
+        {
+          id: "a",
+          textBn: "npx create-react-app my-app",
+          text: "npx create-react-app my-app",
+          isCorrect: true,
+          explanationBn: "সঠিক! এই command দিয়ে নতুন React অ্যাপ তৈরি করা হয়।"
+        },
+        {
+          id: "b",
+          textBn: "npm install react",
+          text: "npm install react",
+          isCorrect: false,
+          explanationBn: "ভুল। এটি শুধু React library install করে।"
+        },
+        {
+          id: "c",
+          textBn: "react new app",
+          text: "react new app",
+          isCorrect: false,
+          explanationBn: "ভুল। এমন কোনো command নেই।"
+        },
+        {
+          id: "d",
+          textBn: "npm start react",
+          text: "npm start react",
+          isCorrect: false,
+          explanationBn: "ভুল। এটি অ্যাপ চালানোর command নয়।"
+        }
+      ],
+      difficulty: "beginner",
+      points: 25
+    },
+    {
+      id: "q2",
+      questionBn: "React component এ HTML class attribute এর জায়গায় কী ব্যবহার করি?",
+      question: "What do we use instead of HTML class attribute in React?",
+      options: [
+        {
+          id: "a",
+          textBn: "className",
+          text: "className",
+          isCorrect: true,
+          explanationBn: "সঠিক! React এ className ব্যবহার করি class এর পরিবর্তে।"
+        },
+        {
+          id: "b",
+          textBn: "class",
+          text: "class",
+          isCorrect: false,
+          explanationBn: "ভুল। class একটি reserved keyword JavaScript এ।"
+        },
+        {
+          id: "c",
+          textBn: "style",
+          text: "style",
+          isCorrect: false,
+          explanationBn: "ভুল। style inline styling এর জন্য ব্যবহার হয়।"
+        },
+        {
+          id: "d",
+          textBn: "cssClass",
+          text: "cssClass",
+          isCorrect: false,
+          explanationBn: "ভুল। এমন কোনো attribute নেই।"
+        }
+      ],
+      difficulty: "beginner",
+      points: 30
+    },
+    {
+      id: "q3",
+      questionBn: "React app চালানোর জন্য কোন command ব্যবহার করি?",
+      question: "Which command is used to start a React development server?",
+      options: [
+        {
+          id: "a",
+          textBn: "npm start",
+          text: "npm start",
+          isCorrect: true,
+          explanationBn: "সঠিক! npm start দিয়ে development server চালু করা হয়।"
+        },
+        {
+          id: "b",
+          textBn: "npm run",
+          text: "npm run",
+          isCorrect: false,
+          explanationBn: "ভুল। npm run এর পর script name দিতে হয়।"
+        },
+        {
+          id: "c",
+          textBn: "react start",
+          text: "react start",
+          isCorrect: false,
+          explanationBn: "ভুল। এমন কোনো command নেই।"
+        },
+        {
+          id: "d",
+          textBn: "npm build",
+          text: "npm build",
+          isCorrect: false,
+          explanationBn: "ভুল। এটি production build করার জন্য।"
+        }
+      ],
+      difficulty: "beginner",
+      points: 25
+    }
+  ]}
+/>
+
+---
+
+## 🚀 Next Steps | পরবর্তী ধাপ
+
+অভিনন্দন! 🎉 আপনি সফলভাবে React development environment সেটআপ করেছেন এবং আপনার প্রথম React component তৈরি করেছেন।
+
+### এখন আপনি শিখবেন:
+
+1. **[Components](/tutorials/react-fundamentals/components)** - React এর building blocks
+2. **[JSX](/tutorials/react-fundamentals/jsx)** - JavaScript এর মধ্যে HTML
+3. **[Props](/tutorials/react-fundamentals/props)** - Components এর মধ্যে data pass করা
+
+### 💪 Practice Suggestions:
+
+- আপনার component এ নতুন elements যোগ করুন
+- CSS styling পরিবর্তন করে দেখুন
+- একটি simple "About Me" page তৈরি করুন
+
+---
+
+## 🆘 Common Issues & Solutions | সাধারণ সমস্যা ও সমাধান
+
+<div style={{
+  background: '#fef2f2',
+  border: '1px solid #fca5a5',
+  padding: '1rem',
+  borderRadius: '8px',
+  margin: '1rem 0'
+}}>
+
+### ❌ **Port 3000 is already in use**
+
+**সমাধান:**
+```bash
+# Kill the process using port 3000
+lsof -ti:3000 | xargs kill -9
+
+# Or use a different port
+npm start -- --port 3001
+```
+
+</div>
+
+<div style={{
+  background: '#fef2f2',
+  border: '1px solid #fca5a5',
+  padding: '1rem',
+  borderRadius: '8px',
+  margin: '1rem 0'
+}}>
+
+### ❌ **Module not found errors**
+
+**সমাধান:**
+```bash
+# Delete node_modules and reinstall
+rm -rf node_modules
+npm install
+```
+
+</div>
+
+---
+
+<LearningAssistant 
+  lessonContext="React Getting Started - Environment Setup and First Component"
+  currentCode={`function App() {
+  return (
+    <div className="App">
+      <h1>My First React App</h1>
+    </div>
+  );
+}`}
+  visible={false}
+/>
+
+**Next:** [Understanding Components →](/tutorials/react-fundamentals/components)
+
+---
+
+## 📚 Additional Resources | অতিরিক্ত রিসোর্স
+
+- 📖 [Official React Documentation](https://react.dev)
+- 🎥 [React Dev Tools Browser Extension](https://react.dev/learn/react-developer-tools)
+- 🛠️ [VS Code React Extensions](https://marketplace.visualstudio.com/search?term=react&target=VSCode)
+- 📱 [React Native for Mobile Development](https://reactnative.dev)
+
+**Happy Coding! 🚀 সুখী কোডিং!**

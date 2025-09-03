@@ -1,0 +1,844 @@
+# Components | কম্পোনেন্ট
+
+React components হচ্ছে UI এর building blocks। এরা independent, reusable pieces of code যা complex UI তৈরি করতে ব্যবহৃত হয়।
+
+## What are Components? / কম্পোনেন্ট কি?
+
+Component হল একটি JavaScript function বা class যা:
+- **Props** accept করে (input হিসেবে)
+- **React elements** return করে (যা screen এ render হয়)
+- **Reusable** এবং **composable**
+
+```jsx
+// Simple Component
+function Welcome() {
+  return <h1>Hello, World!</h1>;
+}
+```
+
+## Types of Components / কম্পোনেন্টের ধরন
+
+### 1. Function Components / ফাংশন কম্পোনেন্ট
+
+Modern React এ preferred approach। Simple এবং hooks ব্যবহার করতে পারে।
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React from 'react';
+
+// Simple Function Component
+function Greeting() {
+  return <h1>Hello from Function Component!</h1>;
+}
+
+// Function Component with Parameters
+function PersonalGreeting({ name, age }) {
+  return (
+    <div>
+      <h2>Personal Greeting</h2>
+      <p>Hello, {name}!</p>
+      <p>You are {age} years old.</p>
+    </div>
+  );
+}
+
+// Arrow Function Component
+const StatusMessage = ({ status }) => {
+  return <p>Current status: {status}</p>;
+};
+
+function App() {
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Function Components Demo</h1>
+      
+      {/* Using Simple Component */}
+      <Greeting />
+      
+      {/* Using Component with Props */}
+      <PersonalGreeting name="Ahmed" age={25} />
+      <PersonalGreeting name="Fatima" age={30} />
+      
+      {/* Using Arrow Function Component */}
+      <StatusMessage status="Active" />
+      <StatusMessage status="Inactive" />
+      
+      <div style={{
+        marginTop: '20px',
+        padding: '15px',
+        backgroundColor: '#e7f3ff',
+        borderRadius: '4px'
+      }}>
+        <h3>Key Benefits:</h3>
+        <ul>
+          <li>Simple and easy to understand</li>
+          <li>Less boilerplate code</li>
+          <li>Better performance</li>
+          <li>Hooks support</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+### 2. Class Components / ক্লাস কম্পোনেন্ট
+
+Legacy approach কিন্তু এখনও ব্যবহৃত হয়। Lifecycle methods এবং state management এর জন্য।
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React, { Component } from 'react';
+
+// Class Component
+class Welcome extends Component {
+  render() {
+    return <h1>Hello from Class Component!</h1>;
+  }
+}
+
+// Class Component with Props
+class PersonInfo extends Component {
+  render() {
+    const { name, profession, location } = this.props;
+    return (
+      <div style={{
+        border: '1px solid #ddd',
+        padding: '15px',
+        margin: '10px 0',
+        borderRadius: '4px'
+      }}>
+        <h3>{name}</h3>
+        <p><strong>Profession:</strong> {profession}</p>
+        <p><strong>Location:</strong> {location}</p>
+      </div>
+    );
+  }
+}
+
+// Class Component with State
+class Counter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0,
+      message: 'Click the button!'
+    };
+  }
+
+  handleIncrement = () => {
+    this.setState(prevState => ({
+      count: prevState.count + 1,
+      message: \`You clicked \${prevState.count + 1} times!\`
+    }));
+  };
+
+  handleReset = () => {
+    this.setState({
+      count: 0,
+      message: 'Counter reset! Click to start again.'
+    });
+  };
+
+  render() {
+    return (
+      <div style={{
+        backgroundColor: '#f8f9fa',
+        padding: '20px',
+        borderRadius: '8px',
+        textAlign: 'center'
+      }}>
+        <h3>Counter: {this.state.count}</h3>
+        <p>{this.state.message}</p>
+        <button 
+          onClick={this.handleIncrement}
+          style={{
+            backgroundColor: '#007bff',
+            color: 'white',
+            border: 'none',
+            padding: '10px 20px',
+            margin: '5px',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Increment
+        </button>
+        <button 
+          onClick={this.handleReset}
+          style={{
+            backgroundColor: '#6c757d',
+            color: 'white',
+            border: 'none',
+            padding: '10px 20px',
+            margin: '5px',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Reset
+        </button>
+      </div>
+    );
+  }
+}
+
+class App extends Component {
+  render() {
+    return (
+      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <h1>Class Components Demo</h1>
+        
+        <Welcome />
+        
+        <h2>Person Information</h2>
+        <PersonInfo 
+          name="Ahmed Hassan" 
+          profession="Software Developer" 
+          location="Dhaka, Bangladesh" 
+        />
+        <PersonInfo 
+          name="Fatima Khan" 
+          profession="UI/UX Designer" 
+          location="Chittagong, Bangladesh" 
+        />
+        
+        <h2>Interactive Counter</h2>
+        <Counter />
+      </div>
+    );
+  }
+}
+
+export default App;`
+  }}
+/>
+
+## Component Composition / কম্পোনেন্ট কম্পোজিশন
+
+Components কে একসাথে combine করে complex UI তৈরি করা।
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React, { useState } from 'react';
+
+// Avatar Component
+function Avatar({ src, alt, size = 50 }) {
+  return (
+    <img 
+      src={src} 
+      alt={alt}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        objectFit: 'cover'
+      }}
+    />
+  );
+}
+
+// Badge Component  
+function Badge({ text, type = 'primary' }) {
+  const colors = {
+    primary: { bg: '#007bff', color: 'white' },
+    success: { bg: '#28a745', color: 'white' },
+    warning: { bg: '#ffc107', color: 'black' },
+    danger: { bg: '#dc3545', color: 'white' }
+  };
+
+  return (
+    <span style={{
+      backgroundColor: colors[type].bg,
+      color: colors[type].color,
+      padding: '4px 8px',
+      borderRadius: '12px',
+      fontSize: '12px',
+      fontWeight: 'bold'
+    }}>
+      {text}
+    </span>
+  );
+}
+
+// Button Component
+function Button({ children, variant = 'primary', size = 'medium', onClick, disabled }) {
+  const variants = {
+    primary: { bg: '#007bff', color: 'white' },
+    secondary: { bg: '#6c757d', color: 'white' },
+    success: { bg: '#28a745', color: 'white' },
+    danger: { bg: '#dc3545', color: 'white' }
+  };
+
+  const sizes = {
+    small: { padding: '6px 12px', fontSize: '14px' },
+    medium: { padding: '8px 16px', fontSize: '16px' },
+    large: { padding: '12px 24px', fontSize: '18px' }
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        backgroundColor: disabled ? '#e9ecef' : variants[variant].bg,
+        color: disabled ? '#6c757d' : variants[variant].color,
+        border: 'none',
+        borderRadius: '4px',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        margin: '4px',
+        ...sizes[size]
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+// Card Component
+function Card({ title, children, footer }) {
+  return (
+    <div style={{
+      border: '1px solid #dee2e6',
+      borderRadius: '8px',
+      backgroundColor: 'white',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      margin: '16px 0'
+    }}>
+      {title && (
+        <div style={{
+          padding: '16px',
+          borderBottom: '1px solid #dee2e6',
+          backgroundColor: '#f8f9fa'
+        }}>
+          <h3 style={{ margin: 0 }}>{title}</h3>
+        </div>
+      )}
+      <div style={{ padding: '16px' }}>
+        {children}
+      </div>
+      {footer && (
+        <div style={{
+          padding: '12px 16px',
+          borderTop: '1px solid #dee2e6',
+          backgroundColor: '#f8f9fa'
+        }}>
+          {footer}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// UserProfile Component (Composition of above components)
+function UserProfile({ user }) {
+  const [following, setFollowing] = useState(false);
+
+  return (
+    <Card
+      title="User Profile"
+      footer={
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Badge text={user.status} type={user.status === 'online' ? 'success' : 'secondary'} />
+          <div>
+            <Button 
+              variant={following ? 'secondary' : 'primary'}
+              onClick={() => setFollowing(!following)}
+            >
+              {following ? 'Unfollow' : 'Follow'}
+            </Button>
+            <Button variant="success">Message</Button>
+          </div>
+        </div>
+      }
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <Avatar 
+          src={\`https://ui-avatars.com/api/?name=\${user.name}&background=007bff&color=fff\`}
+          alt={user.name}
+          size={80}
+        />
+        <div>
+          <h2 style={{ margin: '0 0 8px 0' }}>{user.name}</h2>
+          <p style={{ margin: '0 0 4px 0', color: '#6c757d' }}>{user.role}</p>
+          <p style={{ margin: '0', fontSize: '14px' }}>{user.location}</p>
+        </div>
+      </div>
+      
+      <div style={{ marginTop: '16px' }}>
+        <h4>Skills:</h4>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {user.skills.map((skill, index) => (
+            <Badge key={index} text={skill} type="primary" />
+          ))}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function App() {
+  const users = [
+    {
+      name: 'Ahmed Hassan',
+      role: 'Frontend Developer',
+      location: 'Dhaka, Bangladesh',
+      status: 'online',
+      skills: ['React', 'JavaScript', 'CSS', 'Node.js']
+    },
+    {
+      name: 'Fatima Khan',
+      role: 'UI/UX Designer',
+      location: 'Chittagong, Bangladesh', 
+      status: 'offline',
+      skills: ['Figma', 'Adobe XD', 'Photoshop', 'Illustrator']
+    }
+  ];
+
+  return (
+    <div style={{ 
+      padding: '20px', 
+      fontFamily: 'Arial, sans-serif',
+      backgroundColor: '#f5f5f5',
+      minHeight: '100vh'
+    }}>
+      <h1>Component Composition Demo</h1>
+      <p>এই উদাহরণে দেখুন কিভাবে ছোট components দিয়ে complex UI তৈরি করা যায়।</p>
+      
+      {users.map((user, index) => (
+        <UserProfile key={index} user={user} />
+      ))}
+
+      <Card title="Component Breakdown">
+        <h4>এই demo তে ব্যবহৃত components:</h4>
+        <ul>
+          <li><strong>Avatar:</strong> User profile picture</li>
+          <li><strong>Badge:</strong> Status indicators ও skill tags</li>
+          <li><strong>Button:</strong> Interactive action buttons</li>
+          <li><strong>Card:</strong> Content container with header/footer</li>
+          <li><strong>UserProfile:</strong> সব components এর composition</li>
+        </ul>
+      </Card>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+## Props vs Children / Props বনাম Children
+
+### Props Pattern / Props প্যাটার্ন
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React from 'react';
+
+// Alert Component using Props
+function Alert({ type, title, message, icon }) {
+  const styles = {
+    success: { bg: '#d4edda', border: '#c3e6cb', color: '#155724' },
+    warning: { bg: '#fff3cd', border: '#ffeaa7', color: '#856404' },
+    error: { bg: '#f8d7da', border: '#f5c6cb', color: '#721c24' },
+    info: { bg: '#d1ecf1', border: '#bee5eb', color: '#0c5460' }
+  };
+
+  const style = styles[type] || styles.info;
+
+  return (
+    <div style={{
+      backgroundColor: style.bg,
+      border: \`1px solid \${style.border}\`,
+      color: style.color,
+      padding: '16px',
+      borderRadius: '4px',
+      margin: '12px 0',
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '12px'
+    }}>
+      {icon && <span style={{ fontSize: '20px' }}>{icon}</span>}
+      <div>
+        {title && <h4 style={{ margin: '0 0 8px 0' }}>{title}</h4>}
+        <p style={{ margin: 0 }}>{message}</p>
+      </div>
+    </div>
+  );
+}
+
+// Modal Component using Children
+function Modal({ isOpen, onClose, title, children }) {
+  if (!isOpen) return null;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000
+    }}>
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        padding: '24px',
+        maxWidth: '500px',
+        width: '90%',
+        maxHeight: '80%',
+        overflow: 'auto'
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '16px'
+        }}>
+          <h2 style={{ margin: 0 }}>{title}</h2>
+          <button 
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '24px',
+              cursor: 'pointer',
+              color: '#6c757d'
+            }}
+          >
+            ×
+          </button>
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [modalOpen, setModalOpen] = React.useState(false);
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Props vs Children Pattern</h1>
+      
+      <h2>Props Pattern - Alert Components</h2>
+      <p>Alert components যেখানে সব content props হিসেবে pass করা হয়:</p>
+      
+      <Alert 
+        type="success"
+        icon="✅"
+        title="Success!"
+        message="Your form has been submitted successfully."
+      />
+      
+      <Alert 
+        type="warning"
+        icon="⚠️"
+        title="Warning"
+        message="Please review your information before proceeding."
+      />
+      
+      <Alert 
+        type="error"
+        icon="❌"
+        title="Error"
+        message="There was an error processing your request."
+      />
+      
+      <Alert 
+        type="info"
+        icon="ℹ️"
+        message="This is an informational message without a title."
+      />
+
+      <h2>Children Pattern - Modal Component</h2>
+      <p>Modal component যেখানে content children হিসেবে pass করা হয়:</p>
+      
+      <button 
+        onClick={() => setModalOpen(true)}
+        style={{
+          backgroundColor: '#007bff',
+          color: 'white',
+          border: 'none',
+          padding: '12px 24px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontSize: '16px'
+        }}
+      >
+        Open Modal
+      </button>
+
+      <Modal 
+        isOpen={modalOpen} 
+        onClose={() => setModalOpen(false)}
+        title="User Registration"
+      >
+        <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div>
+            <label>Name:</label>
+            <input 
+              type="text" 
+              style={{
+                width: '100%',
+                padding: '8px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                marginTop: '4px'
+              }}
+            />
+          </div>
+          <div>
+            <label>Email:</label>
+            <input 
+              type="email"
+              style={{
+                width: '100%',
+                padding: '8px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                marginTop: '4px'
+              }}
+            />
+          </div>
+          <div>
+            <label>Message:</label>
+            <textarea 
+              rows={4}
+              style={{
+                width: '100%',
+                padding: '8px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                marginTop: '4px',
+                resize: 'vertical'
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+            <button 
+              type="button"
+              onClick={() => setModalOpen(false)}
+              style={{
+                backgroundColor: '#6c757d',
+                color: 'white',
+                border: 'none',
+                padding: '10px 20px',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit"
+              style={{
+                backgroundColor: '#28a745',
+                color: 'white',
+                border: 'none',
+                padding: '10px 20px',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              Register
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      <div style={{
+        marginTop: '24px',
+        padding: '16px',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '4px'
+      }}>
+        <h3>কখন কোনটি ব্যবহার করবেন:</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div>
+            <h4>Props Pattern ব্যবহার করুন যখন:</h4>
+            <ul>
+              <li>Simple data pass করতে হবে</li>
+              <li>Component structure fixed</li>
+              <li>Type checking সহজ</li>
+              <li>Performance optimization প্রয়োজন</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Children Pattern ব্যবহার করুন যখন:</h4>
+            <ul>
+              <li>Flexible content structure</li>
+              <li>Reusable wrapper components</li>
+              <li>Layout components</li>
+              <li>Content composition প্রয়োজন</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+## Component Best Practices / কম্পোনেন্ট সেরা অনুশীলন
+
+### 1. Single Responsibility / একক দায়িত্ব
+
+```jsx
+// ❌ Bad - Multiple responsibilities
+function UserDashboard({ user }) {
+  return (
+    <div>
+      <img src={user.avatar} alt={user.name} />
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+      <div>
+        {user.posts.map(post => (
+          <div key={post.id}>
+            <h3>{post.title}</h3>
+            <p>{post.content}</p>
+            <span>{post.date}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ✅ Good - Separated responsibilities
+function UserProfile({ user }) {
+  return (
+    <div>
+      <img src={user.avatar} alt={user.name} />
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+    </div>
+  );
+}
+
+function PostList({ posts }) {
+  return (
+    <div>
+      {posts.map(post => (
+        <Post key={post.id} post={post} />
+      ))}
+    </div>
+  );
+}
+
+function Post({ post }) {
+  return (
+    <div>
+      <h3>{post.title}</h3>
+      <p>{post.content}</p>
+      <span>{post.date}</span>
+    </div>
+  );
+}
+```
+
+### 2. Proper Naming / সঠিক নামকরণ
+
+```jsx
+// ❌ Bad names
+function Comp1({ data }) { /* ... */ }
+function thing({ user }) { /* ... */ }
+function handleStuff() { /* ... */ }
+
+// ✅ Good names
+function UserProfileCard({ user }) { /* ... */ }
+function ProductList({ products }) { /* ... */ }
+function handleUserLogin() { /* ... */ }
+```
+
+### 3. Default Props / ডিফল্ট Props
+
+```jsx
+function Button({ 
+  children, 
+  variant = 'primary', 
+  size = 'medium', 
+  disabled = false,
+  onClick = () => {}
+}) {
+  return (
+    <button 
+      className={\`btn btn-\${variant} btn-\${size}\`}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+## Interactive Quiz / ইন্টারঅ্যাক্টিভ কুইজ
+
+<InteractiveQuiz
+  title="React Components Quiz"
+  questions={[
+    {
+      id: 1,
+      question: "React এ Function Component কিভাবে define করবেন?",
+      options: [
+        "function MyComponent() { return <div>Hello</div>; }",
+        "const MyComponent = <div>Hello</div>;",
+        "MyComponent() => <div>Hello</div>;",
+        "component MyComponent { return <div>Hello</div>; }"
+      ],
+      correct: 0,
+      explanation: "Function component একটি JavaScript function যা JSX return করে।"
+    },
+    {
+      id: 2,
+      question: "Component composition এর মূল সুবিধা কি?",
+      options: [
+        "Code faster execute হয়",
+        "Reusability এবং maintainability",
+        "Memory কম ব্যবহার হয়",
+        "Bundle size ছোট হয়"
+      ],
+      correct: 1,
+      explanation: "Component composition reusability এবং maintainability বাড়ায়।"
+    },
+    {
+      id: 3,
+      question: "কখন children prop ব্যবহার করবেন?",
+      options: [
+        "যখন simple data pass করতে হবে",
+        "যখন flexible content structure প্রয়োজন",
+        "যখন type checking করতে হবে",
+        "যখন state manage করতে হবে"
+      ],
+      correct: 1,
+      explanation: "Children prop flexible content structure এর জন্য ব্যবহার করা হয়।"
+    }
+  ]}
+/>
+
+## Summary / সারসংক্ষেপ
+
+Components হল React এর core concept। এই অধ্যায়ে আমরা শিখেছি:
+
+1. **Function vs Class Components**: Modern React এ function components preferred
+2. **Component Composition**: ছোট components দিয়ে complex UI তৈরি
+3. **Props vs Children**: কখন কোনটি ব্যবহার করবেন
+4. **Best Practices**: Clean, maintainable components লেখার নিয়ম
+
+**Next Chapter**: আমরা JSX syntax সম্পর্কে বিস্তারিত শিখব এবং কিভাবে JavaScript এর সাথে HTML মিশ্রিত করতে হয় তা দেখব।

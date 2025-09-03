@@ -1,0 +1,701 @@
+---
+title: Beginner React Exercises | শুরুর স্তরের React অনুশীলনী
+description: Practice React basics with these beginner-friendly exercises. Perfect for those just starting their React journey.
+---
+
+import { AdvancedPlayground } from '../../components/playground/AdvancedPlayground'
+import { InteractiveQuiz } from '../../components/learning/InteractiveQuiz'
+import { LearningAssistant } from '../../components/learning/LearningAssistant'
+
+# 🌱 Beginner React Exercises | শুরুর স্তরের React অনুশীলনী
+
+**React এর মৌলিক বিষয়গুলো হাতে-কলমে অনুশীলন করুন!**
+
+এই অনুশীলনীগুলো React এর basics শেখার জন্য বিশেষভাবে তৈরি। প্রতিটি exercise আপনাকে ধাপে ধাপে React এর core concepts গুলো শিখতে সাহায্য করবে।
+
+---
+
+## 🎯 Exercise Categories | অনুশীলনীর ধরন
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+  gap: '1rem',
+  margin: '2rem 0'
+}}>
+
+<div style={{
+  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  color: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  textAlign: 'center'
+}}>
+
+### 🧩 **Components**
+Learn to create and use React components
+
+**5 Exercises**
+
+</div>
+
+<div style={{
+  background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  color: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  textAlign: 'center'
+}}>
+
+### 📝 **Props**
+Practice passing data between components
+
+**4 Exercises**
+
+</div>
+
+<div style={{
+  background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  color: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  textAlign: 'center'
+}}>
+
+### 🔄 **State**
+Master state management with useState
+
+**6 Exercises**
+
+</div>
+
+<div style={{
+  background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+  color: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  textAlign: 'center'
+}}>
+
+### ⚡ **Events**
+Handle user interactions and events
+
+**3 Exercises**
+
+</div>
+
+</div>
+
+---
+
+## 🧩 Component Exercises | কম্পোনেন্ট অনুশীলনী
+
+### Exercise 1: Create a Welcome Component | স্বাগতম কম্পোনেন্ট তৈরি করুন
+
+**লক্ষ্য:** একটি simple functional component তৈরি করুন যা welcome message দেখায়।
+
+<AdvancedPlayground
+  lessonId="beginner-welcome-component"
+  customChallenges={[
+    {
+      id: 'create-welcome',
+      titleBn: 'Welcome কম্পোনেন্ট তৈরি করুন',
+      title: 'Create Welcome Component',
+      descriptionBn: 'একটি Welcome function component তৈরি করুন যা "স্বাগতম React এ!" message দেখায়',
+      description: 'Create a Welcome function component that displays "স্বাগতম React এ!" message',
+      points: 100,
+      testCases: [
+        {
+          name: 'Has Welcome function',
+          test: (code) => code.includes('function Welcome') || code.includes('const Welcome'),
+          hintBn: 'Welcome নামে একটি function তৈরি করুন',
+          hint: 'Create a function named Welcome'
+        },
+        {
+          name: 'Returns JSX',
+          test: (code) => code.includes('return') && code.includes('<'),
+          hintBn: 'JSX return করুন',
+          hint: 'Return JSX'
+        },
+        {
+          name: 'Uses Bengali text',
+          test: (code) => code.includes('স্বাগতম'),
+          hintBn: '"স্বাগতম React এ!" টেক্সট ব্যবহার করুন',
+          hint: 'Use "স্বাগতম React এ!" text'
+        }
+      ]
+    }
+  ]}
+  initialTemplate={{
+    id: 'welcome-component',
+    name: 'Welcome Component',
+    nameBn: 'স্বাগতম কম্পোনেন্ট',
+    description: 'Create your first React component',
+    descriptionBn: 'আপনার প্রথম React কম্পোনেন্ট তৈরি করুন',
+    category: 'basic',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `// আপনার Welcome component এখানে তৈরি করুন
+// Create your Welcome component here
+
+function App() {
+  return (
+    <div>
+      <h1>Exercise 1: Welcome Component</h1>
+      {/* আপনার Welcome component এখানে ব্যবহার করুন */}
+      {/* Use your Welcome component here */}
+    </div>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+**সমাধান দেখুন (Solution):**
+
+<Reveal label="Show Solution | সমাধান দেখুন">
+
+```jsx
+function Welcome() {
+  return <h2>স্বাগতম React এ!</h2>;
+}
+
+function App() {
+  return (
+    <div>
+      <h1>Exercise 1: Welcome Component</h1>
+      <Welcome />
+    </div>
+  );
+}
+
+export default App;
+```
+
+</Reveal>
+
+---
+
+### Exercise 2: User Profile Card | ব্যবহারকারী প্রোফাইল কার্ড
+
+**লক্ষ্য:** একটি UserProfile component তৈরি করুন যা user এর information display করবে।
+
+<AdvancedPlayground
+  lessonId="beginner-user-profile"
+  customChallenges={[
+    {
+      id: 'create-profile',
+      titleBn: 'UserProfile কম্পোনেন্ট তৈরি করুন',
+      title: 'Create UserProfile Component',
+      descriptionBn: 'একটি component তৈরি করুন যা name, age, এবং profession দেখায়',
+      description: 'Create a component that displays name, age, and profession',
+      points: 150,
+      testCases: [
+        {
+          name: 'Has UserProfile function',
+          test: (code) => code.includes('function UserProfile') || code.includes('const UserProfile'),
+          hintBn: 'UserProfile নামে function তৈরি করুন',
+          hint: 'Create a function named UserProfile'
+        },
+        {
+          name: 'Shows name',
+          test: (code) => code.includes('নাম') || code.includes('Name'),
+          hintBn: 'নাম দেখান',
+          hint: 'Display name'
+        },
+        {
+          name: 'Shows age',
+          test: (code) => code.includes('বয়স') || code.includes('Age'),
+          hintBn: 'বয়স দেখান',
+          hint: 'Display age'
+        }
+      ]
+    }
+  ]}
+  initialTemplate={{
+    id: 'user-profile',
+    name: 'User Profile',
+    nameBn: 'ব্যবহারকারী প্রোফাইল',
+    description: 'Create a user profile component',
+    descriptionBn: 'ব্যবহারকারী প্রোফাইল কম্পোনেন্ট তৈরি করুন',
+    category: 'basic',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `// UserProfile component তৈরি করুন যা নিচের information দেখাবে:
+// Create UserProfile component that shows the following information:
+// নাম: রহিম উদ্দিন (Name: Rahim Uddin)
+// বয়স: ২৫ বছর (Age: 25 years)
+// পেশা: সফটওয়্যার ডেভেলপার (Profession: Software Developer)
+
+function App() {
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Exercise 2: User Profile Card</h1>
+      {/* আপনার UserProfile component এখানে ব্যবহার করুন */}
+      {/* Use your UserProfile component here */}
+    </div>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+---
+
+## 📝 Props Exercises | প্রপস অনুশীলনী
+
+### Exercise 3: Greeting with Props | প্রপস দিয়ে শুভেচ্ছা
+
+**লক্ষ্য:** Props ব্যবহার করে dynamic content display করুন।
+
+<AdvancedPlayground
+  lessonId="beginner-greeting-props"
+  customChallenges={[
+    {
+      id: 'greeting-with-props',
+      titleBn: 'Props সহ Greeting তৈরি করুন',
+      title: 'Create Greeting with Props',
+      descriptionBn: 'name prop নিয়ে personalized greeting দেখান',
+      description: 'Take name prop and show personalized greeting',
+      points: 120,
+      testCases: [
+        {
+          name: 'Uses props parameter',
+          test: (code) => code.includes('props') || code.includes('{ name }'),
+          hintBn: 'props parameter ব্যবহার করুন',
+          hint: 'Use props parameter'
+        },
+        {
+          name: 'Shows dynamic name',
+          test: (code) => code.includes('props.name') || code.includes('{name}'),
+          hintBn: 'dynamic name দেখান',
+          hint: 'Display dynamic name'
+        }
+      ]
+    }
+  ]}
+  initialTemplate={{
+    id: 'greeting-props',
+    name: 'Greeting with Props',
+    nameBn: 'প্রপস সহ শুভেচ্ছা',
+    description: 'Learn to use props in components',
+    descriptionBn: 'কম্পোনেন্টে props ব্যবহার করা শিখুন',
+    category: 'basic',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `// Greeting component তৈরি করুন যা name prop নিবে
+// Create Greeting component that takes name prop
+// Example: <Greeting name="আহমদ" /> -> "হ্যালো, আহমদ!"
+
+function App() {
+  return (
+    <div style={{ padding: '20px' }}>
+      <h1>Exercise 3: Greeting with Props</h1>
+      {/* এই components গুলো render করুন */}
+      {/* Render these components */}
+      {/* <Greeting name="আহমদ" /> */}
+      {/* <Greeting name="ফাতিমা" /> */}
+      {/* <Greeting name="করিম" /> */}
+    </div>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+---
+
+## 🔄 State Exercises | স্টেট অনুশীলনী
+
+### Exercise 4: Simple Counter | সাধারণ কাউন্টার
+
+**লক্ষ্য:** useState hook ব্যবহার করে interactive counter তৈরি করুন।
+
+<AdvancedPlayground
+  lessonId="beginner-counter-state"
+  customChallenges={[
+    {
+      id: 'counter-component',
+      titleBn: 'Counter কম্পোনেন্ট তৈরি করুন',
+      title: 'Create Counter Component',
+      descriptionBn: 'useState দিয়ে counter তৈরি করুন যা বাড়ানো-কমানো যায়',
+      description: 'Create counter with useState that can increment and decrement',
+      points: 200,
+      testCases: [
+        {
+          name: 'Imports useState',
+          test: (code) => code.includes('useState'),
+          hintBn: 'useState import করুন',
+          hint: 'Import useState'
+        },
+        {
+          name: 'Has increment button',
+          test: (code) => code.includes('button') && (code.includes('+') || code.includes('বাড়')),
+          hintBn: 'increment button যোগ করুন',
+          hint: 'Add increment button'
+        },
+        {
+          name: 'Has decrement button',
+          test: (code) => code.includes('button') && (code.includes('-') || code.includes('কম')),
+          hintBn: 'decrement button যোগ করুন',
+          hint: 'Add decrement button'
+        }
+      ]
+    }
+  ]}
+  initialTemplate={{
+    id: 'counter-state',
+    name: 'Counter with State',
+    nameBn: 'স্টেট সহ কাউন্টার',
+    description: 'Learn useState with a counter',
+    descriptionBn: 'কাউন্টার দিয়ে useState শিখুন',
+    category: 'basic',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `import React, { useState } from 'react';
+
+// Counter component তৈরি করুন যা:
+// Create Counter component that:
+// 1. count state রাখবে (maintains count state)
+// 2. + button দিয়ে count বাড়াবে (increment with + button)
+// 3. - button দিয়ে count কমাবে (decrement with - button)
+
+function App() {
+  return (
+    <div style={{ 
+      padding: '20px', 
+      textAlign: 'center',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <h1>Exercise 4: Simple Counter</h1>
+      {/* আপনার Counter component এখানে ব্যবহার করুন */}
+      {/* Use your Counter component here */}
+    </div>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+---
+
+### Exercise 5: Todo List | টুডু তালিকা
+
+**লক্ষ্য:** একটি simple todo list তৈরি করুন যেখানে items add করা যায়।
+
+<AdvancedPlayground
+  lessonId="beginner-todo-list"
+  customChallenges={[
+    {
+      id: 'todo-list',
+      titleBn: 'Todo List তৈরি করুন',
+      title: 'Create Todo List',
+      descriptionBn: 'নতুন todo add করার functionality যোগ করুন',
+      description: 'Add functionality to add new todos',
+      points: 250,
+      testCases: [
+        {
+          name: 'Has input field',
+          test: (code) => code.includes('<input'),
+          hintBn: 'input field যোগ করুন',
+          hint: 'Add input field'
+        },
+        {
+          name: 'Has add button',
+          test: (code) => code.includes('button') && (code.includes('Add') || code.includes('যোগ')),
+          hintBn: 'Add button যোগ করুন',
+          hint: 'Add button for adding todos'
+        },
+        {
+          name: 'Uses map to render todos',
+          test: (code) => code.includes('.map('),
+          hintBn: 'map ব্যবহার করে todos render করুন',
+          hint: 'Use map to render todos'
+        }
+      ]
+    }
+  ]}
+  initialTemplate={{
+    id: 'todo-list',
+    name: 'Todo List',
+    nameBn: 'টুডু তালিকা',
+    description: 'Build a simple todo list',
+    descriptionBn: 'একটি সাধারণ টুডু তালিকা তৈরি করুন',
+    category: 'basic',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `import React, { useState } from 'react';
+
+// TodoList component তৈরি করুন যা:
+// Create TodoList component that:
+// 1. todos এর array রাখবে (maintains array of todos)
+// 2. নতুন todo add করার input field থাকবে (input field to add new todo)
+// 3. Add button থাকবে (Add button)
+// 4. সব todos list আকারে দেখাবে (display all todos as list)
+
+function App() {
+  return (
+    <div style={{ 
+      padding: '20px',
+      maxWidth: '500px',
+      margin: '0 auto',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <h1>Exercise 5: Todo List</h1>
+      {/* আপনার TodoList component এখানে ব্যবহার করুন */}
+      {/* Use your TodoList component here */}
+    </div>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+---
+
+## ⚡ Event Handling Exercises | ইভেন্ট হ্যান্ডলিং অনুশীলনী
+
+### Exercise 6: Color Changer | রঙ পরিবর্তনকারী
+
+**লক্ষ্য:** Button click করে background color পরিবর্তন করুন।
+
+<AdvancedPlayground
+  lessonId="beginner-color-changer"
+  customChallenges={[
+    {
+      id: 'color-changer',
+      titleBn: 'Color Changer তৈরি করুন',
+      title: 'Create Color Changer',
+      descriptionBn: 'Button click করে background color পরিবর্তন করুন',
+      description: 'Change background color on button click',
+      points: 180,
+      testCases: [
+        {
+          name: 'Has color state',
+          test: (code) => code.includes('useState') && code.includes('color'),
+          hintBn: 'color state তৈরি করুন',
+          hint: 'Create color state'
+        },
+        {
+          name: 'Has color buttons',
+          test: (code) => code.includes('button') && code.includes('onClick'),
+          hintBn: 'onClick সহ button যোগ করুন',
+          hint: 'Add buttons with onClick'
+        },
+        {
+          name: 'Changes background',
+          test: (code) => code.includes('backgroundColor') || code.includes('background'),
+          hintBn: 'background color পরিবর্তন করুন',
+          hint: 'Change background color'
+        }
+      ]
+    }
+  ]}
+  initialTemplate={{
+    id: 'color-changer',
+    name: 'Color Changer',
+    nameBn: 'রঙ পরিবর্তনকারী',
+    description: 'Change colors with button clicks',
+    descriptionBn: 'বাটন ক্লিক করে রঙ পরিবর্তন করুন',
+    category: 'basic',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `import React, { useState } from 'react';
+
+// ColorChanger component তৈরি করুন যা:
+// Create ColorChanger component that:
+// 1. background color এর জন্য state রাখবে (state for background color)
+// 2. বিভিন্ন রঙের buttons থাকবে (buttons for different colors)
+// 3. Button click করলে background color পরিবর্তন হবে (background changes on click)
+
+function App() {
+  return (
+    <div style={{ 
+      padding: '20px',
+      textAlign: 'center',
+      fontFamily: 'Arial, sans-serif',
+      minHeight: '100vh'
+    }}>
+      <h1>Exercise 6: Color Changer</h1>
+      {/* আপনার ColorChanger component এখানে ব্যবহার করুন */}
+      {/* Use your ColorChanger component here */}
+    </div>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+---
+
+## 🎯 Progress Quiz | অগ্রগতি কুইজ
+
+আপনি beginner exercises কতটুকু বুঝেছেন তা পরীক্ষা করুন:
+
+<InteractiveQuiz
+  lessonId="beginner-exercises-quiz"
+  titleBn="Beginner Exercises কুইজ"
+  title="Beginner Exercises Quiz"
+  questions={[
+    {
+      id: "q1",
+      questionBn: "React component তৈরি করার সবচেয়ে সহজ উপায় কী?",
+      question: "What's the simplest way to create a React component?",
+      options: [
+        {
+          id: "a",
+          textBn: "Function component",
+          text: "Function component",
+          isCorrect: true,
+          explanationBn: "সঠিক! Function component সবচেয়ে সহজ এবং modern approach।"
+        },
+        {
+          id: "b",
+          textBn: "Class component",
+          text: "Class component",
+          isCorrect: false,
+          explanationBn: "ভুল। Class component আরো complex।"
+        },
+        {
+          id: "c",
+          textBn: "Arrow function",
+          text: "Arrow function",
+          isCorrect: false,
+          explanationBn: "ভুল। এটি একটি syntax, component type নয়।"
+        }
+      ],
+      difficulty: "beginner",
+      points: 50
+    },
+    {
+      id: "q2",
+      questionBn: "Props কিভাবে pass করি?",
+      question: "How do we pass props to a component?",
+      code: `<Welcome name="আহমদ" age={25} />`,
+      options: [
+        {
+          id: "a",
+          textBn: "HTML attributes এর মতো",
+          text: "Like HTML attributes",
+          isCorrect: true,
+          explanationBn: "সঠিক! Props HTML attributes এর মতো pass করা হয়।"
+        },
+        {
+          id: "b",
+          textBn: "Function parameter হিসেবে",
+          text: "As function parameters",
+          isCorrect: false,
+          explanationBn: "ভুল। Props receive করার সময় parameter হিসেবে আসে।"
+        },
+        {
+          id: "c",
+          textBn: "Global variable দিয়ে",
+          text: "Through global variables",
+          isCorrect: false,
+          explanationBn: "ভুল। Props direct pass করা হয়।"
+        }
+      ],
+      difficulty: "beginner",
+      points: 60
+    },
+    {
+      id: "q3",
+      questionBn: "useState hook এর return value কী?",
+      question: "What does useState hook return?",
+      code: `const [count, setCount] = useState(0);`,
+      options: [
+        {
+          id: "a",
+          textBn: "একটি array যেখানে value এবং setter আছে",
+          text: "An array with value and setter",
+          isCorrect: true,
+          explanationBn: "সঠিক! useState একটি array return করে [value, setter] format এ।"
+        },
+        {
+          id: "b",
+          textBn: "শুধু value",
+          text: "Only the value",
+          isCorrect: false,
+          explanationBn: "ভুল। useState value এবং setter দুটোই দেয়।"
+        },
+        {
+          id: "c",
+          textBn: "একটি object",
+          text: "An object",
+          isCorrect: false,
+          explanationBn: "ভুল। useState array return করে, object নয়।"
+        }
+      ],
+      difficulty: "beginner",
+      points: 70
+    }
+  ]}
+/>
+
+---
+
+## 🏆 Completion Badge | সমাপনী ব্যাজ
+
+<div style={{
+  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  color: 'white',
+  padding: '2rem',
+  borderRadius: '12px',
+  textAlign: 'center',
+  margin: '2rem 0'
+}}>
+
+### 🎉 অভিনন্দন! আপনি Beginner Level সম্পন্ন করেছেন!
+
+You have successfully completed all beginner exercises. You now understand:
+
+✅ **React Components** - Creating functional components  
+✅ **Props** - Passing data between components  
+✅ **State** - Managing component state with useState  
+✅ **Events** - Handling user interactions
+
+**Next Challenge:** [Intermediate Exercises →](/exercises/intermediate)
+
+</div>
+
+---
+
+## 💪 Additional Practice | অতিরিক্ত অনুশীলন
+
+এই exercises সম্পন্ন করার পর আরো practice এর জন্য:
+
+1. **Personal Portfolio** - আপনার তথ্য দিয়ে একটি portfolio component তৈরি করুন
+2. **Simple Calculator** - Basic mathematical operations সহ calculator
+3. **Weather Display** - Static weather information display
+4. **Student Grade** - Student list with grades
+
+<LearningAssistant 
+  lessonContext="Beginner React Exercises - Components, Props, State, Events"
+  visible={false}
+/>
+
+**Happy Coding! 🚀 সুখী কোডিং!**

@@ -1,0 +1,890 @@
+---
+title: React Online Compiler | React অনলাইন কম্পাইলার
+description: Practice React code online with our advanced compiler. Write, run, and test React components in real-time with no setup required.
+---
+
+import { AdvancedPlayground } from '../components/playground/AdvancedPlayground'
+import { LearningAssistant } from '../components/learning/LearningAssistant'
+
+# ⚙️ React Online Compiler | React অনলাইন কম্পাইলার
+
+**Write, Run, and Test React Code in Real-time | রিয়েল-টাইমে React কোড লিখুন, চালান এবং টেস্ট করুন**
+
+আমাদের advanced online compiler দিয়ে কোনো setup ছাড়াই React code practice করুন। Professional developers দের মতো multi-file projects তৈরি করুন এবং instant feedback পান।
+
+---
+
+## 🌟 Features | বৈশিষ্ট্য
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+  gap: '1rem',
+  margin: '2rem 0'
+}}>
+
+<div style={{
+  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  color: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  textAlign: 'center'
+}}>
+
+### 💻 **Advanced Editor**
+- Syntax highlighting
+- Auto-completion  
+- Error detection
+- Multi-file support
+
+</div>
+
+<div style={{
+  background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  color: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  textAlign: 'center'
+}}>
+
+### ⚡ **Real-time Preview**
+- Instant compilation
+- Live reload
+- Mobile responsive
+- Console output
+
+</div>
+
+<div style={{
+  background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+  color: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  textAlign: 'center'
+}}>
+
+### 🔧 **Built-in Tools**
+- File explorer
+- Console logs
+- Error messages
+- Performance metrics
+
+</div>
+
+<div style={{
+  background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+  color: 'white',
+  padding: '1.5rem',
+  borderRadius: '12px',
+  textAlign: 'center'
+}}>
+
+### 💾 **Save & Share**
+- Save your projects
+- Generate shareable links  
+- Export code
+- Version history
+
+</div>
+
+</div>
+
+---
+
+## 🚀 Start Coding | কোডিং শুরু করুন
+
+<AdvancedPlayground
+  lessonId="main-compiler"
+  enableSharing={true}
+  showConsole={true}
+  showFileExplorer={true}
+  initialTemplate={{
+    id: 'react-playground',
+    name: 'React Playground',
+    nameBn: 'React খেলার মাঠ',
+    description: 'Full-featured React development environment',
+    descriptionBn: 'সম্পূর্ণ বৈশিষ্ট্য সহ React ডেভেলপমেন্ট পরিবেশ',
+    category: 'advanced',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `import React, { useState } from 'react';
+import Header from './components/Header';
+import Counter from './components/Counter';
+import TodoList from './components/TodoList';
+import './App.css';
+
+function App() {
+  const [activeTab, setActiveTab] = useState('counter');
+
+  return (
+    <div className="App">
+      <Header />
+      
+      <nav className="tab-navigation">
+        <button 
+          className={activeTab === 'counter' ? 'active' : ''}
+          onClick={() => setActiveTab('counter')}
+        >
+          🔢 Counter
+        </button>
+        <button 
+          className={activeTab === 'todo' ? 'active' : ''}
+          onClick={() => setActiveTab('todo')}
+        >
+          📝 Todo List
+        </button>
+      </nav>
+
+      <main className="main-content">
+        {activeTab === 'counter' && <Counter />}
+        {activeTab === 'todo' && <TodoList />}
+      </main>
+
+      <footer className="footer">
+        <p>🚀 Built with React Bangla Tutorial</p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;`
+      },
+      '/components/Header.js': {
+        name: 'Header.js',
+        content: `import React from 'react';
+
+function Header() {
+  return (
+    <header className="header">
+      <h1>🇧🇩 React অনলাইন কম্পাইলার</h1>
+      <p>Build amazing React applications in your browser</p>
+    </header>
+  );
+}
+
+export default Header;`
+      },
+      '/components/Counter.js': {
+        name: 'Counter.js',
+        content: `import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => setCount(prev => prev + 1);
+  const decrement = () => setCount(prev => prev - 1);
+  const reset = () => setCount(0);
+
+  return (
+    <div className="counter-section">
+      <h2>🔢 Interactive Counter | ইন্টারঅ্যাক্টিভ কাউন্টার</h2>
+      
+      <div className="counter-display">
+        <span className="count-value">{count}</span>
+      </div>
+
+      <div className="counter-controls">
+        <button onClick={decrement} className="btn btn-danger">
+          ➖ কমান
+        </button>
+        <button onClick={reset} className="btn btn-secondary">
+          🔄 রিসেট
+        </button>
+        <button onClick={increment} className="btn btn-success">
+          ➕ বাড়ান
+        </button>
+      </div>
+
+      <div className="counter-info">
+        <p>
+          {count === 0 && "শূন্য থেকে শুরু করুন! (Start from zero!)"}
+          {count > 0 && \`পজিটিভ সংখ্যা: \${count}\`}
+          {count < 0 && \`নেগেটিভ সংখ্যা: \${count}\`}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default Counter;`
+      },
+      '/components/TodoList.js': {
+        name: 'TodoList.js',
+        content: `import React, { useState } from 'react';
+
+function TodoList() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'React শেখা', completed: false },
+    { id: 2, text: 'Project তৈরি করা', completed: false }
+  ]);
+  const [inputValue, setInputValue] = useState('');
+
+  const addTodo = () => {
+    if (inputValue.trim()) {
+      setTodos([...todos, {
+        id: Date.now(),
+        text: inputValue,
+        completed: false
+      }]);
+      setInputValue('');
+    }
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ));
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  const completedCount = todos.filter(todo => todo.completed).length;
+
+  return (
+    <div className="todo-section">
+      <h2>📝 Todo List | কাজের তালিকা</h2>
+      
+      <div className="todo-stats">
+        <span>মোট: {todos.length}</span>
+        <span>সম্পন্ন: {completedCount}</span>
+        <span>বাকি: {todos.length - completedCount}</span>
+      </div>
+
+      <div className="todo-input">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="নতুন কাজ যোগ করুন..."
+          onKeyPress={(e) => e.key === 'Enter' && addTodo()}
+        />
+        <button onClick={addTodo} className="btn btn-primary">
+          ➕ যোগ করুন
+        </button>
+      </div>
+
+      <div className="todo-list">
+        {todos.length === 0 ? (
+          <p className="empty-message">কোনো কাজ নেই! 🎉</p>
+        ) : (
+          todos.map(todo => (
+            <div key={todo.id} className="todo-item">
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+              />
+              <span className={todo.completed ? 'completed' : ''}>
+                {todo.text}
+              </span>
+              <button 
+                onClick={() => deleteTodo(todo.id)}
+                className="delete-btn"
+              >
+                🗑️
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default TodoList;`
+      },
+      '/App.css': {
+        name: 'App.css',
+        content: `.App {
+  font-family: 'Segoe UI', 'Tahoma', sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 2rem;
+}
+
+.header p {
+  margin: 0.5rem 0 0 0;
+  color: #4a5568;
+}
+
+.tab-navigation {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.tab-navigation button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background: white;
+  color: #4a5568;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-navigation button.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.main-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+/* Counter Styles */
+.counter-section {
+  text-align: center;
+}
+
+.counter-display {
+  margin: 2rem 0;
+}
+
+.count-value {
+  font-size: 4rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.counter-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.counter-info {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f7fafc;
+  border-radius: 8px;
+  color: #4a5568;
+}
+
+/* Todo Styles */
+.todo-section h2 {
+  text-align: center;
+  color: #2d3748;
+  margin-bottom: 2rem;
+}
+
+.todo-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f7fafc;
+  border-radius: 8px;
+}
+
+.todo-stats span {
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.todo-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.todo-input input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.todo-input input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.todo-item:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.todo-item input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+.todo-item span {
+  flex: 1;
+  font-size: 1rem;
+}
+
+.todo-item span.completed {
+  text-decoration: line-through;
+  color: #a0aec0;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #fed7d7;
+}
+
+.empty-message {
+  text-align: center;
+  color: #a0aec0;
+  font-style: italic;
+  padding: 3rem;
+  font-size: 1.1rem;
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #4a5568;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .App {
+    padding: 10px;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .counter-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .todo-input {
+    flex-direction: column;
+  }
+  
+  .todo-stats {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+}`
+      }
+    }
+  }}
+  customChallenges={[
+    {
+      id: 'add-feature',
+      titleBn: 'নতুন ফিচার যোগ করুন',
+      title: 'Add New Feature',
+      descriptionBn: 'একটি নতুন component বা feature যোগ করুন',
+      description: 'Add a new component or feature to the application',
+      points: 200,
+      testCases: [
+        {
+          name: 'Creates new component',
+          test: (code) => code.includes('function') && code.includes('export'),
+          hintBn: 'নতুন component তৈরি করুন',
+          hint: 'Create a new component'
+        }
+      ]
+    },
+    {
+      id: 'improve-styling',
+      titleBn: 'স্টাইলিং উন্নত করুন',
+      title: 'Improve Styling',
+      descriptionBn: 'CSS styling উন্নত করুন বা নতুন styles যোগ করুন',
+      description: 'Improve CSS styling or add new styles',
+      points: 150,
+      testCases: [
+        {
+          name: 'Modifies CSS',
+          test: (code) => code.includes('background') || code.includes('color') || code.includes('padding'),
+          hintBn: 'CSS properties যোগ বা পরিবর্তন করুন',
+          hint: 'Add or modify CSS properties'
+        }
+      ]
+    },
+    {
+      id: 'add-functionality',
+      titleBn: 'নতুন কার্যকারিতা যোগ করুন',
+      title: 'Add New Functionality',
+      descriptionBn: 'existing components এ নতুন functionality যোগ করুন',
+      description: 'Add new functionality to existing components',
+      points: 250,
+      testCases: [
+        {
+          name: 'Uses useState or useEffect',
+          test: (code) => code.includes('useState') || code.includes('useEffect'),
+          hintBn: 'hooks ব্যবহার করুন',
+          hint: 'Use React hooks'
+        }
+      ]
+    }
+  ]}
+/>
+
+---
+
+## 📚 Quick Templates | দ্রুত টেমপ্লেট
+
+আরো দ্রুত শুরু করার জন্য এই templates ব্যবহার করুন:
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+  gap: '1rem',
+  margin: '2rem 0'
+}}>
+
+<div style={{
+  background: 'white',
+  border: '1px solid #e2e8f0',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  textAlign: 'center',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease'
+}}>
+
+### 🌱 **Basic Component**
+Simple functional component template
+
+```jsx
+function MyComponent() {
+  return <h1>Hello World</h1>;
+}
+```
+
+</div>
+
+<div style={{
+  background: 'white',
+  border: '1px solid #e2e8f0',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  textAlign: 'center',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease'
+}}>
+
+### 🔄 **State Component**
+Component with useState hook
+
+```jsx
+function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+</div>
+
+<div style={{
+  background: 'white',
+  border: '1px solid #e2e8f0',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  textAlign: 'center',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease'
+}}>
+
+### 📝 **Form Component**
+Form handling template
+
+```jsx
+function MyForm() {
+  const [value, setValue] = useState('');
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input 
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+</div>
+
+<div style={{
+  background: 'white',
+  border: '1px solid #e2e8f0',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  textAlign: 'center',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease'
+}}>
+
+### 📋 **List Component**
+Dynamic list rendering
+
+```jsx
+function ItemList() {
+  const items = ['Item 1', 'Item 2', 'Item 3'];
+  
+  return (
+    <ul>
+      {items.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+</div>
+
+</div>
+
+---
+
+## 🎯 Coding Challenges | কোডিং চ্যালেঞ্জ
+
+আপনার React skills test করুন এই challenges দিয়ে:
+
+### 🏆 **Challenge 1: Weather Widget**
+**Difficulty:** Beginner | **Points:** 100
+
+একটি weather widget তৈরি করুন যা:
+- Current temperature দেখায়
+- Weather icon display করে  
+- City name দেখায়
+- Temperature unit toggle করা যায় (°C/°F)
+
+### 🏆 **Challenge 2: Shopping Cart**
+**Difficulty:** Intermediate | **Points:** 200
+
+একটি shopping cart তৈরি করুন যা:
+- Products list করে
+- Cart এ item add/remove করা যায়
+- Total price calculate করে
+- Quantity increase/decrease করা যায়
+
+### 🏆 **Challenge 3: Note Taking App**
+**Difficulty:** Advanced | **Points:** 300
+
+একটি note taking app তৈরি করুন যা:
+- Notes create, edit, delete করা যায়
+- Notes search করা যায়
+- Categories দিয়ে organize করা যায়
+- Local storage এ save হয়
+
+---
+
+## 💡 Tips for Success | সফলতার টিপস
+
+<div style={{
+  background: '#f0fdf4',
+  border: '1px solid #16a34a',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  margin: '2rem 0'
+}}>
+
+### ✅ **Best Practices**
+
+1. **Small Steps**: ছোট ছোট অংশে code করুন
+2. **Test Often**: প্রতিটি change এর পর test করুন  
+3. **Use Console**: `console.log()` দিয়ে debug করুন
+4. **Read Errors**: Error messages মনোযোগ দিয়ে পড়ুন
+5. **Save Progress**: গুরুত্বপূর্ণ milestone এ save করুন
+
+</div>
+
+<div style={{
+  background: '#fffbeb',
+  border: '1px solid #f59e0b',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  margin: '2rem 0'
+}}>
+
+### ⚠️ **Common Mistakes to Avoid**
+
+1. **Missing Keys**: List render করার সময় key prop ভুলে যাওয়া
+2. **Direct State Mutation**: State directly change করা
+3. **Missing Dependencies**: useEffect dependency array ভুল
+4. **Infinite Loops**: Incorrect useEffect usage
+5. **Case Sensitivity**: Component names শুরু capital letter দিয়ে
+
+</div>
+
+---
+
+## 🚀 Ready to Build Something Amazing? | কিছু অসাধারণ তৈরি করতে প্রস্তুত?
+
+<div style={{
+  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  color: 'white',
+  padding: '3rem 2rem',
+  borderRadius: '12px',
+  textAlign: 'center',
+  margin: '3rem 0'
+}}>
+
+### আপনার React Journey শুরু করুন আজই!
+
+Use our online compiler to:
+
+✅ **Practice React concepts**  
+✅ **Build portfolio projects**  
+✅ **Experiment with new ideas**  
+✅ **Share your creations**
+
+<div style={{
+  display: 'flex',
+  gap: '1rem',
+  justifyContent: 'center',
+  marginTop: '2rem',
+  flexWrap: 'wrap'
+}}>
+
+<a href="/exercises" style={{
+  background: 'rgba(255, 255, 255, 0.2)',
+  color: 'white',
+  padding: '1rem 2rem',
+  borderRadius: '8px',
+  textDecoration: 'none',
+  fontWeight: 'bold',
+  transition: 'all 0.3s ease',
+  border: '2px solid rgba(255, 255, 255, 0.3)'
+}}>
+💪 Try Exercises
+</a>
+
+<a href="/tutorials" style={{
+  background: 'rgba(255, 255, 255, 0.2)',
+  color: 'white',
+  padding: '1rem 2rem',
+  borderRadius: '8px',
+  textDecoration: 'none',
+  fontWeight: 'bold',
+  transition: 'all 0.3s ease',
+  border: '2px solid rgba(255, 255, 255, 0.3)'
+}}>
+📚 Learn More
+</a>
+
+</div>
+
+</div>
+
+<LearningAssistant 
+  lessonContext="React Online Compiler - Advanced Playground"
+  visible={false}
+/>
+
+---
+
+## 📞 Need Help? | সাহায্য দরকার?
+
+- 🤖 **AI Assistant**: Click the floating bot icon for instant help
+- 💬 **Community**: Join our Discord for real-time support
+- 📖 **Documentation**: Check our comprehensive tutorials
+- 🐛 **Found a Bug?**: Report it on GitHub
+
+**Happy Coding! 🎉 সুখী কোডিং!**

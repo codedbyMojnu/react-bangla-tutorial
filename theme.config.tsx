@@ -21,6 +21,20 @@ const Reveal = dynamic(() => import("./components/Reveal"), {
   ssr: false,
 }) as React.FC<any>;
 
+// New Interactive Learning Components
+const ProgressDashboard = dynamic(() => import("./components/learning/ProgressDashboard"), {
+  ssr: false,
+}) as React.FC<any>;
+const InteractiveQuiz = dynamic(() => import("./components/learning/InteractiveQuiz"), {
+  ssr: false,
+}) as React.FC<any>;
+const AdvancedPlayground = dynamic(() => import("./components/playground/AdvancedPlayground"), {
+  ssr: false,
+}) as React.FC<any>;
+const LearningAssistant = dynamic(() => import("./components/learning/LearningAssistant"), {
+  ssr: false,
+}) as React.FC<any>;
+
 const config: DocsThemeConfig = {
   logo: <Logo />,
   project: {
@@ -43,6 +57,11 @@ const config: DocsThemeConfig = {
     AudioPlayer,
     PdfDownloader,
     VideoPlayer,
+    // New Interactive Learning Components
+    ProgressDashboard,
+    InteractiveQuiz,
+    AdvancedPlayground,
+    LearningAssistant,
   },
   useNextSeoProps() {
     if (typeof window !== "undefined" && window.location.pathname !== "/") {

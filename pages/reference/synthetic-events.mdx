@@ -1,0 +1,397 @@
+# Synthetic Events Reference / সিনথেটিক ইভেন্ট রেফারেন্স
+
+React এর SyntheticEvent সিস্টেম native DOM events এর একটি wrapper যা সব browsers এ consistent behavior প্রদান করে।
+
+## Quick Reference / দ্রুত রেফারেন্স
+
+### Mouse Events / মাউস ইভেন্ট
+
+| Event | Purpose / উদ্দেশ্য | When Triggered / কখন ট্রিগার হয় |
+|-------|---------------------|-----------------------------------|
+| `onClick` | Click event | Mouse click or Enter key |
+| `onDoubleClick` | Double click | Two rapid clicks |
+| `onMouseDown` | Mouse button press | Mouse button pressed |
+| `onMouseUp` | Mouse button release | Mouse button released |
+| `onMouseMove` | Mouse movement | Mouse moves over element |
+| `onMouseEnter` | Mouse enter | Mouse enters element |
+| `onMouseLeave` | Mouse leave | Mouse leaves element |
+
+### Keyboard Events / কীবোর্ড ইভেন্ট
+
+| Event | Purpose / উদ্দেশ্য | When Triggered / কখন ট্রিগার হয় |
+|-------|---------------------|-----------------------------------|
+| `onKeyDown` | Key press down | Key is pressed down |
+| `onKeyUp` | Key release | Key is released |
+
+### Form Events / ফর্ম ইভেন্ট
+
+| Event | Purpose / উদ্দেশ্য | When Triggered / কখন ট্রিগার হয় |
+|-------|---------------------|-----------------------------------|
+| `onChange` | Value change | Input value changes |
+| `onSubmit` | Form submission | Form is submitted |
+| `onFocus` | Focus gained | Element gains focus |
+| `onBlur` | Focus lost | Element loses focus |
+
+## Interactive Examples / ইন্টারঅ্যাক্টিভ উদাহরণ
+
+### Mouse Events Demo / মাউস ইভেন্ট ডেমো
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React, { useState } from 'react';
+
+function App() {
+  const [events, setEvents] = useState([]);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const addEvent = (type, details = '') => {
+    setEvents(prev => [...prev.slice(-5), {
+      id: Date.now(),
+      type,
+      details,
+      time: new Date().toLocaleTimeString()
+    }]);
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h3>Mouse Events / মাউস ইভেন্ট</h3>
+      
+      <div
+        onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
+        onClick={() => addEvent('onClick', 'Button clicked')}
+        onDoubleClick={() => addEvent('onDoubleClick', 'Double clicked')}
+        onMouseEnter={() => addEvent('onMouseEnter', 'Mouse entered')}
+        onMouseLeave={() => addEvent('onMouseLeave', 'Mouse left')}
+        style={{
+          width: '300px',
+          height: '150px',
+          backgroundColor: '#f0f8ff',
+          border: '2px solid #007bff',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          margin: '20px 0'
+        }}
+      >
+        <button style={{
+          padding: '10px 20px',
+          fontSize: '16px',
+          backgroundColor: '#007bff',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px'
+        }}>
+          Click Me!
+        </button>
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <strong>Mouse Position:</strong> X: {mousePos.x}, Y: {mousePos.y}
+      </div>
+
+      <div style={{ backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '4px' }}>
+        <h4>Recent Events:</h4>
+        {events.map(event => (
+          <div key={event.id} style={{ padding: '5px 0', borderBottom: '1px solid #dee2e6' }}>
+            <strong>[{event.time}]</strong> {event.type} - {event.details}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+### Keyboard Events Demo / কীবোর্ড ইভেন্ট ডেমো
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React, { useState } from 'react';
+
+function App() {
+  const [input, setInput] = useState('');
+  const [keyEvents, setKeyEvents] = useState([]);
+  const [pressedKeys, setPressedKeys] = useState([]);
+
+  const handleKeyDown = (e) => {
+    setPressedKeys(prev => [...prev, e.key].slice(-3));
+    setKeyEvents(prev => [...prev.slice(-4), {
+      id: Date.now(),
+      type: 'onKeyDown',
+      key: e.key,
+      code: e.code
+    }]);
+  };
+
+  const handleKeyUp = (e) => {
+    setKeyEvents(prev => [...prev.slice(-4), {
+      id: Date.now(),
+      type: 'onKeyUp',
+      key: e.key,
+      code: e.code
+    }]);
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h3>Keyboard Events / কীবোর্ড ইভেন্ট</h3>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <label>
+          <strong>Type here:</strong>
+        </label>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onKeyUp={handleKeyUp}
+          placeholder="Start typing..."
+          style={{
+            width: '100%',
+            padding: '10px',
+            fontSize: '16px',
+            border: '2px solid #007bff',
+            borderRadius: '4px',
+            marginTop: '5px'
+          }}
+        />
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <strong>Last Pressed Keys:</strong> {pressedKeys.join(', ') || 'None'}
+      </div>
+
+      <div style={{ backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '4px' }}>
+        <h4>Recent Key Events:</h4>
+        {keyEvents.map(event => (
+          <div key={event.id} style={{ padding: '5px 0', borderBottom: '1px solid #dee2e6' }}>
+            <strong>{event.type}:</strong> {event.key} (Code: {event.code})
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+### Form Events Demo / ফর্ম ইভেন্ট ডেমো
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React, { useState } from 'react';
+
+function App() {
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [events, setEvents] = useState([]);
+  const [focused, setFocused] = useState(null);
+
+  const addEvent = (type, field) => {
+    setEvents(prev => [...prev.slice(-4), {
+      id: Date.now(),
+      type,
+      field,
+      time: new Date().toLocaleTimeString()
+    }]);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    addEvent('onChange', name);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addEvent('onSubmit', 'form');
+    alert('Form submitted!');
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h3>Form Events / ফর্ম ইভেন্ট</h3>
+      
+      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '15px' }}>
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            onFocus={() => { setFocused('name'); addEvent('onFocus', 'name'); }}
+            onBlur={() => { setFocused(null); addEvent('onBlur', 'name'); }}
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: focused === 'name' ? '2px solid #007bff' : '1px solid #ccc',
+              borderRadius: '4px',
+              marginTop: '5px'
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: '15px' }}>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            onFocus={() => { setFocused('email'); addEvent('onFocus', 'email'); }}
+            onBlur={() => { setFocused(null); addEvent('onBlur', 'email'); }}
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: focused === 'email' ? '2px solid #007bff' : '1px solid #ccc',
+              borderRadius: '4px',
+              marginTop: '5px'
+            }}
+          />
+        </div>
+
+        <button type="submit" style={{
+          backgroundColor: '#007bff',
+          color: 'white',
+          padding: '10px 20px',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}>
+          Submit
+        </button>
+      </form>
+
+      <div style={{ backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '4px' }}>
+        <h4>Form Events:</h4>
+        {events.map(event => (
+          <div key={event.id} style={{ padding: '5px 0' }}>
+            <strong>[{event.time}]</strong> {event.type} on {event.field}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: '20px', padding: '10px', backgroundColor: '#e7f3ff', borderRadius: '4px' }}>
+        <strong>Current Values:</strong>
+        <pre>{JSON.stringify(formData, null, 2)}</pre>
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+## Event Object Properties / ইভেন্ট অবজেক্ট প্রপার্টি
+
+### Common Properties / সাধারণ প্রপার্টি
+
+```jsx
+function handleEvent(event) {
+  console.log(event.type);        // Event type
+  console.log(event.target);      // Element that triggered event
+  console.log(event.currentTarget); // Element event handler is attached to
+  console.log(event.preventDefault); // Prevent default behavior
+  console.log(event.stopPropagation); // Stop event bubbling
+}
+```
+
+### Mouse Event Properties / মাউস ইভেন্ট প্রপার্টি
+
+```jsx
+function handleMouseEvent(event) {
+  console.log(event.clientX, event.clientY); // Mouse position
+  console.log(event.button);                 // Which button clicked
+  console.log(event.ctrlKey, event.shiftKey); // Modifier keys
+}
+```
+
+### Keyboard Event Properties / কীবোর্ড ইভেন্ট প্রপার্টি
+
+```jsx
+function handleKeyboardEvent(event) {
+  console.log(event.key);     // Key value
+  console.log(event.code);    // Physical key code
+  console.log(event.keyCode); // Numeric key code (deprecated)
+  console.log(event.ctrlKey); // Ctrl key pressed
+}
+```
+
+## Best Practices / সেরা অনুশীলন
+
+### 1. Use Proper Event Types / সঠিক ইভেন্ট টাইপ ব্যবহার করুন
+
+```jsx
+// ✅ Good - Use semantic events
+<button onClick={handleClick}>Click</button>
+<input onChange={handleChange} />
+
+// ❌ Avoid - Generic events
+<div onClick={handleClick}>Clickable div</div>
+```
+
+### 2. Prevent Default When Needed / প্রয়োজনে ডিফল্ট আচরণ প্রতিরোধ করুন
+
+```jsx
+function handleSubmit(event) {
+  event.preventDefault(); // Prevent form submission
+  // Handle form data
+}
+```
+
+### 3. Use Event Delegation / ইভেন্ট ডেলিগেশন ব্যবহার করুন
+
+```jsx
+// ✅ Good - Event delegation
+<ul onClick={handleListClick}>
+  {items.map(item => <li key={item.id} data-id={item.id}>{item.name}</li>)}
+</ul>
+```
+
+## Performance Tips / পারফরমেন্স টিপস
+
+### 1. Avoid Inline Functions / ইনলাইন ফাংশন এড়িয়ে চলুন
+
+```jsx
+// ❌ Bad - Creates new function every render
+<button onClick={() => doSomething()}>Click</button>
+
+// ✅ Good - Stable function reference
+const handleClick = useCallback(() => doSomething(), []);
+<button onClick={handleClick}>Click</button>
+```
+
+### 2. Debounce Expensive Operations / ব্যয়বহুল অপারেশন ডেবাউন্স করুন
+
+```jsx
+const debouncedSearch = useCallback(
+  debounce((value) => performSearch(value), 300),
+  []
+);
+
+<input onChange={(e) => debouncedSearch(e.target.value)} />
+```
+
+---
+
+## Summary / সারসংক্ষেপ
+
+React SyntheticEvent সিস্টেম cross-browser compatibility এবং consistent API প্রদান করে। মূল বিষয়গুলি:
+
+1. **Event Types**: Mouse, keyboard, form, এবং touch events
+2. **Event Properties**: target, type, preventDefault, stopPropagation
+3. **Best Practices**: Semantic events, proper delegation, performance optimization
+4. **Cross-browser**: Same API across all browsers

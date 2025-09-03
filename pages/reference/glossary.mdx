@@ -1,0 +1,612 @@
+# React Glossary / React শব্দকোষ
+
+React development এ ব্যবহৃত সকল গুরুত্বপূর্ণ terms এবং concepts এর comprehensive glossary।
+
+## A
+
+### **Component / কম্পোনেন্ট**
+React এর building block যা UI এর একটি অংশ represent করে। Function বা class হিসেবে define করা যায়।
+
+```jsx
+// Function Component
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+// Class Component
+class Welcome extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}</h1>;
+  }
+}
+```
+
+### **Arrow Function / এরো ফাংশন**
+ES6 এর compact function syntax যা React এ widely ব্যবহৃত হয়।
+
+```jsx
+const handleClick = () => {
+  console.log('Clicked!');
+};
+```
+
+### **Async/Await / অ্যাসিঙ্ক/অ্যাওয়েট**
+Asynchronous operations handle করার modern approach।
+
+```jsx
+const fetchData = async () => {
+  const response = await fetch('/api/data');
+  const data = await response.json();
+  return data;
+};
+```
+
+## B
+
+### **Bundle / বান্ডল**
+সব JavaScript files এবং dependencies একসাথে combine করা final output।
+
+### **Babel / ব্যাবেল**
+JavaScript compiler যা modern JS code কে older browsers এর জন্য compatible করে।
+
+## C
+
+### **Children / চিলড্রেন**
+Component এর opening এবং closing tags এর মধ্যে থাকা content।
+
+```jsx
+function Card({ children }) {
+  return <div className="card">{children}</div>;
+}
+
+// Usage
+<Card>
+  <h2>Title</h2>
+  <p>Content</p>
+</Card>
+```
+
+### **Conditional Rendering / শর্তাধীন রেন্ডারিং**
+Condition এর উপর ভিত্তি করে different UI render করা।
+
+```jsx
+function Greeting({ isLoggedIn }) {
+  return (
+    <div>
+      {isLoggedIn ? <h1>Welcome back!</h1> : <h1>Please sign in.</h1>}
+    </div>
+  );
+}
+```
+
+### **CSS-in-JS**
+JavaScript এর মধ্যে CSS লেখার technique।
+
+```jsx
+const styles = {
+  container: {
+    padding: '20px',
+    backgroundColor: '#f0f0f0'
+  }
+};
+
+function Component() {
+  return <div style={styles.container}>Content</div>;
+}
+```
+
+## D
+
+### **Destructuring / ডিস্ট্রাকচারিং**
+Object বা array থেকে specific values extract করার ES6 feature।
+
+```jsx
+// Props destructuring
+function Profile({ name, age, email }) {
+  return <div>{name} is {age} years old</div>;
+}
+
+// State destructuring
+const [count, setCount] = useState(0);
+```
+
+### **Dependency Array / ডিপেন্ডেন্সি অ্যারে**
+useEffect এবং অন্যান্য hooks এর সাথে ব্যবহৃত array যা কখন effect run হবে তা নিয়ন্ত্রণ করে।
+
+```jsx
+useEffect(() => {
+  fetchData();
+}, [userId, filter]); // Dependency array
+```
+
+## E
+
+### **Event Handling / ইভেন্ট হ্যান্ডলিং**
+User interactions (click, input, etc.) handle করার process।
+
+```jsx
+function Button() {
+  const handleClick = (event) => {
+    event.preventDefault();
+    console.log('Button clicked!');
+  };
+
+  return <button onClick={handleClick}>Click me</button>;
+}
+```
+
+### **Effect / ইফেক্ট**
+Side effects (API calls, subscriptions, DOM manipulation) handle করার mechanism।
+
+```jsx
+useEffect(() => {
+  document.title = `Count: ${count}`;
+}, [count]);
+```
+
+## F
+
+### **Fragment / ফ্র্যাগমেন্ট**
+Multiple elements return করার জন্য wrapper element ছাড়াই grouping করার way।
+
+```jsx
+function List() {
+  return (
+    <React.Fragment>
+      <li>Item 1</li>
+      <li>Item 2</li>
+    </React.Fragment>
+  );
+}
+
+// Short syntax
+function List() {
+  return (
+    <>
+      <li>Item 1</li>
+      <li>Item 2</li>
+    </>
+  );
+}
+```
+
+### **Functional Component / ফাংশনাল কম্পোনেন্ট**
+Function হিসেবে defined component যা modern React এর preferred approach।
+
+```jsx
+function Welcome({ name }) {
+  return <h1>Hello, {name}!</h1>;
+}
+```
+
+## H
+
+### **Hook / হুক**
+Function components এ state এবং lifecycle features ব্যবহার করার special functions।
+
+```jsx
+// useState Hook
+const [count, setCount] = useState(0);
+
+// useEffect Hook
+useEffect(() => {
+  console.log('Component mounted or updated');
+});
+
+// Custom Hook
+function useCounter() {
+  const [count, setCount] = useState(0);
+  const increment = () => setCount(c => c + 1);
+  return { count, increment };
+}
+```
+
+### **Higher-Order Component (HOC) / হায়ার-অর্ডার কম্পোনেন্ট**
+Component নেয় এবং enhanced component return করে এমন function।
+
+```jsx
+function withLoading(WrappedComponent) {
+  return function WithLoadingComponent({ isLoading, ...props }) {
+    if (isLoading) return <div>Loading...</div>;
+    return <WrappedComponent {...props} />;
+  };
+}
+```
+
+## I
+
+### **Immutability / অপরিবর্তনীয়তা**
+Data modify না করে নতুন copy create করার principle।
+
+```jsx
+// ❌ Mutating state
+state.items.push(newItem);
+
+// ✅ Immutable update
+setState(prevState => ({
+  ...prevState,
+  items: [...prevState.items, newItem]
+}));
+```
+
+## J
+
+### **JSX / JSX**
+JavaScript XML - HTML-like syntax যা React elements create করতে ব্যবহৃত হয়।
+
+```jsx
+const element = <h1>Hello, {name}!</h1>;
+
+// Compiled to:
+const element = React.createElement('h1', null, 'Hello, ', name, '!');
+```
+
+## K
+
+### **Key / কী**
+List এর items এর জন্য unique identifier যা React কে efficiently update করতে সাহায্য করে।
+
+```jsx
+function TodoList({ todos }) {
+  return (
+    <ul>
+      {todos.map(todo => (
+        <li key={todo.id}>{todo.text}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+## L
+
+### **Lifecycle Methods / লাইফসাইকেল মেথড**
+Class components এর different phases এ execute হওয়া methods।
+
+```jsx
+class MyComponent extends React.Component {
+  componentDidMount() {
+    // Component mounted
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Component updated
+  }
+
+  componentWillUnmount() {
+    // Component will unmount
+  }
+
+  render() {
+    return <div>Hello World</div>;
+  }
+}
+```
+
+### **Lifting State Up / স্টেট উপরে তোলা**
+Child components এর shared state parent component এ move করা।
+
+```jsx
+function Parent() {
+  const [sharedData, setSharedData] = useState('');
+
+  return (
+    <div>
+      <Child1 data={sharedData} onChange={setSharedData} />
+      <Child2 data={sharedData} />
+    </div>
+  );
+}
+```
+
+## M
+
+### **Memoization / মেমোইজেশন**
+Expensive calculations cache করে performance optimize করা।
+
+```jsx
+// React.memo for components
+const ExpensiveComponent = React.memo(function MyComponent({ data }) {
+  return <div>{data}</div>;
+});
+
+// useMemo for values
+const expensiveValue = useMemo(() => {
+  return heavyCalculation(data);
+}, [data]);
+
+// useCallback for functions
+const memoizedCallback = useCallback(() => {
+  doSomething(a, b);
+}, [a, b]);
+```
+
+### **Mounting / মাউন্টিং**
+Component DOM এ add হওয়ার process।
+
+## P
+
+### **Props / প্রপস**
+Parent component থেকে child component এ data pass করার mechanism।
+
+```jsx
+function Welcome(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+
+// Usage
+<Welcome name="Sara" />
+```
+
+### **Pure Component / পিউর কম্পোনেন্ট**
+Component যা same props এর জন্য same output produce করে।
+
+```jsx
+// Pure function component
+function PureButton({ onClick, children }) {
+  return <button onClick={onClick}>{children}</button>;
+}
+
+// Class pure component
+class PureButton extends React.PureComponent {
+  render() {
+    return <button onClick={this.props.onClick}>{this.props.children}</button>;
+  }
+}
+```
+
+## R
+
+### **Reconciliation / রিকনসিলিয়েশন**
+React এর algorithm যা virtual DOM এর changes efficiently DOM এ apply করে।
+
+### **Ref / রেফ**
+DOM elements বা component instances এর direct access পাওয়ার way।
+
+```jsx
+function TextInput() {
+  const inputRef = useRef(null);
+
+  const focusInput = () => {
+    inputRef.current.focus();
+  };
+
+  return (
+    <div>
+      <input ref={inputRef} type="text" />
+      <button onClick={focusInput}>Focus Input</button>
+    </div>
+  );
+}
+```
+
+### **Render / রেন্ডার**
+Component এর JSX কে actual DOM elements এ convert করার process।
+
+## S
+
+### **State / স্টেট**
+Component এর internal data যা time এর সাথে change হতে পারে।
+
+```jsx
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}
+```
+
+### **Side Effect / সাইড ইফেক্ট**
+Rendering এর outside এর actions যেমন API calls, subscriptions, DOM manipulation।
+
+```jsx
+useEffect(() => {
+  // Side effect
+  const subscription = subscribeTo(something);
+
+  // Cleanup
+  return () => {
+    subscription.unsubscribe();
+  };
+}, []);
+```
+
+### **Synthetic Event / সিনথেটিক ইভেন্ট**
+React এর cross-browser event wrapper।
+
+```jsx
+function Button() {
+  const handleClick = (syntheticEvent) => {
+    syntheticEvent.preventDefault();
+    console.log('Button clicked');
+  };
+
+  return <button onClick={handleClick}>Click me</button>;
+}
+```
+
+## U
+
+### **Uncontrolled Component / অনিয়ন্ত্রিত কম্পোনেন্ট**
+Component যার form data DOM এ handle হয়, React state এ না।
+
+```jsx
+function UncontrolledForm() {
+  const inputRef = useRef();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Input value:', inputRef.current.value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input ref={inputRef} type="text" />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+### **useEffect**
+Side effects handle করার Hook।
+
+```jsx
+// Component mount/unmount
+useEffect(() => {
+  console.log('Component mounted');
+  return () => console.log('Component unmounted');
+}, []);
+
+// Dependency-based effect
+useEffect(() => {
+  fetchUserData(userId);
+}, [userId]);
+```
+
+### **useState**
+Function components এ state manage করার Hook।
+
+```jsx
+function Example() {
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState('');
+  const [user, setUser] = useState({ name: '', email: '' });
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>+</button>
+    </div>
+  );
+}
+```
+
+## V
+
+### **Virtual DOM / ভার্চুয়াল DOM**
+Real DOM এর lightweight JavaScript representation যা React performance optimize করতে ব্যবহার করে।
+
+### **Vanilla JavaScript / ভ্যানিলা জাভাস্ক্রিপ্ট**
+কোনো framework বা library ছাড়া plain JavaScript।
+
+## Common Patterns / সাধারণ প্যাটার্ন
+
+### **Conditional Rendering Patterns / শর্তাধীন রেন্ডারিং প্যাটার্ন**
+
+```jsx
+// Ternary operator
+{isLoggedIn ? <Dashboard /> : <Login />}
+
+// Logical AND
+{showMessage && <Message text="Hello!" />}
+
+// Logical OR for fallback
+{username || 'Guest'}
+
+// Function for complex logic
+function renderContent() {
+  if (loading) return <Spinner />;
+  if (error) return <Error message={error} />;
+  if (data) return <DataList data={data} />;
+  return <EmptyState />;
+}
+```
+
+### **State Update Patterns / স্টেট আপডেট প্যাটার্ন**
+
+```jsx
+// Simple state update
+setCount(count + 1);
+
+// Functional update
+setCount(prevCount => prevCount + 1);
+
+// Object state update
+setUser(prevUser => ({
+  ...prevUser,
+  name: 'New Name'
+}));
+
+// Array state update
+setItems(prevItems => [...prevItems, newItem]);
+setItems(prevItems => prevItems.filter(item => item.id !== deleteId));
+```
+
+### **Event Handling Patterns / ইভেন্ট হ্যান্ডলিং প্যাটার্ন**
+
+```jsx
+// Simple handler
+const handleClick = () => {
+  console.log('Clicked');
+};
+
+// Handler with parameters
+const handleItemClick = (id) => {
+  console.log('Item clicked:', id);
+};
+
+// Inline handler with parameters
+<button onClick={() => handleItemClick(item.id)}>
+  Click Item
+</button>
+
+// Event object usage
+const handleInputChange = (event) => {
+  const { name, value } = event.target;
+  setFormData(prev => ({ ...prev, [name]: value }));
+};
+```
+
+## Performance Terms / পারফরমেন্স টার্ম
+
+### **Code Splitting / কোড স্প্লিটিং**
+Application কে smaller chunks এ ভাগ করা যাতে শুধু প্রয়োজনীয় code load হয়।
+
+```jsx
+const LazyComponent = React.lazy(() => import('./LazyComponent'));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LazyComponent />
+    </Suspense>
+  );
+}
+```
+
+### **Memoization / মেমোইজেশন**
+Previous calculations cache করে performance improve করা।
+
+### **Tree Shaking / ট্রি শেকিং**
+Unused code automatically remove করা bundling process এ।
+
+---
+
+## Quick Reference Cards / দ্রুত রেফারেন্স কার্ড
+
+### Hook Rules / হুক নিয়ম
+1. শুধুমাত্র function components এর top level এ call করুন
+2. Loops, conditions, বা nested functions এর ভিতরে call করবেন না
+3. Custom hooks দিয়ে logic reuse করুন
+
+### Component Best Practices / কম্পোনেন্ট সেরা অনুশীলন
+1. Small, focused components তৈরি করুন
+2. Props এর জন্য descriptive names ব্যবহার করুন
+3. PropTypes বা TypeScript দিয়ে type checking করুন
+4. Default props provide করুন
+
+### Performance Best Practices / পারফরমেন্স সেরা অনুশীলন
+1. React.memo() expensive components এর জন্য ব্যবহার করুন
+2. useMemo() expensive calculations এর জন্য ব্যবহার করুন
+3. useCallback() stable function references এর জন্য ব্যবহার করুন
+4. Key props সঠিকভাবে ব্যবহার করুন lists এ
+
+এই glossary React development এর সব গুরুত্বপূর্ণ terms এবং concepts cover করে। Regular practice এবং এই terms এর সাথে familiar হওয়া React mastery এর জন্য essential।

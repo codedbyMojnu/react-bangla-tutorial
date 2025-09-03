@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect, useRef, useState } from "react";
 
 const ProgressBar: React.FC = () => {
   const [progress, setProgress] = useState(0);

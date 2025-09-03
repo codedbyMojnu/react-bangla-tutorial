@@ -1,0 +1,744 @@
+# DOM Elements Reference / DOM এলিমেন্ট রেফারেন্স
+
+React-এ সব HTML DOM elements সাপোর্ট করা হয়। এই পেজে আপনি React-এ ব্যবহৃত সকল DOM elements এর comprehensive reference পাবেন।
+
+## Quick Reference / দ্রুত রেফারেন্স
+
+### Text Elements / টেক্সট এলিমেন্ট
+
+| Element | Purpose / উদ্দেশ্য | Example / উদাহরণ |
+|---------|---------------------|-------------------|
+| `<h1>` - `<h6>` | Headings / শিরোনাম | `<h1>Main Title</h1>` |
+| `<p>` | Paragraph / অনুচ্ছেদ | `<p>Text content</p>` |
+| `<span>` | Inline text / ইনলাইন টেক্সট | `<span>Inline text</span>` |
+| `<div>` | Block container / ব্লক কন্টেইনার | `<div>Content</div>` |
+| `<strong>` | Bold text / গাঢ় টেক্সট | `<strong>Important</strong>` |
+| `<em>` | Emphasized text / জোরালো টেক্সট | `<em>Emphasized</em>` |
+
+### Form Elements / ফর্ম এলিমেন্ট
+
+| Element | Purpose / উদ্দেশ্য | Example / উদাহরণ |
+|---------|---------------------|-------------------|
+| `<input>` | Input field / ইনপুট ফিল্ড | `<input type="text" />` |
+| `<textarea>` | Multi-line input / মাল্টি-লাইন ইনপুট | `<textarea />` |
+| `<select>` | Dropdown / ড্রপডাউন | `<select><option /></select>` |
+| `<button>` | Button / বাটন | `<button>Click</button>` |
+| `<form>` | Form container / ফর্ম কন্টেইনার | `<form onSubmit={handleSubmit}>` |
+| `<label>` | Input label / ইনপুট লেবেল | `<label htmlFor="input">` |
+
+## Interactive Examples / ইন্টারঅ্যাক্টিভ উদাহরণ
+
+### Basic DOM Elements / বেসিক DOM এলিমেন্ট
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React from 'react';
+
+function App() {
+  return (
+    <div className="container">
+      {/* Heading Elements */}
+      <h1>Main Heading (h1)</h1>
+      <h2>Sub Heading (h2)</h2>
+      <h3>Section Heading (h3)</h3>
+      
+      {/* Text Elements */}
+      <p>This is a paragraph with <strong>bold text</strong> and <em>emphasized text</em>.</p>
+      <p>This paragraph contains a <span style={{color: 'blue'}}>colored span</span> element.</p>
+      
+      {/* List Elements */}
+      <ul>
+        <li>Unordered list item 1</li>
+        <li>Unordered list item 2</li>
+      </ul>
+      
+      <ol>
+        <li>Ordered list item 1</li>
+        <li>Ordered list item 2</li>
+      </ol>
+      
+      {/* Block Elements */}
+      <div style={{
+        backgroundColor: '#f0f0f0',
+        padding: '10px',
+        marginTop: '10px'
+      }}>
+        This is a div container with background color
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+### Form Elements Example / ফর্ম এলিমেন্ট উদাহরণ
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React, { useState } from 'react';
+
+function App() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+    country: '',
+    subscribe: false
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form Data:', formData);
+    alert('Form submitted! Check console for data.');
+  };
+
+  return (
+    <div style={{ padding: '20px', maxWidth: '500px' }}>
+      <h2>Contact Form / যোগাযোগ ফর্ম</h2>
+      
+      <form onSubmit={handleSubmit}>
+        {/* Text Input */}
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="name">Name / নাম:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            style={{
+              width: '100%',
+              padding: '8px',
+              marginTop: '5px',
+              border: '1px solid #ccc',
+              borderRadius: '4px'
+            }}
+            placeholder="Enter your name"
+          />
+        </div>
+
+        {/* Email Input */}
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="email">Email / ইমেইল:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            style={{
+              width: '100%',
+              padding: '8px',
+              marginTop: '5px',
+              border: '1px solid #ccc',
+              borderRadius: '4px'
+            }}
+            placeholder="Enter your email"
+          />
+        </div>
+
+        {/* Select Dropdown */}
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="country">Country / দেশ:</label>
+          <select
+            id="country"
+            name="country"
+            value={formData.country}
+            onChange={handleInputChange}
+            style={{
+              width: '100%',
+              padding: '8px',
+              marginTop: '5px',
+              border: '1px solid #ccc',
+              borderRadius: '4px'
+            }}
+          >
+            <option value="">Select a country</option>
+            <option value="bangladesh">Bangladesh</option>
+            <option value="india">India</option>
+            <option value="usa">USA</option>
+            <option value="uk">United Kingdom</option>
+          </select>
+        </div>
+
+        {/* Textarea */}
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="message">Message / বার্তা:</label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleInputChange}
+            rows={4}
+            style={{
+              width: '100%',
+              padding: '8px',
+              marginTop: '5px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              resize: 'vertical'
+            }}
+            placeholder="Enter your message"
+          />
+        </div>
+
+        {/* Checkbox */}
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="checkbox"
+              name="subscribe"
+              checked={formData.subscribe}
+              onChange={handleInputChange}
+              style={{ marginRight: '8px' }}
+            />
+            Subscribe to newsletter / নিউজলেটার সাবস্ক্রাইব করুন
+          </label>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          style={{
+            backgroundColor: '#007bff',
+            color: 'white',
+            padding: '10px 20px',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '16px'
+          }}
+        >
+          Submit / জমা দিন
+        </button>
+      </form>
+
+      {/* Display Form Data */}
+      <div style={{ 
+        marginTop: '20px', 
+        padding: '15px', 
+        backgroundColor: '#f8f9fa',
+        borderRadius: '4px'
+      }}>
+        <h3>Current Form Data:</h3>
+        <pre>{JSON.stringify(formData, null, 2)}</pre>
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+## Semantic HTML Elements / সিম্যান্টিক HTML এলিমেন্ট
+
+### Layout Elements / লেআউট এলিমেন্ট
+
+| Element | Purpose / উদ্দেশ্য | Description / বর্ণনা |
+|---------|---------------------|----------------------|
+| `<header>` | Page/section header | পেজ বা সেকশনের হেডার |
+| `<nav>` | Navigation links | নেভিগেশন লিংক |
+| `<main>` | Main content | মূল কন্টেন্ট |
+| `<article>` | Independent content | স্বাধীন কন্টেন্ট |
+| `<section>` | Content section | কন্টেন্ট সেকশন |
+| `<aside>` | Sidebar content | সাইডবার কন্টেন্ট |
+| `<footer>` | Page/section footer | পেজ বা সেকশনের ফুটার |
+
+### Media Elements / মিডিয়া এলিমেন্ট
+
+| Element | Purpose / উদ্দেশ্য | Example / উদাহরণ |
+|---------|---------------------|-------------------|
+| `<img>` | Images / ছবি | `<img src="image.jpg" alt="Description" />` |
+| `<video>` | Video content / ভিডিও কন্টেন্ট | `<video controls><source src="video.mp4" /></video>` |
+| `<audio>` | Audio content / অডিও কন্টেন্ট | `<audio controls><source src="audio.mp3" /></audio>` |
+| `<canvas>` | Drawing canvas / ড্রয়িং ক্যানভাস | `<canvas width="300" height="200" />` |
+| `<svg>` | Vector graphics / ভেক্টর গ্রাফিক্স | `<svg><circle r="50" /></svg>` |
+
+### Semantic Layout Example / সিম্যান্টিক লেআউট উদাহরণ
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React from 'react';
+
+function App() {
+  return (
+    <div style={{ fontFamily: 'Arial, sans-serif' }}>
+      {/* Header Section */}
+      <header style={{
+        backgroundColor: '#333',
+        color: 'white',
+        padding: '1rem',
+        textAlign: 'center'
+      }}>
+        <h1>My Website / আমার ওয়েবসাইট</h1>
+        
+        {/* Navigation */}
+        <nav style={{ marginTop: '1rem' }}>
+          <ul style={{
+            listStyle: 'none',
+            padding: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '2rem'
+          }}>
+            <li><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Home</a></li>
+            <li><a href="#" style={{ color: 'white', textDecoration: 'none' }}>About</a></li>
+            <li><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Services</a></li>
+            <li><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Contact</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <div style={{ display: 'flex', minHeight: '500px' }}>
+        {/* Main Content */}
+        <main style={{
+          flex: '1',
+          padding: '2rem',
+          backgroundColor: '#f9f9f9'
+        }}>
+          <article style={{
+            backgroundColor: 'white',
+            padding: '1.5rem',
+            borderRadius: '8px',
+            marginBottom: '2rem',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}>
+            <h2>Welcome to Our Website / আমাদের ওয়েবসাইটে স্বাগতম</h2>
+            <p>
+              This is the main content area where you can put your primary information.
+              এটি মূল কন্টেন্ট এলাকা যেখানে আপনি আপনার প্রাথমিক তথ্য রাখতে পারেন।
+            </p>
+          </article>
+
+          <section style={{
+            backgroundColor: 'white',
+            padding: '1.5rem',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}>
+            <h3>Our Services / আমাদের সেবা</h3>
+            <ul>
+              <li>Web Development / ওয়েব ডেভেলপমেন্ট</li>
+              <li>Mobile Apps / মোবাইল অ্যাপ</li>
+              <li>UI/UX Design / UI/UX ডিজাইন</li>
+              <li>Consulting / পরামর্শ</li>
+            </ul>
+          </section>
+        </main>
+
+        {/* Sidebar */}
+        <aside style={{
+          width: '300px',
+          backgroundColor: '#e9ecef',
+          padding: '2rem'
+        }}>
+          <h3>Latest News / সাম্প্রতিক খবর</h3>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '1rem',
+            borderRadius: '4px',
+            marginBottom: '1rem'
+          }}>
+            <h4>React 18 Released</h4>
+            <p>The latest version of React brings exciting new features...</p>
+          </div>
+          
+          <div style={{
+            backgroundColor: 'white',
+            padding: '1rem',
+            borderRadius: '4px'
+          }}>
+            <h4>New Tutorial Series</h4>
+            <p>We've launched a comprehensive React tutorial series in Bengali...</p>
+          </div>
+        </aside>
+      </div>
+
+      {/* Footer */}
+      <footer style={{
+        backgroundColor: '#333',
+        color: 'white',
+        textAlign: 'center',
+        padding: '2rem'
+      }}>
+        <p>&copy; 2024 My Website. All rights reserved. / সর্বস্বত্ব সংরক্ষিত।</p>
+        <p>Built with React / React দিয়ে তৈরি</p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+## Table Elements / টেবিল এলিমেন্ট
+
+### Table Structure / টেবিল স্ট্রাকচার
+
+| Element | Purpose / উদ্দেশ্য | Description / বর্ণনা |
+|---------|---------------------|----------------------|
+| `<table>` | Table container | টেবিল কন্টেইনার |
+| `<thead>` | Table header group | টেবিল হেডার গ্রুপ |
+| `<tbody>` | Table body group | টেবিল বডি গ্রুপ |
+| `<tfoot>` | Table footer group | টেবিল ফুটার গ্রুপ |
+| `<tr>` | Table row | টেবিল রো |
+| `<th>` | Header cell | হেডার সেল |
+| `<td>` | Data cell | ডেটা সেল |
+
+### Interactive Table Example / ইন্টারঅ্যাক্টিভ টেবিল উদাহরণ
+
+<AdvancedPlayground
+  template="react"
+  files={{
+    "App.js": `import React, { useState } from 'react';
+
+function App() {
+  const [users] = useState([
+    { id: 1, name: 'Ahmed Hassan', email: 'ahmed@example.com', role: 'Developer', salary: 50000 },
+    { id: 2, name: 'Fatima Khan', email: 'fatima@example.com', role: 'Designer', salary: 45000 },
+    { id: 3, name: 'Mohammad Rahman', email: 'mohammad@example.com', role: 'Manager', salary: 60000 },
+    { id: 4, name: 'Ayesha Ali', email: 'ayesha@example.com', role: 'Developer', salary: 52000 },
+  ]);
+
+  const [sortField, setSortField] = useState('');
+  const [sortDirection, setSortDirection] = useState('asc');
+
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedUsers = [...users].sort((a, b) => {
+    if (!sortField) return 0;
+    
+    const aValue = a[sortField];
+    const bValue = b[sortField];
+    
+    if (sortDirection === 'asc') {
+      return aValue > bValue ? 1 : -1;
+    } else {
+      return aValue < bValue ? 1 : -1;
+    }
+  });
+
+  const tableStyle = {
+    width: '100%',
+    borderCollapse: 'collapse',
+    margin: '20px 0',
+    fontSize: '16px',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+  };
+
+  const thStyle = {
+    backgroundColor: '#007bff',
+    color: 'white',
+    fontWeight: 'bold',
+    padding: '12px 15px',
+    textAlign: 'left',
+    cursor: 'pointer',
+    userSelect: 'none'
+  };
+
+  const tdStyle = {
+    padding: '12px 15px',
+    borderBottom: '1px solid #ddd'
+  };
+
+  const rowStyle = {
+    backgroundColor: '#f9f9f9'
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>Employee Data Table / কর্মচারী ডেটা টেবিল</h2>
+      <p>Click on column headers to sort / সর্ট করতে কলাম হেডারে ক্লিক করুন</p>
+      
+      <table style={tableStyle}>
+        <thead>
+          <tr>
+            <th 
+              style={thStyle}
+              onClick={() => handleSort('id')}
+            >
+              ID {sortField === 'id' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </th>
+            <th 
+              style={thStyle}
+              onClick={() => handleSort('name')}
+            >
+              Name / নাম {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </th>
+            <th 
+              style={thStyle}
+              onClick={() => handleSort('email')}
+            >
+              Email / ইমেইল {sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </th>
+            <th 
+              style={thStyle}
+              onClick={() => handleSort('role')}
+            >
+              Role / ভূমিকা {sortField === 'role' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </th>
+            <th 
+              style={thStyle}
+              onClick={() => handleSort('salary')}
+            >
+              Salary / বেতন {sortField === 'salary' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedUsers.map((user, index) => (
+            <tr 
+              key={user.id}
+              style={index % 2 === 0 ? {} : rowStyle}
+            >
+              <td style={tdStyle}>{user.id}</td>
+              <td style={tdStyle}>{user.name}</td>
+              <td style={tdStyle}>{user.email}</td>
+              <td style={tdStyle}>{user.role}</td>
+              <td style={tdStyle}>৳{user.salary.toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr style={{ backgroundColor: '#e9ecef' }}>
+            <td style={tdStyle} colSpan="4">
+              <strong>Total Employees / মোট কর্মচারী</strong>
+            </td>
+            <td style={tdStyle}>
+              <strong>{users.length}</strong>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div style={{ 
+        marginTop: '20px',
+        padding: '15px',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '4px'
+      }}>
+        <h3>Table Structure Elements Used:</h3>
+        <ul>
+          <li><code>&lt;table&gt;</code> - Main table container</li>
+          <li><code>&lt;thead&gt;</code> - Table header section</li>
+          <li><code>&lt;tbody&gt;</code> - Table body with data rows</li>
+          <li><code>&lt;tfoot&gt;</code> - Table footer with summary</li>
+          <li><code>&lt;tr&gt;</code> - Table rows</li>
+          <li><code>&lt;th&gt;</code> - Header cells (clickable for sorting)</li>
+          <li><code>&lt;td&gt;</code> - Data cells</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+  }}
+/>
+
+## React-Specific Attributes / React-নির্দিষ্ট অ্যাট্রিবিউট
+
+### Key Differences from HTML / HTML থেকে মূল পার্থক্য
+
+| HTML Attribute | React Attribute | Purpose / উদ্দেশ্য |
+|----------------|-----------------|---------------------|
+| `class` | `className` | CSS class assignment |
+| `for` | `htmlFor` | Label association |
+| `tabindex` | `tabIndex` | Tab order |
+| `readonly` | `readOnly` | Read-only input |
+| `maxlength` | `maxLength` | Maximum length |
+| `onclick` | `onClick` | Click event handler |
+
+### Event Attributes / ইভেন্ট অ্যাট্রিবিউট
+
+| Category | Events / ইভেন্ট | Example / উদাহরণ |
+|----------|------------------|-------------------|
+| Mouse | `onClick`, `onMouseOver`, `onMouseOut` | `onClick={handleClick}` |
+| Keyboard | `onKeyDown`, `onKeyUp`, `onKeyPress` | `onKeyDown={handleKeyDown}` |
+| Form | `onSubmit`, `onChange`, `onFocus`, `onBlur` | `onChange={handleChange}` |
+| Touch | `onTouchStart`, `onTouchEnd`, `onTouchMove` | `onTouchStart={handleTouch}` |
+
+## Best Practices / সেরা অনুশীলন
+
+### 1. Semantic HTML Usage / সিম্যান্টিক HTML ব্যবহার
+
+```jsx
+// ✅ Good - Semantic structure
+<article>
+  <header>
+    <h1>Article Title</h1>
+    <time>Published on March 1, 2024</time>
+  </header>
+  <main>
+    <p>Article content...</p>
+  </main>
+  <footer>
+    <p>Author: John Doe</p>
+  </footer>
+</article>
+
+// ❌ Bad - Non-semantic divs
+<div>
+  <div>
+    <div>Article Title</div>
+    <div>Published on March 1, 2024</div>
+  </div>
+  <div>
+    <div>Article content...</div>
+  </div>
+</div>
+```
+
+### 2. Accessibility Attributes / অ্যাক্সেসিবিলিটি অ্যাট্রিবিউট
+
+```jsx
+// ✅ Good - Accessible form
+<form>
+  <label htmlFor="email">Email Address:</label>
+  <input
+    type="email"
+    id="email"
+    aria-describedby="email-help"
+    required
+  />
+  <small id="email-help">We'll never share your email</small>
+  
+  <button type="submit" aria-label="Submit contact form">
+    Submit
+  </button>
+</form>
+
+// ✅ Good - Accessible image
+<img
+  src="chart.png"
+  alt="Sales increased by 25% in Q1 2024"
+  role="img"
+/>
+```
+
+### 3. Form Validation / ফর্ম ভ্যালিডেশন
+
+```jsx
+// ✅ Good - Proper form attributes
+<input
+  type="email"
+  required
+  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+  title="Please enter a valid email address"
+  aria-invalid={emailError ? 'true' : 'false'}
+  aria-describedby={emailError ? 'email-error' : undefined}
+/>
+{emailError && (
+  <div id="email-error" role="alert">
+    {emailError}
+  </div>
+)}
+```
+
+## Common Pitfalls / সাধারণ ভুল
+
+### 1. Incorrect Attribute Names / ভুল অ্যাট্রিবিউট নাম
+
+```jsx
+// ❌ Wrong - HTML attributes in JSX
+<div class="container" for="input">
+  <input tabindex="1" readonly />
+</div>
+
+// ✅ Correct - JSX attributes
+<div className="container" htmlFor="input">
+  <input tabIndex="1" readOnly />
+</div>
+```
+
+### 2. Missing Key Props / অনুপস্থিত Key Props
+
+```jsx
+// ❌ Wrong - Missing keys in lists
+{items.map(item => <li>{item.name}</li>)}
+
+// ✅ Correct - Proper keys
+{items.map(item => <li key={item.id}>{item.name}</li>)}
+```
+
+### 3. Inline Event Handlers / ইনলাইন ইভেন্ট হ্যান্ডলার
+
+```jsx
+// ❌ Wrong - New function on every render
+<button onClick={() => console.log('clicked')}>
+  Click me
+</button>
+
+// ✅ Better - Stable reference
+const handleClick = useCallback(() => {
+  console.log('clicked');
+}, []);
+
+<button onClick={handleClick}>Click me</button>
+```
+
+## Performance Considerations / পারফরমেন্স বিবেচনা
+
+### 1. Avoid Unnecessary Re-renders / অপ্রয়োজনীয় রি-রেন্ডার এড়িয়ে চলুন
+
+```jsx
+// ✅ Good - Memoized component
+const ExpensiveComponent = React.memo(({ data }) => {
+  return (
+    <div>
+      {data.map(item => (
+        <div key={item.id}>{item.name}</div>
+      ))}
+    </div>
+  );
+});
+```
+
+### 2. Optimize Event Handlers / ইভেন্ট হ্যান্ডলার অপ্টিমাইজ করুন
+
+```jsx
+// ✅ Good - Event delegation
+<div onClick={handleContainerClick}>
+  {items.map(item => (
+    <button key={item.id} data-id={item.id}>
+      {item.name}
+    </button>
+  ))}
+</div>
+```
+
+---
+
+## Summary / সারসংক্ষেপ
+
+এই reference পেজে আমরা React-এ ব্যবহৃত সকল DOM elements সম্পর্কে বিস্তারিত জেনেছি। মূল বিষয়গুলি:
+
+1. **Basic Elements**: Text, form, এবং layout elements
+2. **Semantic HTML**: Proper semantic structure ব্যবহার
+3. **React Attributes**: HTML থেকে JSX এর পার্থক্য
+4. **Accessibility**: Proper ARIA attributes এবং semantic markup
+5. **Best Practices**: Performance এবং maintainability এর জন্য সেরা অনুশীলন
+
+Remember: React-এ সব DOM elements supported, কিন্তু attribute names JSX convention অনুসরণ করে (camelCase)।

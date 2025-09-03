@@ -1,0 +1,275 @@
+---
+title: Interactive Learning Demo | React Bangla Tutorial
+description: Experience the new world-class interactive learning features of React Bangla Tutorial including gamified progress tracking, AI assistant, and advanced code playground.
+---
+
+# 🚀 Interactive Learning Demo
+## আমাদের নতুন বিশ্বমানের শিক্ষা প্ল্যাটফর্ম অভিজ্ঞতা করুন
+
+এই পৃষ্ঠায় আমাদের নতুন ইন্টারঅ্যাক্টিভ শিক্ষা বৈশিষ্ট্যগুলি দেখুন যা React Bangla Tutorial কে একটি বিশ্বমানের শিক্ষা প্ল্যাটফর্মে রূপান্তরিত করেছে।
+
+## 📊 আপনার শিক্ষার অগ্রগতি
+
+<ProgressDashboard />
+
+---
+
+## 🎯 ইন্টারঅ্যাক্টিভ কুইজ: React Components
+
+এই কুইজটি সম্পন্ন করে React কম্পোনেন্ট সম্পর্কে আপনার জ্ঞান পরীক্ষা করুন এবং পয়েন্ট অর্জন করুন!
+
+<InteractiveQuiz
+  lessonId="react-components-basics"
+  titleBn="React কম্পোনেন্ট কুইজ"
+  title="React Components Quiz"
+  questions={[
+    {
+      id: "q1",
+      questionBn: "React কম্পোনেন্ট কী?",
+      question: "What is a React component?",
+      options: [
+        {
+          id: "a",
+          textBn: "একটি JavaScript ফাংশন যা JSX রিটার্ন করে",
+          text: "A JavaScript function that returns JSX",
+          isCorrect: true,
+          explanationBn: "সঠিক! React কম্পোনেন্ট হল JavaScript ফাংশন যা JSX রিটার্ন করে এবং UI এর একটি অংশ রেন্ডার করে।"
+        },
+        {
+          id: "b",
+          textBn: "একটি HTML ট্যাগ",
+          text: "An HTML tag",
+          isCorrect: false,
+          explanationBn: "ভুল। HTML ট্যাগ এবং React কম্পোনেন্ট আলাদা জিনিস।"
+        },
+        {
+          id: "c",
+          textBn: "একটি CSS ক্লাস",
+          text: "A CSS class",
+          isCorrect: false,
+          explanationBn: "ভুল। CSS ক্লাস স্টাইলিং এর জন্য ব্যবহৃত হয়, কম্পোনেন্ট নয়।"
+        },
+        {
+          id: "d",
+          textBn: "একটি ডেটাবেস টেবিল",
+          text: "A database table",
+          isCorrect: false,
+          explanationBn: "ভুল। ডেটাবেস টেবিল ডেটা স্টোরেজের জন্য, UI কম্পোনেন্ট নয়।"
+        }
+      ],
+      hintBn: "React কম্পোনেন্ট সবসময় JSX রিটার্ন করে।",
+      hint: "React components always return JSX.",
+      difficulty: "beginner",
+      points: 50
+    },
+    {
+      id: "q2",
+      questionBn: "Props কী?",
+      question: "What are props?",
+      options: [
+        {
+          id: "a",
+          textBn: "কম্পোনেন্টের মধ্যে ডেটা পাস করার উপায়",
+          text: "A way to pass data between components",
+          isCorrect: true,
+          explanationBn: "সঠিক! Props হল parent কম্পোনেন্ট থেকে child কম্পোনেন্টে ডেটা পাস করার উপায়।"
+        },
+        {
+          id: "b",
+          textBn: "কম্পোনেন্টের স্থানীয় অবস্থা",
+          text: "Component's local state",
+          isCorrect: false,
+          explanationBn: "ভুল। এটি state এর বর্ণনা, props এর নয়।"
+        },
+        {
+          id: "c",
+          textBn: "CSS স্টাইল",
+          text: "CSS styles",
+          isCorrect: false,
+          explanationBn: "ভুল। Props CSS স্টাইল নয়।"
+        },
+        {
+          id: "d",
+          textBn: "HTML attributes",
+          text: "HTML attributes",
+          isCorrect: false,
+          explanationBn: "ভুল। Props HTML attributes এর অনুরূপ হলেও তা নয়।"
+        }
+      ],
+      hintBn: "Props সবসময় parent থেকে child এ যায়।",
+      hint: "Props always flow from parent to child.",
+      difficulty: "beginner",
+      points: 60
+    },
+    {
+      id: "q3",
+      questionBn: "নিচের কোন কোডটি সঠিকভাবে useState ব্যবহার করছে?",
+      question: "Which code correctly uses useState?",
+      code: `// Option A
+const [count, setCount] = useState(0);
+
+// Option B  
+const count = useState(0);
+
+// Option C
+const [count] = useState(0);
+
+// Option D
+const setCount = useState(0);`,
+      options: [
+        {
+          id: "a",
+          textBn: "Option A",
+          text: "Option A",
+          isCorrect: true,
+          explanationBn: "সঠিক! useState একটি array রিটার্ন করে যেখানে প্রথম element হল current value এবং দ্বিতীয়টি হল setter function।"
+        },
+        {
+          id: "b",
+          textBn: "Option B",
+          text: "Option B",
+          isCorrect: false,
+          explanationBn: "ভুল। এতে destructuring নেই।"
+        },
+        {
+          id: "c",
+          textBn: "Option C",
+          text: "Option C",
+          isCorrect: false,
+          explanationBn: "ভুল। setter function missing।"
+        },
+        {
+          id: "d",
+          textBn: "Option D",
+          text: "Option D",
+          isCorrect: false,
+          explanationBn: "ভুল। current value missing।"
+        }
+      ],
+      hintBn: "useState সবসময় একটি array destructure করে।",
+      hint: "useState always destructures an array.",
+      difficulty: "intermediate",
+      points: 80
+    }
+  ]}
+  onComplete={(score, total) => {
+    console.log(`Quiz completed! Score: ${score}/${total}`);
+  }}
+/>
+
+---
+
+## 🛠️ Advanced Code Playground
+
+এই উন্নত কোড প্লেগ্রাউন্ডে React কম্পোনেন্ট তৈরি করুন এবং রিয়েল-টাইমে দেখুন:
+
+<AdvancedPlayground
+  lessonId="components-playground"
+  enableSharing={true}
+  showConsole={true}
+  showFileExplorer={true}
+  customChallenges={[
+    {
+      id: "challenge1",
+      titleBn: "একটি গ্রিটিং কম্পোনেন্ট তৈরি করুন",
+      title: "Create a Greeting Component",
+      descriptionBn: "একটি কম্পোনেন্ট তৈরি করুন যা নাম props হিসেবে নেয় এবং 'Hello, {name}!' দেখায়",
+      description: "Create a component that takes name as props and displays 'Hello, {name}!'",
+      points: 100,
+      testCases: [
+        {
+          name: "Has Greeting function",
+          test: (code) => code.includes("function Greeting") || code.includes("const Greeting"),
+          hintBn: "একটি Greeting function তৈরি করুন",
+          hint: "Create a Greeting function"
+        },
+        {
+          name: "Uses props",
+          test: (code) => code.includes("props") || code.includes("{ name }"),
+          hintBn: "props ব্যবহার করুন name পেতে",
+          hint: "Use props to get the name"
+        },
+        {
+          name: "Returns JSX",
+          test: (code) => code.includes("return") && code.includes("<"),
+          hintBn: "JSX return করুন",
+          hint: "Return JSX"
+        }
+      ]
+    },
+    {
+      id: "challenge2",
+      titleBn: "useState দিয়ে কাউন্টার",
+      title: "Counter with useState",
+      descriptionBn: "useState হুক ব্যবহার করে একটি কাউন্টার কম্পোনেন্ট তৈরি করুন",
+      description: "Create a counter component using useState hook",
+      points: 150,
+      testCases: [
+        {
+          name: "Imports useState",
+          test: (code) => code.includes("useState"),
+          hintBn: "useState import করুন",
+          hint: "Import useState"
+        },
+        {
+          name: "Has count state",
+          test: (code) => code.includes("count") && code.includes("setCount"),
+          hintBn: "count state তৈরি করুন",
+          hint: "Create count state"
+        },
+        {
+          name: "Has increment button",
+          test: (code) => code.includes("button") && code.includes("onClick"),
+          hintBn: "increment button যোগ করুন",
+          hint: "Add increment button"
+        }
+      ]
+    }
+  ]}
+/>
+
+---
+
+## 🤖 AI Learning Assistant
+
+আমাদের AI সহায়ক আপনার React শেখার যাত্রায় সাহায্য করবে। যেকোনো প্রশ্ন জিজ্ঞাসা করুন!
+
+<LearningAssistant 
+  lessonContext="React Components and Props"
+  visible={false}
+/>
+
+---
+
+## 🎉 What's New in React Bangla Tutorial?
+
+### 🎮 Gamified Learning
+- **পয়েন্ট সিস্টেম**: প্রতিটি কুইজ এবং চ্যালেঞ্জে পয়েন্ট অর্জন করুন
+- **লেভেল সিস্টেম**: আপনার দক্ষতা অনুযায়ী লেভেল আপ করুন  
+- **অর্জন ব্যাজ**: বিশেষ মাইলফলক অর্জনের জন্য ব্যাজ পান
+- **ধারাবাহিকতা**: প্রতিদিন শেখার অভ্যাস গড়ে তুলুন
+
+### 💡 Interactive Features
+- **লাইভ কোড এডিটর**: রিয়েল-টাইমে কোড লিখুন এবং ফলাফল দেখুন
+- **চ্যালেঞ্জ সিস্টেম**: কোডিং চ্যালেঞ্জে অংশ নিন
+- **ইন্সট্যান্ট ফিডব্যাক**: তৎক্ষণাৎ ফলাফল এবং ব্যাখ্যা পান
+- **প্রজেক্ট শেয়ারিং**: আপনার প্রজেক্ট অন্যদের সাথে শেয়ার করুন
+
+### 🤖 AI-Powered Learning
+- **স্মার্ট টিউটরিং**: প্রসঙ্গ অনুযায়ী সাহায্য পান
+- **কোড রিভিউ**: AI আপনার কোড পর্যালোচনা করবে
+- **ব্যক্তিগত পথ নির্দেশনা**: আপনার জন্য কাস্টমাইজড শিক্ষা পথ
+- **দ্বিভাষিক সাপোর্ট**: বাংলা এবং ইংরেজি উভয় ভাষায় সাহায্য
+
+---
+
+## 🚀 Get Started
+
+1. **কুইজে অংশ নিন** - আপনার জ্ঞান পরীক্ষা করুন এবং পয়েন্ট অর্জন করুন
+2. **কোড প্লেগ্রাউন্ড ব্যবহার করুন** - হাতে-কলমে React শিখুন
+3. **AI সহায়ক জিজ্ঞাসা করুন** - যেকোনো প্রশ্নের জন্য AI টিউটরের সাহায্য নিন
+4. **প্রগ্রেস ট্র্যাক করুন** - আপনার শিক্ষার অগ্রগতি দেখুন
+
+এই নতুন বৈশিষ্ট্যগুলি React Bangla Tutorial কে একটি সাধারণ ডকুমেন্টেশন সাইট থেকে একটি বিশ্বমানের ইন্টারঅ্যাক্টিভ শিক্ষা প্ল্যাটফর্মে রূপান্তরিত করেছে।
+
+**Happy Learning! 🎉 আনন্দের সাথে শিখুন!**

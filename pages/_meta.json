@@ -1,39 +1,121 @@
 {
-  "index": "Course Introduction",
-  "learn-react-quick-start-guide": "Quick Start",
-  "thinking-in-react": "Thinking in React",
-  "learn-react-environment-set-up": "Environment Set Up and Productivity Tips",
-  "learn-react-describing-the-ui": "Describing The UI",
-  "learn-react-adding-interactivity": "Adding Interactivity",
-  "learn-react-managing-state": "Managing State",
-  "learn-react-escape-hatches": "Escape Hatches",
-  "react-suspense": "React Suspense",
-  "react-lazy-loading": "Lazy Loading",
-  "next-js": "Learn Next JS",
-  "react-router-tutorial": "React Router",
-  "react-hook-form-guide": "React Hook Form",
-  "axios-http-requests-tutorial": "Axios HTTP",
-  "react-query-data-fetching": "React Query",
-  "framer-motion-animation": "Framer Motion. Animation",
-  "developer-career-advice": "Developer Career Advice",
-  "react-developer-jobs-bangladesh": "Jobs Circular",
-  "javascript-fundamentals": "JavaScript Fundamentals",
-  "reusability-features": "Reusability Features",
-  "industry-level-projects": "Industry Level Projects",
-  "jogakhicuri-projects": "জোগাখিচুরি প্রজেক্টসমূহ",
-  "acknowledgement": "একদিন সুযোগ পেয়েছিলাম",
-  "about": {
-    "title": "About",
+  "index": "🏠 Home | হোম",
+  "learn": {
+    "title": "📚 Learn React | React শিখুন",
     "type": "page"
   },
-  "contact": {
-    "title": "Contact ↗",
-    "type": "page",
-    "href": "https://github.com/codedbymojnu/",
-    "newWindow": true
+  "tutorials": {
+    "title": "📖 Tutorials | টিউটোরিয়াল",
+    "type": "menu",
+    "items": {
+      "html-css-basics": "🌐 HTML & CSS Basics | HTML ও CSS এর বেসিক",
+      "javascript-fundamentals": "⚡ JavaScript Fundamentals | JavaScript এর মূলনীতি",
+      "react-fundamentals": {
+        "title": "⚛️ React Fundamentals | React এর মূলনীতি",
+        "type": "menu",
+        "items": {
+          "getting-started": "🚀 Getting Started | শুরু করা",
+          "components": "🧩 Components | কম্পোনেন্ট",
+          "jsx": "🔧 JSX Syntax | JSX সিনট্যাক্স",
+          "props": "📝 Props | প্রপস",
+          "state": "🔄 State Management | স্টেট ম্যানেজমেন্ট",
+          "events": "⚡ Event Handling | ইভেন্ট হ্যান্ডলিং",
+          "conditional-rendering": "🔀 Conditional Rendering | শর্তসাপেক্ষ রেন্ডারিং",
+          "lists": "📋 Lists & Keys | লিস্ট ও কী",
+          "forms": "📝 Forms | ফর্ম"
+        }
+      },
+      "react-hooks": {
+        "title": "🎣 React Hooks | React হুকস",
+        "type": "menu",
+        "items": {
+          "usestate": "🔄 useState Hook",
+          "useeffect": "⚡ useEffect Hook",
+          "usecontext": "🌐 useContext Hook",
+          "usereducer": "🔧 useReducer Hook",
+          "usememo": "💾 useMemo Hook",
+          "usecallback": "🔗 useCallback Hook",
+          "custom-hooks": "🛠️ Custom Hooks | কাস্টম হুকস"
+        }
+      },
+      "advanced-react": {
+        "title": "🚀 Advanced React | উন্নত React",
+        "type": "menu",
+        "items": {
+          "performance": "⚡ Performance Optimization | পারফরমেন্স অপটিমাইজেশন",
+          "error-boundaries": "🛡️ Error Boundaries | এরর বাউন্ডারি",
+          "context-api": "🌐 Context API",
+          "portals": "🌉 Portals",
+          "refs": "🔗 Refs & DOM Manipulation",
+          "higher-order-components": "🔧 Higher Order Components",
+          "render-props": "🎭 Render Props Pattern"
+        }
+      },
+      "react-ecosystem": {
+        "title": "🌟 React Ecosystem | React ইকোসিস্টেম",
+        "type": "menu",
+        "items": {
+          "react-router": "🛣️ React Router | রাউটিং",
+          "state-management": "🗃️ State Management | স্টেট ম্যানেজমেন্ট",
+          "styling": "🎨 Styling Solutions | স্টাইলিং",
+          "testing": "🧪 Testing | টেস্টিং",
+          "deployment": "🚀 Deployment | ডিপ্লয়মেন্ট"
+        }
+      }
+    }
   },
-  "my-resume": {
-    "title": "My Resume",
+  "exercises": {
+    "title": "💪 Exercises | অনুশীলনী",
+    "type": "menu",
+    "items": {
+      "beginner": "🌱 Beginner | শুরুর স্তর",
+      "intermediate": "⚡ Intermediate | মাঝারি স্তর",
+      "advanced": "🚀 Advanced | উন্নত স্তর",
+      "projects": "🏗️ Projects | প্রজেক্ট"
+    }
+  },
+  "examples": {
+    "title": "💡 Examples | উদাহরণ",
+    "type": "menu",
+    "items": {
+      "basic-examples": "🔰 Basic Examples | মৌলিক উদাহরণ",
+      "component-examples": "🧩 Component Examples | কম্পোনেন্ট উদাহরণ",
+      "hook-examples": "🎣 Hook Examples | হুক উদাহরণ",
+      "real-world-examples": "🌍 Real World Examples | বাস্তব উদাহরণ"
+    }
+  },
+  "reference": {
+    "title": "📚 Reference | রেফারেন্স",
+    "type": "menu",
+    "items": {
+      "react-api": "⚛️ React API",
+      "hooks-api": "🎣 Hooks API",
+      "dom-elements": "🌐 DOM Elements",
+      "synthetic-events": "⚡ Synthetic Events",
+      "glossary": "📖 Glossary | শব্দকোষ"
+    }
+  },
+  "quiz": {
+    "title": "🎯 Quiz | কুইজ",
     "type": "page"
-  }
+  },
+  "certificates": {
+    "title": "🏆 Certificates | সার্টিফিকেট",
+    "type": "page"
+  },
+  "compiler": {
+    "title": "⚙️ Online Compiler | অনলাইন কম্পাইলার",
+    "type": "page"
+  },
+  "community": {
+    "title": "👥 Community | কমিউনিটি",
+    "type": "menu",
+    "items": {
+      "forum": "💬 Forum | ফোরাম",
+      "discord": "🎮 Discord Server",
+      "github": "📂 GitHub Repository",
+      "contribute": "🤝 Contribute | অবদান রাখুন"
+    }
+  },
+  "about": "ℹ️ About | সম্পর্কে"
 }

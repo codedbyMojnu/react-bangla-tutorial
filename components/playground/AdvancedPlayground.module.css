@@ -1,0 +1,405 @@
+.playground {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f8fafc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin: 2rem 0;
+}
+
+.playground.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  border-radius: 0;
+  margin: 0;
+}
+
+.templateSelector {
+  padding: 2rem;
+  text-align: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin: 2rem 0;
+}
+
+.selectorTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.titleEn {
+  font-size: 1rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.selectorDescription {
+  color: #6b7280;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.templateGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.templateCard {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.templateCard:hover {
+  border-color: #3b82f6;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+.templateName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.templateDesc {
+  color: #6b7280;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.templateCategory {
+  display: inline-block;
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.toolbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.toolbarButton {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.toolbarButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.toolbarButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.templateInfo {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.timeTracker {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.sandpackContainer {
+  background: white;
+}
+
+.sandpackContainer .sp-layout {
+  height: auto !important;
+}
+
+.shareModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.shareContent {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+.shareContent h3 {
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.shareUrl {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.shareUrl input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.copyButton {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.copyButton:hover {
+  background: #2563eb;
+}
+
+.closeButton {
+  background: #6b7280;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.closeButton:hover {
+  background: #4b5563;
+}
+
+.challengesPanel {
+  position: absolute;
+  top: 60px;
+  right: 1rem;
+  width: 300px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  z-index: 100;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.challengesPanel h3 {
+  margin: 0 0 1rem 0;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.challenge {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.challenge:hover {
+  border-color: #3b82f6;
+}
+
+.challenge.completed {
+  background: #f0fdf4;
+  border-color: #16a34a;
+}
+
+.challengeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.challengeHeader h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #1f2937;
+}
+
+.challengePoints {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.challenge p {
+  margin: 0 0 0.75rem 0;
+  color: #6b7280;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.runButton {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.runButton:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.runButton:disabled {
+  background: #16a34a;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .playground {
+    margin: 1rem 0;
+  }
+  
+  .toolbar {
+    padding: 0.75rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .toolbarLeft,
+  .toolbarRight {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .templateGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .templateCard {
+    padding: 1rem;
+  }
+  
+  .challengesPanel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    max-height: 70vh;
+  }
+  
+  .selectorTitle {
+    font-size: 1.5rem;
+  }
+  
+  .shareContent {
+    padding: 1.5rem;
+  }
+  
+  .shareUrl {
+    flex-direction: column;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .playground {
+    background: #1f2937;
+  }
+  
+  .templateSelector {
+    background: #1f2937;
+    color: white;
+  }
+  
+  .templateCard {
+    background: #374151;
+    border-color: #4b5563;
+    color: white;
+  }
+  
+  .templateCard:hover {
+    border-color: #60a5fa;
+  }
+  
+  .challengesPanel {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: white;
+  }
+  
+  .shareContent {
+    background: #1f2937;
+    color: white;
+  }
+}

@@ -1,0 +1,876 @@
+---
+title: React Hooks API Reference | React Hooks API রেফারেন্স
+description: Complete reference for all React Hooks including useState, useEffect, useContext, and custom hooks with examples in Bengali.
+---
+
+import { LearningAssistant } from '../../components/learning/LearningAssistant'
+import { AdvancedPlayground } from '../../components/playground/AdvancedPlayground'
+
+# 🎣 React Hooks API Reference | React Hooks API রেফারেন্স
+
+**Complete guide to all React Hooks with practical examples | সকল React Hooks এর ব্যবহারিক উদাহরণ সহ সম্পূর্ণ গাইড**
+
+React Hooks হল special functions যা functional components এ state এবং lifecycle features ব্যবহার করতে দেয়। এই reference guide এ সকল built-in hooks এবং তাদের ব্যবহার বিস্তারিত দেখানো হয়েছে।
+
+---
+
+## 📋 Hooks Overview | Hooks সংক্ষিপ্ত বিবরণ
+
+### 🔧 **Basic Hooks | মৌলিক Hooks**
+
+| Hook | Purpose | Use Case |
+|------|---------|----------|
+| `useState` | State management | Local component state |
+| `useEffect` | Side effects | API calls, subscriptions |
+| `useContext` | Context consumption | Global state access |
+
+### ⚡ **Additional Hooks | অতিরিক্ত Hooks**
+
+| Hook | Purpose | Use Case |
+|------|---------|----------|
+| `useReducer` | Complex state logic | Multiple related state values |
+| `useCallback` | Memoize functions | Prevent unnecessary re-renders |
+| `useMemo` | Memoize values | Expensive calculations |
+| `useRef` | Reference values | DOM access, mutable values |
+| `useImperativeHandle` | Customize ref | Custom component APIs |
+| `useLayoutEffect` | Synchronous effects | DOM measurements |
+| `useDebugValue` | Debug custom hooks | Development tools |
+
+---
+
+## 🔄 useState Hook
+
+**Purpose:** Function components এ state add করা  
+**উদ্দেশ্য:** Function components এ state management
+
+### **Syntax | সিনট্যাক্স**
+
+```javascript
+const [state, setState] = useState(initialState);
+```
+
+### **Parameters | প্যারামিটার**
+- `initialState`: Initial state value or function that returns initial state
+
+### **Returns | রিটার্ন**
+- Array with exactly two elements:
+  - `state`: Current state value
+  - `setState`: Function to update state
+
+### **Examples | উদাহরণ**
+
+<AdvancedPlayground
+  lessonId="useState-examples"
+  initialTemplate={{
+    id: 'useState-demo',
+    name: 'useState Examples',
+    nameBn: 'useState উদাহরণ',
+    description: 'Complete useState examples',
+    descriptionBn: 'useState এর সম্পূর্ণ উদাহরণ',
+    category: 'hooks',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `import React, { useState } from 'react';
+
+// Basic useState example
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h3>🔢 Basic Counter | মৌলিক কাউন্টার</h3>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        ➕ Increment
+      </button>
+      <button onClick={() => setCount(count - 1)}>
+        ➖ Decrement
+      </button>
+      <button onClick={() => setCount(0)}>
+        🔄 Reset
+      </button>
+    </div>
+  );
+}
+
+// useState with object
+function UserForm() {
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    age: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUser(prevUser => ({
+      ...prevUser,
+      [name]: value
+    }));
+  };
+
+  return (
+    <div>
+      <h3>👤 User Form | ব্যবহারকারী ফর্ম</h3>
+      <div>
+        <input
+          name="name"
+          value={user.name}
+          onChange={handleInputChange}
+          placeholder="নাম (Name)"
+        />
+      </div>
+      <div>
+        <input
+          name="email"
+          value={user.email}
+          onChange={handleInputChange}
+          placeholder="ইমেইল (Email)"
+        />
+      </div>
+      <div>
+        <input
+          name="age"
+          value={user.age}
+          onChange={handleInputChange}
+          placeholder="বয়স (Age)"
+        />
+      </div>
+      <div>
+        <h4>Current User Data:</h4>
+        <pre>{JSON.stringify(user, null, 2)}</pre>
+      </div>
+    </div>
+  );
+}
+
+// useState with function (lazy initialization)
+function ExpensiveComponent() {
+  const [data, setData] = useState(() => {
+    // Expensive calculation
+    console.log('Computing initial value...');
+    return Array.from({ length: 1000 }, (_, i) => i * 2);
+  });
+
+  return (
+    <div>
+      <h3>💻 Lazy Initialization | অলস সূচনা</h3>
+      <p>Data length: {data.length}</p>
+      <p>First 10 items: {data.slice(0, 10).join(', ')}</p>
+      <button onClick={() => setData([])}>
+        Clear Data
+      </button>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1>🎣 useState Hook Examples</h1>
+      
+      <div style={{ marginBottom: '30px' }}>
+        <Counter />
+      </div>
+      
+      <div style={{ marginBottom: '30px' }}>
+        <UserForm />
+      </div>
+      
+      <div style={{ marginBottom: '30px' }}>
+        <ExpensiveComponent />
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+---
+
+## ⚡ useEffect Hook
+
+**Purpose:** Side effects perform করা  
+**উদ্দেশ্য:** Component lifecycle এ side effects handle করা
+
+### **Syntax | সিনট্যাক্স**
+
+```javascript
+useEffect(effect, dependencies?);
+```
+
+### **Parameters | প্যারামিটার**
+- `effect`: Function that contains side effect logic
+- `dependencies` (optional): Array of dependencies
+
+### **Effect Cleanup | Effect পরিষ্কার**
+
+```javascript
+useEffect(() => {
+  const subscription = subscribe();
+  
+  // Cleanup function
+  return () => {
+    subscription.unsubscribe();
+  };
+}, []);
+```
+
+### **Common Patterns | সাধারণ প্যাটার্ন**
+
+<AdvancedPlayground
+  lessonId="useEffect-examples"
+  initialTemplate={{
+    id: 'useEffect-demo',
+    name: 'useEffect Examples',
+    nameBn: 'useEffect উদাহরণ',
+    description: 'Complete useEffect patterns',
+    descriptionBn: 'useEffect এর সম্পূর্ণ প্যাটার্ন',
+    category: 'hooks',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `import React, { useState, useEffect } from 'react';
+
+// 1. Effect without dependencies (runs after every render)
+function DocumentTitle() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = \`Count: \${count}\`;
+  });
+
+  return (
+    <div>
+      <h3>📄 Document Title Update</h3>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Update Count (Check browser tab title)
+      </button>
+    </div>
+  );
+}
+
+// 2. Effect with dependencies
+function UserProfile({ userId = 1 }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setUser({
+        id: userId,
+        name: \`User \${userId}\`,
+        email: \`user\${userId}@example.com\`
+      });
+      setLoading(false);
+    }, 1000);
+  }, [userId]); // Runs when userId changes
+
+  return (
+    <div>
+      <h3>👤 User Profile (ID: {userId})</h3>
+      {loading ? (
+        <p>Loading user data...</p>
+      ) : user ? (
+        <div>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+        </div>
+      ) : (
+        <p>No user data</p>
+      )}
+    </div>
+  );
+}
+
+// 3. Effect with cleanup (subscriptions, timers)
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let interval = null;
+    
+    if (isRunning) {
+      interval = setInterval(() => {
+        setSeconds(seconds => seconds + 1);
+      }, 1000);
+    }
+
+    // Cleanup function
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isRunning]);
+
+  return (
+    <div>
+      <h3>⏱️ Timer | টাইমার</h3>
+      <p>Seconds: {seconds}</p>
+      <button onClick={() => setIsRunning(!isRunning)}>
+        {isRunning ? 'Stop' : 'Start'}
+      </button>
+      <button onClick={() => setSeconds(0)}>
+        Reset
+      </button>
+    </div>
+  );
+}
+
+// 4. Effect that runs only once (componentDidMount equivalent)
+function WindowSize() {
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Empty dependency array = runs only once
+
+  return (
+    <div>
+      <h3>📏 Window Size | উইন্ডো সাইজ</h3>
+      <p>Width: {windowSize.width}px</p>
+      <p>Height: {windowSize.height}px</p>
+      <p>Resize the window to see changes</p>
+    </div>
+  );
+}
+
+function App() {
+  const [userId, setUserId] = useState(1);
+  
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1>⚡ useEffect Hook Examples</h1>
+      
+      <div style={{ marginBottom: '30px' }}>
+        <DocumentTitle />
+      </div>
+      
+      <div style={{ marginBottom: '30px' }}>
+        <div>
+          <label>User ID: </label>
+          <select value={userId} onChange={(e) => setUserId(Number(e.target.value))}>
+            <option value={1}>User 1</option>
+            <option value={2}>User 2</option>
+            <option value={3}>User 3</option>
+          </select>
+        </div>
+        <UserProfile userId={userId} />
+      </div>
+      
+      <div style={{ marginBottom: '30px' }}>
+        <Timer />
+      </div>
+      
+      <div style={{ marginBottom: '30px' }}>
+        <WindowSize />
+      </div>
+    </div>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+---
+
+## 🌐 useContext Hook
+
+**Purpose:** React Context এর value consume করা  
+**উদ্দেশ্য:** Context থেকে data access করা
+
+### **Syntax | সিনট্যাক্স**
+
+```javascript
+const value = useContext(Context);
+```
+
+### **Complete Example | সম্পূর্ণ উদাহরণ**
+
+<AdvancedPlayground
+  lessonId="useContext-example"
+  initialTemplate={{
+    id: 'useContext-demo',
+    name: 'useContext Example',
+    nameBn: 'useContext উদাহরণ',
+    description: 'Theme context example',
+    descriptionBn: 'Theme context উদাহরণ',
+    category: 'hooks',
+    files: {
+      '/App.js': {
+        name: 'App.js',
+        content: `import React, { createContext, useContext, useState } from 'react';
+
+// 1. Create Context
+const ThemeContext = createContext();
+const UserContext = createContext();
+
+// 2. Context Providers
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+  
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+function UserProvider({ children }) {
+  const [user, setUser] = useState({
+    name: 'জন ডো (John Doe)',
+    email: 'john@example.com'
+  });
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+
+// 3. Components that consume context
+function Header() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { user } = useContext(UserContext);
+
+  return (
+    <header style={{
+      backgroundColor: theme === 'light' ? '#f0f0f0' : '#333',
+      color: theme === 'light' ? '#333' : '#fff',
+      padding: '20px',
+      borderRadius: '8px',
+      marginBottom: '20px'
+    }}>
+      <h2>🎨 Theme Context Demo</h2>
+      <p>Welcome, {user.name}!</p>
+      <p>Current theme: {theme}</p>
+      <button 
+        onClick={toggleTheme}
+        style={{
+          backgroundColor: theme === 'light' ? '#007bff' : '#ffc107',
+          color: theme === 'light' ? 'white' : 'black',
+          border: 'none',
+          padding: '10px 20px',
+          borderRadius: '5px',
+          cursor: 'pointer'
+        }}
+      >
+        🔄 Toggle Theme
+      </button>
+    </header>
+  );
+}
+
+function UserProfile() {
+  const { user, setUser } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
+
+  const updateUser = () => {
+    setUser({
+      name: 'নতুন ব্যবহারকারী (New User)',
+      email: 'newuser@example.com'
+    });
+  };
+
+  return (
+    <div style={{
+      backgroundColor: theme === 'light' ? '#fff' : '#444',
+      color: theme === 'light' ? '#333' : '#fff',
+      padding: '20px',
+      borderRadius: '8px',
+      border: \`1px solid \${theme === 'light' ? '#ddd' : '#666'}\`
+    }}>
+      <h3>👤 User Profile | ব্যবহারকারী প্রোফাইল</h3>
+      <p><strong>Name:</strong> {user.name}</p>
+      <p><strong>Email:</strong> {user.email}</p>
+      <button 
+        onClick={updateUser}
+        style={{
+          backgroundColor: '#28a745',
+          color: 'white',
+          border: 'none',
+          padding: '8px 16px',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+      >
+        📝 Update User Info
+      </button>
+    </div>
+  );
+}
+
+function ThemeStatus() {
+  const { theme } = useContext(ThemeContext);
+  
+  return (
+    <div style={{
+      backgroundColor: theme === 'light' ? '#e7f3ff' : '#2c3e50',
+      color: theme === 'light' ? '#0366d6' : '#ecf0f1',
+      padding: '15px',
+      borderRadius: '8px',
+      marginTop: '20px'
+    }}>
+      <h4>🎯 Theme Status</h4>
+      <p>Current theme mode: <strong>{theme}</strong></p>
+      <p>
+        {theme === 'light' 
+          ? 'You are in light mode! ☀️' 
+          : 'You are in dark mode! 🌙'
+        }
+      </p>
+    </div>
+  );
+}
+
+// 4. Main App Component
+function AppContent() {
+  return (
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+      <Header />
+      <UserProfile />
+      <ThemeStatus />
+      
+      <div style={{ marginTop: '30px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+        <h4>💡 Context Benefits | Context এর সুবিধা</h4>
+        <ul>
+          <li>✅ Avoid prop drilling | প্রপ ড্রিলিং এড়ানো</li>
+          <li>✅ Share state globally | বিশ্বব্যাপী state শেয়ার</li>
+          <li>✅ Clean component structure | পরিষ্কার কম্পোনেন্ট গঠন</li>
+          <li>✅ Easy theme management | সহজ theme ব্যবস্থাপনা</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
+    </ThemeProvider>
+  );
+}
+
+export default App;`
+      }
+    }
+  }}
+/>
+
+---
+
+## 🔧 useReducer Hook
+
+**Purpose:** Complex state logic manage করা  
+**উদ্দেশ্য:** জটিল state logic পরিচালনা
+
+### **Syntax | সিনট্যাক্স**
+
+```javascript
+const [state, dispatch] = useReducer(reducer, initialState);
+```
+
+### **When to use useReducer | কখন useReducer ব্যবহার করবেন**
+
+- Multiple related state values
+- Complex state transitions
+- State depends on previous state
+- Want to optimize performance
+
+### **Example | উদাহরণ**
+
+```javascript
+const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    case 'reset':
+      return initialState;
+    default:
+      throw new Error();
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <div>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+      <button onClick={() => dispatch({ type: 'reset' })}>Reset</button>
+    </div>
+  );
+}
+```
+
+---
+
+## 💾 useMemo Hook
+
+**Purpose:** Expensive calculations memoize করা  
+**উদ্দেশ্য:** ভারী calculations এর result cache করা
+
+### **Syntax | সিনট্যাক্স**
+
+```javascript
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```
+
+### **Example | উদাহরণ**
+
+```javascript
+function ExpensiveComponent({ items, filter }) {
+  const filteredItems = useMemo(() => {
+    console.log('Filtering items...');
+    return items.filter(item => item.category === filter);
+  }, [items, filter]);
+
+  const total = useMemo(() => {
+    console.log('Calculating total...');
+    return filteredItems.reduce((sum, item) => sum + item.price, 0);
+  }, [filteredItems]);
+
+  return (
+    <div>
+      <p>Filtered items: {filteredItems.length}</p>
+      <p>Total: ${total}</p>
+    </div>
+  );
+}
+```
+
+---
+
+## 🔗 useCallback Hook
+
+**Purpose:** Functions memoize করা  
+**উদ্দেশ্য:** Function references stable রাখা
+
+### **Syntax | সিনট্যাক্স**
+
+```javascript
+const memoizedCallback = useCallback(
+  () => {
+    doSomething(a, b);
+  },
+  [a, b],
+);
+```
+
+### **Example | উদাহরণ**
+
+```javascript
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = useCallback((text) => {
+    setTodos(prev => [...prev, { id: Date.now(), text }]);
+  }, []);
+
+  const removeTodo = useCallback((id) => {
+    setTodos(prev => prev.filter(todo => todo.id !== id));
+  }, []);
+
+  return (
+    <div>
+      <TodoForm onAdd={addTodo} />
+      <TodoList todos={todos} onRemove={removeTodo} />
+    </div>
+  );
+}
+```
+
+---
+
+## 🎯 useRef Hook
+
+**Purpose:** Mutable values এবং DOM access  
+**উদ্দেশ্য:** DOM reference এবং mutable data
+
+### **Syntax | সিনট্যাক্স**
+
+```javascript
+const refContainer = useRef(initialValue);
+```
+
+### **Common Use Cases | সাধারণ ব্যবহার**
+
+1. **DOM Element Access:**
+```javascript
+function TextInputWithFocusButton() {
+  const inputEl = useRef(null);
+  
+  const onButtonClick = () => {
+    inputEl.current.focus();
+  };
+
+  return (
+    <>
+      <input ref={inputEl} type="text" />
+      <button onClick={onButtonClick}>Focus the input</button>
+    </>
+  );
+}
+```
+
+2. **Storing Mutable Values:**
+```javascript
+function Timer() {
+  const intervalRef = useRef(null);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setCount(c => c + 1);
+    }, 1000);
+
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  return <div>Count: {count}</div>;
+}
+```
+
+---
+
+## 📊 Hooks Rules | Hooks এর নিয়ম
+
+<div style={{
+  background: '#fef2f2',
+  border: '1px solid #dc2626',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  margin: '2rem 0'
+}}>
+
+### ❌ **Rules of Hooks | Hooks এর নিয়মাবলী**
+
+1. **Only call Hooks at the top level** - শুধুমাত্র top level এ Hooks call করুন
+2. **Only call Hooks from React functions** - শুধু React functions থেকে Hooks call করুন
+3. **Don't call Hooks inside loops, conditions, or nested functions** - লুপ, condition বা nested function এ Hooks call করবেন না
+
+</div>
+
+<div style={{
+  background: '#f0fdf4',
+  border: '1px solid #16a34a',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  margin: '2rem 0'
+}}>
+
+### ✅ **Best Practices | সেরা পদ্ধতি**
+
+1. **Use ESLint plugin** - react-hooks/rules-of-hooks
+2. **Custom Hooks** - Reusable logic এর জন্য
+3. **Dependency Arrays** - useEffect, useMemo, useCallback এ সঠিক dependencies
+4. **Cleanup Functions** - Memory leaks prevent করতে
+
+</div>
+
+---
+
+## 🛠️ Custom Hooks | কাস্টম Hooks
+
+Custom hooks দিয়ে reusable stateful logic তৈরি করুন:
+
+```javascript
+// Custom Hook for API calls
+function useApi(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(url);
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+// Usage
+function UserComponent({ userId }) {
+  const { data: user, loading, error } = useApi(`/api/users/${userId}`);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return <div>Hello, {user.name}!</div>;
+}
+```
+
+---
+
+<LearningAssistant 
+  lessonContext="React Hooks API Reference - Complete hooks documentation"
+  visible={false}
+/>
+
+**Related:** [React API Reference →](/reference/react-api) | [DOM Elements →](/reference/dom-elements)
+
+---
+
+## 📚 Additional Resources | অতিরিক্ত রিসোর্স
+
+- 📖 [Rules of Hooks](https://react.dev/warnings/invalid-hook-call-warning)
+- 🛠️ [Building Your Own Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks)
+- ⚡ [Hooks FAQ](https://react.dev/learn/hooks-faq)
+- 🎣 [Hooks at a Glance](https://react.dev/learn/hooks-at-a-glance)
+
+**Happy Coding! 🚀 সুখী কোডিং!**

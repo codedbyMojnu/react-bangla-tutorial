@@ -1,0 +1,567 @@
+---
+title: React API Reference | React API রেফারেন্স
+description: Complete reference for React API including components, hooks, and utilities. Quick lookup for React developers.
+---
+
+import { LearningAssistant } from '../../components/learning/LearningAssistant'
+
+# ⚛️ React API Reference | React API রেফারেন্স
+
+**Complete reference for all React APIs and methods | সকল React API এবং method এর সম্পূর্ণ রেফারেন্স**
+
+এই রেফারেন্স গাইডে React এর সকল API, methods, এবং properties এর comprehensive documentation পাবেন। Experienced developers দের জন্য quick lookup এবং beginners দের জন্য detailed explanations।
+
+---
+
+## 📚 Table of Contents | সূচিপত্র
+
+- [Core React APIs](#core-react-apis)
+- [Component APIs](#component-apis)  
+- [React Hooks](#react-hooks)
+- [Utility Functions](#utility-functions)
+- [Development Tools](#development-tools)
+
+---
+
+## 🔧 Core React APIs | মূল React API সমূহ
+
+### React.createElement()
+
+**Signature:** `React.createElement(type, props, ...children)`
+
+**Purpose:** JSX ছাড়া React elements তৈরি করে  
+**উদ্দেশ্য:** JSX ব্যবহার না করে React elements তৈরি করা
+
+```javascript
+// JSX
+const element = <h1 className="greeting">Hello, world!</h1>;
+
+// Equivalent without JSX
+const element = React.createElement(
+  'h1',
+  { className: 'greeting' },
+  'Hello, world!'
+);
+```
+
+**Parameters:**
+- `type` (string | Component): HTML tag name or React component
+- `props` (object): Properties/attributes for the element  
+- `children` (...): Child elements or content
+
+---
+
+### React.Fragment
+
+**Purpose:** Multiple elements group করার জন্য wrapper element ছাড়া  
+**উদ্দেশ্য:** অতিরিক্ত wrapper element ছাড়া একাধিক elements group করা
+
+```javascript
+// Using React.Fragment
+function MyComponent() {
+  return (
+    <React.Fragment>
+      <h1>Title</h1>
+      <p>Description</p>
+    </React.Fragment>
+  );
+}
+
+// Short syntax
+function MyComponent() {
+  return (
+    <>
+      <h1>Title</h1>
+      <p>Description</p>
+    </>
+  );
+}
+```
+
+---
+
+### React.StrictMode
+
+**Purpose:** Development mode এ additional checks এবং warnings enable করে  
+**উদ্দেশ্য:** Development এর সময় অতিরিক্ত যাচাই এবং সতর্কতা
+
+```javascript
+function App() {
+  return (
+    <React.StrictMode>
+      <MyApp />
+    </React.StrictMode>
+  );
+}
+```
+
+**What it does:**
+- Identifies unsafe lifecycles
+- Warns about legacy string ref API usage  
+- Detects unexpected side effects
+- Warns about deprecated APIs
+
+---
+
+## 🧩 Component APIs | কম্পোনেন্ট API সমূহ
+
+### Function Components
+
+**Basic Syntax:**
+
+```javascript
+function MyComponent(props) {
+  return <div>Hello, {props.name}!</div>;
+}
+
+// Arrow function
+const MyComponent = (props) => {
+  return <div>Hello, {props.name}!</div>;
+};
+
+// With destructuring
+const MyComponent = ({ name, age }) => {
+  return (
+    <div>
+      <h1>Hello, {name}!</h1>
+      <p>Age: {age}</p>
+    </div>
+  );
+};
+```
+
+---
+
+### React.memo()
+
+**Purpose:** Component re-rendering optimize করে  
+**উদ্দেশ্য:** Component এর অপ্রয়োজনীয় re-rendering বন্ধ করা
+
+```javascript
+const MyComponent = React.memo(function MyComponent({ name }) {
+  return <div>Hello, {name}!</div>;
+});
+
+// With custom comparison
+const MyComponent = React.memo(function MyComponent(props) {
+  return <div>Hello, {props.name}!</div>;
+}, (prevProps, nextProps) => {
+  return prevProps.name === nextProps.name;
+});
+```
+
+---
+
+### forwardRef()
+
+**Purpose:** Parent component থেকে child component এর DOM element access করা  
+**উদ্দেশ্য:** Parent থেকে child এর DOM reference পাওয়া
+
+```javascript
+const FancyButton = React.forwardRef((props, ref) => (
+  <button ref={ref} className="fancy-button">
+    {props.children}
+  </button>
+));
+
+// Usage
+function App() {
+  const buttonRef = useRef(null);
+  
+  const handleClick = () => {
+    buttonRef.current.focus();
+  };
+
+  return (
+    <div>
+      <FancyButton ref={buttonRef}>Click me!</FancyButton>
+      <button onClick={handleClick}>Focus the fancy button</button>
+    </div>
+  );
+}
+```
+
+---
+
+## 🎣 React Hooks | React হুকস
+
+### useState
+
+**Signature:** `const [state, setState] = useState(initialState)`
+
+**Purpose:** Function component এ state management  
+**উদ্দেশ্য:** Function component এ state পরিচালনা
+
+```javascript
+function Counter() {
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState('');
+  const [user, setUser] = useState({ name: '', email: '' });
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>+</button>
+      <button onClick={() => setCount(prev => prev + 1)}>+ (functional)</button>
+    </div>
+  );
+}
+```
+
+**Key Points:**
+- Initial state শুধু first render এ use হয়
+- Functional updates use করুন previous state এর উপর ভিত্তি করে
+- Object/array state update করার সময় spread operator ব্যবহার করুন
+
+---
+
+### useEffect
+
+**Signature:** `useEffect(effect, dependencies?)`
+
+**Purpose:** Side effects handle করা (API calls, subscriptions, timers)  
+**উদ্দেশ্য:** Side effects পরিচালনা করা
+
+```javascript
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+
+  // Effect without dependencies (runs after every render)
+  useEffect(() => {
+    document.title = `User: ${user?.name || 'Loading...'}`;
+  });
+
+  // Effect with dependencies (runs when userId changes)
+  useEffect(() => {
+    fetchUser(userId).then(setUser);
+  }, [userId]);
+
+  // Effect with cleanup (unsubscribe on unmount)
+  useEffect(() => {
+    const subscription = subscribe(userId);
+    
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [userId]);
+
+  // Effect with empty dependencies (runs only once)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      console.log('Timer tick');
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return <div>{user ? user.name : 'Loading...'}</div>;
+}
+```
+
+---
+
+### useContext
+
+**Purpose:** React Context API ব্যবহার করা  
+**উদ্দেশ্য:** Context এর data consume করা
+
+```javascript
+const ThemeContext = React.createContext('light');
+
+function App() {
+  return (
+    <ThemeContext.Provider value="dark">
+      <ThemedButton />
+    </ThemeContext.Provider>
+  );
+}
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  
+  return (
+    <button className={`btn btn-${theme}`}>
+      Current theme: {theme}
+    </button>
+  );
+}
+```
+
+---
+
+### useReducer
+
+**Purpose:** Complex state management alternative to useState  
+**উদ্দেশ্য:** জটিল state management এর জন্য useState এর বিকল্প
+
+```javascript
+const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    case 'reset':
+      return initialState;
+    default:
+      throw new Error();
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <div>
+      Count: {state.count}
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+      <button onClick={() => dispatch({ type: 'reset' })}>Reset</button>
+    </div>
+  );
+}
+```
+
+---
+
+### useMemo
+
+**Purpose:** Expensive calculations optimize করা  
+**উদ্দেশ্য:** ভারী calculations এর performance optimize করা
+
+```javascript
+function ExpensiveComponent({ items, filter }) {
+  const expensiveValue = useMemo(() => {
+    return items
+      .filter(item => item.category === filter)
+      .reduce((sum, item) => sum + item.price, 0);
+  }, [items, filter]);
+
+  return <div>Total: ${expensiveValue}</div>;
+}
+```
+
+---
+
+### useCallback
+
+**Purpose:** Function reference memoize করা  
+**উদ্দেশ্য:** Function এর reference stable রাখা
+
+```javascript
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+
+  const handleAddTodo = useCallback((text) => {
+    setTodos(prev => [...prev, { id: Date.now(), text }]);
+  }, []);
+
+  const handleRemoveTodo = useCallback((id) => {
+    setTodos(prev => prev.filter(todo => todo.id !== id));
+  }, []);
+
+  return (
+    <div>
+      <TodoForm onAdd={handleAddTodo} />
+      <TodoList todos={todos} onRemove={handleRemoveTodo} />
+    </div>
+  );
+}
+```
+
+---
+
+### useRef
+
+**Purpose:** DOM elements access করা এবং mutable values store করা  
+**উদ্দেশ্য:** DOM reference এবং mutable data রাখা
+
+```javascript
+function TextInputWithFocusButton() {
+  const inputEl = useRef(null);
+  const timerRef = useRef(null);
+
+  const onButtonClick = () => {
+    // DOM element access
+    inputEl.current.focus();
+  };
+
+  useEffect(() => {
+    // Mutable value storage (doesn't cause re-render)
+    timerRef.current = setInterval(() => {
+      console.log('Timer tick');
+    }, 1000);
+
+    return () => {
+      clearInterval(timerRef.current);
+    };
+  }, []);
+
+  return (
+    <div>
+      <input ref={inputEl} type="text" />
+      <button onClick={onButtonClick}>Focus the input</button>
+    </div>
+  );
+}
+```
+
+---
+
+## 🛠️ Utility Functions | ইউটিলিটি ফাংশন
+
+### React.lazy()
+
+**Purpose:** Code splitting এর জন্য dynamic import  
+**উদ্দেশ্য:** Component lazy loading করা
+
+```javascript
+const LazyComponent = React.lazy(() => import('./LazyComponent'));
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyComponent />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+---
+
+### React.Suspense
+
+**Purpose:** Lazy components এর loading state handle করা  
+**উদ্দেশ্য:** Lazy loading এর সময় fallback UI দেখানো
+
+```javascript
+function App() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <LazyRoute />
+    </Suspense>
+  );
+}
+```
+
+---
+
+## 🔍 Development Tools | ডেভেলপমেন্ট টুলস
+
+### React.DevTools
+
+Browser extension যা React components debug করতে সাহায্য করে:
+
+- Component tree visualization
+- Props and state inspection  
+- Performance profiling
+- Hook debugging
+
+### Error Boundaries
+
+Error handling এর জন্য:
+
+```javascript
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log('Error caught:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+---
+
+## 📋 Quick Reference Table | দ্রুত রেফারেন্স টেবিল
+
+| API | Purpose | Use Case |
+|-----|---------|----------|
+| `useState` | State management | Local component state |
+| `useEffect` | Side effects | API calls, subscriptions |
+| `useContext` | Context consumption | Global state access |
+| `useReducer` | Complex state | Multiple state values |
+| `useMemo` | Memoization | Expensive calculations |
+| `useCallback` | Function memoization | Stable function references |
+| `useRef` | DOM access | Focus, scroll, etc. |
+| `React.memo` | Component memoization | Prevent unnecessary renders |
+| `React.lazy` | Code splitting | Dynamic imports |
+
+---
+
+## 🎯 Best Practices | সেরা পদ্ধতি
+
+<div style={{
+  background: '#f0fdf4',
+  border: '1px solid #16a34a',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  margin: '2rem 0'
+}}>
+
+### ✅ **Do's**
+
+1. **Functional Components** প্রাধিকার দিন
+2. **Custom Hooks** দিয়ে logic reuse করুন
+3. **useEffect dependencies** সঠিকভাবে দিন
+4. **Error Boundaries** ব্যবহার করুন
+5. **React.memo** optimization এর জন্য ব্যবহার করুন
+
+</div>
+
+<div style={{
+  background: '#fef2f2',
+  border: '1px solid #dc2626',
+  padding: '1.5rem',
+  borderRadius: '8px',
+  margin: '2rem 0'
+}}>
+
+### ❌ **Don'ts**
+
+1. **State কে directly mutate** করবেন না
+2. **useEffect এ missing dependencies** রাখবেন না  
+3. **Infinite loops** তৈরি করবেন না
+4. **Keys missing** করে list render করবেন না
+5. **Too many re-renders** হতে দেবেন না
+
+</div>
+
+---
+
+<LearningAssistant 
+  lessonContext="React API Reference - Complete documentation"
+  visible={false}
+/>
+
+**Related:** [Hooks API Reference →](/reference/hooks-api) | [DOM Elements →](/reference/dom-elements)
+
+---
+
+## 📚 Additional Resources | অতিরিক্ত রিসোর্স
+
+- 📖 [Official React Documentation](https://react.dev)
+- 🛠️ [React DevTools](https://react.dev/learn/react-developer-tools)
+- 🎣 [Rules of Hooks](https://react.dev/warnings/invalid-hook-call-warning)
+- ⚡ [React Performance](https://react.dev/learn/render-and-commit)
+
+**Happy Coding! 🚀 সুখী কোডিং!**
