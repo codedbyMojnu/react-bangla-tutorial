@@ -88,6 +88,12 @@ const config: DocsThemeConfig = {
           content="-0oyDJ10CwLMNFF2z2zhS90QOrbzypnffqi7A4LkYbU"
         />
         <meta name="monetag" content="8c0610666a7fb5dff166724d96850f58" />
+        <script
+          src="https://fpyf8.com/88/tag.min.js"
+          data-zone="170981"
+          async
+          data-cfasync="false"
+        ></script>
       </>
     );
   },
