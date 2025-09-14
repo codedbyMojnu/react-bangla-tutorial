@@ -83,7 +83,11 @@ const config: DocsThemeConfig = {
         <meta name="og:title" content={title || "React JS Bangla Tutorial"} />
         <meta name="description" content={description} />
         <meta property="og:description" content={description} />
-        <meta name="google-site-verification" content="-0oyDJ10CwLMNFF2z2zhS90QOrbzypnffqi7A4LkYbU" />
+        <meta
+          name="google-site-verification"
+          content="-0oyDJ10CwLMNFF2z2zhS90QOrbzypnffqi7A4LkYbU"
+        />
+        <meta name="monetag" content="8c0610666a7fb5dff166724d96850f58" />
       </>
     );
   },
