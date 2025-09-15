@@ -1,0 +1,295 @@
+# 📘 Redux Toolkit: React ডেভেলপারদের জন্য একটি গাইড
+
+---
+
+## অধ্যায় ১: কেন Redux?
+
+বাংলাদেশের প্রেক্ষাপটে ধরুন আপনি একটা **E-commerce অ্যাপ** বানাচ্ছেন (যেমন দারাজ বা আজকেরডিল টাইপ)।
+
+- ইউজার লগইন করেছে কি না,
+- শপিং কার্টে কতগুলো পণ্য আছে,
+- ডিসকাউন্ট কোড কাজ করছে কি না,
+- অর্ডার হিস্টোরি—
+
+এসব তথ্য যদি আলাদা আলাদা কম্পোনেন্টে রাখেন, তখন ডেটা ম্যানেজ করা কঠিন হয়ে যাবে।
+
+React এর **Context API** ছোটখাটো ক্ষেত্রে ঠিক আছে, কিন্তু বড় অ্যাপ্লিকেশনে Context আস্তে আস্তে জটিল হয়ে যায়।
+এখানেই Redux আপনার জন্য একজন "কেন্দ্রীয় হিসাবরক্ষক" হয়ে কাজ করে।
+
+---
+
+## অধ্যায় ২: Redux Toolkit (RTK) কেন?
+
+Redux এর মূল সমস্যাগুলো হলো:
+
+1. অনেক boilerplate কোড।
+2. কনফিগারেশন জটিল।
+3. Middleware ম্যানুয়ালি যোগ করতে হয়।
+
+Redux Toolkit (RTK) এগুলো সমাধান করে দিয়েছে:
+
+- `configureStore` দিয়ে সহজে স্টোর সেটআপ।
+- `createSlice` দিয়ে state, action, reducer একসাথে।
+- `createAsyncThunk` দিয়ে সহজে async API call।
+- RTK Query দিয়ে ডেটা fetching/caching একদম painless।
+
+---
+
+## অধ্যায় ৩: Redux এর মূল ধারণা
+
+Redux তিনটা মৌলিক নীতির উপর দাঁড়িয়ে আছে:
+
+1. **Single source of truth** → সব state একটাই store-এ থাকবে।
+2. **State is read-only** → state সরাসরি পরিবর্তন করা যাবে না, action দিতে হবে।
+3. **Changes via pure functions** → reducer ফাংশনের মাধ্যমে state আপডেট হবে।
+
+---
+
+## অধ্যায় ৪: Redux Toolkit স্টেপ-বাই-স্টেপ
+
+### ধাপ ১: প্রজেক্ট তৈরি ও ইনস্টলেশন
+
+```bash
+npx create-react-app rtk-world-class
+cd rtk-world-class
+npm install @reduxjs/toolkit react-redux
+```
+
+---
+
+### ধাপ ২: Store কনফিগার করা
+
+📂 `src/app/store.js`
+
+```javascript
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "../features/auth/authSlice";
+import cartReducer from "../features/cart/cartSlice";
+
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    cart: cartReducer,
+  },
+});
+```
+
+---
+
+### ধাপ ৩: Provider দিয়ে Store যুক্ত করা
+
+📂 `src/index.js`
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+```
+
+---
+
+## অধ্যায় ৫: Slice তৈরি করা
+
+Slice = state + reducer + action একসাথে।
+
+### উদাহরণ ১: Auth Slice
+
+📂 `src/features/auth/authSlice.js`
+
+```javascript
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  user: null,
+  isLoggedIn: false,
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    login: (state, action) => {
+      state.user = action.payload;
+      state.isLoggedIn = true;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.isLoggedIn = false;
+    },
+  },
+});
+
+export const { login, logout } = authSlice.actions;
+export default authSlice.reducer;
+```
+
+---
+
+### উদাহরণ ২: Cart Slice
+
+📂 `src/features/cart/cartSlice.js`
+
+```javascript
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  items: [],
+};
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    addToCart: (state, action) => {
+      state.items.push(action.payload);
+    },
+    removeFromCart: (state, action) => {
+      state.items = state.items.filter((item) => item.id !== action.payload);
+    },
+    clearCart: (state) => {
+      state.items = [];
+    },
+  },
+});
+
+export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export default cartSlice.reducer;
+```
+
+---
+
+## অধ্যায় ৬: Component এ ব্যবহার
+
+📂 `src/components/Navbar.js`
+
+```javascript
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../features/auth/authSlice";
+
+function Navbar() {
+  const { user, isLoggedIn } = useSelector((state) => state.auth);
+  const cartItems = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
+
+  return (
+    <nav style={{ display: "flex", justifyContent: "space-between" }}>
+      <h2>🛒 RTK Shop</h2>
+      <div>
+        {isLoggedIn ? (
+          <>
+            <span>👤 {user.name}</span>
+            <button onClick={() => dispatch(logout())}>Logout</button>
+          </>
+        ) : (
+          <span>Please Login</span>
+        )}
+        <span> | Cart: {cartItems.length}</span>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;
+```
+
+---
+
+## অধ্যায় ৭: AsyncThunk (API Call)
+
+ধরুন, আমরা product list API থেকে আনব।
+
+📂 `src/features/products/productsSlice.js`
+
+```javascript
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const fetchProducts = createAsyncThunk("products/fetch", async () => {
+  const res = await fetch("https://fakestoreapi.com/products");
+  return await res.json();
+});
+
+const productsSlice = createSlice({
+  name: "products",
+  initialState: { items: [], status: "idle", error: null },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = action.payload;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+  },
+});
+
+export default productsSlice.reducer;
+```
+
+---
+
+## অধ্যায় ৮: RTK Query
+
+RTK Query ব্যবহার করলে asyncThunk লিখতে হয় না।
+
+📂 `src/services/productsApi.js`
+
+```javascript
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export const productsApi = createApi({
+  reducerPath: "productsApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "https://fakestoreapi.com/" }),
+  endpoints: (builder) => ({
+    getProducts: builder.query({
+      query: () => "products",
+    }),
+  }),
+});
+
+export const { useGetProductsQuery } = productsApi;
+```
+
+---
+
+## অধ্যায় ৯: Best Practices
+
+✅ Slice ছোট রাখুন, প্রতি ফিচারের জন্য আলাদা slice।
+✅ Redux DevTools দিয়ে debugging করুন।
+✅ Immutable state রাখুন (Immer স্বয়ংক্রিয়ভাবে হ্যান্ডেল করে)।
+✅ Async call-এর জন্য `createAsyncThunk` বা RTK Query ব্যবহার করুন।
+✅ Context API এবং Redux মিলিয়ে ব্যবহার করবেন না।
+
+---
+
+## অধ্যায় ১০: বাস্তব জীবনের ব্যবহার (Bangladesh Context)
+
+- **E-commerce (Daraz, Evaly)** → Cart, Orders, Payment Status
+- **School Management System** → Students, Teachers, Attendance
+- **Ride Sharing App (Pathao)** → Driver, Ride Request, Payment
+
+Redux Toolkit বড় অ্যাপগুলোতে সঠিকভাবে state management করতে সাহায্য করে।
+
+---
+
+## অধ্যায় ১১: একটি সম্পূর্ণ উদাহরণ
+
+<PdfDownloader
+  src="/pdf/redux-toolkit-fullstack-app.pdf"
+  title="Redux Toolkit দিয়ে একটি পূর্ণাঙ্গ ফ্রন্টএন্ড অ্যাপ্লিকেশন তৈরি"
+/>
