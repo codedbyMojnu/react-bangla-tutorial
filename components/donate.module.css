@@ -1,118 +1,48 @@
-.donateContainer {
+.container {
   text-align: center;
-  padding: 3rem 1.5rem;
-  background: linear-gradient(135deg, #f9fafb 0%, #f0fdfa 100%);
-  min-height: 100vh;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.donateTitle {
+.title {
   font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: #0f766e;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #2563eb; /* Tailwind blue-600 */
 }
 
-.tierGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.tierCard {
-  background: #fff;
+.card {
+  background: #f9fafb;
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s;
-  cursor: pointer;
-  text-align: left;
-  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.tierCard:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-.active {
-  border: 2px solid #2563eb;
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.2);
-}
-
-.tierPrice {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #2563eb;
-  margin-bottom: 0.6rem;
-}
-
-.tierTitle {
+.text {
   font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.8rem;
-}
-
-.tierBenefits {
-  list-style: disc;
-  padding-left: 1.2rem;
-  margin-bottom: 1rem;
-  color: #4b5563;
-  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
   line-height: 1.6;
+  color: #374151; /* gray-700 */
 }
 
-.selectButton {
-  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-  color: #fff;
-  border: none;
-  border-radius: 999px;
-  padding: 0.6rem 1.4rem;
-  font-size: 0.95rem;
+.highlight {
+  color: #9333ea; /* purple-600 */
   font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.15s, background 0.2s;
-  width: 100%;
 }
 
-.selectButton:hover {
-  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
-  transform: scale(1.05);
+.button {
+  display: inline-block;
+  background: linear-gradient(90deg, #6366f1, #2563eb);
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Payment Section */
-.paymentSection {
-  margin-top: 2rem;
-  margin-bottom: 20px;
-}
-
-.paymentHeader {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #0f766e;
-  margin-bottom: 1rem;
-}
-
-.paymentCard {
-  background: #fff;
-  border-radius: 0.75rem;
-  padding: 1rem 1.5rem;
-  max-width: 340px;
-  margin: 0 auto;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.paymentCard strong {
-  color: #2563eb;
-  font-size: 1.1rem;
-}
-
-.paymentCard small {
-  color: #6b7280;
-  display: block;
-  margin-top: 0.3rem;
-  font-size: 0.85rem;
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(99,102,241,0.3);
 }

@@ -1,60 +1,26 @@
-import React, { useState } from "react";
 import styles from "./donate.module.css";
 
-// --- স্পনসরশিপ টায়ার ডাটা ---
-const tiers = [
-  {
-    price: "৳200 / মাস",
-    title: "আপনি আমার কাজকে মূল্যায়ন করেন 😊",
-    benefits: [
-      "মাসিক নিউজলেটার আপডেট পান",
-      "স্পনসর ব্যাজ এই সাইটে প্রদর্শিত হবে",
-      "নতুন ফিচার আনার জন্য প্রস্তাব দেওয়ার সুযোগ",
-      "এই সাইটে বিজ্ঞাপন দিতে পারবেন",
-    ],
-  },
-  {
-    price: "৳250 / একবার",
-    title: "আপনি আমার উন্নত কাজকে সমর্থন করেন 🤝",
-    benefits: ["স্পনসর ব্যাজ এই সাইটে প্রদর্শিত হবে"],
-  },
-];
-
 const Donate: React.FC = () => {
-  const [selected, setSelected] = useState<number | null>(null);
-
   return (
-    <div className={styles.donateContainer}>
-      <h2 className={styles.donateTitle}>💙 স্পনসর করুন</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>🚀 React Bangla কমিউনিটি</h2>
 
-      <div className={styles.paymentSection}>
-        <div className={styles.paymentCard}>
-          <p>
-            <strong>01788262433</strong> <br />
-            (পার্সোনাল বিকাশ / নগদ / রকেট নম্বর (4))
-          </p>
-          <small>*Send Money অপশন ব্যবহার করুন</small>
-        </div>
-      </div>
+      <div className={styles.card}>
+        <p className={styles.text}>
+          যদি আপনি <strong>React</strong>, <strong>Next.js</strong>,{" "}
+          <strong>Redux</strong>, <strong>TypeScript</strong> এর মতো
+          মর্ডান ফ্রন্টএন্ড টেকনোলজিতে আগ্রহী হন, তাহলে আমাদের{" "}
+          <span className={styles.highlight}>Discord সার্ভার</span> এ জয়েন করুন।
+        </p>
 
-      <div className={styles.tierGrid}>
-        {tiers.map((tier, index) => (
-          <div
-            key={index}
-            className={`${styles.tierCard} ${
-              selected === index ? styles.active : ""
-            }`}
-            onClick={() => setSelected(index)}
-          >
-            <div className={styles.tierPrice}>{tier.price}</div>
-            <div className={styles.tierTitle}>{tier.title}</div>
-            <ul className={styles.tierBenefits}>
-              {tier.benefits.map((benefit, i) => (
-                <li key={i}>{benefit}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <a
+          href="https://discord.gg/8ZpFFu5d"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.button}
+        >
+          🎉 এখনই জয়েন করুন
+        </a>
       </div>
     </div>
   );
