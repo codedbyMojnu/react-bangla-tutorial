@@ -1,0 +1,336 @@
+# React Container–Presenter Pattern — Step-by-step টিউটোরিয়াল (বাংলা)
+
+**লক্ষ্য পাঠক:** মিড-লেভেল React ডেভেলপার
+**আপনি এই টিউটোরিয়াল থেকে শিখবেন:** কোড-স্মেল চিহ্নিত করা, bloated component রিফ্যাক্টর করে Container–Presenter (বা কাস্টম হুক + Presenter) আর্কিটেকচার করা, টেস্ট কেস, এবং প্র্যাকটিক্যাল ডিজাইন-টিপস।
+
+---
+
+## ১) ছোট সারমর্ম — কেন এটা দরকার?
+
+একটা বড় `UserProfile.js`-এর মধ্যে state, fetch, effect, এবং JSX সব একসাথে থাকলে তা **বোল্টেড (bloated)** হয়ে যায় — বুঝতে কষ্ট, টেস্ট করা কষ্ট, পুনঃব্যবহার কষ্ট। Container–Presenter প্যাটার্ন (বা আধুনিক ভাবে: **custom hook + presenter**) এই সমস্যা সমাধান করে — লজিক আলাদা, ভিউ আলাদা।
+
+---
+
+## ২) প্রজেক্ট স্যাঁকেট (File tree — ছোট মূলধারা)
+
+```
+src/
+  services/
+    api.js
+  hooks/
+    useUserProfile.js
+  components/
+    UserProfile/ 
+      UserProfile.jsx          // final component (uses hook + presenter)
+      UserProfilePresenter.jsx
+      Avatar.jsx
+      UserDetails.jsx
+      LoadingSpinner.jsx
+      ErrorDisplay.jsx
+  __tests__/
+    UserProfilePresenter.test.jsx
+    useUserProfile.test.js
+  stories/
+    UserProfile.stories.jsx
+```
+
+---
+
+## ৩) Step-by-Step রিফ্যাক্টরিং (কোড সহ)
+
+### A — Code Smell: এক ফাইলে সবকিছু (BAD)
+
+```javascript
+// src/legacy/UserProfile.js  (অপছন্দের অবস্থা)
+import React, { useState, useEffect } from 'react';
+
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch(`https://api.example.com/users/${userId}`)
+      .then(r => r.json())
+      .then(data => { setUser(data); setIsLoading(false); })
+      .catch(e => { setError(e); setIsLoading(false); });
+  }, [userId]);
+
+  if (isLoading) return <div>Loading user profile...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <div>
+      <img src={user.avatarUrl} alt={user.name} />
+      <h2>{user.name}</h2>
+      <p>{user.email}</p>
+    </div>
+  );
+}
+export default UserProfile;
+```
+
+**সমস্যা:** ফেচ + লজিক + UI এক জায়গায় — টেস্ট/রিইউজ কঠিন।
+
+---
+
+### B — Extract API layer (services/api.js)
+
+বিল্ড-আপ করার আগে API কলকে আলাদা করুন, যাতে টেস্টে সহজে মক করা যায়।
+
+```javascript
+// src/services/api.js
+export async function fetchUser(userId, { signal } = {}) {
+  const res = await fetch(`https://api.example.com/users/${userId}`, { signal });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+```
+
+---
+
+### C — Move logic into a custom hook (hooks/useUserProfile.js)
+
+কাস্টম হুকের মাধ্যমে লজিক আলাদা থাকলে বহু কম্পোনেন্টে reuse করা যায়।
+
+```javascript
+// src/hooks/useUserProfile.js
+import { useState, useEffect } from 'react';
+import { fetchUser } from '../services/api';
+
+export default function useUserProfile(userId) {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!userId) return;
+    const controller = new AbortController();
+    let mounted = true;
+
+    async function load() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await fetchUser(userId, { signal: controller.signal });
+        if (mounted) setUser(data);
+      } catch (err) {
+        if (err.name !== 'AbortError' && mounted) setError(err);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    }
+    load();
+    return () => {
+      mounted = false;
+      controller.abort();
+    };
+  }, [userId]);
+
+  return { user, isLoading, error };
+}
+```
+
+**নোট:** `AbortController` ব্যবহার করে stale responses ও memory leaks রোধ করা হয়েছে।
+
+---
+
+### D — Create Presenter (components/UserProfilePresenter.jsx)
+
+Presenter = UI-only, props-driven, সহজে টেস্টযোগ্য।
+
+```javascript
+// src/components/UserProfile/UserProfilePresenter.jsx
+import React from 'react';
+import Avatar from './Avatar';
+import UserDetails from './UserDetails';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorDisplay from './ErrorDisplay';
+
+export default function UserProfilePresenter({ user, isLoading, error }) {
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorDisplay message={error.message} />;
+  if (!user) return null;
+
+  return (
+    <div className="user-profile-card">
+      <Avatar src={user.avatarUrl} alt={user.name} />
+      <UserDetails name={user.name} email={user.email} joinedDate={user.joinedDate} />
+    </div>
+  );
+}
+```
+
+```javascript
+// src/components/UserProfile/Avatar.jsx
+export default function Avatar({ src, alt }) {
+  return <img src={src} alt={alt} style={{ width: 80, height: 80, borderRadius: '50%' }} />;
+}
+```
+
+```javascript
+// src/components/UserProfile/UserDetails.jsx
+export default function UserDetails({ name, email, joinedDate }) {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <p>Email: {email}</p>
+      <p>Joined: {new Date(joinedDate).toLocaleDateString()}</p>
+    </div>
+  );
+}
+```
+
+```javascript
+// src/components/UserProfile/LoadingSpinner.jsx
+export default function LoadingSpinner() {
+  return <div role="status">Loading…</div>;
+}
+```
+
+```javascript
+// src/components/UserProfile/ErrorDisplay.jsx
+export default function ErrorDisplay({ message }) {
+  return <div role="alert">Error: {message}</div>;
+}
+```
+
+---
+
+### E — Wire hook + presenter in the final component
+
+```javascript
+// src/components/UserProfile/UserProfile.jsx
+import React from 'react';
+import useUserProfile from '../../hooks/useUserProfile';
+import UserProfilePresenter from './UserProfilePresenter';
+
+export default function UserProfile({ userId }) {
+  const { user, isLoading, error } = useUserProfile(userId);
+  return <UserProfilePresenter user={user} isLoading={isLoading} error={error} />;
+}
+```
+
+---
+
+## ৪) Testing — কিভাবে টেস্ট সহজ হয় (উদাহরণ)
+
+### ১) Presenter টেস্ট (React Testing Library)
+
+Presenter কেবল props ধরে কাজ করার কারণে UI টেস্ট করা সহজ।
+
+```javascript
+// src/__tests__/UserProfilePresenter.test.jsx
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import UserProfilePresenter from '../components/UserProfile/UserProfilePresenter';
+
+test('shows loading state', () => {
+  render(<UserProfilePresenter user={null} isLoading={true} error={null} />);
+  expect(screen.getByRole('status')).toHaveTextContent(/loading/i);
+});
+
+test('shows error state', () => {
+  render(<UserProfilePresenter user={null} isLoading={false} error={{ message: 'Oops' }} />);
+  expect(screen.getByRole('alert')).toHaveTextContent(/oops/i);
+});
+
+test('renders user info', () => {
+  const user = { name: 'Mojnu', email: 'm@example.com', avatarUrl: '/a.png', joinedDate: '2020-01-01' };
+  render(<UserProfilePresenter user={user} isLoading={false} error={null} />);
+  expect(screen.getByText('Mojnu')).toBeInTheDocument();
+  expect(screen.getByText(/Email:/i)).toHaveTextContent('Email: m@example.com');
+});
+```
+
+### ২) Hook টেস্ট (simple fetch mock)
+
+Hook টেস্ট করতে `@testing-library/react-hooks` বা `renderHook` ব্যবহার করা যায়; নিচে `jest`-based সরল mock:
+
+```javascript
+// src/__tests__/useUserProfile.test.js
+import { renderHook, act } from '@testing-library/react-hooks';
+import useUserProfile from '../hooks/useUserProfile';
+
+beforeEach(() => {
+  global.fetch = jest.fn();
+});
+
+test('fetches and returns user', async () => {
+  const fakeUser = { name: 'X' };
+  global.fetch.mockResolvedValue({
+    ok: true,
+    json: async () => fakeUser,
+  });
+
+  const { result, waitForNextUpdate } = renderHook(() => useUserProfile('1'));
+  expect(result.current.isLoading).toBe(true);
+  await waitForNextUpdate();
+  expect(result.current.user).toEqual(fakeUser);
+  expect(result.current.isLoading).toBe(false);
+});
+```
+
+**Tip:** বড় প্রোজেক্টে `msw` (Mock Service Worker) ব্যবহার করলে integration-style API mocks অনেক বেশি স্থির ও বাস্তবসম্মত হয়।
+
+---
+
+## ৫) Storybook-এ সহজ ইন্টিগ্রেশন (UI states দেখানোর টিপ)
+
+প্রেজেন্টার আলাদা থাকলে Storybook-এ তিনটি story সহজে বানানো যায়: `Loading`, `Error`, `WithData` — Designer/PM দ্রুত ভিজ্যুয়াল চেক করতে পারবেন।
+
+---
+
+## ৬) Design Tips (দ্রুত বাক্স)
+
+* **Keep presenters pure.** শুধু props দিয়ে UI রেন্ডার করুক।
+* **Small components win.** `Avatar`, `UserDetails` ইত্যাদি ছোট রাখলে রিইউজ বাড়ে।
+* **Use API service layer.** `services/api.js` তৈরী করে fetch logic আলাদা রাখুন — টেস্টে মক করা সহজ হয়।
+* **Use AbortController** for fetch cleanup.
+* **Consider React Query / SWR** যখন caching, polling, retries দরকার — তবে UI/logic বিভাজন নীতি একই রাখবেন।
+* **PropTypes / TypeScript** ব্যবহার করে presenter API স্পষ্ট রাখুন।
+
+---
+
+## ৭) Quick Checklist — কোড স্মেল আছে কি না পরীক্ষা করার জন্য
+
+* [ ] কোন কম্পোনেন্টে fetch + rendering + complex business logic সব মিশে আছে?
+* [ ] ফাইল > \~200-300 লাইন হলে কি পার্টস ভাঙা সম্ভব?
+* [ ] Presenter কেবল props-driven কি নয়?
+* [ ] API কল service/hook এ আছে কি?
+* [ ] Presenter সহজে unit test করা যায় কি?
+* [ ] UI পুনঃব্যবহারযোগ্য ছোট কম্পোনেন্ট আছে কি?
+
+> যদি অধিকাংশ প্রশ্নের উত্তর “হ্যাঁ”, তাহলে রিফ্যাক্টর করুন।
+
+---
+
+## ৮) Interactive playground — কিভাবে তৎক্ষণাৎ পরীক্ষা করবেন (CodeSandbox / StackBlitz)
+
+1. **CodeSandbox** খুলুন → “Create Sandbox” → `React` টেমপ্লেট নির্বাচন করুন।
+2. উপরের **File tree** অনুযায়ী ফাইল তৈরি করুন (`src/services/api.js`, `src/hooks/useUserProfile.js`, `src/components/UserProfile/*`) এবং উপরের কোড কপি-পেস্ট করুন।
+3. Preview-এ `UserProfile` রেন্ডার করার জন্য `App.jsx`-এ `<UserProfile userId="1" />` বসান — যদি API মক করতে চান, services/api.js-এ `fetch` বাদ দিয়ে লোকাল mock JSON রিটার্ন করুন।
+4. চানলে GitHub repo বানিয়ে CodeSandbox এ ইম্পোর্ট করে রাখা যাবে — টিউটোরিয়াল হিসেবে লিঙ্ক শেয়ার করতে সুবিধা হয়।
+
+(আমি এখানে সরাসরি Sandbox তৈরি করে দিতে পারছি না — চাইলে আমি এই ফাইলগুলোকে একত্রে paste করার জন্য একটি “copy-ready” zip মত পাঠিয়ে দেব।)
+
+---
+
+## ৯) দ্রুত রানিং কমান্ড ও ডেভ ডিপেন্ডেন্সি (সাজেশন)
+
+* ইনস্টল (উদাহরণ):
+  `npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/react-hooks jest`
+* package.json-এ `test` স্ক্রিপ্ট যোগ করুন: `"test": "jest --watch"`
+  (ভেরিএন্ট থাকতে পারে; আপনার প্রজেক্ট-সেটআপ অনুযায়ী সামঞ্জস্য করুন।)
+
+---
+
+## ১০) Takeaway — ২ মিনিটে রিভিউ
+
+* **Problem:** Bloated components = code smell।
+* **Solution:** Separate concerns — লজিককে hook/service-এ; UI-কে presenter-এ।
+* **Benefits:** সহজ টেস্টিং, reuse, রক্ষণাবেক্ষণযোগ্য কোড, Designer-friendly workflows।
+* **Next step:** আপনার প্রজেক্ট থেকে ১টি বড় কম্পোনেন্ট চিহ্নিত করে এই রিফ্যাক্টরিং অনুশীলন করুন — শুরুতেই `api` → `hook` → `presenter` ধাপে কাজ করুন।
+
+---
+
