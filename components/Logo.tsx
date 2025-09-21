@@ -1,14 +1,15 @@
+import Image from "next/image";
+
 const Logo = () => {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-      <img
+      <Image
         src="/icons/react-bangla-icon.png"
         alt="React Bangla Tutorial Logo"
-        style={{
-          width: "32px",
-          height: "32px",
-          borderRadius: "6px",
-        }}
+        width={32}
+        height={32}
+        style={{ borderRadius: "6px" }}
+        priority // ensures logo loads immediately (good for header)
       />
       <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
         <span
