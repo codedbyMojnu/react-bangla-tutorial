@@ -73,6 +73,11 @@ const config: DocsThemeConfig = {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width" />
         <meta httpEquiv="Content-Language" content="bn" />
+        
+        {/* Favicon and App Icons */}
+        <link rel="icon" href="/icons/react-bangla-icon.png" />
+        <link rel="apple-touch-icon" href="/icons/react-bangla-icon.png" />
+        <link rel="shortcut icon" href="/icons/react-bangla-icon.png" />
         <meta
           name="keywords"
           content="React, Bangla, Tutorial, React JS, Frontend Development, Web Development, JavaScript, Programming, Bangladesh, Learn React, React in Bengali, React tutorial in Bangla, React project, React assignments, React hooks, React router, React query, Axios, React Hook Form, Next.js, Nextra, UI/UX, Developer career, Job posts, System design, Interview preparation"
@@ -83,6 +88,10 @@ const config: DocsThemeConfig = {
         <meta name="og:title" content={title || "React JS Bangla Tutorial"} />
         <meta name="description" content={description} />
         <meta property="og:description" content={description} />
+        <meta property="og:image" content="https://react-bangla.vercel.app/icons/react-bangla-icon.png" />
+        <meta property="og:image:alt" content="React JS Bangla Tutorial Logo" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:image" content="https://react-bangla.vercel.app/icons/react-bangla-icon.png" />
         <meta
           name="google-site-verification"
           content="-0oyDJ10CwLMNFF2z2zhS90QOrbzypnffqi7A4LkYbU"

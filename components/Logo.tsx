@@ -1,28 +1,38 @@
 const Logo = () => {
   return (
-    <div>
-      <span
+    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <img
+        src="/icons/react-bangla-icon.png"
+        alt="React Bangla Tutorial Logo"
         style={{
-          fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
-          fontWeight: 700,
-          fontSize: "20px",
-          color: "#2563EB",
-          letterSpacing: "0.04em",
+          width: "32px",
+          height: "32px",
+          borderRadius: "6px",
         }}
-      >
-        React JS
-      </span>
-      <span
-        style={{
-          marginLeft: "10px",
-          fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
-
-          fontSize: "16px",
-          letterSpacing: "0.02em",
-        }}
-      >
-        Bangla Tutorial
-      </span>
+      />
+      <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
+        <span
+          style={{
+            fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
+            fontWeight: 700,
+            fontSize: "20px",
+            color: "#2563EB",
+            letterSpacing: "0.04em",
+          }}
+        >
+          React
+        </span>
+        <span
+          style={{
+            fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
+            fontSize: "20px",
+            letterSpacing: "0.02em",
+            color: "#D93334",
+          }}
+        >
+          বাংলা
+        </span>
+      </div>
     </div>
   );
 };
