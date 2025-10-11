@@ -1,8 +1,10 @@
 import dynamic from "next/dynamic";
 import { DocsThemeConfig } from "nextra-theme-docs";
 import AudioPlayer from "./components/AudioPlayer";
+import CollaborateSection from "./components/CollaborateSection";
 import Logo from "./components/Logo";
 import PdfDownloader from "./components/PdfDownloader";
+import Showcase from "./components/Showcase";
 import VideoPlayer from "./components/VideoPlayer";
 
 const GiscusComments = dynamic(() => import("./components/GiscusComments"), {
@@ -47,6 +49,8 @@ const config: DocsThemeConfig = {
     PdfDownloader,
     VideoPlayer,
     Custom404Page,
+    Showcase,
+    CollaborateSection,
   },
   useNextSeoProps() {
     if (typeof window !== "undefined" && window.location.pathname !== "/") {
@@ -73,7 +77,7 @@ const config: DocsThemeConfig = {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width" />
         <meta httpEquiv="Content-Language" content="bn" />
-        
+
         {/* Favicon and App Icons */}
         <link rel="icon" href="/icons/react-bangla-icon.png" />
         <link rel="apple-touch-icon" href="/icons/react-bangla-icon.png" />
@@ -88,10 +92,16 @@ const config: DocsThemeConfig = {
         <meta name="og:title" content={title || "React JS Bangla Tutorial"} />
         <meta name="description" content={description} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content="https://react-bangla.vercel.app/icons/react-bangla-icon.png" />
+        <meta
+          property="og:image"
+          content="https://react-bangla.vercel.app/icons/react-bangla-icon.png"
+        />
         <meta property="og:image:alt" content="React JS Bangla Tutorial Logo" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:image" content="https://react-bangla.vercel.app/icons/react-bangla-icon.png" />
+        <meta
+          name="twitter:image"
+          content="https://react-bangla.vercel.app/icons/react-bangla-icon.png"
+        />
         <meta
           name="google-site-verification"
           content="-0oyDJ10CwLMNFF2z2zhS90QOrbzypnffqi7A4LkYbU"

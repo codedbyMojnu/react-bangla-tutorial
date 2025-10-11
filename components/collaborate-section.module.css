@@ -1,0 +1,103 @@
+/* 🌟 collaborateSection.module.css */
+
+/* Section wrapper */
+.collaborateSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+}
+
+/* Card container */
+.card {
+  background-color: #ffffff;
+  border-radius: 1.25rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  max-width: 640px;
+  padding: 3rem 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Title text */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 1rem;
+}
+
+/* Description paragraph */
+.description {
+  font-size: 1.1rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* Buttons container */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Common button styles */
+.contactButton,
+.resumeButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Primary button */
+.contactButton {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.contactButton:hover {
+  background-color: #1e40af;
+}
+
+/* Secondary button */
+.resumeButton {
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  background-color: transparent;
+}
+
+.resumeButton:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .card {
+    padding: 2rem 1.25rem;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .contactButton,
+  .resumeButton {
+    width: 100%;
+    text-align: center;
+  }
+}

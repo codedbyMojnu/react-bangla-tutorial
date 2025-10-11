@@ -22,10 +22,23 @@
   "industry-level-projects": "Industry Level Projects",
   "jogakhicuri-projects": "জোগাখিচুরি প্রজেক্টসমূহ",
   "acknowledgement": "একদিন সুযোগ পেয়েছিলাম",
+  "my-story": {
+    "title": "My Story",
+    "type": "page"
+  },
+  "showcase": {
+    "title": "Showcase",
+    "type": "page"
+  },
+  "sponsor": {
+    "title": "Sponsor",
+    "type": "page"
+  },
   "about": {
     "title": "About",
     "type": "page"
   },
+
   "contact": {
     "title": "Contact ↗",
     "type": "page",

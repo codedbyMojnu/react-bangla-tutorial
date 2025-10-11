@@ -1,0 +1,173 @@
+/* 🌟 showcase.module.css */
+
+/* Section container */
+.featuredSection {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+/* Grid layout — two columns on desktop, one on mobile */
+.featuredGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Project Card */
+.projectCard {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.projectCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+}
+
+/* Image container */
+.imageContainer {
+  height: 160px;
+  overflow: hidden;
+}
+
+.projectImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.projectCard:hover .projectImage {
+  transform: scale(1.05);
+}
+
+/* Content */
+.projectContent {
+  padding: 1rem 1.25rem;
+}
+
+/* Title */
+.projectTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.4rem;
+}
+
+/* Description */
+.projectDescription {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+}
+
+/* Tech Stack */
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.techTag {
+  background-color: #eef2ff;
+  color: #4338ca;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.projectActions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.liveButton,
+.codeButton {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+/* Live Demo button */
+.liveButton {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.liveButton:hover {
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Source Code button */
+.codeButton {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.codeButton:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1024px) {
+  .featuredGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .featuredGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .projectContent {
+    padding: 0.9rem 1rem;
+  }
+
+  .projectTitle {
+    font-size: 1rem;
+  }
+
+  .projectDescription {
+    font-size: 0.9rem;
+  }
+
+  .techTag {
+    font-size: 0.7rem;
+  }
+
+  .liveButton,
+  .codeButton {
+    font-size: 0.85rem;
+    padding: 0.55rem 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .featuredSection {
+    padding: 1.5rem 0.75rem 3rem;
+  }
+
+  .projectCard {
+    border-radius: 10px;
+  }
+
+  .imageContainer {
+    height: 140px;
+  }
+}
