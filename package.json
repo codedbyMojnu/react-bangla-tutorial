@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shuding/react-bangla-tutorial.git"
+    "url": "git+https://github.com/codedbymojnu/react-bangla-tutorial.git"
   },
-  "author": "Shu Ding <g@shud.in>",
+  "author": "Shu Ding, and Md. Mojnu Miah",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shuding/react-bangla-tutorial/issues"
+    "url": "https://github.com/codedbymojnu/react-bangla-tutorial/issues"
   },
-  "homepage": "https://github.com/shuding/react-bangla-tutorial#readme",
+  "homepage": "https://github.com/codedbymojnu/react-bangla-tutorial#readme",
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.20.0",
     "@giscus/react": "^3.1.0",
