@@ -90,7 +90,7 @@ const Showcase: React.FC = () => {
                   rel="noopener noreferrer"
                   className={styles.liveButton}
                 >
-                  🌐 Live Demo
+                  🌐 Demo
                 </a>
                 <a
                   href={project.sourceCodeUrl}
@@ -98,7 +98,7 @@ const Showcase: React.FC = () => {
                   rel="noopener noreferrer"
                   className={styles.codeButton}
                 >
-                  💻 Source Code
+                  💻 Code
                 </a>
               </div>
             </div>
