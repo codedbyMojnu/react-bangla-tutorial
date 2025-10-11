@@ -35,7 +35,7 @@ const config: DocsThemeConfig = {
   docsRepositoryBase:
     "https://github.com/codedbyMojnu/react-bangla-tutorial/blob/main",
   footer: {
-    text: `© ${new Date().getFullYear()} React JS Bangla Tutorial.`,
+    text: `© 2024 - ${new Date().getFullYear()} React JS Bangla Tutorial.`,
   },
   components: {
     Donate,
