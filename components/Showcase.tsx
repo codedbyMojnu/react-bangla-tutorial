@@ -20,7 +20,7 @@ const projects: Project[] = [
     description:
       "Banglay React শেখার জন্য তৈরি করা একটি সম্পূর্ণ লার্নিং প্ল্যাটফর্ম, যেখানে রয়েছে ইন্টারঅ্যাকটিভ উদাহরণ, কুইজ এবং প্রজেক্ট-ভিত্তিক শেখা।",
     technologies: ["Next.js", "Nextra", "React", "TypeScript", "MDX"],
-    imageUrl: "/images/projects/quiz-platform.png",
+    imageUrl: "/images/projects/react-bangla-platform.png",
     liveUrl: "https://react-bangla.vercel.app",
     sourceCodeUrl: "https://github.com/codedbymojnu/react-bangla-tutorial",
     category: "Education",
