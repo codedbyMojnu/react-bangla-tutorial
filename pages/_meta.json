@@ -1,33 +1,37 @@
 {
-  "index": "Course Introduction",
-  "learn-react-quick-start-guide": "Quick Start",
-  "thinking-in-react": "Thinking in React",
-  "learn-react-environment-set-up": "Environment Set Up and Productivity Tips",
-  "learn-react-describing-the-ui": "Describing The UI",
-  "learn-react-adding-interactivity": "Adding Interactivity",
-  "learn-react-managing-state": "Managing State",
-  "learn-react-escape-hatches": "Escape Hatches",
-  "react-suspense": "React Suspense",
-  "react-lazy-loading": "Lazy Loading",
-  "next-js": "Learn Next JS",
-  "react-router-tutorial": "React Router",
-  "react-hook-form-guide": "React Hook Form",
-  "axios-http-requests-tutorial": "Axios HTTP",
-  "react-query-data-fetching": "React Query",
-  "framer-motion-animation": "Framer Motion. Animation",
-  "developer-career-advice": "Developer Career Advice",
-  "react-developer-jobs-bangladesh": "Jobs Circular",
-  "javascript-fundamentals": "JavaScript Fundamentals",
-  "reusability-features": "Reusability Features",
-  "industry-level-projects": "Industry Level Projects",
-  "jogakhicuri-projects": "জোগাখিচুরি প্রজেক্টসমূহ",
-  "acknowledgement": "একদিন সুযোগ পেয়েছিলাম",
+  "index": "1️⃣ Course Introduction",
+  "learn-react-quick-start-guide": "2️⃣ Quick Start",
+  "thinking-in-react": "3️⃣ Thinking in React",
+  "learn-react-environment-set-up": "4️⃣ Environment Set Up & Productivity Tips",
+
+  "learn-react-describing-the-ui": "5️⃣ Describing the UI",
+  "learn-react-adding-interactivity": "6️⃣ Adding Interactivity",
+  "learn-react-managing-state": "7️⃣ Managing State",
+  "learn-react-escape-hatches": "8️⃣ Escape Hatches",
+
+  "react-suspense": "📄 React Suspense",
+  "react-lazy-loading": "📄 Lazy Loading",
+  "react-design-patterns": "📄 React Design Patterns",
+
+  "learn-next-js": "📂 Learn Next.js",
+  "react-router-tutorial": "📂 React Router",
+  "react-hook-form-guide": "📂 React Hook Form",
+  "axios-http-requests-tutorial": "📂 Axios HTTP",
+  "react-query-data-fetching": "📂 React Query",
+  "framer-motion-animation": "📂 Framer Motion (Animation)",
+
+  "developer-career-advice": "📂 Developer Career Advice",
+  "javascript-fundamentals": "📂 JavaScript Fundamentals",
+  "reusability-features": "📂 Reusable Features",
+  "industry-level-projects": "📂 My Products",
+  "some-projects": "📂 Some Random Project",
+
   "my-story": {
     "title": "My Story",
     "type": "page"
   },
   "showcase": {
-    "title": "Showcase",
+    "title": "🌟 Showcase",
     "type": "page"
   },
   "sponsor": {
@@ -37,8 +41,7 @@
   "about": {
     "title": "About",
     "type": "page"
-  }, 
-
+  },
   "contact": {
     "title": "Contact ↗",
     "type": "page",
@@ -46,7 +49,7 @@
     "newWindow": true
   },
   "interview-questions": {
-    "title": "Interview Q🔥",
+    "title": "🔥 Interview Qs",
     "type": "page"
   },
   "my-resume": {
