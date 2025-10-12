@@ -37,13 +37,17 @@
   "about": {
     "title": "About",
     "type": "page"
-  },
+  }, 
 
   "contact": {
     "title": "Contact ↗",
     "type": "page",
     "href": "https://github.com/codedbymojnu/",
     "newWindow": true
+  },
+  "interview-questions": {
+    "title": "Interview Q🔥",
+    "type": "page"
   },
   "my-resume": {
     "title": "My Resume",
