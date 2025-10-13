@@ -1,8 +1,304 @@
 ---
-title: "Configuration"
-description: "Documentation for Configuration."
+title: "কনফিগারেশন"
+description: "লারাভেলের কনফিগারেশন সহজ ভাষায়।"
 ---
 
-# Configuration
+# কনফিগারেশন
 
-Content for Configuration goes here.
+## ভূমিকা
+
+লারাভেলের সব কনফিগারেশন ফাইল `config` ফোল্ডারে থাকে। প্রতিটি অপশনের বর্ণনা আছে। সময় নিয়ে ফাইলগুলো দেখলে কোন অপশন কী করে বুঝতে সহজ হবে।
+
+এই ফাইলগুলো দিয়ে আপনি ডাটাবেস কানেকশন, মেইল সার্ভার, অ্যাপের URL, এনক্রিপশন কীসহ নানা মূল কনফিগারেশন ঠিক করেন।
+
+## about কমান্ড
+
+আপনার অ্যাপের কনফিগারেশন, ড্রাইভার, এবং এনভায়রনমেন্টের সারাংশ দেখতে পারেন:
+
+```shell
+php artisan about
+```
+
+শুধু কোনো নির্দিষ্ট অংশ দেখতে চাইলে `--only` দিন:
+
+```shell
+php artisan about --only=environment
+```
+
+কোনো নির্দিষ্ট কনফিগ ফাইলের ভ্যালু বিস্তারিত দেখতে:
+
+```shell
+php artisan config:show database
+```
+
+## এনভায়রনমেন্ট কনফিগারেশন
+
+লোকাল আর প্রোডাকশনে কনফিগারেশন আলাদা হওয়াই ভাল (যেমন: ক্যাশ ড্রাইভার)। লারাভেল এ জন্য DotEnv লাইব্রেরি ব্যবহার করে।
+
+নতুন প্রজেক্টে রুটে `.env.example` থাকে। ইন্সটলের সময় এটি `.env` হয়।
+
+`config` ফাইলগুলো `env()` ফাংশন দিয়ে `.env` থেকে ভ্যালু নেয়। টিমে কাজ করলে `.env.example` এ প্লেসহোল্ডার ভ্যালু আপডেট করে রাখুন—আবশ্যক ভ্যারিয়েবলগুলো সবাই বুঝবে।
+
+`.env` এর যেকোনো ভ্যারিয়েবল সার্ভার বা সিস্টেমের বাইরের এনভায়রনমেন্ট ভ্যারিয়েবল দিয়ে ওভাররাইড করা যায়।
+
+### Environment ফাইলের নিরাপত্তা
+
+`.env` কখনো সোর্স কন্ট্রোলে কমিট করবেন না। ভিন্ন ডেভেলপার/সার্ভারে ভিন্ন সেট লাগবে এবং ক্রেডেনশিয়াল ফাঁসের ঝুঁকি থাকবে।
+
+তবে লারাভেলের এনভায়রনমেন্ট এনক্রিপশন দিয়ে `.env` এনক্রিপ্ট করে নিরাপদে সোর্স কন্ট্রোলে রাখতে পারেন।
+
+### অতিরিক্ত Environment ফাইল
+
+লোড করার আগে লারাভেল চেক করে `APP_ENV` বা CLI `--env` আছে কি না। থাকলে `.env.[APP_ENV]` (যেমন `.env.staging`) লোড হবে, না থাকলে ডিফল্ট `.env` লোড হবে।
+
+### Environment ভ্যারিয়েবল টাইপস
+
+`.env` সাধারণত স্ট্রিং হিসেবে পড়ে। কিছু বিশেষ ভ্যালু টাইপে কনভার্ট হয়:
+
+- `true` বা `(true)` → boolean true
+- `false` বা `(false)` → boolean false
+- `empty` বা `(empty)` → ফাঁকা স্ট্রিং ''
+- `null` বা `(null)` → null
+
+স্পেস থাকলে ডাবল কোটস দিন:
+
+```ini
+APP_NAME="My Application"
+```
+
+### Environment ভ্যালু নেওয়া
+
+সব `.env` ভ্যারিয়েবল রিকোয়েস্ট এলে `$_ENV` তে লোড হয়। কনফিগ ফাইলে এভাবে নিন:
+
+```php
+'debug' => (bool) env('APP_DEBUG', false),
+```
+
+দ্বিতীয় প্যারামিটার হলো ডিফল্ট ভ্যালু—কী না থাকলে সেটাই ফেরত দেয়।
+
+### বর্তমান Environment জানা
+
+`APP_ENV` থেকে এনভায়রনমেন্ট ঠিক হয়। `App` ফ্যাসাড দিয়ে পড়ুন:
+
+```php
+use Illuminate\Support\Facades\App;
+
+$environment = App::environment();
+
+if (App::environment('local')) {
+    // লোকাল এনভায়রনমেন্ট
+}
+
+if (App::environment(['local', 'staging'])) {
+    // লোকাল বা স্টেজিং
+}
+```
+
+সার্ভার-লেভেলের `APP_ENV` দিয়ে এই ডিটেকশন ওভাররাইড করা যায়।
+
+## Environment ফাইল এনক্রিপশন
+
+### এনক্রিপ্ট করা
+
+```shell
+php artisan env:encrypt
+```
+
+এটি `.env` এনক্রিপ্ট করে `.env.encrypted` তৈরি করবে। আউটপুটে দেখানো ডিক্রিপ্ট কী নিরাপদে সংরক্ষণ করুন।
+
+নিজস্ব কী দিতে চাইলে:
+
+```shell
+php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
+```
+
+কী এর দৈর্ঘ্য ব্যবহৃত সাইফারের সাথে মিলতে হবে। ডিফল্ট `AES-256-CBC` (৩২ অক্ষর)। চাইলে `--cipher` দিয়ে অন্য সাইফার দিন।
+
+একাধিক env থাকলে কোনটি এনক্রিপ্ট হবে ঠিক করুন:
+
+```shell
+php artisan env:encrypt --env=staging
+```
+
+### ডিক্রিপ্ট করা
+
+```shell
+php artisan env:decrypt
+```
+
+লারাভেল `LARAVEL_ENV_ENCRYPTION_KEY` থেকে কী নেবে, অথবা সরাসরি দিন:
+
+```shell
+php artisan env:decrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
+```
+
+কাস্টম সাইফার:
+
+```shell
+php artisan env:decrypt --key=qUWuNRdfuImXcKxZ --cipher=AES-128-CBC
+```
+
+নির্দিষ্ট env ফাইল:
+
+```shell
+php artisan env:decrypt --env=staging
+```
+
+বিদ্যমান `.env` ওভাররাইট করতে:
+
+```shell
+php artisan env:decrypt --force
+```
+
+## কনফিগারেশন ভ্যালু অ্যাক্সেস
+
+যেকোনো জায়গা থেকে `Config` ফ্যাসাড বা `config()` দিয়ে নিন। "ডট" সিনট্যাক্স ব্যবহার করুন।
+
+```php
+use Illuminate\Support\Facades\Config;
+
+$value = Config::get('app.timezone');
+$value = config('app.timezone');
+
+// না থাকলে ডিফল্ট দিন
+$value = config('app.timezone', 'Asia/Seoul');
+```
+
+রানটাইমে সেট করা:
+
+```php
+Config::set('app.timezone', 'America/Chicago');
+config(['app.timezone' => 'America/Chicago']);
+```
+
+টাইপড গেটার (টাইপ না মিললে এক্সসেপশন):
+
+```php
+Config::string('config-key');
+Config::integer('config-key');
+Config::float('config-key');
+Config::boolean('config-key');
+Config::array('config-key');
+Config::collection('config-key');
+```
+
+## কনফিগারেশন ক্যাশিং
+
+পারফরম্যান্স বাড়াতে সব কনফিগ এক ফাইলে ক্যাশ করুন:
+
+```shell
+php artisan config:cache
+```
+
+সাধারণত প্রোডাকশন ডিপ্লয়মেন্টে চালান। লোকালে বারবার কনফিগ বদলাতে হয়, তাই না চালানোই ভাল।
+
+কনফিগ ক্যাশ হলে `.env` রিকোয়েস্টে লোড হয় না। তখন `env()` শুধু বাইরের সিস্টেম-লেভেল ভ্যারিয়েবল ফেরত দেয়। তাই `env()` কেবল `config` ফাইলেই ব্যবহার করুন—অ্যাপের অন্যত্র `config()` দিয়ে ভ্যালু নিন।
+
+ক্যাশ ক্লিয়ার:
+
+```shell
+php artisan config:clear
+```
+
+## কনফিগারেশন পাবলিশিং
+
+বেশিরভাগ কনফিগ ফাইল আগেই `config` এ থাকে। কিছু (যেমন `cors.php`, `view.php`) ডিফল্টে থাকে না। দরকারে পাবলিশ করুন:
+
+```shell
+php artisan config:publish
+php artisan config:publish --all
+```
+
+## ডিবাগ মোড
+
+`config/app.php` এর `debug` অপশন ইউজারকে কত তথ্য দেখাবে তা নিয়ন্ত্রণ করে। এটি `.env` এর `APP_DEBUG` মান মানে।
+
+- লোকালে `APP_DEBUG=true`
+- প্রোডাকশনে সবসময় `false`—না হলে সংবেদনশীল তথ্য ফাঁস হতে পারে।
+
+## মেইনটেন্যান্স মোড
+
+অ্যাপ আপডেট/রক্ষণাবেক্ষণে থাকলে সব রিকোয়েস্টে কাস্টম ভিউ দেখায়। ডিফল্ট মিডলওয়্যার স্ট্যাকে চেক আছে; সক্রিয় থাকলে 503 থ্রো হয়।
+
+সক্রিয় করা:
+
+```shell
+php artisan down
+```
+
+অটো রিফ্রেশ হেডার পাঠাতে:
+
+```shell
+php artisan down --refresh=15
+```
+
+`Retry-After` সেট করতে (ব্রাউজার সাধারণত ইগনোর করে):
+
+```shell
+php artisan down --retry=60
+```
+
+### বাইপাস করা (সিক্রেট টোকেন)
+
+```shell
+php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
+```
+
+তারপর এই URL-এ গেলে বাইপাস কুকি সেট হবে এবং স্বাভাবিকভাবে ব্রাউজ করতে পারবেন:
+
+```
+https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
+```
+
+লারাভেলকে নিজে সিক্রেট বানাতে বললে:
+
+```shell
+php artisan down --with-secret
+```
+
+হিডেন রুটে গেলে `/` এ রিডাইরেক্ট হবে এবং কুকি সেট হবে। সিক্রেট সাধারণত অ্যালফানিউমেরিক ও ড্যাশ হলে ভাল। `?` বা `&` এড়িয়ে চলুন।
+
+### একাধিক সার্ভারে মেইনটেন্যান্স
+
+ডিফল্টে ফাইল-ভিত্তিক, তাই প্রতিটি সার্ভারে `php artisan down` চালাতে হয়। বিকল্পভাবে ক্যাশ-ভিত্তিক ড্রাইভার নিন—এক সার্ভার থেকেই যথেষ্ট। `.env` এ সেট করুন, সব সার্ভার থেকে অ্যাক্সেসযোগ্য স্টোর বাছুন:
+
+```ini
+APP_MAINTENANCE_DRIVER=cache
+APP_MAINTENANCE_STORE=database
+```
+
+### প্রি-রেন্ডার ভিউ
+
+ডিপ্লয়মেন্টে ডিপেনডেন্সি আপডেটের সময়ে এরর এড়াতে রিকোয়েস্টের একদম শুরুতে ফেরানোর জন্য প্রি-রেন্ডার করা টেমপ্লেট দিন:
+
+```shell
+php artisan down --render="errors::503"
+```
+
+### রিডাইরেক্ট সব রিকোয়েস্ট
+
+মেইনটেন্যান্সে সব রিকোয়েস্ট নির্দিষ্ট URL এ পাঠাতে:
+
+```shell
+php artisan down --redirect=/
+```
+
+### মেইনটেন্যান্স মোড বন্ধ করা
+
+```shell
+php artisan up
+```
+
+ডিফল্ট টেমপ্লেট কাস্টমাইজ করতে:
+
+```
+resources/views/errors/503.blade.php
+```
+
+### কিউস
+
+মেইনটেন্যান্স মোডে কোনো queued job রান হবে না। মোড বন্ধ হলে আবার স্বাভাবিকভাবে চলবে।
+
+### বিকল্প
+
+জিরো-ডাউনটাইম ডিপ্লয়ের জন্য ম্যানেজড প্ল্যাটফর্ম যেমন Laravel Cloud বিবেচনা করুন।
