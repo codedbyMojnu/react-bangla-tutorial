@@ -1,0 +1,71 @@
+# PHP OOP - কনস্ট্রাক্টর
+
+[আগের পৃষ্ঠা](php_oop_classes_objects.asp) | [পরবর্তী পৃষ্ঠা](php_oop_destructor.asp)
+
+---
+
+## PHP - `__construct()` ফাংশন কী?
+
+কনস্ট্রাক্টর হচ্ছে এমন একটি বিশেষ মেথড, যা অবজেক্ট তৈরি করার সময়ই স্বয়ংক্রিয়ভাবে কল হয়। এর মাধ্যমে অবজেক্টের প্রপার্টিগুলো শুরুতেই সেট করা যায়।
+
+যদি আপনি ক্লাসে `__construct()` নামের একটি ফাংশন লিখেন, তাহলে যখনই নতুন অবজেক্ট তৈরি করবেন, PHP নিজে থেকেই এই ফাংশনটি চালাবে।
+
+> মনে রাখবেন, কনস্ট্রাক্টর ফাংশনের নামের শুরুতে দুইটি আন্ডারস্কোর (\_\_) থাকে!
+
+কনস্ট্রাক্টর ব্যবহার করলে আলাদা করে `set_name()` মেথড কল করার দরকার পড়ে না, ফলে কোডও ছোট হয়।
+
+### উদাহরণ ১
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+
+  function __construct($name) {
+    $this->name = $name;
+  }
+  function get_name() {
+    return $this->name;
+  }
+}
+
+$apple = new Fruit("Apple");
+echo $apple->get_name();
+?>
+```
+
+এখানে অবজেক্ট তৈরি করার সময়ই নাম সেট হয়ে যাচ্ছে।
+
+---
+
+### উদাহরণ ২
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+
+  function __construct($name, $color) {
+    $this->name = $name;
+    $this->color = $color;
+  }
+  function get_name() {
+    return $this->name;
+  }
+  function get_color() {
+    return $this->color;
+  }
+}
+
+$apple = new Fruit("Apple", "red");
+echo $apple->get_name();
+echo "<br>";
+echo $apple->get_color();
+?>
+```
+
+এখানে অবজেক্ট তৈরি করার সময়ই নাম ও রং দুইটাই সেট করা হচ্ছে।
+
+---

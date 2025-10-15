@@ -1,0 +1,158 @@
+# PHP OOP - অ্যাবস্ট্রাক্ট ক্লাস
+
+[আগের পৃষ্ঠা](php_oop_constants.asp) | [পরবর্তী পৃষ্ঠা](php_oop_interfaces.asp)
+
+---
+
+## PHP - অ্যাবস্ট্রাক্ট ক্লাস ও মেথড কী?
+
+অ্যাবস্ট্রাক্ট ক্লাস হচ্ছে এমন একটি ক্লাস, যেখানে অন্তত একটি অ্যাবস্ট্রাক্ট মেথড থাকে।  
+অ্যাবস্ট্রাক্ট মেথড মানে, শুধু ডিক্লেয়ার করা আছে, কিন্তু কোনো কোড লেখা নেই—চাইল্ড ক্লাসে গিয়ে সেটার কাজ করতে হবে।
+
+অ্যাবস্ট্রাক্ট ক্লাস বা মেথড ডিফাইন করতে `abstract` কীওয়ার্ড ব্যবহার করা হয়।
+
+---
+
+### সিনট্যাক্স
+
+```php
+<?php
+abstract class ParentClass {
+  abstract public function someMethod1();
+  abstract public function someMethod2($name, $color);
+  abstract public function someMethod3() : string;
+}
+?>
+```
+
+---
+
+চাইল্ড ক্লাস যখন অ্যাবস্ট্রাক্ট ক্লাস থেকে ইনহেরিট করে, তখন অবশ্যই সেই অ্যাবস্ট্রাক্ট মেথডগুলো একই নাম ও একই বা কম রেস্ট্রিকটেড অ্যাক্সেস মডিফায়ার দিয়ে ডিফাইন করতে হবে।  
+অবশ্যই প্যারামিটার সংখ্যা ও টাইপ একই রাখতে হবে (অতিরিক্ত অপশনাল প্যারামিটার রাখা যাবে)।
+
+**নিয়মগুলো সংক্ষেপে:**
+
+- চাইল্ড ক্লাসে মেথডের নাম একই হতে হবে এবং প্যারেন্টের অ্যাবস্ট্রাক্ট মেথডকে রিডিক্লেয়ার করতে হবে
+- অ্যাক্সেস মডিফায়ার একই বা কম রেস্ট্রিকটেড হতে হবে
+- প্রয়োজনীয় আর্গুমেন্ট সংখ্যা একই, তবে অপশনাল আর্গুমেন্ট বাড়ানো যাবে
+
+---
+
+### উদাহরণ
+
+```php
+<?php
+// প্যারেন্ট ক্লাস
+abstract class Car {
+  public $name;
+  public function __construct($name) {
+    $this->name = $name;
+  }
+  abstract public function intro() : string;
+}
+
+// চাইল্ড ক্লাস
+class Audi extends Car {
+  public function intro() : string {
+    return "Choose German quality! I'm an $this->name!";
+  }
+}
+
+class Volvo extends Car {
+  public function intro() : string {
+    return "Proud to be Swedish! I'm a $this->name!";
+  }
+}
+
+class Citroen extends Car {
+  public function intro() : string {
+    return "French extravagance! I'm a $this->name!";
+  }
+}
+
+// চাইল্ড ক্লাস থেকে অবজেক্ট তৈরি
+$audi = new Audi("Audi");
+echo $audi->intro();
+echo "<br>";
+
+$volvo = new Volvo("Volvo");
+echo $volvo->intro();
+echo "<br>";
+
+$citroen = new Citroen("Citroen");
+echo $citroen->intro();
+?>
+```
+
+#### ব্যাখ্যা
+
+`Audi`, `Volvo`, ও `Citroen` ক্লাসগুলো `Car` ক্লাস থেকে ইনহেরিট করেছে।  
+তারা প্যারেন্টের `$name` প্রপার্টি ও `__construct()` মেথড পায়।  
+কিন্তু `intro()` মেথডটি অ্যাবস্ট্রাক্ট, তাই চাইল্ড ক্লাসে আলাদাভাবে ডিফাইন করতে হয়েছে এবং প্রত্যেকটিই একটি স্ট্রিং রিটার্ন করছে।
+
+---
+
+## PHP - আরও কিছু অ্যাবস্ট্রাক্ট ক্লাসের উদাহরণ
+
+### আর্গুমেন্টসহ অ্যাবস্ট্রাক্ট মেথড
+
+```php
+<?php
+abstract class ParentClass {
+  // আর্গুমেন্টসহ অ্যাবস্ট্রাক্ট মেথড
+  abstract protected function prefixName($name);
+}
+
+class ChildClass extends ParentClass {
+  public function prefixName($name) {
+    if ($name == "John Doe") {
+      $prefix = "Mr.";
+    } elseif ($name == "Jane Doe") {
+      $prefix = "Mrs.";
+    } else {
+      $prefix = "";
+    }
+    return "{$prefix} {$name}";
+  }
+}
+
+$class = new ChildClass;
+echo $class->prefixName("John Doe");
+echo "<br>";
+echo $class->prefixName("Jane Doe");
+?>
+```
+
+---
+
+### চাইল্ড ক্লাসে অপশনাল আর্গুমেন্ট
+
+```php
+<?php
+abstract class ParentClass {
+  // আর্গুমেন্টসহ অ্যাবস্ট্রাক্ট মেথড
+  abstract protected function prefixName($name);
+}
+
+class ChildClass extends ParentClass {
+  // চাইল্ড ক্লাসে অপশনাল আর্গুমেন্ট যোগ করা হয়েছে
+  public function prefixName($name, $separator = ".", $greet = "Dear") {
+    if ($name == "John Doe") {
+      $prefix = "Mr";
+    } elseif ($name == "Jane Doe") {
+      $prefix = "Mrs";
+    } else {
+      $prefix = "";
+    }
+    return "{$greet} {$prefix}{$separator} {$name}";
+  }
+}
+
+$class = new ChildClass;
+echo $class->prefixName("John Doe");
+echo "<br>";
+echo $class->prefixName("Jane Doe");
+?>
+```
+
+---

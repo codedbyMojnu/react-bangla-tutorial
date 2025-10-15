@@ -1,0 +1,62 @@
+# PHP OOP - ডেস্ট্রাক্টর
+
+[আগের পৃষ্ঠা](php_oop_constructor.asp) | [পরবর্তী পৃষ্ঠা](php_oop_access_modifiers.asp)
+
+---
+
+## PHP - `__destruct()` ফাংশন কী?
+
+ডেস্ট্রাক্টর হচ্ছে এমন একটি বিশেষ মেথড, যা অবজেক্ট ধ্বংস (destroy) হওয়ার সময় বা স্ক্রিপ্ট শেষ হলে স্বয়ংক্রিয়ভাবে কল হয়।
+
+যদি আপনি ক্লাসে `__destruct()` নামের একটি ফাংশন লিখেন, তাহলে স্ক্রিপ্টের শেষে PHP নিজে থেকেই এই ফাংশনটি চালাবে।
+
+> মনে রাখবেন, ডেস্ট্রাক্টর ফাংশনের নামের শুরুতেও দুইটি আন্ডারস্কোর (\_\_) থাকে!
+
+নিচের উদাহরণে, `__construct()` ফাংশনটি অবজেক্ট তৈরি হওয়ার সময় কল হয়, আর `__destruct()` ফাংশনটি স্ক্রিপ্টের শেষে স্বয়ংক্রিয়ভাবে কল হয়:
+
+### উদাহরণ ১
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+
+  function __construct($name) {
+    $this->name = $name;
+  }
+  function __destruct() {
+    echo "The fruit is {$this->name}.";
+  }
+}
+
+$apple = new Fruit("Apple");
+?>
+```
+
+---
+
+### উদাহরণ ২
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+
+  function __construct($name, $color) {
+    $this->name = $name;
+    $this->color = $color;
+  }
+  function __destruct() {
+    echo "The fruit is {$this->name} and the color is {$this->color}.";
+  }
+}
+
+$apple = new Fruit("Apple", "red");
+?>
+```
+
+---
+
+> **টিপস:** কনস্ট্রাক্টর ও ডেস্ট্রাক্টর ব্যবহার করলে কোড ছোট হয় এবং অনেক কাজ সহজে করা যায়!

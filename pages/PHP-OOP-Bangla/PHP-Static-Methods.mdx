@@ -1,0 +1,141 @@
+# PHP OOP - স্ট্যাটিক মেথডস
+
+[আগের টপিক: Traits](php_oop_traits.asp) | [পরবর্তী টপিক: Static Properties](php_oop_static_properties.asp)
+
+---
+
+## PHP - স্ট্যাটিক মেথডস কী?
+
+স্ট্যাটিক মেথড হচ্ছে এমন একটি মেথড, যেটা ক্লাসের অবজেক্ট তৈরি না করেই সরাসরি ক্লাসের নাম দিয়ে কল করা যায়।  
+স্ট্যাটিক মেথড ডিক্লেয়ার করতে `static` কীওয়ার্ড ব্যবহার করতে হয়।
+
+### সিনট্যাক্স
+
+```php
+<?php
+class ClassName {
+  public static function staticMethod() {
+    echo "Hello World!";
+  }
+}
+?>
+```
+
+এখন, এই স্ট্যাটিক মেথড কল করতে চাইলে ক্লাসের নাম, ডাবল কলন `::` এবং মেথডের নাম লিখলেই হবে:
+
+```php
+ClassName::staticMethod();
+```
+
+---
+
+## উদাহরণ
+
+ধরা যাক, আমরা একটি ক্লাস বানালাম এবং তাতে একটি স্ট্যাটিক মেথড লিখলাম:
+
+```php
+<?php
+class greeting {
+  public static function welcome() {
+    echo "Hello World!";
+  }
+}
+
+// স্ট্যাটিক মেথড কল করা হচ্ছে
+greeting::welcome();
+?>
+```
+
+**ব্যাখ্যা:**  
+এখানে `welcome()` নামের একটি স্ট্যাটিক মেথড আছে। আমরা অবজেক্ট তৈরি না করেই সরাসরি `greeting::welcome();` দিয়ে কল করেছি।
+
+---
+
+## স্ট্যাটিক মেথড নিয়ে আরও কিছু কথা
+
+একই ক্লাসে স্ট্যাটিক এবং নন-স্ট্যাটিক দুই ধরনের মেথড থাকতে পারে।  
+ক্লাসের ভেতর থেকে স্ট্যাটিক মেথড কল করতে চাইলে `self::` ব্যবহার করতে হয়।
+
+### উদাহরণ
+
+```php
+<?php
+class greeting {
+  public static function welcome() {
+    echo "Hello World!";
+  }
+
+  public function __construct() {
+    self::welcome();
+  }
+}
+
+new greeting();
+?>
+```
+
+এখানে কনস্ট্রাক্টরের ভেতর থেকে `self::welcome();` দিয়ে স্ট্যাটিক মেথড কল করা হয়েছে।
+
+---
+
+## অন্য ক্লাস থেকে স্ট্যাটিক মেথড কল
+
+স্ট্যাটিক মেথড যদি `public` হয়, তাহলে অন্য ক্লাস থেকেও কল করা যায়।
+
+```php
+<?php
+class A {
+  public static function welcome() {
+    echo "Hello World!";
+  }
+}
+
+class B {
+  public function message() {
+    A::welcome();
+  }
+}
+
+$obj = new B();
+echo $obj->message();
+?>
+```
+
+এখানে `B` ক্লাসের ভেতর থেকে `A` ক্লাসের স্ট্যাটিক মেথড কল করা হয়েছে।
+
+---
+
+## ইনহেরিটেন্স ও স্ট্যাটিক মেথড
+
+চাইল্ড ক্লাস থেকে প্যারেন্ট ক্লাসের স্ট্যাটিক মেথড কল করতে `parent::` ব্যবহার করা হয়।  
+এক্ষেত্রে স্ট্যাটিক মেথড `public` বা `protected` হতে পারে।
+
+```php
+<?php
+class domain {
+  protected static function getWebsiteName() {
+    return "W3Schools.com";
+  }
+}
+
+class domainW3 extends domain {
+  public $websiteName;
+  public function __construct() {
+    $this->websiteName = parent::getWebsiteName();
+  }
+}
+
+$domainW3 = new domainW3;
+echo $domainW3->websiteName;
+?>
+```
+
+এখানে চাইল্ড ক্লাস `domainW3` থেকে প্যারেন্ট ক্লাসের স্ট্যাটিক মেথড কল করা হয়েছে।
+
+---
+
+**শেষ কথা:**  
+স্ট্যাটিক মেথড ব্যবহার করলে অবজেক্ট তৈরি না করেই ক্লাসের মেথড ব্যবহার করা যায়।  
+এটা অনেক সময় দরকারি হয়, বিশেষ করে যখন কোনো নির্দিষ্ট কাজ ক্লাসের অবজেক্ট ছাড়াই করতে হয়।
+
+[আগের টপিক: Traits](php_oop_traits.asp) | [পরবর্তী টপিক: Static Properties](php_oop_static_properties.asp)

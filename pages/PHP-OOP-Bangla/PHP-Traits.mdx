@@ -1,0 +1,110 @@
+# PHP OOP - ট্রেইটস (Traits)
+
+[আগের পৃষ্ঠা](php_oop_interfaces.asp) | [পরবর্তী পৃষ্ঠা](php_oop_static_methods.asp)
+
+---
+
+## PHP - ট্রেইট কী?
+
+PHP-তে এক ক্লাস শুধু একটাই প্যারেন্ট ক্লাস থেকে ইনহেরিট করতে পারে (single inheritance)।  
+তাহলে যদি কোনো ক্লাসে একাধিক আচরণ (behavior) দরকার হয়?  
+এই সমস্যার সমাধান হচ্ছে ট্রেইট (trait)।
+
+ট্রেইট ব্যবহার করে আপনি এমন মেথড লিখতে পারেন, যেগুলো একাধিক ক্লাসে ব্যবহার করা যাবে।  
+ট্রেইটে সাধারণ মেথড, অ্যাবস্ট্রাক্ট মেথড, এবং যেকোনো access modifier (public, private, protected) ব্যবহার করা যায়।
+
+ট্রেইট ডিফাইন করতে `trait` কীওয়ার্ড ব্যবহার হয়।
+
+### সিনট্যাক্স
+
+```php
+<?php
+trait TraitName {
+  // কিছু কোড...
+}
+?>
+```
+
+ক্লাসে ট্রেইট ব্যবহার করতে `use` কীওয়ার্ড লিখতে হয়:
+
+```php
+<?php
+class MyClass {
+  use TraitName;
+}
+?>
+```
+
+---
+
+### উদাহরণ
+
+```php
+<?php
+trait message1 {
+  public function msg1() {
+    echo "OOP is fun! ";
+  }
+}
+
+class Welcome {
+  use message1;
+}
+
+$obj = new Welcome();
+$obj->msg1();
+?>
+```
+
+#### ব্যাখ্যা
+
+এখানে `message1` নামে একটি ট্রেইট আছে।  
+`Welcome` ক্লাসে `use message1;` লিখে ট্রেইটটি ব্যবহার করা হয়েছে।  
+ফলে, ট্রেইটের সব মেথড ক্লাসে পাওয়া যাবে।  
+অন্য কোনো ক্লাসেও একইভাবে ট্রেইট ব্যবহার করলে, কোড বারবার লিখতে হয় না—কোড ডুপ্লিকেশন কমে যায়।
+
+---
+
+## PHP - একাধিক ট্রেইট ব্যবহার
+
+একই ক্লাসে একাধিক ট্রেইটও ব্যবহার করা যায়। উদাহরণ:
+
+```php
+<?php
+trait message1 {
+  public function msg1() {
+    echo "OOP is fun! ";
+  }
+}
+
+trait message2 {
+  public function msg2() {
+    echo "OOP reduces code duplication!";
+  }
+}
+
+class Welcome {
+  use message1;
+}
+
+class Welcome2 {
+  use message1, message2;
+}
+
+$obj = new Welcome();
+$obj->msg1();
+echo "<br>";
+
+$obj2 = new Welcome2();
+$obj2->msg1();
+$obj2->msg2();
+?>
+```
+
+#### ব্যাখ্যা
+
+এখানে দুটি ট্রেইট (`message1`, `message2`) আছে।  
+`Welcome` ক্লাসে শুধু `message1` ট্রেইট ব্যবহার হয়েছে, আর `Welcome2` ক্লাসে দুইটি ট্রেইটই ব্যবহার হয়েছে (কমা দিয়ে আলাদা)।  
+এভাবে একাধিক ট্রেইট একসাথে ব্যবহার করা যায়।
+
+---

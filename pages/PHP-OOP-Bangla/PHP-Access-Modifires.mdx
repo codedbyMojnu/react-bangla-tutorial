@@ -1,0 +1,69 @@
+# PHP OOP - অ্যাক্সেস মডিফায়ার
+
+[আগের পৃষ্ঠা](php_oop_destructor.asp) | [পরবর্তী পৃষ্ঠা](php_oop_inheritance.asp)
+
+---
+
+## PHP - অ্যাক্সেস মডিফায়ার কী?
+
+ক্লাসের প্রপার্টি ও মেথড কোথা থেকে অ্যাক্সেস করা যাবে, তা নির্ধারণ করতে অ্যাক্সেস মডিফায়ার ব্যবহার করা হয়।
+
+PHP-তে তিন ধরনের অ্যাক্সেস মডিফায়ার আছে:
+
+- **public**: যেকোনো জায়গা থেকে অ্যাক্সেস করা যায় (এটাই ডিফল্ট)
+- **protected**: শুধু ক্লাসের ভেতর এবং ওই ক্লাস থেকে ইনহেরিট করা সাবক্লাসে অ্যাক্সেস করা যায়
+- **private**: শুধু ক্লাসের ভেতরেই অ্যাক্সেস করা যায়
+
+---
+
+### প্রপার্টিতে অ্যাক্সেস মডিফায়ার
+
+নিচের উদাহরণে তিনটি প্রপার্টিতে তিন ধরনের অ্যাক্সেস মডিফায়ার ব্যবহার করা হয়েছে। এখানে `name` প্রপার্টি public, তাই বাইরে থেকে সেট করা যাবে। কিন্তু `color` (protected) ও `weight` (private) প্রপার্টি বাইরে থেকে সেট করতে গেলে ফেটাল এরর হবে।
+
+```php
+<?php
+class Fruit {
+  public $name;
+  protected $color;
+  private $weight;
+}
+
+$mango = new Fruit();
+$mango->name = 'Mango'; // ঠিক আছে
+$mango->color = 'Yellow'; // ERROR
+$mango->weight = '300'; // ERROR
+?>
+```
+
+---
+
+### মেথডে অ্যাক্সেস মডিফায়ার
+
+নিচের উদাহরণে দুইটি ফাংশনে (set_color, set_weight) অ্যাক্সেস মডিফায়ার ব্যবহার করা হয়েছে। এখানে শুধু `set_name()` ফাংশনটি বাইরে থেকে কল করা যাবে, কারণ এটি public। বাকি দুটি ফাংশন (protected ও private) বাইরে থেকে কল করলে এরর হবে, যদিও সব প্রপার্টি public।
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+  public $weight;
+
+  function set_name($n) { // public (ডিফল্ট)
+    $this->name = $n;
+  }
+  protected function set_color($n) { // protected
+    $this->color = $n;
+  }
+  private function set_weight($n) { // private
+    $this->weight = $n;
+  }
+}
+
+$mango = new Fruit();
+$mango->set_name('Mango'); // ঠিক আছে
+$mango->set_color('Yellow'); // ERROR
+$mango->set_weight('300'); // ERROR
+?>
+```
+
+---

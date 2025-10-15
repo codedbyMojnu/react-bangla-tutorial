@@ -1,0 +1,125 @@
+# PHP Iterables (পিএইচপি ইটারেবলস)
+
+[← আগের টপিক](php_namespaces.asp) | [পরবর্তী টপিক →](php_mysql_intro.asp)
+
+---
+
+## PHP Iterable কী?
+
+PHP-তে **Iterable** হচ্ছে এমন একটি ভ্যালু, যেটার উপর দিয়ে আমরা `foreach()` লুপ চালাতে পারি। PHP 7.1 ভার্সন থেকে `iterable` নামে একটি নতুন pseudo-type এসেছে, যেটা ফাংশনের আর্গুমেন্ট বা রিটার্ন টাইপ হিসেবে ব্যবহার করা যায়।
+
+---
+
+## PHP-তে Iterable কিভাবে ব্যবহার করবেন?
+
+`iterable` কীওয়ার্ডটি ফাংশনের আর্গুমেন্ট বা রিটার্ন টাইপ হিসেবে ব্যবহার করা যায়।
+
+### উদাহরণ: ফাংশনের আর্গুমেন্ট হিসেবে Iterable
+
+```php
+<?php
+function printIterable(iterable $myIterable) {
+  foreach($myIterable as $item) {
+    echo $item;
+  }
+}
+
+$arr = ["a", "b", "c"];
+printIterable($arr);
+?>
+```
+
+### উদাহরণ: ফাংশন থেকে Iterable রিটার্ন করা
+
+```php
+<?php
+function getIterable(): iterable {
+  return ["a", "b", "c"];
+}
+
+$myIterable = getIterable();
+foreach($myIterable as $item) {
+  echo $item;
+}
+?>
+```
+
+---
+
+## কিভাবে Iterable তৈরি করবেন?
+
+### ১. অ্যারে (Array)
+
+সব অ্যারেই Iterable। তাই, কোনো ফাংশনে Iterable লাগলে সরাসরি অ্যারে পাঠাতে পারেন।
+
+### ২. ইটারেটর (Iterator)
+
+যে কোনো অবজেক্ট যদি `Iterator` ইন্টারফেস ইমপ্লিমেন্ট করে, সেটাও Iterable হিসেবে কাজ করবে।  
+Iterator হচ্ছে এমন একটি অবজেক্ট, যেটার মধ্যে একাধিক আইটেম থাকে এবং সেগুলোর উপর দিয়ে লুপ চালানোর জন্য কিছু নির্দিষ্ট মেথড থাকে।
+
+#### Iterator ইন্টারফেসে যেসব মেথড থাকতে হয়:
+
+- `current()` — বর্তমানে যেটা পয়েন্টার দেখাচ্ছে, সেটি রিটার্ন করে
+- `key()` — কারেন্ট আইটেমের কী রিটার্ন করে (ইন্টিজার, স্ট্রিং ইত্যাদি হতে পারে)
+- `next()` — পয়েন্টারকে পরবর্তী আইটেমে নিয়ে যায়
+- `rewind()` — পয়েন্টারকে প্রথম আইটেমে নিয়ে যায়
+- `valid()` — পয়েন্টার কোনো আইটেমে আছে কিনা, সেটা চেক করে (না থাকলে false)
+
+### উদাহরণ: Iterator ইন্টারফেস ইমপ্লিমেন্ট করা
+
+```php
+<?php
+// Iterator তৈরি করা
+class MyIterator implements Iterator {
+  private $items = [];
+  private $pointer = 0;
+
+  public function __construct($items) {
+    // array_values() দিয়ে ইনডেক্স ঠিক করা হয়
+    $this->items = array_values($items);
+  }
+
+  public function current() {
+    return $this->items[$this->pointer];
+  }
+
+  public function key() {
+    return $this->pointer;
+  }
+
+  public function next() {
+    $this->pointer++;
+  }
+
+  public function rewind() {
+    $this->pointer = 0;
+  }
+
+  public function valid() {
+    return $this->pointer < count($this->items);
+  }
+}
+
+// Iterable ব্যবহার করা
+function printIterable(iterable $myIterable) {
+  foreach($myIterable as $item) {
+    echo $item;
+  }
+}
+
+$iterator = new MyIterator(["a", "b", "c"]);
+printIterable($iterator);
+?>
+```
+
+---
+
+## উপসংহার
+
+- **Iterable** হচ্ছে এমন কিছু, যেটার উপর দিয়ে foreach লুপ চালানো যায়।
+- অ্যারে এবং Iterator ইন্টারফেস ইমপ্লিমেন্ট করা অবজেক্ট — দুটোই Iterable।
+- ফাংশনের আর্গুমেন্ট বা রিটার্ন টাইপ হিসেবে `iterable` ব্যবহার করলে কোড আরও ফ্লেক্সিবল হয়।
+
+---
+
+**PHP Iterable নিয়ে আরও জানতে চাইলে কমেন্ট করুন বা আমাদের অন্যান্য টিউটোরিয়াল দেখুন!**

@@ -1,0 +1,196 @@
+# PHP OOP - ইনহেরিটেন্স (Inheritance)
+
+[আগের পৃষ্ঠা](php_oop_access_modifiers.asp) | [পরবর্তী পৃষ্ঠা](php_oop_constants.asp)
+
+---
+
+## PHP - ইনহেরিটেন্স কী?
+
+OOP-তে ইনহেরিটেন্স মানে হচ্ছে, একটি ক্লাস আরেকটি ক্লাস থেকে বৈশিষ্ট্য (property) ও মেথড (method) গ্রহণ করতে পারে।  
+চাইল্ড ক্লাস প্যারেন্ট ক্লাসের সব public ও protected প্রপার্টি ও মেথড পায়, আবার চাইলে নিজেরও আলাদা প্রপার্টি ও মেথড রাখতে পারে।
+
+ইনহেরিটেড ক্লাস ডিফাইন করতে `extends` কীওয়ার্ড ব্যবহার করা হয়।
+
+---
+
+### উদাহরণ
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+  public function __construct($name, $color) {
+    $this->name = $name;
+    $this->color = $color;
+  }
+  public function intro() {
+    echo "The fruit is {$this->name} and the color is {$this->color}.";
+  }
+}
+
+// Strawberry ক্লাসটি Fruit থেকে ইনহেরিট করেছে
+class Strawberry extends Fruit {
+  public function message() {
+    echo "Am I a fruit or a berry? ";
+  }
+}
+
+$strawberry = new Strawberry("Strawberry", "red");
+$strawberry->message();
+$strawberry->intro();
+?>
+```
+
+#### ব্যাখ্যা
+
+`Strawberry` ক্লাসটি `Fruit` ক্লাস থেকে ইনহেরিট করেছে।  
+তাই `Strawberry` ক্লাসে `name`, `color`, `__construct()` ও `intro()` পাওয়া যাচ্ছে।  
+এছাড়া `Strawberry`-তে নিজের আলাদা `message()` মেথডও আছে।
+
+---
+
+## PHP - ইনহেরিটেন্স ও Protected অ্যাক্সেস মডিফায়ার
+
+আগের অধ্যায়ে দেখেছি, protected প্রপার্টি বা মেথড শুধু ক্লাসের ভেতর ও ইনহেরিটেড ক্লাসে ব্যবহার করা যায়।  
+চলুন উদাহরণ দেখি:
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+  public function __construct($name, $color) {
+    $this->name = $name;
+    $this->color = $color;
+  }
+  protected function intro() {
+    echo "The fruit is {$this->name} and the color is {$this->color}.";
+  }
+}
+
+class Strawberry extends Fruit {
+  public function message() {
+    echo "Am I a fruit or a berry? ";
+  }
+}
+
+$strawberry = new Strawberry("Strawberry", "red"); // ঠিক আছে
+$strawberry->message(); // ঠিক আছে
+$strawberry->intro(); // ERROR: intro() protected, বাইরে থেকে কল করা যাবে না
+?>
+```
+
+উপরের কোডে, বাইরে থেকে `intro()` কল করলে এরর হবে, কারণ এটি protected।
+
+---
+
+আরেকটি উদাহরণ, যেখানে চাইল্ড ক্লাসের ভেতর থেকে protected মেথড কল করা হয়েছে:
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+  public function __construct($name, $color) {
+    $this->name = $name;
+    $this->color = $color;
+  }
+  protected function intro() {
+    echo "The fruit is {$this->name} and the color is {$this->color}.";
+  }
+}
+
+class Strawberry extends Fruit {
+  public function message() {
+    echo "Am I a fruit or a berry? ";
+    // চাইল্ড ক্লাসের ভেতর থেকে protected মেথড কল করা যাবে
+    $this->intro();
+  }
+}
+
+$strawberry = new Strawberry("Strawberry", "red");
+$strawberry->message(); // ঠিক আছে, কারণ intro() চাইল্ড ক্লাসের ভেতর থেকে কল হয়েছে
+?>
+```
+
+---
+
+## PHP - ইনহেরিটেড মেথড ওভাররাইড করা
+
+চাইল্ড ক্লাসে প্যারেন্ট ক্লাসের মেথডের নাম রেখে নতুনভাবে ডিফাইন করলে, সেটি ওভাররাইড হয়ে যায়।
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+  public function __construct($name, $color) {
+    $this->name = $name;
+    $this->color = $color;
+  }
+  public function intro() {
+    echo "The fruit is {$this->name} and the color is {$this->color}.";
+  }
+}
+
+class Strawberry extends Fruit {
+  public $weight;
+  public function __construct($name, $color, $weight) {
+    $this->name = $name;
+    $this->color = $color;
+    $this->weight = $weight;
+  }
+  public function intro() {
+    echo "The fruit is {$this->name}, the color is {$this->color}, and the weight is {$this->weight} gram.";
+  }
+}
+
+$strawberry = new Strawberry("Strawberry", "red", 50);
+$strawberry->intro();
+?>
+```
+
+এখানে `Strawberry` ক্লাসে `intro()` ও `__construct()` নতুনভাবে ডিফাইন করা হয়েছে, তাই প্যারেন্টেরটা ওভাররাইড হয়েছে।
+
+---
+
+## PHP - final কীওয়ার্ড
+
+`final` কীওয়ার্ড ব্যবহার করলে, সেই ক্লাস আর ইনহেরিট করা যাবে না, অথবা সেই মেথড ওভাররাইড করা যাবে না।
+
+### ক্লাস ইনহেরিট বন্ধ করার উদাহরণ
+
+```php
+<?php
+final class Fruit {
+  // কিছু কোড
+}
+
+// নিচের কোডে এরর হবে
+class Strawberry extends Fruit {
+  // কিছু কোড
+}
+?>
+```
+
+---
+
+### মেথড ওভাররাইড বন্ধ করার উদাহরণ
+
+```php
+<?php
+class Fruit {
+  final public function intro() {
+    // কিছু কোড
+  }
+}
+
+class Strawberry extends Fruit {
+  // নিচের কোডে এরর হবে
+  public function intro() {
+    // কিছু কোড
+  }
+}
+?>
+```

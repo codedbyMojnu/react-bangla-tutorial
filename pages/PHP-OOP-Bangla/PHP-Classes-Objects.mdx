@@ -1,0 +1,184 @@
+# PHP OOP - ক্লাস ও অবজেক্ট
+
+[আগের পৃষ্ঠা](php_oop_what_is.asp) | [পরবর্তী পৃষ্ঠা](php_oop_constructor.asp)
+
+---
+
+> **ক্লাস** হচ্ছে অবজেক্ট তৈরির জন্য একটি টেমপ্লেট, আর **অবজেক্ট** হচ্ছে সেই ক্লাসের একটি নির্দিষ্ট রূপ।
+
+---
+
+## OOP কেস: বাস্তব উদাহরণ
+
+ধরা যাক, আমাদের একটি ক্লাস আছে `Fruit` নামে। এই ক্লাসের কিছু বৈশিষ্ট্য (property) থাকতে পারে, যেমন: নাম, রং, ওজন ইত্যাদি। আমরা চাইলে `$name`, `$color`, `$weight` - এইভাবে ভ্যারিয়েবল দিয়ে এগুলো সংরক্ষণ করতে পারি।
+
+যখন আমরা আলাদা আলাদা অবজেক্ট (যেমন: আপেল, কলা) তৈরি করব, তখন তারা একই ক্লাস থেকে সব বৈশিষ্ট্য ও আচরণ (method) পাবে, কিন্তু প্রত্যেকের মান আলাদা হবে।
+
+---
+
+## কিভাবে ক্লাস ডিফাইন করবেন
+
+ক্লাস ডিফাইন করতে `class` কীওয়ার্ড ব্যবহার করতে হয়, এরপর ক্লাসের নাম ও `{}` ব্র্যাকেটের মধ্যে প্রপার্টি ও মেথড লিখতে হয়।
+
+### সিনট্যাক্স
+
+```php
+<?php
+class Fruit {
+  // কোড এখানে...
+}
+?>
+```
+
+নিচে একটি `Fruit` ক্লাস দেখানো হয়েছে, যেখানে দুইটি প্রপার্টি (`$name`, `$color`) এবং দুইটি মেথড (`set_name()`, `get_name()`) আছে:
+
+```php
+<?php
+class Fruit {
+  // প্রপার্টি
+  public $name;
+  public $color;
+
+  // মেথড
+  function set_name($name) {
+    $this->name = $name;
+  }
+  function get_name() {
+    return $this->name;
+  }
+}
+?>
+```
+
+> **নোট:** ক্লাসের ভ্যারিয়েবলকে বলা হয় **প্রপার্টি** এবং ফাংশনকে বলা হয় **মেথড**!
+
+---
+
+## অবজেক্ট তৈরি করা
+
+ক্লাস থাকলেই হবে না, অবজেক্ট তৈরি করতে হবে। একটি ক্লাস থেকে যত খুশি অবজেক্ট তৈরি করা যায়। প্রতিটি অবজেক্টে ক্লাসের সব প্রপার্টি ও মেথড থাকবে, তবে মান আলাদা হবে।
+
+অবজেক্ট তৈরি করতে `new` কীওয়ার্ড ব্যবহার করা হয়।
+
+নিচের উদাহরণে `$apple` ও `$banana` হচ্ছে `Fruit` ক্লাসের অবজেক্ট:
+
+```php
+<?php
+class Fruit {
+  // প্রপার্টি
+  public $name;
+  public $color;
+
+  // মেথড
+  function set_name($name) {
+    $this->name = $name;
+  }
+  function get_name() {
+    return $this->name;
+  }
+}
+
+$apple = new Fruit();
+$banana = new Fruit();
+$apple->set_name('Apple');
+$banana->set_name('Banana');
+
+echo $apple->get_name();
+echo "<br>";
+echo $banana->get_name();
+?>
+```
+
+আরও দুটি মেথড যোগ করলে (রং সেট ও গেট করার জন্য):
+
+```php
+<?php
+class Fruit {
+  public $name;
+  public $color;
+
+  function set_name($name) {
+    $this->name = $name;
+  }
+  function get_name() {
+    return $this->name;
+  }
+  function set_color($color) {
+    $this->color = $color;
+  }
+  function get_color() {
+    return $this->color;
+  }
+}
+
+$apple = new Fruit();
+$apple->set_name('Apple');
+$apple->set_color('Red');
+echo "Name: " . $apple->get_name();
+echo "<br>";
+echo "Color: " . $apple->get_color();
+?>
+```
+
+---
+
+## PHP - `$this` কীওয়ার্ড
+
+`$this` হচ্ছে বর্তমান অবজেক্টকে নির্দেশ করে, এবং এটি শুধু ক্লাসের মেথডের ভেতরেই ব্যবহার করা যায়।
+
+উদাহরণ:
+
+```php
+<?php
+class Fruit {
+  public $name;
+}
+$apple = new Fruit();
+?>
+```
+
+`$name` প্রপার্টির মান পরিবর্তন করার দুটি উপায় আছে:
+
+১. ক্লাসের ভেতরে (মেথড দিয়ে):
+
+```php
+<?php
+class Fruit {
+  public $name;
+  function set_name($name) {
+    $this->name = $name;
+  }
+}
+$apple = new Fruit();
+$apple->set_name("Apple");
+
+echo $apple->name;
+?>
+```
+
+২. ক্লাসের বাইরে সরাসরি:
+
+```php
+<?php
+class Fruit {
+  public $name;
+}
+$apple = new Fruit();
+$apple->name = "Apple";
+
+echo $apple->name;
+?>
+```
+
+---
+
+## PHP - `instanceof` কীওয়ার্ড
+
+`instanceof` দিয়ে চেক করা যায়, কোনো অবজেক্ট নির্দিষ্ট কোনো ক্লাসের কি না:
+
+```php
+<?php
+$apple = new Fruit();
+var_dump($apple instanceof Fruit);
+?>
+```

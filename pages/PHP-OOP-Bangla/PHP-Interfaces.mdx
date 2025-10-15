@@ -1,0 +1,112 @@
+# PHP OOP - ইন্টারফেস (Interfaces)
+
+[আগের পৃষ্ঠা](php_oop_classes_abstract.asp) | [পরবর্তী পৃষ্ঠা](php_oop_traits.asp)
+
+---
+
+## PHP - ইন্টারফেস কী?
+
+ইন্টারফেস ব্যবহার করে আপনি নির্ধারণ করতে পারেন, কোনো ক্লাসে কোন কোন মেথড থাকতে হবে।  
+এভাবে বিভিন্ন ক্লাসকে একইভাবে ব্যবহার করা সহজ হয়।  
+একাধিক ক্লাস একই ইন্টারফেস ব্যবহার করলে, সেটাকে "পলিমরফিজম" বলা হয়।
+
+ইন্টারফেস ডিফাইন করতে `interface` কীওয়ার্ড ব্যবহার করা হয়।
+
+### সিনট্যাক্স
+
+```php
+<?php
+interface InterfaceName {
+  public function someMethod1();
+  public function someMethod2($name, $color);
+  public function someMethod3() : string;
+}
+?>
+```
+
+---
+
+## PHP - ইন্টারফেস বনাম অ্যাবস্ট্রাক্ট ক্লাস
+
+- ইন্টারফেসে কোনো প্রপার্টি রাখা যায় না, কিন্তু অ্যাবস্ট্রাক্ট ক্লাসে যায়
+- ইন্টারফেসের সব মেথড public হয়, অ্যাবস্ট্রাক্ট ক্লাসে public/protected হতে পারে
+- ইন্টারফেসের সব মেথড অ্যাবস্ট্রাক্ট, তাই আলাদা করে abstract লিখতে হয় না
+- এক ক্লাস একাধিক ইন্টারফেস implement করতে পারে, আবার চাইলে অন্য ক্লাস থেকেও inherit করতে পারে
+
+---
+
+## PHP - ইন্টারফেস ব্যবহার
+
+ইন্টারফেস implement করতে হলে ক্লাসে `implements` কীওয়ার্ড ব্যবহার করতে হয়।  
+যে ক্লাস ইন্টারফেস implement করবে, তাকে অবশ্যই ইন্টারফেসের সব মেথড ডিফাইন করতে হবে।
+
+```php
+<?php
+interface Animal {
+  public function makeSound();
+}
+
+class Cat implements Animal {
+  public function makeSound() {
+    echo "Meow";
+  }
+}
+
+$animal = new Cat();
+$animal->makeSound();
+?>
+```
+
+---
+
+ধরা যাক, আপনি এমন একটি সফটওয়্যার বানাতে চান যেখানে অনেক ধরনের প্রাণী থাকবে।  
+সব প্রাণীই কোনো না কোনো শব্দ করে, কিন্তু প্রত্যেকের শব্দ আলাদা।  
+ইন্টারফেস ব্যবহার করলে, সব প্রাণীকে একইভাবে হ্যান্ডেল করা যায়—even যদি তারা আলাদা আলাদা ক্লাস হয়।
+
+```php
+<?php
+// ইন্টারফেস ডিফিনিশন
+interface Animal {
+  public function makeSound();
+}
+
+// ক্লাস ডিফিনিশন
+class Cat implements Animal {
+  public function makeSound() {
+    echo " Meow ";
+  }
+}
+
+class Dog implements Animal {
+  public function makeSound() {
+    echo " Bark ";
+  }
+}
+
+class Mouse implements Animal {
+  public function makeSound() {
+    echo " Squeak ";
+  }
+}
+
+// প্রাণীদের লিস্ট তৈরি
+$cat = new Cat();
+$dog = new Dog();
+$mouse = new Mouse();
+$animals = array($cat, $dog, $mouse);
+
+// প্রত্যেক প্রাণীকে শব্দ করতে বলুন
+foreach($animals as $animal) {
+  $animal->makeSound();
+}
+?>
+```
+
+#### ব্যাখ্যা
+
+`Cat`, `Dog`, ও `Mouse`—সবগুলো ক্লাসই `Animal` ইন্টারফেস implement করেছে।  
+তাই প্রত্যেক ক্লাসেই `makeSound()` মেথড আছে।  
+এজন্য আমরা সহজেই সব প্রাণীকে লুপ করে তাদের শব্দ করাতে পারি, আলাদা করে ক্লাস চেক না করেই।  
+ইন্টারফেস শুধু বলে দেয়—কোন মেথড থাকতে হবে, কিন্তু কিভাবে কাজ করবে সেটা ক্লাস নিজে ঠিক করে নেয়।
+
+---
