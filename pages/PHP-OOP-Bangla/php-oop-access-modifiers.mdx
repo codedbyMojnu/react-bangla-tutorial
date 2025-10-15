@@ -43,7 +43,32 @@ $mango->weight = '300'; // ERROR
 ?>
 ```
 
+সহজ বাংলায় **public, protected, private** তিনটি access modifier-এর পার্থক্য **টেবিল আকারে** দেখাচ্ছি।
+
+| Modifier      | কোথা থেকে access করা যায়                  | ব্যবহার                                                                           | উদাহরণ     |
+| ------------- | ------------------------------------------ | --------------------------------------------------------------------------------- | ---------- |
+| **public**    | class-এর ভিতর, subclass, আর class-এর বাইরে | সাধারণ property বা method যা সবাই access করতে পারবে                               | `$name`    |
+| **protected** | class-এর ভিতর, subclass থেকে               | শুধু এই class বা child class-এ access করা যাবে                                    | `$address` |
+| **private**   | শুধু class-এর ভিতর                         | শুধুমাত্র এই class-এর ভিতরে access করা যাবে, বাইরে বা subclass থেকে access হবে না | `$assets`  |
+
 ---
+
+**এই কোডের context এ:**
+
+```php
+$newMillionear->name; // public → direct access ঠিক আছে
+$newMillionear->get_address(); // protected → method দিয়ে access করতে হবে
+$newMillionear->get_assets();  // private → method দিয়ে access করতে হবে
+```
+
+**Beginner mistake:**
+
+* Protected বা private property সরাসরি object থেকে access করার চেষ্টা করলে **Error** আসে।
+* তাই সবসময় **getter method** ব্যবহার করা ভালো।
+
+---
+
+
 
 ### মেথডে অ্যাক্সেস মডিফায়ার
 
