@@ -1,0 +1,16 @@
+{
+  "php-oop-what-is": "PHP What is OOP",
+  "php-oop-classes-objects": "PHP Classes/Objects",
+  "php-oop-constructor": "PHP Constructor",
+  "php-oop-destructor": "PHP Destructor",
+  "php-oop-access-modifiers": "PHP Access Modifiers",
+  "php-oop-inheritance": "PHP Inheritance",
+  "php-oop-constants": "PHP Constants",
+  "php-oop-classes-abstract": "PHP Abstract Classes",
+  "php-oop-interfaces": "PHP Interfaces",
+  "php-oop-traits": "PHP Traits",
+  "php-oop-static-methods": "PHP Static Methods",
+  "php-oop-static-properties": "PHP Static Properties",
+  "php-namespaces": "PHP Namespaces",
+  "php-iterables": "PHP Iterables"
+}
