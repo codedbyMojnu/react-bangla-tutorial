@@ -34,10 +34,6 @@
     "title": "My Story",
     "type": "page"
   },
-  "showcase": {
-    "title": "🌟 Showcase",
-    "type": "page"
-  },
   "sponsor": {
     "title": "Sponsor",
     "type": "page"
@@ -52,12 +48,4 @@
     "href": "https://github.com/codedbymojnu/",
     "newWindow": true
   },
-  "interview-questions": {
-    "title": "🔥 Interview Qs",
-    "type": "page"
-  },
-  "my-resume": {
-    "title": "My Resume",
-    "type": "page"
-  }
 }
