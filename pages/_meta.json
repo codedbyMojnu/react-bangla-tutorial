@@ -4,10 +4,10 @@
   "thinking-in-react": "3️⃣ Thinking in React",
   "learn-react-environment-set-up": "4️⃣ Environment Set Up & Productivity Tips",
 
-  "learn-react-describing-the-ui": "5️⃣ Describing the UI",
-  "learn-react-adding-interactivity": "6️⃣ Adding Interactivity",
-  "learn-react-managing-state": "7️⃣ Managing State",
-  "learn-react-escape-hatches": "8️⃣ Escape Hatches",
+  "learn-react-describing-the-ui": "📂 Describing the UI",
+  "learn-react-adding-interactivity": "📂 Adding Interactivity",
+  "learn-react-managing-state": "📂 Managing State",
+  "learn-react-escape-hatches": "📂 Escape Hatches",
 
   "react-suspense": "📄 React Suspense",
   "react-lazy-loading": "📄 Lazy Loading",

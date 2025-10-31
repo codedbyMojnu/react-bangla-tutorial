@@ -39,6 +39,9 @@ const config: DocsThemeConfig = {
   footer: {
     text: `© 2024 - ${new Date().getFullYear()} React JS Bangla Tutorial.`,
   },
+  sidebar: {
+    defaultMenuCollapseLevel: 1, // here
+  },
   components: {
     Donate,
     GiscusComments,
