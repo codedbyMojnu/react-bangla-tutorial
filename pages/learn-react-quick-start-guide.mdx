@@ -104,6 +104,23 @@ loan-management/
 
 ---
 
+### প্রোজেক্ট শুরুর আগে ফাস্ট আমাদের ডাটা স্ট্রাকচার নিয়ে ভাবতে হবে। 
+
+React অ্যাপের জন্য ছোট-medium প্রোজেক্টে Single Source of Truth ব্যবহার করা ভালো। অর্থাৎ সব সম্পর্কিত ডাটা (যেমন creditors, loans) এক জায়গায় centralized রাখা। এতে ডাটা consistent থাকে, update সহজ হয় এবং bug কম থাকে। ছোট component গুলো props বা context থেকে ডাটা নেবে। বড় বা কমপ্লেক্স অ্যাপে আলাদা slices বা state management library ব্যবহার করা যায়, কিন্তু শুরুতে centralized structure সবচেয়ে সিম্পল ও কার্যকর। 
+
+**আমাদের প্রোজেক্টের জন্য ডাটা স্ট্রাকচার নিচের মতো করে নিতে পারি-**
+
+```jsx
+// src/state.js
+export const initialState = {
+  creditors: [
+    { id: 1, name: "Rahim", loanAmount: 1000 },
+    { id: 2, name: "Karim", loanAmount: 2000 }
+  ]
+};
+```
+
+
 ## 4. JSX — HTML-এর মত কিন্তু JS এর ভিতর
 
 JSX হলো JavaScript এর ভিতরে HTML-এর মত সিনট্যাক্স। এখন আমরা একটি Welcome কম্পোনেন্ট বানাবো। 
