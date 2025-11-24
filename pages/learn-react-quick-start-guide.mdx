@@ -3,18 +3,18 @@ title: React JS Bangla Course. Pdf
 description: Learn React JS Bangla in this Course step by step tutorial and pdf
 ---
 
-> React শেখার শুরু: এই লেখায় আপনার React এর ৮০% কনসেপ্ট ক্লিয়ার হয়ে যাবে!
+> React শেখার শুরু: আশা রাখছি-> এই লেখায় আপনার React এর ৮০% কনসেপ্ট ক্লিয়ার হয়ে যাবে!
 
-এই অধ্যায়টি যদি আপনি মন দিয়ে পড়েন আর বুঝে প্রাকটিস করেন, বিশ্বাস করুন, **React-এর জরুরি ধারণাগুলো আপনার ব্রেনে ঢুকে যাবে**, যা আপনার প্রতিদিনের কোডিং এ লাগবে। 
+এই লেখাটি যদি আপনি মন দিয়ে পড়েন আর বুঝে প্রাকটিস করেন, আমি আশা করি, _**React-এর জরুরি ধারণাগুলো আপনার ব্রেনে ঢুকে যাবে**_, যা আপনার প্রতিদিনের কোডিং এ কাজে লাগবে। 
 
 <AudioPlayer
   src="/audios/learn-react-quick-start-guide.wav"
   title="React Quick Start Guide"
-/>
+/> 
 
 এই লেখাতে কি কি পাবেন:
 
-* (Vite) দিয়ে একটি প্রোজেক্ট ইনিশিয়ালাইজ, ফাইল স্ট্রাকচার, এবং কোড চালানোর ধাপ
+* (Vite) দিয়ে একটি প্রোজেক্ট ইনিশিয়ালাইজ, ফাইল/ফোল্ডার স্ট্রাকচার
 * JSX, Components, Props, State (useState) — ব্যাখ্যা ও উদাহরণসহ
 * Events, Lists & keys, Conditional rendering, Forms, useEffect (ডেটা ফেচিং)
 * Lifting state up, Context, Router, Custom hooks, পারফরম্যান্স টিপস
@@ -23,7 +23,7 @@ description: Learn React JS Bangla in this Course step by step tutorial and pdf
 
 ## সূচিপত্র
 
-1. পরিচিতি ও কী শিখবেন — লক্ষ্য
+1. পরিচিতি ও কী কী শিখবেন
 2. প্রয়োজনীয়তা (প্রি-রেকুইজিট) ও সেটআপ
 3. প্রথম React অ্যাপ — Vite ব্যবহার করে প্রজেক্ট তৈরি
 4. JSX — কী, কিভাবে ও প্র্যাকটিস
@@ -64,12 +64,16 @@ description: Learn React JS Bangla in this Course step by step tutorial and pdf
 1. Node.js ও npm (বা pnpm/yarn) ইন্সটল করুন
 2. কোড এডিটর: VS Code (ইনস্টল) 
 
+কম্পিউটারে পরিবেশ তৈরি জন্য বিস্তারিত পড়ুনঃ [এখানে](/learn-react-environment-set-up)
+
 ### প্রজেক্ট তৈরি (Vite)
+
+বর্তমান সময়ে vite দিয়ে React এপ্লিকেশন তৈরি খুব জনপ্রিয় হয়ে উঠেছে। কারণ- এটি খুব দ্রুত ডেভ সার্ভার চালু করে এবং কোড পরিবর্তনের সাথে সাথে তৎক্ষণাত আপডেট দেখায় (HMR), ফলে ডেভেলপমেন্ট অনেক দ্রুত হয়। এছাড়া Vite খুব কম কনফিগারেশনে কাজ করে, তাই নতুন প্রজেক্ট শুরু করাও সহজ। আধুনিক টুলিং (যেমন esbuild ও Rollup) ব্যবহার করার কারণে প্রোডাকশন বিল্ডও দ্রুত ও অপ্টিমাইজড হয়। Tailwind, TypeScriptসহ বিভিন্ন প্লাগইনও সহজে যুক্ত করা যায়। সব মিলিয়ে দ্রুততা, হালকা সেটআপ এবং ভালো ডেভেলপার অভিজ্ঞতার কারণে React প্রজেক্টে Vite এখন সবচেয়ে জনপ্রিয় পছন্দ।
 
 ```bash
 # নতুন প্রজেক্ট
-npm create vite@latest react-bangla -- --template react
-cd react-bangla
+npm create vite@latest loan-management -- --template react
+cd loan-management
 npm install
 npm run dev
 ```
@@ -80,22 +84,23 @@ npm run dev
 
 ## 3. আপনার প্রথম React অ্যাপ্লিকেশন: প্রোজেক্ট ফাইল ও ফোল্ডার স্ট্রাকচার
 
-বর্তমানে মানুষজন প্রোজেক্ট শুরু করে `Scaffolding` দিয়ে, এটা হলো-> আগে ফোল্ডার স্ট্রাকচার এবং প্রয়োজনীর কিছু প্যাকেজ, কম্পোনেন্টস দিয়ে তৈরি করা প্রোজেক্ট। যেটা ডেভেলপারদের কাজ অনেক সহজ করে, ডেভেলপার দ্রুত বুঝতে পারে-> এখন তার কিভাবে আগানো উচিত? সবকিছু মনে পড়ে যায়। কারণ- প্রত্যেকটা প্রোজেক্টের সিস্টেম তো একই। 
+বর্তমানে মানুষজন প্রোজেক্ট শুরু করে `Scaffolding` দিয়ে, এটা হলো-> আগে ফোল্ডার স্ট্রাকচার এবং প্রয়োজনীর কিছু প্যাকেজ, কম্পোনেন্টস দিয়ে তৈরি করা প্রোজেক্ট। যেটা ডেভেলপারদের কাজ অনেক সহজ করে, ডেভেলপার দ্রুত বুঝতে পারে-> এখন তার কিভাবে আগানো উচিত? সবকিছু মনে পড়ে যায়। কারণ- প্রত্যেকটা প্রোজেক্টের সিস্টেম তো একই হয়! 
 
 ```
-react-bangla/
+loan-management/
   ├─ index.html
   ├─ src/
   │   ├─ main.jsx
   │   ├─ App.jsx
   │   ├─ components/
-  │   │   ├─ Header.jsx
-  │   │   └─ Button.jsx
+  │   │   ├─ TotalLoan.jsx
+  │   │   ├─ Creditors.jsx
+  │   │   └─ Creditor.jsx
   │   └─ styles.css
   └─ package.json
 ```
 
-`main.jsx` থেকে `App` রেন্ডার করে: এখানে `ReactDOM.createRoot(...).render(<App />)` থাকবে।
+`main.jsx` থেকে `App` ফাইলকে রেন্ডার করে: এখানে `ReactDOM.createRoot(...).render(<App />)` থাকবে।
 
 ---
 
