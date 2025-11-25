@@ -118,6 +118,9 @@ export default defineConfig({
 loan-management/
   ├─ index.html
   ├─ src/
+  │   ├─ data/
+  │   │   └─ creditors.json      (or any data files you want)
+  │   │
   │   ├─ main.jsx
   │   ├─ App.jsx
   │   ├─ components/
@@ -126,6 +129,7 @@ loan-management/
   │   │   └─ Creditor.jsx
   │   └─ styles.css
   └─ package.json
+
 ```
 
 `main.jsx` থেকে `App` ফাইলকে রেন্ডার করে: এখানে `ReactDOM.createRoot(...).render(<App />)` থাকবে।
@@ -139,19 +143,36 @@ React অ্যাপের জন্য ছোট-medium প্রোজেক�
 **আমাদের প্রোজেক্টের জন্য ডাটা স্ট্রাকচার নিচের মতো করে নিতে পারি-**
 
 ```jsx
-// src/state.js
-export const initialState = {
-  creditors: [
-    { id: 1, name: "Rahim", loanAmount: 1000 },
-    { id: 2, name: "Karim", loanAmount: 2000 }
-  ]
-};
+export const creditors = [
+  {
+    id: 1,
+    name: "John Doe",
+    loanAmount: 15000,
+    interestRate: 0,
+    dueDate: "2024-12-31",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    loanAmount: 25000,
+    interestRate: 0,
+    dueDate: "2025-06-30",
+  },
+  {
+    id: 3,
+    name: "Acme Corp",
+    loanAmount: 10000,
+    interestRate: 0,
+    dueDate: "2025-12-31",
+  },
+];
+
 ```
 
 
-## 4. JSX — HTML-এর মত কিন্তু JS এর ভিতর
+## 4. JSX — দেখতে HTML-এর মত মনে হলেও কিন্তু JS এর ভিতর
 
-JSX হলো JavaScript এর ভিতরে HTML-এর মত সিনট্যাক্স। এখন আমরা একটি Welcome কম্পোনেন্ট বানাবো। 
+JSX হলো JavaScript এর ভিতরে HTML-এর মত সিনট্যাক্স। এখন আমরা একটি `TotalLoan` কম্পোনেন্টটি বানাবো। যেখানে `{totalAmout}` প্রোপস আকারে আসবে। প্রোপস কি, সেটা একটু পর বুঝিয়ে বলছি। 
 
 **মনে রাখার নিয়ম**
 
@@ -159,11 +180,14 @@ JSX হলো JavaScript এর ভিতরে HTML-এর মত সিনট�
 * একাধিক ট্যাগ হলে এক parent লাগবে (বা `<>...</>` fragment)।
 * JavaScript expression `{}` দিয়ে লিখতে হবে। 
 
+_**নিচের এই কোডটি কপি করুন এবং TotalLoan কম্পোনেন্টে পেস্ট করুন**_
+
 ```jsx
-function Welcome({ name }) {
+export default function TotalLoan({ totalLoan }) {
   return (
-    <div className="welcome">
-      <h1>স্বাগতম, {name}!</h1>
+    <div className="flex flex-col items-center justify-center p-4 shadow-md bg-white">
+      <h2 className="text-lg font-semibold mb-2">Total Loan Amount</h2>
+      <p className="text-xl font-bold">{totalLoan}</p>
     </div>
   );
 }
