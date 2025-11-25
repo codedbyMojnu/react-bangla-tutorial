@@ -197,17 +197,30 @@ export default function TotalLoan({ totalLoan }) {
 
 ## 5. React কম্পোনেন্ট কি— ছোট ছোট UI ব্লক 
 
-React-এ প্রতিটি UI অংশই একটা কম্পোনেন্ট। ফাংশনাল কম্পোনেন্ট সবচেয়ে জনপ্রিয়।
+React-এ প্রতিটি UI অংশই একটা করে কম্পোনেন্ট চিন্তা করতে পারি। ফাংশনাল কম্পোনেন্ট সবচেয়ে জনপ্রিয়। 
+
+**নিচের কোডটি App.jsx পেস্ট করুন।** এখানে আমরা যে কাজটি করেছি, তা হলো-- data/creditors থেকে `creditors data` import করেছি। এবং App কম্পোনেন্টের এর মধ্যে totalLoan ক্যালকুলেট করেছি।  
 
 ```jsx
-export default function Header() {
-  return <header><h1>React-Bangla</h1></header>;
+import TotalLoan from "./components/TotalLoan";
+import { creditors } from "./data/creditors";
+
+export default function App() {
+  const totalLoan = creditors.reduce(
+    (sum, creditor) => sum + creditor.loanAmount,
+    0
+  );
+
+  return (
+    <div className="max-w-md mx-auto bg-gray-200">
+      <TotalLoan totalLoan={totalLoan} />
+    </div>
+  );
 }
+
 ```
 
 কোম্পোনেন্ট রিইউজ করা সহজ — `<Header />` একাধিক ফাইলে ব্যবহার করুন।
-
-ঠিক আছে। ছোট করে ক্লাস কম্পোনেন্ট ব্যাখ্যা করলে এভাবে হবে:
 
 ---
 
