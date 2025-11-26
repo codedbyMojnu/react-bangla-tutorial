@@ -199,9 +199,10 @@ export default function TotalLoan({ totalLoan }) {
 
 React-এ প্রতিটি UI অংশই একটা করে কম্পোনেন্ট চিন্তা করতে পারি। ফাংশনাল কম্পোনেন্ট সবচেয়ে জনপ্রিয়। 
 
-**নিচের কোডটি App.jsx পেস্ট করুন।** এখানে আমরা যে কাজটি করেছি, তা হলো-- data/creditors থেকে `creditors data` import করেছি। এবং App কম্পোনেন্টের এর মধ্যে totalLoan ক্যালকুলেট করেছি।  
+**নিচের কোডটি App.jsx কম্পোনেন্ট এ পেস্ট করুন।** এখানে আমরা যে কাজটি করেছি, তা হলো-- data/creditors থেকে `creditors data` import করেছি। এবং App কম্পোনেন্টের এর মধ্যে totalLoan ক্যালকুলেট করেছি।  
 
 ```jsx
+import CreditorList from "./components/CreditorList";
 import TotalLoan from "./components/TotalLoan";
 import { creditors } from "./data/creditors";
 
@@ -212,19 +213,21 @@ export default function App() {
   );
 
   return (
-    <div className="max-w-md mx-auto bg-gray-200">
+    <div className="max-w-md mx-auto flex flex-col gap-4 p-4 min-h-screen">
       <TotalLoan totalLoan={totalLoan} />
+      <CreditorList creditors={creditors} />
     </div>
   );
 }
 
+
 ```
 
-কোম্পোনেন্ট রিইউজ করা সহজ — `<Header />` একাধিক ফাইলে ব্যবহার করুন।
+কোম্পোনেন্ট রিইউজ করা সহজ — যেমন ওয়েবসাইটের `<Header />`, `<Footer />`  কম্পোনেন্ট একাধিক ফাইলে ব্যবহার করুন।
 
 ---
 
-### React ক্লাস কম্পোনেন্ট
+### React ক্লাস কম্পোনেন্ট (এখনকার সময় খুব কম ব্যবহার হয়) 
 
 React-এ কম্পোনেন্ট দুইভাবে বানানো যায়: **ফাংশনাল** আর **ক্লাস**। ক্লাস কম্পোনেন্ট পুরনো স্টাইল, কিন্তু এখনও কাজ করে।
 
@@ -258,14 +261,33 @@ export default class Header extends Component {
 
 Props হলো কম্পোনেন্টে বাইরের ডাটা পাঠানোর উপায়।
 
-```jsx
-function Greeting({ name }) {
-  return <p>হ্যালো, {name}!</p>;
-}
+১। **CreditorList.jsx ফাইল ক্রিয়েট করুন। নিচের কোডটি পেস্ট করুন।** 
 
-// ব্যবহার
-<Greeting name="Mojnu" />
+```jsx
+export default function CreditorList({ creditors }) {
+  return (
+    <div>
+      <h2 className="text-lg font-semibold mb-2">Creditor List</h2>
+      {creditors.map((creditor) => (
+        <Creditor key={creditor.id} creditor={creditor} />
+      ))}
+    </div>
+  );
+}
 ```
+২। **Creditor.jsx ফাইল ক্রিয়েট করুন। নিচের কোডটি পেস্ট করুন।** 
+
+```jsx
+export default function Creditor({ creditor }) {
+  return (
+    <div className="p-2 mb-2 border rounded bg-white">
+      <h3 className="text-md font-medium">{creditor.name}</h3>
+      <p>Loan Amount: {creditor.loanAmount}</p>
+    </div>
+  );
+}
+```
+
 
 ---
 
