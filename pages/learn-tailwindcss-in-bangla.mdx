@@ -1,0 +1,36 @@
+## TailwindCSS দিয়ে একটি Modal Card 
+
+| Purpose            | Classes                                |
+| ------------------ | -------------------------------------- |
+| Overlay background | `fixed inset-0 bg-black bg-opacity-50` |
+| Center modal       | `flex items-center justify-center`     |
+| Modal box          | `bg-white p-6 rounded-lg shadow-lg`    |
+| Buttons            | Tailwind spacing + hover colors        | 
+
+
+```jsx
+export default function Modal({ open, onClose }) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+        <h2 className="text-xl font-semibold mb-4">Modal Title</h2>
+        <p className="text-gray-600 mb-4">This is a simple modal content.</p>
+
+        <div className="flex justify-end gap-2">
+          <button 
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Close
+          </button>
+          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
