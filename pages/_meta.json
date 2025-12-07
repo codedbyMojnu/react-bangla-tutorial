@@ -3,18 +3,15 @@
   "learn-react-quick-start-guide": "2️⃣ Quick Start",
   "thinking-in-react": "3️⃣ Thinking in React",
   "learn-react-environment-set-up": "4️⃣ Environment Set Up & Productivity Tips",
-
   "learn-react-describing-the-ui": "📂 Describing the UI",
   "learn-react-adding-interactivity": "📂 Adding Interactivity",
   "learn-react-managing-state": "📂 Managing State",
   "learn-react-escape-hatches": "📂 Escape Hatches",
-
   "react-suspense": "📄 React Suspense",
   "react-lazy-loading": "📄 Lazy Loading",
   "react-design-patterns": "📂 React Design Patterns",
   "redux-toolkit-and-rtk-query-01": "📄 Redux Toolkit Tutorial 01",
   "redux-toolkit-and-rtk-query-02": "📄 Redux Toolkit Tutorial 02",
-
   "learn-next-js": "📂 Learn Next.js",
   "react-router-tutorial": "📂 React Router",
   "react-hook-form-guide": "📂 React Hook Form",
@@ -22,14 +19,12 @@
   "react-query-data-fetching": "📂 React Query",
   "framer-motion-animation": "📄 Framer Motion (Animation)",
   "laravel-official": "📂 Laravel Official Documentation (Bangla)",
-
-  "developer-career-advice": "📂 Developer Career Advice",
+  "linkedin-postlist": "📂 Developer Career Advice",
   "javascript-fundamentals": "📂 JavaScript Fundamentals",
   "reusability-features": "📂 Reusable Features",
   "my-products": "📂 My Products",
   "some-random-projects": "📂 Some Random Project",
   "jobs-update": "📄 Jobs Update",
-
   "my-story": {
     "title": "My Story",
     "type": "page"
