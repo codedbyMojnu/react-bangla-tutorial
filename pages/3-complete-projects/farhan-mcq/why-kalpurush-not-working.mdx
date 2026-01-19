@@ -1,0 +1,24 @@
+I’ll quickly check your global CSS/Tailwind setup and then wire the loaded Kalpurush font to an actual font-family so it shows up on the page.
+
+Edited
+layout.tsx+3-1
+Edited
+globals.css+5-0
+npm run build
+Kalpurush was loading, but it wasn’t being applied.
+
+In your layout, you only used kalpurush.variable, which sets the CSS variable --font-kalpurush but does not change font-family by itself.
+In your page, font-kalpurush-400 isn’t a built-in Tailwind class, so it did nothing.
+Fix applied:
+
+Updated layout.tsx to include kalpurush.className (this actually sets font-family for the whole app).
+Added a real .font-kalpurush-400 class in globals.css that uses var(--font-kalpurush).
+Now your
+
+```html
+<h1 className="font-kalpurush-400">...</h1>
+```
+
+should render with Kalpurush. If you prefer, you can also delete that class and just rely on the default font from the layout.
+
+Want me to add a proper Tailwind fontFamily utility (e.g. font-kalpurush) via Tailwind v4 theme config too?

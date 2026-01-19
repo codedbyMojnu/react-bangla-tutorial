@@ -5,20 +5,21 @@ description: Learn React JS Bangla in this Course step by step tutorial and pdf
 
 > React শেখার শুরু: আশা রাখছি-> এই লেখায় আপনার React এর ৮০% কনসেপ্ট ক্লিয়ার হয়ে যাবে!
 
-এই লেখাটি যদি আপনি মন দিয়ে পড়েন আর বুঝে প্রাকটিস করেন, আমি আশা করি, _**React-এর জরুরি ধারণাগুলো আপনার ব্রেনে ঢুকে যাবে**_, যা আপনার প্রতিদিনের কোডিং এ কাজে লাগবে। 
+এই লেখাটি যদি আপনি মন দিয়ে পড়েন আর বুঝে প্রাকটিস করেন, আমি আশা করি, _**React-এর জরুরি ধারণাগুলো আপনার ব্রেনে ঢুকে যাবে**_, যা আপনার প্রতিদিনের কোডিং এ কাজে লাগবে।
 
 <AudioPlayer
   src="/audios/learn-react-quick-start-guide.wav"
   title="React Quick Start Guide"
-/> 
+/>
 
 এই লেখাতে কি কি পাবেন:
 
-* (Vite) দিয়ে একটি প্রোজেক্ট ইনিশিয়ালাইজ, ফাইল/ফোল্ডার স্ট্রাকচার
-* JSX, Components, Props, State (useState) — ব্যাখ্যা ও উদাহরণসহ
-* Events, Lists & keys, Conditional rendering, Forms, useEffect (ডেটা ফেচিং)
-* Lifting state up, Context, Router, Custom hooks, পারফরম্যান্স টিপস
-* ডেপ্লয়মেন্ট, প্রজেক্ট-বেসড এক্সারসাইজ ও শেখার রোডম্যাপ  
+- (Vite) দিয়ে একটি প্রোজেক্ট ইনিশিয়ালাইজ, ফাইল/ফোল্ডার স্ট্রাকচার
+- JSX, Components, Props, State (useState) — ব্যাখ্যা ও উদাহরণসহ
+- Events, Lists & keys, Conditional rendering, Forms, useEffect (ডেটা ফেচিং)
+- Lifting state up, Context, Router, Custom hooks, পারফরম্যান্স টিপস
+- ডেপ্লয়মেন্ট, প্রজেক্ট-বেসড এক্সারসাইজ ও শেখার রোডম্যাপ
+
 ---
 
 ## সূচিপত্র
@@ -56,13 +57,13 @@ description: Learn React JS Bangla in this Course step by step tutorial and pdf
 
 ### প্রি-রেকুইজিট
 
-* HTML, CSS (মৌলিক ধারণা)
-* আধুনিক JavaScript (ES6+) — `let/const`, arrow functions, template strings, destructuring, modules
+- HTML, CSS (মৌলিক ধারণা)
+- আধুনিক JavaScript (ES6+) — `let/const`, arrow functions, template strings, destructuring, modules
 
 ### কম্পিউটার সেটআপ
 
 1. Node.js ও npm (বা pnpm/yarn) ইন্সটল করুন
-2. কোড এডিটর: VS Code (ইনস্টল) 
+2. কোড এডিটর: VS Code (ইনস্টল)
 
 কম্পিউটারে পরিবেশ তৈরি জন্য বিস্তারিত পড়ুনঃ [এখানে](/learn-react-environment-set-up)
 
@@ -80,15 +81,16 @@ npm run dev
 
 > Vite দ্রুত, হট-রিলোড আছে — তাই Vite দিয়ে রিয়েক্ট প্রোজেক্ট শুরু করা ভালো।
 
-#### Tailwindcss সেটআপ করে নিন। 
+#### Tailwindcss সেটআপ করে নিন।
 
-বর্তমান স্টাইলিং এর জন্য রেডিমেট ক্লাস ব্যবহার করি। Tailwind CSS আমাদের রেডিমেট ইউটিলিটি ক্লাস দেয়। 
+বর্তমান স্টাইলিং এর জন্য রেডিমেট ক্লাস ব্যবহার করি। Tailwind CSS আমাদের রেডিমেট ইউটিলিটি ক্লাস দেয়।
 
 ##### 1. install tailwindcss
 
 ```bash
 npm install tailwindcss @tailwindcss/vite
 ```
+
 ##### 2. **vite.config.js ফাইল এ গিয়ে নিচের কোডটা পেস্ট করুন**
 
 ```js
@@ -112,7 +114,7 @@ export default defineConfig({
 
 ## 3. আপনার প্রথম React অ্যাপ্লিকেশন: প্রোজেক্ট ফাইল ও ফোল্ডার স্ট্রাকচার
 
-বর্তমানে মানুষজন প্রোজেক্ট শুরু করে `Scaffolding` দিয়ে, এটা হলো-> আগে ফোল্ডার স্ট্রাকচার এবং প্রয়োজনীর কিছু প্যাকেজ, কম্পোনেন্টস দিয়ে তৈরি করা প্রোজেক্ট। যেটা ডেভেলপারদের কাজ অনেক সহজ করে, ডেভেলপার দ্রুত বুঝতে পারে-> এখন তার কিভাবে আগানো উচিত? তখন একনজর দেখলে সবকিছু মনে পড়ে যায়। কারণ- প্রত্যেকটা প্রোজেক্টের সিস্টেম তো একই হয়! 
+বর্তমানে মানুষজন প্রোজেক্ট শুরু করে `Scaffolding` দিয়ে, এটা হলো-> আগে ফোল্ডার স্ট্রাকচার এবং প্রয়োজনীর কিছু প্যাকেজ, কম্পোনেন্টস দিয়ে তৈরি করা প্রোজেক্ট। যেটা ডেভেলপারদের কাজ অনেক সহজ করে, ডেভেলপার দ্রুত বুঝতে পারে-> এখন তার কিভাবে আগানো উচিত? তখন একনজর দেখলে সবকিছু মনে পড়ে যায়। কারণ- প্রত্যেকটা প্রোজেক্টের সিস্টেম তো একই হয়!
 
 ```
 loan-management/
@@ -136,9 +138,9 @@ loan-management/
 
 ---
 
-### প্রোজেক্ট শুরুর আগে ফাস্ট আমাদের ডাটা স্ট্রাকচার নিয়ে ভাবতে হবে। 
+### প্রোজেক্ট শুরুর আগে ফাস্ট আমাদের ডাটা স্ট্রাকচার নিয়ে ভাবতে হবে।
 
-React অ্যাপের জন্য ছোট-medium প্রোজেক্টে Single Source of Truth ব্যবহার করা ভালো। অর্থাৎ সব সম্পর্কিত ডাটা (যেমন creditors, loans) এক জায়গায় centralized রাখা। এতে ডাটা consistent থাকে, update সহজ হয় এবং bug কম থাকে। ছোট component গুলো props বা context থেকে ডাটা নেবে। বড় বা কমপ্লেক্স অ্যাপে আলাদা slices বা state management library ব্যবহার করা যায়, কিন্তু শুরুতে centralized structure সবচেয়ে সিম্পল ও কার্যকর। 
+React অ্যাপের জন্য ছোট-medium প্রোজেক্টে Single Source of Truth ব্যবহার করা ভালো। অর্থাৎ সব সম্পর্কিত ডাটা (যেমন creditors, loans) এক জায়গায় centralized রাখা। এতে ডাটা consistent থাকে, update সহজ হয় এবং bug কম থাকে। ছোট component গুলো props বা context থেকে ডাটা নেবে। বড় বা কমপ্লেক্স অ্যাপে আলাদা slices বা state management library ব্যবহার করা যায়, কিন্তু শুরুতে centralized structure সবচেয়ে সিম্পল ও কার্যকর।
 
 **আমাদের প্রোজেক্টের জন্য ডাটা স্ট্রাকচার নিচের মতো করে নিতে পারি-**
 
@@ -166,19 +168,17 @@ export const creditors = [
     dueDate: "2025-12-31",
   },
 ];
-
 ```
-
 
 ## 4. JSX — দেখতে HTML-এর মত মনে হলেও কিন্তু JS এর ভিতর
 
-JSX হলো JavaScript এর ভিতরে HTML-এর মত সিনট্যাক্স। এখন আমরা একটি `TotalLoan` কম্পোনেন্টটি বানাবো। যেখানে `{totalAmout}` প্রোপস আকারে আসবে। প্রোপস কি, সেটা একটু পর বুঝিয়ে বলছি। 
+JSX হলো JavaScript এর ভিতরে HTML-এর মত সিনট্যাক্স। এখন আমরা একটি `TotalLoan` কম্পোনেন্টটি বানাবো। যেখানে `{totalAmout}` প্রোপস আকারে আসবে। প্রোপস কি, সেটা একটু পর বুঝিয়ে বলছি।
 
 **মনে রাখার নিয়ম**
 
-* JSX-এ attribute `className` ব্যবহার করতে হবে।
-* একাধিক ট্যাগ হলে এক parent লাগবে (বা `<>...</>` fragment)।
-* JavaScript expression `{}` দিয়ে লিখতে হবে। 
+- JSX-এ attribute `className` ব্যবহার করতে হবে।
+- একাধিক ট্যাগ হলে এক parent লাগবে (বা `<>...</>` fragment)।
+- JavaScript expression `{}` দিয়ে লিখতে হবে।
 
 _**নিচের এই কোডটি কপি করুন এবং TotalLoan কম্পোনেন্টে পেস্ট করুন**_
 
@@ -195,11 +195,11 @@ export default function TotalLoan({ totalLoan }) {
 
 ---
 
-## 5. React কম্পোনেন্ট কি— ছোট ছোট UI ব্লক 
+## 5. React কম্পোনেন্ট কি— ছোট ছোট UI ব্লক
 
-React-এ প্রতিটি UI অংশই একটা করে কম্পোনেন্ট চিন্তা করতে পারি। ফাংশনাল কম্পোনেন্ট সবচেয়ে জনপ্রিয়। 
+React-এ প্রতিটি UI অংশই একটা করে কম্পোনেন্ট চিন্তা করতে পারি। ফাংশনাল কম্পোনেন্ট সবচেয়ে জনপ্রিয়।
 
-**নিচের কোডটি App.jsx কম্পোনেন্ট এ পেস্ট করুন।** এখানে আমরা যে কাজটি করেছি, তা হলো-- data/creditors থেকে `creditors data` import করেছি। এবং App কম্পোনেন্টের এর মধ্যে totalLoan ক্যালকুলেট করেছি।  
+**নিচের কোডটি App.jsx কম্পোনেন্ট এ পেস্ট করুন।** এখানে আমরা যে কাজটি করেছি, তা হলো-- data/creditors থেকে `creditors data` import করেছি। এবং App কম্পোনেন্টের এর মধ্যে totalLoan ক্যালকুলেট করেছি।
 
 ```jsx
 import CreditorList from "./components/CreditorList";
@@ -209,7 +209,7 @@ import { creditors } from "./data/creditors";
 export default function App() {
   const totalLoan = creditors.reduce(
     (sum, creditor) => sum + creditor.loanAmount,
-    0
+    0,
   );
 
   return (
@@ -219,15 +219,13 @@ export default function App() {
     </div>
   );
 }
-
-
 ```
 
-কোম্পোনেন্ট রিইউজ করা সহজ — যেমন ওয়েবসাইটের `<Header />`, `<Footer />`  কম্পোনেন্ট একাধিক ফাইলে ব্যবহার করুন।
+কোম্পোনেন্ট রিইউজ করা সহজ — যেমন ওয়েবসাইটের `<Header />`, `<Footer />` কম্পোনেন্ট একাধিক ফাইলে ব্যবহার করুন।
 
 ---
 
-### React ক্লাস কম্পোনেন্ট (এখনকার সময় খুব কম ব্যবহার হয়) 
+### React ক্লাস কম্পোনেন্ট (এখনকার সময় খুব কম ব্যবহার হয়)
 
 React-এ কম্পোনেন্ট দুইভাবে বানানো যায়: **ফাংশনাল** আর **ক্লাস**। ক্লাস কম্পোনেন্ট পুরনো স্টাইল, কিন্তু এখনও কাজ করে।
 
@@ -238,7 +236,11 @@ import React, { Component } from "react";
 
 export default class Header extends Component {
   render() {
-    return <header><h1>React-Bangla</h1></header>;
+    return (
+      <header>
+        <h1>React-Bangla</h1>
+      </header>
+    );
   }
 }
 ```
@@ -251,9 +253,8 @@ export default class Header extends Component {
 
 **সংক্ষেপে:**
 
-* ক্লাস কম্পোনেন্ট হলো **পুরনো স্টাইলের React কম্পোনেন্ট**, যেটাতে `render()` মেথড থাকে।
-* ফাংশনাল কম্পোনেন্টের মতো একাধিক বার রিইউজ করা যায়।
-
+- ক্লাস কম্পোনেন্ট হলো **পুরনো স্টাইলের React কম্পোনেন্ট**, যেটাতে `render()` মেথড থাকে।
+- ফাংশনাল কম্পোনেন্টের মতো একাধিক বার রিইউজ করা যায়।
 
 ---
 
@@ -261,7 +262,7 @@ export default class Header extends Component {
 
 Props হলো কম্পোনেন্টে বাইরের ডাটা পাঠানোর উপায়।
 
-১। **CreditorList.jsx ফাইল ক্রিয়েট করুন। নিচের কোডটি পেস্ট করুন।** 
+১। **CreditorList.jsx ফাইল ক্রিয়েট করুন। নিচের কোডটি পেস্ট করুন।**
 
 ```jsx
 export default function CreditorList({ creditors }) {
@@ -275,7 +276,8 @@ export default function CreditorList({ creditors }) {
   );
 }
 ```
-২। **Creditor.jsx ফাইল ক্রিয়েট করুন। নিচের কোডটি পেস্ট করুন।** 
+
+২। **Creditor.jsx ফাইল ক্রিয়েট করুন। নিচের কোডটি পেস্ট করুন।**
 
 ```jsx
 export default function Creditor({ creditor }) {
@@ -288,7 +290,6 @@ export default function Creditor({ creditor }) {
 }
 ```
 
-
 ---
 
 ## 7. State ও useState — UI কে জীবন্ত করা
@@ -296,7 +297,7 @@ export default function Creditor({ creditor }) {
 State হলো লোকাল ডাটা যা কম্পোনেন্ট লাইফটাইম ধরে রাখে।
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function Counter() {
   const [count, setCount] = useState(0);
@@ -311,8 +312,8 @@ function Counter() {
 
 কিছু টিপস:
 
-* `setCount` asynchronous হতে পারে — যদি নতুন মান পুরোনোর ওপর নির্ভর করে, `setCount(c => c + 1)` ব্যবহার করুন।
-* প্রতিটি কম্পোনেন্টের state আলাদা।
+- `setCount` asynchronous হতে পারে — যদি নতুন মান পুরোনোর ওপর নির্ভর করে, `setCount(c => c + 1)` ব্যবহার করুন।
+- প্রতিটি কম্পোনেন্টের state আলাদা।
 
 ---
 
@@ -322,7 +323,9 @@ function Counter() {
 
 ```jsx
 function MyButton() {
-  function handleClick() { alert('আপনি ক্লিক করেছেন!'); }
+  function handleClick() {
+    alert("আপনি ক্লিক করেছেন!");
+  }
   return <button onClick={handleClick}>ক্লিক করো</button>;
 }
 ```
@@ -336,8 +339,17 @@ function MyButton() {
 **List render**
 
 ```jsx
-const items = [{id:1, text:'A'}, {id:2, text:'B'}];
-return <ul>{items.map(i => <li key={i.id}>{i.text}</li>)}</ul>;
+const items = [
+  { id: 1, text: "A" },
+  { id: 2, text: "B" },
+];
+return (
+  <ul>
+    {items.map((i) => (
+      <li key={i.id}>{i.text}</li>
+    ))}
+  </ul>
+);
 ```
 
 Key দিন যাতে React প্রতিটি আইটেম ট্র্যাক করতে পারে।
@@ -360,10 +372,15 @@ Controlled component প্যাটার্ন:
 
 ```jsx
 function NameForm() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   return (
-    <form onSubmit={(e)=>{e.preventDefault(); alert(name);}}>
-      <input value={name} onChange={e => setName(e.target.value)} />
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(name);
+      }}
+    >
+      <input value={name} onChange={(e) => setName(e.target.value)} />
       <button type="submit">সাবমিট</button>
     </form>
   );
@@ -377,17 +394,23 @@ function NameForm() {
 `useEffect` ব্যবহার করে API কল বা সাবস্ক্রিপশন করা হয়।
 
 ```jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 function Users() {
   const [users, setUsers] = useState([]);
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(r => r.json())
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((r) => r.json())
       .then(setUsers);
   }, []); // খালি ডিপেন্ডেন্সি → মাউন্টের সময় একবার
 
-  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+  return (
+    <ul>
+      {users.map((u) => (
+        <li key={u.id}>{u.name}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -412,14 +435,14 @@ function Users() {
 React Router দিয়ে মাল্টিপেজ UI বানান। সংক্ষিপ্ত উদাহরণ:
 
 ```jsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 <BrowserRouter>
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/about" element={<About />} />
   </Routes>
-</BrowserRouter>
+</BrowserRouter>;
 ```
 
 ---
@@ -429,11 +452,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 যদি অনেক কম্পোনেন্টে একই লজিক লাগে, কাস্টম হুক বানান:
 
 ```jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useFetch(url) {
   const [data, setData] = useState(null);
-  useEffect(() => { fetch(url).then(r=>r.json()).then(setData); }, [url]);
+  useEffect(() => {
+    fetch(url)
+      .then((r) => r.json())
+      .then(setData);
+  }, [url]);
   return data;
 }
 ```
@@ -442,16 +469,16 @@ export function useFetch(url) {
 
 ## 16. পারফরম্যান্স টিপস
 
-* বড় লিস্টে virtualization ব্যবহার করুন (`react-window`)।
-* `React.memo` দিয়ে প্রপস না বদলালে রিরেন্ডার রোধ করুন।
-* `useCallback` ও `useMemo` ব্যবহার করে ফাংশন/ভ্যালুকেও ক্যাশ করুন — কিন্তু অপ্রয়োজনীয় হলে ব্যবহার করবেন না।
+- বড় লিস্টে virtualization ব্যবহার করুন (`react-window`)।
+- `React.memo` দিয়ে প্রপস না বদলালে রিরেন্ডার রোধ করুন।
+- `useCallback` ও `useMemo` ব্যবহার করে ফাংশন/ভ্যালুকেও ক্যাশ করুন — কিন্তু অপ্রয়োজনীয় হলে ব্যবহার করবেন না।
 
 ---
 
 ## 17. টেস্টিং ও ডিবাগিং (সংক্ষেপে)
 
-* ইউনিট টেস্ট: Jest + React Testing Library
-* ব্রাউজার DevTools + React DevTools দিয়ে কম্পোনেন্ট ট্রি দেখা যায়।
+- ইউনিট টেস্ট: Jest + React Testing Library
+- ব্রাউজার DevTools + React DevTools দিয়ে কম্পোনেন্ট ট্রি দেখা যায়।
 
 ---
 
@@ -475,12 +502,10 @@ export function useFetch(url) {
 
 ---
 
-
 ব্যস\! আপনি কিন্তু React-এর সবচেয়ে দরকারি বিষয়গুলো শিখে ফেলেছেন। এগুলোই মূল ভিত্তি।
 
 এবার শুধু পড়লে হবে না, নিজে হাতে কোড করতে হবে। আমার পরামর্শ হলো, আপনি **[React-এর অফিশিয়াল টিক-ট্যাক-টো টিউটোরিয়ালটা](https://react.dev/learn/tutorial-tic-tac-toe)** করে ফেলুন। দেখবেন, এই সবকিছু ব্যবহার করে একটা গেম বানালে আপনার আত্মবিশ্বাস অনেক বেড়ে যাবে\!
 
-<hr />
 <Donate />
 <hr />
 <GiscusComments

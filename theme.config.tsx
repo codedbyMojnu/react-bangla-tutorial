@@ -32,7 +32,7 @@ const config: DocsThemeConfig = {
     link: "https://github.com/codebymojnu/react-bangla-tutorial",
   },
   chat: {
-    link: "https://discord.gg/8ZpFFu5d",
+    link: "https://discord.gg/k3Ut7nvXWE",
   },
   docsRepositoryBase:
     "https://github.com/codedbyMojnu/react-bangla-tutorial/blob/main",
