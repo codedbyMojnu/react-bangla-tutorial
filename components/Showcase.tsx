@@ -26,18 +26,6 @@ const projects: Project[] = [
     category: "Education",
     featured: true,
   },
-  {
-    id: 3,
-    title: "Weather Dashboard",
-    description:
-      "একটি রেসপন্সিভ আবহাওয়া অ্যাপ যেখানে OpenWeather API ব্যবহার করে বর্তমান আবহাওয়া ও ৫ দিনের পূর্বাভাস দেখানো হয়।",
-    technologies: ["React", "OpenWeather API", "CSS Modules"],
-    imageUrl: "/images/projects/weather-dashboard.png",
-    liveUrl: "https://weather-dashboard-demo.vercel.app",
-    sourceCodeUrl: "https://github.com/codedbymojnu/weather-dashboard",
-    category: "Frontend",
-    featured: true,
-  },
 ];
 
 const Showcase: React.FC = () => {
