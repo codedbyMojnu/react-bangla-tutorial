@@ -22,10 +22,12 @@
   "linkedin-postlist": "📂 Developer Career Advice",
   "javascript-fundamentals": "📂 JavaScript Fundamentals",
   "reusability-features": "📂 Reusable Features",
-  "my-products": "📂 My Products",
+  "jobs-update": "📂 Frontend Developer Job Circulars",
   "3-complete-projects": "📂 3 Complete Projects",
   "100-react-components-used-in-day-to-day-life": "📄 100 React Components Used in Day to Day Life",
   "100-react-interview-questions": "📄 100 React Interview Questions and Answers",
+  "css-tutorial": "📂 CSS Tutorial",
+  "PHP-OOP-Bangla": "📂 PHP OOP Bangla",
   "my-story": {
     "title": "My Story",
     "type": "page"

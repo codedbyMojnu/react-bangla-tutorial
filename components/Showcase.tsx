@@ -27,18 +27,6 @@ const projects: Project[] = [
     featured: true,
   },
   {
-    id: 2,
-    title: "Quiz Platform",
-    description:
-      "একটি ফুল-স্ট্যাক কুইজ অ্যাপ, যেখানে রয়েছে অথেন্টিকেশন, কুইজ ম্যানেজমেন্ট, লিডারবোর্ড এবং অ্যাডমিন ড্যাশবোর্ড।",
-    technologies: ["React", "Next.js", "Tailwind CSS", "JWT", "REST API"],
-    imageUrl: "/images/projects/quiz-platform.png",
-    liveUrl: "https://quiz-platform-demo.vercel.app",
-    sourceCodeUrl: "https://github.com/yourusername/quiz-platform",
-    category: "Full Stack",
-    featured: true,
-  },
-  {
     id: 3,
     title: "Weather Dashboard",
     description:
@@ -46,7 +34,7 @@ const projects: Project[] = [
     technologies: ["React", "OpenWeather API", "CSS Modules"],
     imageUrl: "/images/projects/weather-dashboard.png",
     liveUrl: "https://weather-dashboard-demo.vercel.app",
-    sourceCodeUrl: "https://github.com/yourusername/weather-dashboard",
+    sourceCodeUrl: "https://github.com/codedbymojnu/weather-dashboard",
     category: "Frontend",
     featured: true,
   },
