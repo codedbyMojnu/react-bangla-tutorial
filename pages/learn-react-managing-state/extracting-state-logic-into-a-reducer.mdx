@@ -1,225 +1,222 @@
-Of course! Let's break it down **step-by-step** with a **real-life example** —  
-Suppose we are building a **simple Todo app** where you can **add** and **toggle** tasks.
+---
+title: "স্টেট লজিককে একটি Reducer-এ আলাদা করা (Extracting State Logic into a Reducer)"
+description: "React-এ কম্প্লেক্স স্টেট লজিক ম্যানেজ করার জন্য useState এর পরিবর্তে useReducer এর ব্যবহার এবং স্টেট লজিককে রিডিউসারে এক্সট্রাক্ট করার বিস্তারিত বাংলা গাইড।"
+---
+
+# স্টেট লজিককে একটি Reducer-এ আলাদা করা
+
+যেসব কম্পোনেন্টে অনেকগুলো স্টেট আপডেট বিভিন্ন ইভেন্ট হ্যান্ডলারের মধ্যে ছড়িয়ে থাকে, সেগুলো সময়ের সাথে সাথে পড়া এবং মেইনটেইন করা বেশ কঠিন হয়ে পড়তে পারে। এই ধরনের ক্ষেত্রে, আপনি আপনার কম্পোনেন্টের বাইরের একটি একক ফাংশনে সমস্ত স্টেট আপডেটের লজিকগুলো একত্রিত করতে পারেন। এই ফাংশনটিকে **reducer** বলা হয়।
+
+## এই চ্যাপ্টার থেকে আপনি যা শিখবেন
+- রিডিউসার (reducer) ফাংশন কী এবং এটি কীভাবে কাজ করে?
+- `useState` কে রিফ্যাক্টর করে কীভাবে `useReducer`-এ রূপান্তর করতে হয়।
+- কখন `useState` এর পরিবর্তে রিডিউসার ব্যবহার করা উচিত।
+- রিডিউসার ভালোভাবে লেখার কিছু স্ট্যান্ডার্ড নিয়ম।
 
 ---
 
-# Step 1: Create a Reducer
+## একটি Reducer-এর সাহায্যে স্টেট লজিক একত্রিত করা
 
-The reducer will manage the **tasks state**.
+ধরা যাক, আপনার একটি টাস্ক লিস্ট (Task list) আছে যেখানে আপনি নতুন টাস্ক যোগ (Add), এডিট (Edit), এবং ডিলিট (Delete) করতে পারেন।
+
+সাধারণত `useState` ব্যবহার করলে কোডটি দেখতে এরকম হতে পারে:
 
 ```jsx
-// tasksReducer.js
-export function tasksReducer(tasks, action) {
-  switch (action.type) {
-    case "added": {
-      return [...tasks, { id: action.id, text: action.text, done: false }];
-    }
-    case "toggled": {
-      return tasks.map((task) =>
-        task.id === action.id ? { ...task, done: !task.done } : task
-      );
-    }
-    default: {
-      throw new Error("Unknown action: " + action.type);
-    }
+import { useState } from 'react';
+
+export default function TaskApp() {
+  const [tasks, setTasks] = useState(initialTasks);
+
+  function handleAddTask(text) {
+    setTasks([
+      ...tasks,
+      {
+        id: nextId++,
+        text: text,
+        done: false,
+      },
+    ]);
   }
-}
-```
 
-✅ Here `tasksReducer` takes the **current tasks** and an **action** and returns the **new tasks list**.
+  function handleChangeTask(task) {
+    setTasks(
+      tasks.map((t) => {
+        if (t.id === task.id) {
+          return task;
+        } else {
+          return t;
+        }
+      })
+    );
+  }
 
----
-
-# Step 2: Create Two Contexts (for state and dispatch)
-
-```jsx
-// TasksContext.js
-import { createContext, useContext, useReducer } from "react";
-import { tasksReducer } from "./tasksReducer";
-
-// 1. Create contexts
-const TasksContext = createContext(null);
-const TasksDispatchContext = createContext(null);
-
-// 2. Create a provider component
-export function TasksProvider({ children }) {
-  const [tasks, dispatch] = useReducer(tasksReducer, []);
+  function handleDeleteTask(taskId) {
+    setTasks(tasks.filter((t) => t.id !== taskId));
+  }
 
   return (
-    <TasksContext.Provider value={tasks}>
-      <TasksDispatchContext.Provider value={dispatch}>
-        {children}
-      </TasksDispatchContext.Provider>
-    </TasksContext.Provider>
-  );
-}
-
-// 3. Create custom hooks
-export function useTasks() {
-  return useContext(TasksContext);
-}
-
-export function useTasksDispatch() {
-  return useContext(TasksDispatchContext);
-}
-```
-
-✅ `TasksProvider` wraps children and gives them **tasks** and **dispatch**.  
-✅ `useTasks()` lets you **read tasks**.  
-✅ `useTasksDispatch()` lets you **dispatch actions**.
-
----
-
-# Step 3: Use the Provider at a Higher Level
-
-```jsx
-// App.js
-import { TasksProvider } from "./TasksContext";
-import TaskList from "./TaskList";
-import AddTask from "./AddTask";
-
-export default function App() {
-  return (
-    <TasksProvider>
-      <h1>Todo App</h1>
-      <AddTask />
-      <TaskList />
-    </TasksProvider>
+    // ... UI Components
   );
 }
 ```
 
-✅ Here the whole app is **inside TasksProvider**, so any child component can use tasks state and dispatch.
+এখানে প্রতিটি ইভেন্ট হ্যান্ডলার স্টেট আপডেট করার জন্য `setTasks` কল করছে। যখন আপনার কম্পোনেন্ট বড় হতে থাকে এবং লজিক আরও জটিল হয়, তখন এই স্টেট লজিকগুলো ট্র্যাক করা কষ্টকর হয়ে যায়।
 
----
+কম্প্লেক্সিটি কমানোর জন্য, আমরা এই সমস্ত স্টেট লজিকগুলোকে কম্পোনেন্টের বাইরে একটি **reducer** ফাংশনে নিয়ে যেতে পারি। `useState` থেকে `useReducer`-এ যাওয়ার জন্য মাত্র **৩টি ধাপ** অনুসরণ করতে হবে:
 
-# Step 4: Use `useTasks` and `useTasksDispatch` in Components
+### ধাপ ১: স্টেট সেট করা থেকে অ্যাকশন ডিসপ্যাচ (Dispatch) করায় পরিবর্তন
 
-### AddTask.js
+`setTasks` এর মাধ্যমে সরাসরি স্টেট আপডেট করার বদলে, আপনি একটি "অ্যাকশন" (Action) ডিসপ্যাচ (dispatch) করবেন। 
+অ্যাকশন হলো একটি সাধারণ জাভাস্ক্রিপ্ট অবজেক্ট যা বর্ণনা করে ব্যবহারকারী "কী করেছে"।
 
 ```jsx
-import { useTasksDispatch } from "./TasksContext";
-import { useState } from "react";
-
-export default function AddTask() {
-  const [text, setText] = useState("");
-  const dispatch = useTasksDispatch();
-
-  function handleAddTask() {
+  function handleAddTask(text) {
+    // setTasks(...) এর পরিবর্তে আমরা dispatch কল করবো
     dispatch({
-      type: "added",
-      id: Date.now(),
+      type: 'added',
+      id: nextId++,
       text: text,
     });
-    setText("");
   }
 
-  return (
-    <>
-      <input
-        placeholder="Add task"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
-      <button onClick={handleAddTask}>Add</button>
-    </>
-  );
-}
+  function handleChangeTask(task) {
+    dispatch({
+      type: 'changed',
+      task: task,
+    });
+  }
+
+  function handleDeleteTask(taskId) {
+    dispatch({
+      type: 'deleted',
+      id: taskId,
+    });
+  }
 ```
 
-✅ **AddTask** uses only **dispatch** to add a new task.
+`dispatch` ফাংশনের ভিতরে যে অবজেক্টটি পাস করা হয় তাকে **"action"** বলা হয়। 
+অ্যাকশন অবজেক্টের সাধারণত একটি `type` প্রোপার্টি থাকে যা ইভেন্টটির ধরন বোঝায় (যেমন: `'added'`, `'changed'`, `'deleted'`), এবং এর সাথে অন্যান্য প্রয়োজনীয় ডেটা থাকতে পারে।
 
----
+### ধাপ ২: একটি reducer ফাংশন লেখা
 
-### TaskList.js
+**রিডিউসার ফাংশন** হলো সেই জায়গা যেখানে আপনি আপনার সমস্ত স্টেট লজিক রাখবেন। এটি দুটি আর্গুমেন্ট গ্রহণ করে: 
+১. বর্তমান স্টেট (Current State)
+২. অ্যাকশন অবজেক্ট (Action Object)
+
+এবং এটি পরবর্তী স্টেট রিটার্ন করে। ��টি কম্পোনেন্টের বাইরে লিখতে হয়।
 
 ```jsx
-import { useTasks } from "./TasksContext";
-import TaskItem from "./TaskItem";
-
-export default function TaskList() {
-  const tasks = useTasks();
-
-  return (
-    <ul>
-      {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} />
-      ))}
-    </ul>
-  );
+function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case 'added': {
+      return [
+        ...tasks,
+        {
+          id: action.id,
+          text: action.text,
+          done: false,
+        },
+      ];
+    }
+    case 'changed': {
+      return tasks.map((t) => {
+        if (t.id === action.task.id) {
+          return action.task;
+        } else {
+          return t;
+        }
+      });
+    }
+    case 'deleted': {
+      return tasks.filter((t) => t.id !== action.id);
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
 }
 ```
+*নোট: রিডিউসারের ভেতরে `switch` স্টেটমেন্ট ব্যবহার করা কনভেনশন (প্রথা)। আপনি চাইলে `if/else` ও ব্যবহার করতে পারেন, তবে `switch` পড়তে অনেক সহজ।*
 
-✅ **TaskList** uses **useTasks()** to **read tasks**.
+### ধাপ ৩: আপনার কম্পোনেন্ট থেকে reducer ব্যবহার করা
 
----
-
-### TaskItem.js
+সবশেষে, আপনাকে আপনার কম্পোনেন্টে `useReducer` হুকটি ইম্পোর্ট করতে হবে এবং এটি ব্যবহার করতে হবে।
 
 ```jsx
-import { useTasksDispatch } from "./TasksContext";
+import { useReducer } from 'react';
+```
 
-export default function TaskItem({ task }) {
-  const dispatch = useTasksDispatch();
+এবার `useState` কে সরিয়ে দিন:
+```jsx
+// const [tasks, setTasks] = useState(initialTasks); 
+```
 
-  return (
-    <li>
-      {task.text}
-      <button
-        onClick={() => {
-          dispatch({
-            type: "toggled",
-            id: task.id,
-          });
-        }}
-      >
-        {task.done ? "Undo" : "Done"}
-      </button>
-    </li>
-  );
+এবং তার জায়গায় `useReducer` ব্যবহার করুন:
+```jsx
+const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+```
+
+`useReducer` হুকটি `useState` এর মতই একটি অ্যারে রিটার্ন করে। প্রথম ভ্যালুটি হলো বর্তমান স্টেট (`tasks`), এবং দ্বিতীয়টি হলো `dispatch` ফাংশন (যাতে আমরা অ্যাকশন পাঠাতে পারি)।
+
+---
+
+## `useState` বনাম `useReducer`
+
+কখন কোনটি ব্যবহার করবেন? নিচে একটি তুলনা দেওয়া হলো:
+
+- **কোড সাইজ (Code size):** `useState` ব্যবহার করলে শুরুতে কোড কম লিখতে হয়। কিন্তু যদি অনেকগুলো ইভেন্ট হ্যান্ডলার থাকে, তখন `useReducer` কোডকে অনেক বেশি গোছানো এবং পরিষ্কার রাখে।
+- **পঠনযোগ্যতা (Readability):** লজিক সহজ হলে `useState` ভালো। কিন্তু স্টেট আপডেট করার লজিক যখন অনেক জটিল হয়ে যায়, তখন `useReducer` এর সাহায্যে "কী ঘটলো" (actions) এবং "কীভাবে স্টেট আপডেট হলো" (reducer) - এই দুটি বিষয় আলাদা করা যায়, যা কোড বোঝাকে সহজ করে।
+- **ডিবাগিং (Debugging):** রিডিউসার ফাংশনের ভিতরে একটি `console.log` বসালে আপনি প্রতিটি স্টেট আপডেট এবং অ্যাকশন সহজেই দেখতে পারবেন। যা বড় অ্যাপ্লিকেশন ডিবাগ করতে দারুণ সাহায্য করে।
+- **টেস্টিং (Testing):** রিডিউসার একটি সাধারণ (pure) জাভাস্ক্রিপ্ট ফাংশন যা কম্পোনেন্টের বাইরে থাকে। তাই একে কম্পোনেন্ট রেন্ডার না করেও খুব সহজে আলাদাভাবে টেস্ট (Unit Test) করা যায়।
+
+---
+
+## Reducer লেখার গুরুত্বপূর্ণ নিয়মাবলী
+
+১. **Reducers অবশ্যই Pure Function হতে হবে:** ইনপুট একই হলে এর আউটপুট সবসময় একই হতে হবে। রিডিউসারের ভেতর থেকে কখনোই বাহ্যিক কোনো ভ্যারিয়েবল পরিবর্তন (mutate) করা, API কল করা বা কোনো সাইড ইফেক্ট (side effect) তৈরি করা উচিত নয়।
+২. **প্রতিটি অ্যাকশন একটি একক ইউজার ইন্টারঅ্যাকশন বর্ণনা করে:** যদি ব্যবহারকারী "Reset" বাটন ক্লিক করে যাতে ৫টি ফিল্ড রিসেট হয়, তবে ৫টি আলাদা অ্যাকশনের বদলে একটি মাত্র `reset_form` অ্যাকশন ডিসপ্যাচ হওয়া উচিত। এতে স্টেট ম্যানেজমেন্ট অনেক বেশি নির্ভুল হয়।
+
+---
+
+## Immer এর সাহায্যে সংক্ষিপ্ত Reducer লেখা
+
+যেহেতু রিডিউসারের ভেতরে স্টেট মিউটেট (mutate) করা নিষেধ (যেমন `tasks.push()` ব্যবহার করা যাবে না), তাই নেস্টেড অবজেক্ট বা অ্যারে আপডেট করা একটু ঝামেলার মনে হতে পারে। 
+
+আপনি চাইলে `use-immer` লাইব্রেরির `useImmerReducer` ব্যবহার করতে পারেন। এটি আপনাকে মিউটেটিং সিনট্যাক্স লিখতে দেয়, কিন্তু ব্যাকগ্রাউন্ডে সেটিকে ইমিউটেবল হিসেবেই হ্যান্ডেল করে!
+
+```jsx
+import { useImmerReducer } from 'use-immer';
+
+function tasksReducer(draft, action) {
+  switch (action.type) {
+    case 'added': {
+      draft.push({
+        id: action.id,
+        text: action.text,
+        done: false,
+      });
+      break;
+    }
+    case 'changed': {
+      const index = draft.findIndex((t) => t.id === action.task.id);
+      draft[index] = action.task;
+      break;
+    }
+    case 'deleted': {
+      return draft.filter((t) => t.id !== action.id);
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
 }
 ```
 
-✅ **TaskItem** uses **dispatch** to **toggle** a task.
+## সারসংক্ষেপ (Summary)
 
----
-
-# Final Structure:
-
-```
-src/
-├── App.js
-├── tasksReducer.js
-├── TasksContext.js
-├── AddTask.js
-├── TaskList.js
-├── TaskItem.js
-```
-
----
-
-# Recap in super simple words:
-
-| Step | What We Did                                         |
-| :--- | :-------------------------------------------------- |
-| 1    | Created a reducer function                          |
-| 2    | Created two contexts (state + dispatch)             |
-| 3    | Wrapped app with the provider                       |
-| 4    | Used custom hooks to access and update state easily |
-
----
-
-Would you also like me to draw a **simple diagram** showing **how the Provider and components connect**? 🎯  
-It'll make it even clearer! 🚀 (just say yes)
-
-<Donate/>
-<GiscusComments
-  repo="codedbyMojnu/react-bangla-tutorial"
-  repoId="R_kgDOLDE87Q"
-  category="General"
-  categoryId="DIC_kwDOLDE87c4CtCIY"
-  mapping="pathname"
-  inputPosition="top"
-  theme="preferred_color_scheme"
-  lang="en"
-/>
+- **`useReducer`** হলো `useState` এর একটি বিকল্প যা জটিল স্টেট লজিক ম্যানেজ করতে ব্যবহৃত হয়।
+- রিডিউসার ব্যবহার করার জন্য:
+  ১. কম্পোনেন্ট থেকে অ্যাকশন **dispatch** করুন।
+  ২. একটি **reducer** ফাংশন লিখুন যা বর্তমান স্টেট এবং অ্যাকশন গ্রহণ করে পরবর্তী স্টেট রিটার্ন করবে।
+  ৩. কম্পোনেন্টের ভেতর `useState` এর বদলে **`useReducer`** কল করুন।
+- রিডিউসার ফাংশনকে সবসময় **pure** রাখতে হবে এবং ইমিউটেবল উপায়ে স্টেট আপডেট করতে হবে।
