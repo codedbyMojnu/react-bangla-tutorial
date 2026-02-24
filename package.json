@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/codedbymojnu/react-bangla-tutorial.git"
   },
-  "author": "Shu Ding, and Md. Mojnu Miah",
+  "author": "Md. Mojnu Miah",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/codedbymojnu/react-bangla-tutorial/issues"
@@ -24,18 +24,20 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "glob": "^11.0.3",
-    "next": "^13.0.6",
-    "nextra": "latest",
-    "nextra-theme-docs": "latest",
+    "next": "^14.2.3",
+    "nextra": "^2.13.4",
+    "nextra-theme-docs": "^2.13.4",
     "raw-loader": "^4.0.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/node": "18.11.10",
+    "@types/node": "^20.12.12",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "sitemap": "^8.0.0",
-    "typescript": "^4.9.3"
+    "typescript": "^5.4.5"
   },
   "overrides": {
     "next-mdx-remote": "^6.0.0"

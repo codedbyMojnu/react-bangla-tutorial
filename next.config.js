@@ -1,10 +1,14 @@
-const withNextra = require('nextra')({
-  theme: 'nextra-theme-docs',
-  themeConfig: './theme.config.tsx',
+const withNextra = require("nextra")({
+  theme: "nextra-theme-docs",
+  themeConfig: "./theme.config.tsx",
   latex: true,
 });
 
 module.exports = withNextra({
   reactStrictMode: true,
   swcMinify: true,
+  i18n: {
+    locales: ["bn"],
+    defaultLocale: "bn",
+  },
 });

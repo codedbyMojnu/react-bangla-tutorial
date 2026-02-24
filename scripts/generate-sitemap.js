@@ -7,7 +7,12 @@ async function generateSitemap() {
   const files = await glob('pages/**/*.mdx');
 
   files.forEach(file => {
-    const path = file.replace('pages', '').replace('.mdx', '');
+    let path = file.replace('pages', '').replace('.mdx', '').replace(/\\/g, '/');
+    if (path.endsWith('/index')) {
+      path = path.replace('/index', '/');
+    } else if (path === '/index') {
+      path = '/';
+    }
     stream.write({ url: path, changefreq: 'daily', priority: 0.7 });
   });
 

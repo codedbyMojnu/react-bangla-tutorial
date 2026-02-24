@@ -1,0 +1,21 @@
+{
+  "name": "React JS Bangla Tutorial",
+  "short_name": "React Bangla",
+  "description": "React JS Bangla Tutorial - স্টেপ বাই স্টেপ ফলো করে বাংলা ভাষায় রিয়েক্ট জেএস শিখুন।",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/icons/react-bangla-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/react-bangla-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
