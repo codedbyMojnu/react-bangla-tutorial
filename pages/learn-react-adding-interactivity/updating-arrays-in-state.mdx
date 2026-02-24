@@ -1,3 +1,9 @@
+---
+title: Updating Arrays in State | রিঅ্যাক্ট স্টেট অ্যারে আপডেট
+description: React State-এ অ্যারে সরাসরি পরিবর্তন না করে map, filter, ও spread অপারেটর ব্যবহার করে নিরাপদে কীভাবে অ্যারে আপডেট করতে হয়, তা শিখুন। React Array State Management টিউটোরিয়াল।
+keywords: react array state update, react list update, immutability in react arrays, react bangla tutorial, array methods in react
+---
+
 ## React State-এ Array আপডেট করবেন যেভাবে (পর্ব - ০১)
 
 আমরা যখন React নিয়ে কাজ করি, তখন State ম্যানেজমেন্ট একটা জরুরি বিষয়। State-এর মধ্যে অবজেক্ট বা অ্যারে নিয়ে কাজ করতে গেলে প্রায়ই আমাদের কিছু জিনিস আপডেট করার দরকার হয়। আজকের এই সিরিজে আমরা শিখব কিভাবে React State-এ থাকা কোনো অ্যারে (Array) সঠিকভাবে আপডেট করতে হয়।
@@ -221,7 +227,7 @@ function handleToggleMyList(artworkId, nextSeen) {
         // বাকি অবজেক্টগুলো অপরিবর্তিত থাকবে
         return artwork;
       }
-    })
+    }),
   );
 }
 ```
@@ -271,7 +277,7 @@ function handleToggleMyList(artworkId, nextSeen) {
       } else {
         return artwork;
       }
-    })
+    }),
   );
 }
 ```
@@ -358,7 +364,7 @@ export default function ShoppingCart() {
         } else {
           return product;
         }
-      })
+      }),
     );
   }
 

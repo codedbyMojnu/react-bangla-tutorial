@@ -1,3 +1,9 @@
+---
+title: Queueing a Series of State Updates | স্টেট আপডেটের সিরিজকে কিউ করা
+description: React-এ একাধিক স্টেট আপডেট কীভাবে কাজ করে এবং ব্যাচিং (Batching) প্রক্রিয়ার মাধ্যমে পারফরম্যান্স অপ্টিমাইজ করা হয়, তা এই টিউটোরিয়াল থেকে শিখুন। জানুন কীভাবে স্টেট কিউ (State Queue) কাজ করে।
+keywords: react state update, state batching, react queueing state, react bangla tutorial, react state management, react performance optimization, batching in react
+---
+
 ## স্টেট আপডেটের সিরিজকে কিউ করা
 
 স্টেট ভেরিয়েবল সেট করা মানে হল- পরবর্তী রেন্ডারের জন্য এটি কিউ তৈরি করা। কিন্তু কখনও কখনও আপনি পরবর্তী রেন্ডারের আগের মানের উপর একাধিক অপারেশন করতে চান। এটি করতে, আপনাকে বুঝতে হবে কীভাবে React স্টেট আপডেটগুলিকে ব্যাচ করে।

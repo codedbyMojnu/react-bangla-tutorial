@@ -1,3 +1,9 @@
+---
+title: Updating Objects in State | রিঅ্যাক্ট স্টেট অবজেক্ট আপডেট
+description: React State-এ থাকা অবজেক্ট সরাসরি পরিবর্তন (mutate) না করে কীভাবে সঠিকভাবে আপডেট করতে হয় এবং Immutability বজায় রাখতে হয়, তা সহজ বাংলায় শিখুন।
+keywords: react object state update, updating objects in react, react state immutability, spread syntax react, react bangla tutorial, state management
+---
+
 অবশ্যই, আপনার দেওয়া ডকুমেন্টটি অনুসরণ করে, একটি সহজবোধ্য এবং বিস্তারিত ব্লগ পোস্ট তৈরি করছি। পোস্টটি তিনটি পর্বে ভাগ করা হলো, ঠিক যেমন আপনি চেয়েছেন। আমি চেষ্টা করেছি ভাষা যতটা সম্ভব সহজ রাখতে, যেন মনে হয় আপনার পাশে বসে কোনো বড় ভাই আপনাকে বিষয়গুলো বুঝিয়ে দিচ্ছে।
 
 ---
@@ -286,14 +292,18 @@ export default function Form() {
         <input value={person.firstName} onChange={handleFirstNameChange} />   
          {" "}
       </label>
-            <label>
+           {" "}
+      <label>
                 Last name:        {" "}
         <input value={person.lastName} onChange={handleLastNameChange} />   
          {" "}
-      </label>      <label>
+      </label>
+           {" "}
+      <label>
                 Email:        {" "}
         <input value={person.email} onChange={handleEmailChange} />     {" "}
-      </label>     {" "}
+      </label>
+           {" "}
       <p>
                 {person.firstName}         {person.lastName}         (
         {person.email})      {" "}
@@ -459,20 +469,24 @@ export default function Form() {
 
   return (
     <>
-     {" "}
+      {" "}
       <label>
                 Name:        {" "}
         <input value={person.name} onChange={handleNameChange} />     {" "}
       </label>
-            <label>
+           {" "}
+      <label>
                 Title:        {" "}
         <input value={person.artwork.title} onChange={handleTitleChange} />   
          {" "}
-      </label>      <label>
+      </label>
+           {" "}
+      <label>
                 City:        {" "}
         <input value={person.artwork.city} onChange={handleCityChange} />   
          {" "}
-      </label>     {" "}
+      </label>
+           {" "}
       <label>
                 Image:        {" "}
         <input value={person.artwork.image} onChange={handleImageChange} />   
@@ -480,11 +494,11 @@ export default function Form() {
       </label>
            {" "}
       <p>
-       <i>{person.artwork.title}</i>        {" by "}       {" "}
-        {person.name}
+        <i>{person.artwork.title}</i>        {" by "}        {person.name}
                 <br />        (located in {person.artwork.city})      {" "}
       </p>
-            <img src={person.artwork.image} alt={person.artwork.title} />   {" "}
+            <img src={person.artwork.image} alt={person.artwork.title} /> 
+       {" "}
     </>
   );
 }
@@ -591,15 +605,19 @@ export default function Scoreboard() {
         <button onClick={handlePlusClick}>          +1         </button>   
          {" "}
       </label>
-            <label>
+           {" "}
+      <label>
                 First name:        {" "}
         <input value={player.firstName} onChange={handleFirstNameChange} />   
          {" "}
-      </label>      <label>
+      </label>
+           {" "}
+      <label>
                 Last name:        {" "}
         <input value={player.lastName} onChange={handleLastNameChange} />   
          {" "}
-      </label>   {" "}
+      </label>
+         {" "}
     </>
   );
 }
@@ -657,15 +675,19 @@ export default function Scoreboard() {
         <button onClick={handlePlusClick}>          +1         </button>   
          {" "}
       </label>
-            <label>
+           {" "}
+      <label>
                 First name:        {" "}
         <input value={player.firstName} onChange={handleFirstNameChange} />   
          {" "}
-      </label>      <label>
+      </label>
+           {" "}
+      <label>
                 Last name:        {" "}
         <input value={player.lastName} onChange={handleLastNameChange} />   
          {" "}
-      </label>   {" "}
+      </label>
+         {" "}
     </>
   );
 }
@@ -733,13 +755,11 @@ export default function Canvas() {
         <option value="lightpink">lightpink</option>       {" "}
         <option value="aliceblue">aliceblue</option>     {" "}
       </select>
-            <Background position={initialPosition} />      <Box
-        color={shape.color}
-        position={shape.position}
-        onMove={handleMove}
-      >
+            <Background position={initialPosition} />     {" "}
+      <Box color={shape.color} position={shape.position} onMove={handleMove}>
                 Drag me!      {" "}
-      </Box>   {" "}
+      </Box>
+         {" "}
     </>
   );
 }
@@ -875,13 +895,11 @@ export default function Canvas() {
         <option value="lightpink">lightpink</option>       {" "}
         <option value="aliceblue">aliceblue</option>     {" "}
       </select>
-            <Background position={initialPosition} />      <Box
-        color={shape.color}
-        position={shape.position}
-        onMove={handleMove}
-      >
+            <Background position={initialPosition} />     {" "}
+      <Box color={shape.color} position={shape.position} onMove={handleMove}>
                 Drag me!      {" "}
-      </Box>   {" "}
+      </Box>
+         {" "}
     </>
   );
 }

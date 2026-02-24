@@ -1,3 +1,9 @@
+---
+title: "React Custom Hook দিয়ে ইউজার অনলাইনে আছে কিনা চেক করে সার্ভারে পাঠানো"
+description: "React-এ কিভাবে একটি Custom Hook তৈরি করে ইউজার অনলাইনে আছে কিনা চেক করা যায় এবং সেই তথ্য সার্ভারে পাঠানো যায়, তা এই টিউটোরিয়ালে শিখুন।"
+keywords: react custom hook, useSyncExternalStore, online status in react, react server communication
+---
+
 ## 🌐 একটি রিয়েল অ্যাপ ফিচার: ইউজার অনলাইনে আছে কিনা তা চেক করে সার্ভারে পাঠানো
 
 আমরা অনেক সময় চাই, একজন ইউজার যদি অনলাইনে থাকেন তাহলে সেটা দেখানো হোক অথবা সেই তথ্য সার্ভারে পাঠানো হোক। ধরুন আপনি একটি **চ্যাট অ্যাপ** বানাচ্ছেন, আপনি চান যদি কেউ অনলাইনে থাকে তাহলে সেই স্ট্যাটাস দেখানো হোক বা সার্ভারে সেই তথ্য পাঠানো হোক।
@@ -63,7 +69,7 @@ function useOnlineStatus() {
   return useSyncExternalStore(
     subscribe,
     () => navigator.onLine,
-    () => true
+    () => true,
   );
 }
 ```
@@ -136,7 +142,7 @@ function useOnlineStatus() {
   return useSyncExternalStore(
     subscribe, // 1️⃣ সাবস্ক্রিপশন ফাংশন
     () => navigator.onLine, // 2️⃣ ক্লায়েন্ট থেকে ডেটা পড়ার নিয়ম
-    () => true // 3️⃣ সার্ভার থেকে ডেটা পড়ার নিয়ম
+    () => true, // 3️⃣ সার্ভার থেকে ডেটা পড়ার নিয়ম
   );
 }
 ```
@@ -199,7 +205,7 @@ function subscribe(callback) {
 useSyncExternalStore(
   subscribe, // ইভেন্ট সাবস্ক্রাইব + রিমুভ
   () => navigator.onLine, // ক্লায়েন্ট থেকে রিয়েল টাইম ডেটা
-  () => true // সার্ভার থেকে ডিফল্ট ডেটা (SSR)
+  () => true, // সার্ভার থেকে ডিফল্ট ডেটা (SSR)
 );
 ```
 

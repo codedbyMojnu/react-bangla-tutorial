@@ -1,3 +1,9 @@
+---
+title: "React Performance Optimization Guide"
+description: "React অ্যাপের পারফরম্যান্স অপ্টিমাইজ করার জন্য বিভিন্ন টেকনিক এবং টিপস নিয়ে এই গাইডটি তৈরি করা হয়েছে। এখানে আপনি শিখবেন কিভাবে React অ্যাপের স্পিড বাড়ানো যায় এবং ইউজার এক্সপেরিয়েন্স উন্নত করা যায়।"
+keywords: react performance optimization, react performance tips, optimizing react apps, react performance best practices, react performance guide
+---
+
 ## বিষয়: `useMemo` দিয়ে Performance Optimization
 
 ### কেন `useMemo` দরকার?
@@ -325,7 +331,7 @@ const visibleTodos = useMemo(() => {
 ```jsx
 const visibleTodos = useMemo(
   () => getFilteredTodos(todos, filter),
-  [todos, filter]
+  [todos, filter],
 );
 ```
 

@@ -1,3 +1,9 @@
+---
+title: Lifting State Up | স্টেট উপরে তোলা
+description: React-এ কীভাবে একাধিক চাইল্ড কম্পোনেন্টের মধ্যে স্টেট শেয়ার করার জন্য Lifting State Up টেকনিক ব্যবহার করা যায়, তা এই বাংলা টিউটোরিয়ালে শিখুন।
+keywords: lifting state up react, sharing state react, react parent child communication, data sharing react
+---
+
 ## **কম্পোনেন্টগুলোর মধ্যে স্টেট শেয়ার করা**
 
 ### 🔼 State উপরে তোলা (Lifting State Up)
@@ -66,8 +72,8 @@ export default function Accordion() {
         "apple" and is often translated as "full of apples". In fact, the region
         surrounding Almaty is thought to be the ancestral home of the apple, and
         the wild
-        <i lang="la">Malus sieversii</i> is considered a likely candidate for the
-        ancestor of the modern domestic apple.
+        <i lang="la">Malus sieversii</i> is considered a likely candidate for
+        the ancestor of the modern domestic apple.
       </Panel>
     </>
   );
@@ -292,7 +298,7 @@ const [activeIndex, setActiveIndex] = useState(0);
 - event handlers-ও নিচে পাঠাও যেন child কম্পোনেন্ট parent-এর state পরিবর্তন করতে পারে।
 - কম্পোনেন্টগুলোকে controlled (props দিয়ে কন্ট্রোল করা) আর uncontrolled (নিজের স্টেট দিয়ে চালানো) হিসেবে ভাবলে ডিজাইন ক্লিয়ার হয়।
 
-<Donate/>
+<Donate />
 <GiscusComments
   repo="codedbyMojnu/react-bangla-tutorial"
   repoId="R_kgDOLDE87Q"

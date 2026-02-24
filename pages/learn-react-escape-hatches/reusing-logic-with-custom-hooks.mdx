@@ -1,3 +1,9 @@
+---
+title: Reusing Logic with Custom Hooks | কাস্টম হুক দিয়ে লজিক রিইউজ
+description: React-এ কীভাবে কাস্টম হুক তৈরি করা যায় এবং এর মাধ্যমে লজিক পুনরায় ব্যবহারযোগ্য করা যায়, তা শিখুন। React Custom Hooks টিউটোরিয়াল।
+keywords: react custom hooks, create custom hook bangla, reusing logic react, hook composition
+---
+
 # অধ্যায়: নিজের হুক বানিয়ে বারবার ব্যবহার করুন
 
 _(Reusing Logic with Custom Hooks)_
@@ -1370,7 +1376,7 @@ export function useOnlineStatus() {
   return useSyncExternalStore(
     subscribe,
     () => navigator.onLine, // ক্লায়েন্টে স্টেট পড়া
-    () => true // সার্ভারে fallback মান (ধরে নেই always online)
+    () => true, // সার্ভারে fallback মান (ধরে নেই always online)
   );
 }
 ```

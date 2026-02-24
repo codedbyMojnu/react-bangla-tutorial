@@ -1,3 +1,9 @@
+---
+title: Removing Effect Dependencies | ইফেক্ট ডিপেন্ডেন্সি রিমুভ করা
+description: React-এ useEffect ডিপেন্ডেন্সি কেন গুরুত্বপূর্ণ এবং অপ্রয়োজনীয় ডিপেন্ডেন্সি কীভাবে রিমুভ করতে হয়, তা এই বাংলা টিউটোরিয়ালে শিখুন।
+keywords: react useeffect dependency, removing dependencies, react effects bangla, infinite loop react effect, react optimization
+---
+
 ## অধ্যায়: Effect এর অপ্রয়োজনীয় dependency বাদ দেওয়া
 
 (Removing Effect Dependencies)
@@ -111,7 +117,7 @@ export function createConnection(serverUrl, roomId) {
   return {
     connect() {
       console.log(
-        '✅ Connecting to "' + roomId + '" room at ' + serverUrl + "..."
+        '✅ Connecting to "' + roomId + '" room at ' + serverUrl + "...",
       );
     },
     disconnect() {
@@ -235,7 +241,7 @@ export function createConnection(serverUrl, roomId) {
   return {
     connect() {
       console.log(
-        '✅ Connecting to "' + roomId + '" room at ' + serverUrl + "..."
+        '✅ Connecting to "' + roomId + '" room at ' + serverUrl + "...",
       );
     },
     disconnect() {
@@ -837,7 +843,7 @@ const options = useMemo(
     serverUrl: serverUrl,
     roomId: roomId,
   }),
-  [serverUrl, roomId]
+  [serverUrl, roomId],
 );
 ```
 
@@ -850,7 +856,6 @@ const options = useMemo(
 - Object / Function কে `useEffect` এর dependency বানালে প্রতি render-এ তারা নতুন হিসেবে ধরা পড়ে।
 - ফলে Unnecessary `Effect` reruns হয়।
 - সমাধান:
-
   - primitive values ব্যবহার করুন `[roomId, serverUrl]`
   - অথবা `useMemo` দিয়ে object/function memoize করুন।
 

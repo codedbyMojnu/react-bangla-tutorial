@@ -1,3 +1,9 @@
+---
+title: Synchronizing with Effects | ইফেক্ট দিয়ে সিঙ্ক্রোনাইজেশন
+description: React-এ কীভাবে useEffect ব্যবহার করে বাইরের সিস্টেমের (API, DOM) সাথে সিঙ্ক্রোনাইজ করা যায়, তা এই বাংলা টিউটোরিয়ালে শিখুন।
+keywords: react useeffect sync, react side effects setup, component synchronization, api call in react
+---
+
 ## শিরোনাম: ‘Effects দিয়ে Synchronize করা’
 
 কিছু কিছু React কম্পোনেন্টকে বাইরের কোন সিস্টেমের সঙ্গে কাজ করাতে হয়। যেমন ধরেন, আপনি React স্টেট দিয়ে একটা non-React কম্পোনেন্ট কন্ট্রোল করতে চান, অথবা কোনো সার্ভারে কানেকশন করতে চান, অথবা যখন কোনো কম্পোনেন্ট স্ক্রিনে আসে তখন একটা রিপোর্ট (analytics log) পাঠাতে চান। _Effect_ ব্যবহার করলে আপনি রেন্ডারিং শেষ হওয়ার পর কিছু কোড চালাতে পারেন, যাতে করে React-এর বাইরে যেকোনো সিস্টেমের সাথে কম্পোনেন্ট মিলিয়ে নেওয়া (synchronize) যায়।
