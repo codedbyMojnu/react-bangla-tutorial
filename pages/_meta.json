@@ -28,6 +28,10 @@
   "100-react-interview-questions": "📄 100 React Interview Questions and Answers",
   "css-tutorial": "📂 CSS Tutorial",
   "PHP-OOP-Bangla": "📂 PHP OOP Bangla",
+  "7-hard-truths-for-new-developers": {
+    "title": "7 Hard Truths",
+    "type": "page"
+  },
   "my-story": {
     "title": "My Story",
     "type": "page"
