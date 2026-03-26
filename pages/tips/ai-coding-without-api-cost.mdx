@@ -1,0 +1,349 @@
+---
+title: কোনো API খরচ ছাড়াই AI দিয়ে কোডিং—কিভাবে? | ফ্রি লোকাল AI কোডিং অ্যাসিস্ট্যান্ট (Ollama, Continue, VS Code)
+description: কোনো API খরচ ছাড়াই নিজের কম্পিউটারে Ollama, Continue, ও VS Code দিয়ে ফ্রি AI কোডিং অ্যাসিস্ট্যান্ট সেটআপ, কনফিগারেশন, শর্টকাট, ও ব্যবহার। সম্পূর্ণ গাইড।
+keywords: AI কোডিং, Ollama, Continue, VS Code, ফ্রি AI, লোকাল AI, Qwen 2.5 Coder, বাংলা টিউটোরিয়াল, কোডিং অ্যাসিস্ট্যান্ট, API ছাড়া AI
+---
+
+# কোনো API খরচ ছাড়াই AI দিয়ে কোডিং—কিভাবে?
+
+ফ্রি-তে নিজের লোকাল AI কোডিং অ্যাসিস্ট্যান্ট (Ollama + Continue + VS Code)
+
+Qwen 2.5 Coder বিশেষভাবে প্রোগ্রামিং কাজের জন্য তৈরি।
+এটা কোড লেখা, রিভিউ করা, আর বাগ ঠিক করতে ভালো কাজ করে।
+
+সবকিছু আপনার নিজের কম্পিউটারেই চলে।
+ইন্টারনেট লাগে না।
+একদম ফ্রি।
+
+ফ্রি লোকাল কোডিং সাহায্যের জন্য → Ollama-তে **qwen2.5-coder:7b** ব্যবহার করুন।
+
+এটা কোডিং কাজের জন্য খুবই ভালো।
+
+**সিস্টেম:** Windows 11
+**RAM:** 8GB
+**মডেল:** qwen2.5-coder:7b
+
+---
+
+## সূচিপত্র
+
+- ইনস্টলেশন
+- কনফিগারেশন
+- দৈনন্দিন ব্যবহার
+- শর্টকাট ও কমান্ড
+- আনইনস্টল
+
+---
+
+## 1. ইনস্টলেশন
+
+### ধাপ ১: Ollama ইনস্টল
+
+PowerShell Admin হিসেবে খুলুন।
+এই কমান্ড দিন:
+
+```
+irm https://ollama.com/install.sh | iex
+```
+
+অপেক্ষা করুন।
+ইনস্টল শেষ হলে Ollama নিজে নিজে চালু হবে।
+
+চেক করুন:
+
+```
+ollama --version
+```
+
+একটি ভার্সন নাম্বার দেখাবে।
+
+---
+
+### ধাপ ২: মডেল ডাউনলোড
+
+PowerShell এ লিখুন:
+
+```
+ollama pull qwen2.5-coder:7b
+```
+
+সাইজ: প্রায় 4.7GB
+১০০% হওয়া পর্যন্ত অপেক্ষা করুন।
+
+চেক করুন:
+
+```
+ollama list
+```
+
+লিস্টে মডেল দেখাবে।
+
+---
+
+### ধাপ ৩: VS Code এ Continue ইনস্টল
+
+VS Code খুলুন
+Ctrl + Shift + X চাপুন
+
+Search দিন: **Continue**
+Install চাপুন
+
+---
+
+### ধাপ ৪: Continue কনফিগার
+
+Ctrl + Shift + P চাপুন
+লিখুন:
+
+```
+Continue: Open Config File
+```
+
+ফাইল খুলবে
+
+এই কোড বসান:
+
+```
+name: Local Config
+version: 1.0.0
+schema: v1
+models:
+  - name: Qwen 2.5 Coder
+    provider: ollama
+    model: qwen2.5-coder:7b
+```
+
+Ctrl + S চাপুন
+
+---
+
+## 2. কনফিগারেশন
+
+### Ollama অটো রান
+
+Windows চালু হলে Ollama নিজে চালু হয়
+আপনাকে কিছু করতে হবে না
+
+System tray-তে আইকন দেখুন
+
+---
+
+### মডেল অন্য ড্রাইভে রাখা (ইচ্ছা হলে)
+
+Windows + S চাপুন
+Search: Environment Variables
+
+User variables এ New দিন
+
+```
+Name: OLLAMA_MODELS
+Value: D:\OllamaModels
+```
+
+OK চাপুন
+Ollama restart করুন
+
+---
+
+## 3. দৈনন্দিন ব্যবহার
+
+### চ্যাট খোলা
+
+Ctrl + L চাপুন
+
+---
+
+### চ্যাট বন্ধ
+
+Ctrl + L আবার চাপুন
+
+---
+
+### নতুন কোড লিখা
+
+Ctrl + L চাপুন
+লিখুন:
+
+```
+Write a JavaScript function that validates an email
+```
+
+---
+
+### কোড রিভিউ
+
+কোড সিলেক্ট করুন
+Ctrl + Shift + L
+
+লিখুন:
+
+```
+Review this code
+```
+
+---
+
+### বাগ ঠিক করা
+
+কোড সিলেক্ট করুন
+Ctrl + Shift + L
+
+লিখুন:
+
+```
+Fix this bug
+```
+
+---
+
+### কোড বুঝা
+
+কোড সিলেক্ট করুন
+Ctrl + Shift + L
+
+লিখুন:
+
+```
+Explain this code
+```
+
+---
+
+### কোড উন্নত করা
+
+কোড সিলেক্ট করুন
+Ctrl + Shift + L
+
+লিখুন:
+
+```
+Make it better
+```
+
+---
+
+### ফাইল সারাংশ
+
+Ctrl + L চাপুন
+
+লিখুন:
+
+```
+Summarize this file
+```
+
+---
+
+### Inline Edit
+
+কোড সিলেক্ট করুন
+Ctrl + I
+
+লিখুন:
+
+```
+Add error handling
+```
+
+Enter = গ্রহণ
+Escape = বাতিল
+
+---
+
+## 4. শর্টকাট
+
+### কিবোর্ড শর্টকাট
+
+- Ctrl + L → চ্যাট চালু/বন্ধ
+- Ctrl + I → কোড এডিট
+- Ctrl + Shift + L → কোড পাঠানো
+- Ctrl + Shift + R → বাগ ঠিক করা
+- Enter → গ্রহণ
+- Escape → বাতিল
+
+---
+
+### চ্যাট কমান্ড
+
+- @file → ফাইল যোগ
+- @codebase → পুরো প্রজেক্ট
+- @docs → ডকুমেন্ট
+- @terminal → টার্মিনাল আউটপুট
+
+---
+
+### কনটেক্সট কমান্ড
+
+- @filename → ওই ফাইল
+- @codebase → পুরো কোড
+- @terminal → শেষ আউটপুট
+- @problems → error পাঠানো
+
+---
+
+## 5. আনইনস্টল
+
+### Continue সরানো
+
+VS Code খুলুন
+Ctrl + Shift + X
+
+Continue খুঁজুন
+Uninstall চাপুন
+
+তারপর:
+
+```
+Remove-Item -Recurse -Force "C:\Users\MD. MOJNU\.continue"
+```
+
+---
+
+### Ollama সরানো
+
+Settings → Apps
+
+Ollama খুঁজুন
+Uninstall
+
+তারপর:
+
+```
+Remove-Item -Recurse -Force "C:\Users\MD. MOJNU\.ollama"
+```
+
+---
+
+### একটি মডেল ডিলিট
+
+```
+ollama rm qwen2.5-coder:7b
+```
+
+---
+
+### সব মডেল ডিলিট
+
+```
+ollama list
+```
+
+তারপর এক এক করে remove করুন
+
+---
+
+## দ্রুত গাইড
+
+- AI চালু → Ctrl + L
+- কোড এডিট → Ctrl + I
+- কোড পাঠানো → Ctrl + Shift + L
+- গ্রহণ → Enter
+- বাতিল → Escape
+- ফাইল যোগ → @filename
+
+---
+
+✅ সব কাজ আপনার কম্পিউটারে হয়
+✅ ইন্টারনেট লাগে না
+✅ কোনো খরচ নেই
+✅ সম্পূর্ণ প্রাইভেট
