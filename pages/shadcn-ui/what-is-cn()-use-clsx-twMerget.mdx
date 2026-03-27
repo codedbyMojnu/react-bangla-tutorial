@@ -1,0 +1,262 @@
+---
+title: cn() কী? React + Tailwind এ clsx ও twMerge সহজভাবে ব্যবহার (shadcn/ui style)
+description: React ও Tailwind CSS-এ cn(), clsx, ও twMerge কীভাবে কাজ করে, কেন দরকার, এবং shadcn/ui স্টাইলে এগুলো ব্যবহার করার সহজ বাংলা টিউটোরিয়াল।
+keywords: cn function, clsx, tailwind-merge, shadcn/ui, React, Tailwind CSS, বাংলা টিউটোরিয়াল, React best practice, Tailwind conflict, component style
+---
+
+# 📘 cn() কী? React + Tailwind এ clsx ও twMerge সহজভাবে ব্যবহার (shadcn/ui style)
+
+## 👋 পরিচিতি
+
+তুমি যদি ২০২৪ সালের web developer হও,
+তাহলে `cn()` নামটি অনেক জায়গায় দেখেছো।
+
+বিশেষ করে:
+
+- shadcn/ui component
+- Tailwind project
+
+আজ আমরা শিখবো:
+
+- `cn()` কী
+- কেন লাগে
+- কিভাবে বানাতে হয়
+- React এ কিভাবে ব্যবহার করবো
+
+---
+
+## 🧩 একটি সহজ উদাহরণ
+
+ধরি আমাদের একটি component আছে:
+
+```jsx
+function FancyHeading({ title }) {
+  return <h1 className="text-center text-gray-800">{title}</h1>;
+}
+```
+
+👉 এটা শুধু text দেখাবে
+👉 কোন dynamic style নাই
+
+---
+
+## 🎯 এখন আমরা condition যোগ করবো
+
+আমরা চাই:
+
+- যদি `isPrimary = true` → বড় + blue text
+- না হলে → normal
+
+---
+
+## ⚡ clsx ব্যবহার (condition handle)
+
+### install:
+
+```bash
+yarn add clsx
+```
+
+### use:
+
+```jsx
+import clsx from "clsx";
+
+function FancyHeading({ title, isPrimary }) {
+  return (
+    <h1
+      className={clsx(
+        "text-center text-gray-800",
+        isPrimary && "text-3xl text-blue-500",
+      )}
+    >
+      {title}
+    </h1>
+  );
+}
+```
+
+👉 এখন:
+
+- true → বড় + blue
+- false → small + gray
+
+---
+
+## ❗ সমস্যা (Tailwind conflict)
+
+DOM এ class হবে:
+
+```html
+text-center text-gray-800 text-3xl text-blue-500
+```
+
+👉 এখানে ২টা color:
+
+- gray
+- blue
+
+⚠️ conflict তৈরি হয়
+
+---
+
+## 🛠️ twMerge দিয়ে fix
+
+### install:
+
+```bash
+yarn add tailwind-merge
+```
+
+### use:
+
+```jsx
+import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
+
+twMerge(
+  clsx("text-center text-gray-800", isPrimary && "text-3xl text-blue-500"),
+);
+```
+
+👉 এখন:
+
+- শুধু `text-blue-500` থাকবে
+- conflict শেষ ✅
+
+---
+
+## 🚀 cn() function বানানো
+
+এখন আমরা shortcut বানাবো।
+
+📁 `src/lib/utils.js`
+
+```js
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+```
+
+👉 কাজ:
+
+- condition handle
+- conflict fix
+- clean code
+
+---
+
+## ✅ React এ cn() ব্যবহার
+
+```jsx
+import { cn } from "@/lib/utils";
+
+function FancyHeading({ title, isPrimary }) {
+  return (
+    <h1
+      className={cn(
+        "text-center text-gray-800",
+        isPrimary && "text-3xl text-blue-500",
+      )}
+    >
+      {title}
+    </h1>
+  );
+}
+```
+
+👉 simple + clean 👍
+
+---
+
+## 🎯 Variant system (better approach)
+
+আমরা `isPrimary` না দিয়ে `variant` ব্যবহার করবো।
+
+```jsx
+function getVariantStyle(variant) {
+  switch (variant) {
+    case "primary":
+      return "text-3xl text-blue-500";
+    case "secondary":
+      return "text-xl text-green-500";
+    default:
+      return "text-gray-800";
+  }
+}
+```
+
+```jsx
+function FancyHeading({ title, variant }) {
+  return (
+    <h1 className={cn("text-center", getVariantStyle(variant))}>{title}</h1>
+  );
+}
+```
+
+👉 এখন:
+
+- primary → blue
+- secondary → green
+- default → gray
+
+---
+
+## ➕ extra className add
+
+```jsx
+function FancyHeading({ title, variant, className }) {
+  return (
+    <h1 className={cn("text-center", getVariantStyle(variant), className)}>
+      {title}
+    </h1>
+  );
+}
+```
+
+### use:
+
+```jsx
+<FancyHeading title="Hello World" variant="secondary" className="underline" />
+```
+
+👉 result:
+
+- green text
+- underline add
+
+---
+
+## 🧠 cn() আসলে কী?
+
+👉 cn() =
+`clsx` + `tailwind-merge`
+
+👉 কাজ:
+
+1. condition অনুযায়ী class add করে
+2. Tailwind conflict remove করে
+
+---
+
+## 🔥 কেন shadcn/ui এ cn() ব্যবহার হয়?
+
+কারণ:
+
+- clean code
+- reusable component
+- variant support
+- extra class add করা সহজ
+
+---
+
+## ✅ Final Summary
+
+- `clsx` → condition
+- `twMerge` → conflict fix
+- `cn()` → shortcut
+
+👉 React + Tailwind এ best practice 💯
