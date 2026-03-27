@@ -1,0 +1,158 @@
+# Use Shadcn in Next Project
+
+## 🧩 Step 1: First Run The Command for Next App
+
+```bash
+npx shadcn@latest init
+```
+
+CLI তোমাকে জিজ্ঞেস করে:
+
+👉 তুমি কোন **component library** ব্যবহার করতে চাও?
+
+```
+> Radix
+  Base
+```
+
+---
+
+### “Component Library” মানে কী?
+
+👉 খুব সহজভাবে:
+
+**Component Library = আগে থেকে বানানো UI parts**
+
+যেমন:
+
+- Button
+- Modal
+- Dropdown
+- Tabs
+- Accordion
+
+👉 এগুলো তুমি নিজে বানাতে পারো, কিন্তু সময় লাগে।
+
+---
+
+### ⚡ Radix কী?
+
+![Image](https://images.openai.com/static-rsc-4/zDBJwRF9Jb4HsxVKJOseEheCFlUIQovh0l-A5HtqxhM7uxGD4T__LJNJWgbNpvNH0grij8LsIouaiP7hgQGx29CXTBFbpfnsRudQ0fKDgeoYBBNHUbR3-y_2WdVAho1rpubOgLA5R1ozT961pTe4IYPoyf_aAKK0ZeeQXkEJJxJccPQ8csi1CnK0iNTr8F0A?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/9-PZU2hO5RcId6PpqxTpwQ6_y9xBFWJkg96E_4OCGrv1U9B4MrneBQqJZyOmpVYcK0RPLn_snKeCEsKCqSEvZgXPMlWjcoy6RJtPnoy78VGI-p-C7eKpSbh8eZeaH4qZetHb-QTDuXoBCIXlmsgmsN4YtndOVEuRRp9lJXN7E2KA2qh_JwbfU3z1WpPlynYD?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/rrlD-sbJj50IxTZNLydBUg_3C0hXnEkkbAin71eeDv9QMQmTu_jCvDcVSbYoGLa8mviDwPjxmVcOAPlAO3Fxz56B1DJ0P1ZM4QiiNhBk6ifrAAGluYzZzRJJ-BAjsAUhqUzH-7zPxvr3bAy0ZWKa05S1S4rOsslurjiMmG0nP3aqi8ezRupSV7o-pAn2Mll4?purpose=fullsize)
+
+👉 **Radix = ready-made logic + accessible components**
+
+- UI behaviour already তৈরি করা আছে
+- তুমি শুধু style দেবে (Tailwind দিয়ে)
+
+---
+
+### 🔍 Example (বাস্তব চিন্তা করো)
+
+👉 ধরো তুমি একটা **Modal (popup)** বানাতে চাও
+
+### ❌ Base ব্যবহার করলে:
+
+- open/close logic নিজে লিখতে হবে
+- keyboard accessibility নিজে handle করতে হবে
+- focus management নিজে করতে হবে
+
+👉 অনেক জটিল 😓
+
+---
+
+### 🧱 Base কী?
+
+![Image](https://images.openai.com/static-rsc-4/hdLxwjRHF4MXVfrtHXUyeFSRss5RLAz5301A8Cy_LJNcSiv2GJ4rAFrLiu0Ak0tFJ-X2TebvuuvIub4mUaoCEfiXDoHdeUYOaAZN-kCJFNp_O1-HUHY-1ibaHafPWuF7NIX3f6l5aCqnKkZ8LAS9Ni2_pa6wEG7qOzkCBR75CoVpQlDGv9o2D1AAhxvAssBF?purpose=fullsize)
+
+👉 **Base = একদম basic / raw level**
+
+- কোনো style নাই
+- কোনো ready behaviour নাই (বা খুব কম)
+- সবকিছু নিজে বানাতে হবে
+
+---
+
+### 🧠 বাস্তব উদাহরণ
+
+👉 Base = তুমি ইট, বালি, সিমেন্ট কিনছো
+👉 Radix = তুমি আধা তৈরি বাড়ি পাচ্ছো
+
+---
+
+### ⚖️ Radix vs Base (Comparison)
+
+| বিষয়              | Radix       | Base             |
+| ----------------- | ----------- | ---------------- |
+| Ready components  | ✅ আছে      | ❌ নাই           |
+| Accessibility     | ✅ built-in | ❌ নিজে করতে হবে |
+| Speed             | 🚀 দ্রুত    | 🐢 ধীর           |
+| Beginner friendly | ✅ হ্যাঁ    | ❌ না            |
+| Control           | মাঝামাঝি    | 🔥 পুরো control  |
+
+---
+
+### 🧠 Final কথা
+
+👉 90% developer + tutorial + real project
+👉 👉 **Radix use করে**
+
+👉 Base শুধু use করে:
+
+- advanced dev
+- design system বানানোর সময়
+
+---
+
+### 👉 Headless component কী?
+
+component এ logic ready, component design তোমার দায়িত্ব
+
+👉 এবার তুমি `preset` select করছো — এটা আসলে তোমার UI-এর **default design style** ঠিক করে দেয়।
+
+---
+
+## 🧠 Step 2: Radix select করে Preset Choose
+
+**Preset = ready-made design theme**
+
+👉 এতে থাকে:
+
+- font (লেখার style)
+- icon set
+- spacing, look & feel
+
+---
+
+👉 তোমার জন্য:
+
+### ✅ **Nova - Lucide / Geist** ← এটা select করো
+
+---
+
+### 🔍 কেন Nova best?
+
+#### ✅ 1. Modern & clean UI
+
+👉 খুব clean, professional look
+👉 job-ready projects এর জন্য perfect
+
+---
+
+### ✅ 2. Popular combo
+
+- **Lucide** → icon (simple & সুন্দর)
+- **Geist** → font (modern & readable)
+
+👉 অনেক dev এই combo use করে
+
+### 🎯 Final decision
+
+| Option | Choose? | Reason                           |
+| ------ | ------- | -------------------------------- |
+| Nova   | ✅ YES  | clean, modern, beginner-friendly |
+| Others | ❌ No   | এখন দরকার নাই                    |
+| Custom | ❌ No   | বেশি complex                     |
