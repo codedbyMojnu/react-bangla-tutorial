@@ -1,0 +1,29 @@
+**React Query** এবং **RTK Query** এর মধ্যে তুলনামূলক টেবিল। এতে caching, setup, flexibility, এবং অন্যান্য বিষয় দেখানো হয়েছে। React Bangla docs-এর জন্য এটা খুবই উপযোগী।
+
+| বৈশিষ্ট্য                        | **React Query**                              | **RTK Query**                       | বিস্তারিত ব্যাখ্যা                                                                              |
+| -------------------------------- | -------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Redux প্রয়োজন?**               | ❌ না                                        | ✅ হ্যাঁ                            | React Query standalone, RTK Query Redux store ব্যবহার করে।                                      |
+| **Cache কোথায়?**                | React Query এর ভিতরে                         | Redux store                         | RTK Query DevTools এ cache দেখা যায়, React Query এর আলাদা DevTools আছে।                        |
+| **Boilerplate**                  | কম                                           | বেশি                                | React Query শুধু `useQuery` / `useMutation`, RTK Query-তে `createApi`, slice, middleware লাগবে। |
+| **Hooks**                        | Custom hooks                                 | Auto-generated hooks                | RTK Query endpoints define করলে hooks auto-create হয়।                                          |
+| **Cache Invalidation**           | `queryClient.invalidateQueries()`            | `invalidatesTags` / `providesTags`  | RTK Query tag-based, React Query manually invalidate।                                           |
+| **Server State**                 | ✅                                           | ✅ (Redux-integrated)               | উভয়ই server-side data fetch & cache এর জন্য।                                                   |
+| **Client State**                 | ❌ না                                        | ✅ হ্যাঁ                            | RTK Query Redux store-এ থাকে, local & global state একসাথে manage করা যায়।                      |
+| **Background Refetching**        | ✅ সহজ                                       | ✅ সমর্থিত                          | React Query `refetchInterval`, RTK Query `pollingInterval`।                                     |
+| **Pagination & Infinite Scroll** | ✅ সহজ                                       | ✅ সমর্থিত                          | React Query সহজে page logic handle করে।                                                         |
+| **DevTools**                     | React Query DevTools                         | Redux DevTools + RTK Query DevTools | RTK Query Redux DevTools এ cache/state দেখা যায়।                                               |
+| **Flexibility**                  | খুব flexible                                 | Redux project-এ best                | React Query যেকোনো project-এ ব্যবহার করা যায়, RTK Query Redux requirement।                     |
+| **Learning Curve**               | সহজ                                          | Moderate                            | React Query simple API, RTK Query slice + tag logic বুঝতে হয়।                                  |
+| **Best Use Case**                | Standalone React apps, small-medium projects | Large Redux-based apps              | React Query minimal setup, RTK Query centralized API + state management।                        |
+
+---
+
+### সারসংক্ষেপ
+
+- **React Query**
+  - Standalone, কম boilerplate, দ্রুত fetch & cache।
+  - Small/medium projects এবং Redux ছাড়া apps-এর জন্য best।
+
+- **RTK Query**
+  - Redux store-এ centralized cache & state।
+  - Large projects যেখানে API + Redux একসাথে রাখতে হবে।
