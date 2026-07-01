@@ -1,15 +1,16 @@
+"use client";
+
 import {
-  Sandpack,
-  SandpackPredefinedTemplate,
-  SandpackSetup,
-  SandpackThemeProp,
+    Sandpack,
+    type SandpackPredefinedTemplate,
+    type SandpackSetup,
+    type SandpackThemeProp,
 } from "@codesandbox/sandpack-react";
 
 interface LiveCodeEditorProps {
   files: Record<
     string,
-    | string
-    | { code: string; readOnly?: boolean; active?: boolean; hidden?: boolean }
+    string | { code: string; readOnly?: boolean; active?: boolean; hidden?: boolean }
   >;
   template?: SandpackPredefinedTemplate;
   theme?: SandpackThemeProp;
@@ -38,13 +39,7 @@ export default function LiveCodeEditor({
 }: LiveCodeEditorProps) {
   return (
     <div style={{ marginTop: "30px", marginBottom: "20px" }}>
-      <Sandpack
-        template={template}
-        theme={theme}
-        files={files}
-        customSetup={customSetup}
-        options={options}
-      />
+      <Sandpack template={template} theme={theme} files={files} customSetup={customSetup} options={options} />
     </div>
   );
 }

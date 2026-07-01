@@ -1,0 +1,302 @@
+---
+title: Axios HTTP Requests
+description: >-
+  ডেভেলপারদের জীবনে সার্ভারের সাথে ডেটা আদান-প্রদান করা খুব সাধারণ এবং
+  গুরুত্বপূর্ণ কাজ। তুমি যখনই কোনো অ্যাপ্লিকেশনে ইউজার লিস্ট, পোস্ট, বা কোনো
+  অর্ডার…
+---
+# ✅ **Axios: সহজ ভাষায় পূর্ণাঙ্গ গাইড (একদম জিরো থেকে প্রো লেভেল)**
+
+ডেভেলপারদের জীবনে **সার্ভারের সাথে ডেটা আদান-প্রদান** করা খুব সাধারণ এবং গুরুত্বপূর্ণ কাজ। তুমি যখনই কোনো অ্যাপ্লিকেশনে **ইউজার লিস্ট**, **পোস্ট**, বা কোনো **অর্ডার লিস্ট** দেখাও, তখনই ব্যাকএন্ড সার্ভার থেকে ডেটা নিয়ে আসতে হয়।
+
+এর জন্য অনেক টুলস আছে, কিন্তু **Axios** সবচেয়ে বেশি জনপ্রিয়, কারণ এটা ব্যবহার করা সহজ, ফিচার-রিচ এবং অনেক ফ্লেক্সিবল।
+
+এক কথায় বললে, **Axios মানে হলো, অন্যের বাড়িতে খবর পাঠানো ও খবর আনা, কিন্তু ভদ্রভাবে, নিয়মমাফিক এবং সেফলি!**
+
+---
+
+## 🌟 **১. Axios কী? এবং এর দর্শন**
+
+**Axios হলো একটি Promise-ভিত্তিক HTTP ক্লায়েন্ট।**
+এর মানে হলো, তুমি চাইলে `async/await` ব্যবহার করে সহজে কোড লিখতে পারো।
+
+যেমন ধরো, তোমার ছোট ভাই মোমিনুলকে চা আনতে পাঠালে। তুমি জানো, ও একসময় ফিরে আসবে। তুমি চাইলে বসে বসে ওর জন্য অপেক্ষা করতে পারো (যেমন `await`), অথবা অন্য কাজ করতে পারো (যেমন `.then()` দিয়ে)।
+
+Axios-এর মূল দর্শন:
+
+- ✅ **একই কোড ব্রাউজার ও সার্ভারে চলে** (যেমন, React বা Node.js দুটোতেই)।
+- ✅ **Promise-based** — তাই `async/await` এর সাথে চমৎকারভাবে কাজ করে।
+- ✅ **ডেটাকে অটোমেটিক JSON থেকে অবজেক্টে রূপান্তর করে** — তোমাকে আলাদা পার্স করতে হয় না।
+- ✅ **শক্তিশালী Error Handling** — সার্ভার এরর, নেটওয়ার্ক এরর, সব সহজে ধরা যায়।
+- ✅ **Interceptors** — অর্থাৎ, রিকোয়েস্ট যাওয়ার আগে বা রেসপন্স আসার পরে তুমি কিছু করতে পারো (যেমন, টোকেন অ্যাড করা, লোডার দেখানো)।
+
+---
+
+## 🚀 **২. রিকোয়েস্ট পাঠানোর সহজ উপায়**
+
+### ✅ সরাসরি Method ব্যবহার
+
+- `axios.get(url, [config])` — ডেটা আনার জন্য।
+- `axios.post(url, data, [config])` — নতুন ডেটা পাঠানোর জন্য।
+- `axios.put(url, data, [config])` — পুরোপুরি আপডেট করার জন্য।
+- `axios.patch(url, data, [config])` — আংশিক আপডেট করার জন্য।
+- `axios.delete(url, [config])` — ডেটা মুছে ফেলার জন্য।
+
+#### উদাহরণ: GET
+
+```javascript
+async function fetchUsers() {
+  try {
+    const response = await axios.get(
+      "https://jsonplaceholder.typicode.com/users"
+    );
+    console.log("ইউজার লিস্ট:", response.data);
+  } catch (error) {
+    console.error("এরর:", error.message);
+  }
+}
+fetchUsers();
+```
+
+#### উদাহরণ: POST
+
+```javascript
+async function createPost() {
+  try {
+    const postData = {
+      title: "React Bangla Rocks!",
+      body: "Banglai React শেখা সহজ!",
+      userId: 1,
+    };
+    const response = await axios.post(
+      "https://jsonplaceholder.typicode.com/posts",
+      postData
+    );
+    console.log("নতুন পোস্ট:", response.data);
+  } catch (error) {
+    console.error("পোস্ট এরর:", error.message);
+  }
+}
+createPost();
+```
+
+---
+
+### ✅ কনফিগ অবজেক্ট দিয়ে
+
+```javascript
+axios({
+  method: "get",
+  url: "https://jsonplaceholder.typicode.com/todos/1",
+  responseType: "json",
+}).then((response) => {
+  console.log("ডেটা:", response.data);
+});
+```
+
+---
+
+## ⚙️ **৩. রিকোয়েস্ট কনফিগারেশন**
+
+যখন তুমি অর্ডার করতে যাও, যেমন খাবারের অর্ডার, তখন শুধু খাবারের নাম বললেই হয় না। তোমাকে ঠিক করতে হয় — কোন রেস্টুরেন্ট থেকে (baseURL), কোন সস লাগবে (headers), কখন দরকার (timeout), কে রিসিভ করবে (auth), ইত্যাদি।
+
+Axios-এও ঠিক তাই:
+
+- **url:** কোন এন্ডপয়েন্টে যাবে।
+- **method:** GET/POST/PATCH ইত্যাদি।
+- **baseURL:** প্রতিবার সম্পূর্ণ URL না লিখে, একবারে মূল URL দিয়ে দেওয়া।
+- **headers:** অথেনটিকেশন টোকেন বা কনটেন্ট টাইপ।
+- **params:** Query string হিসেবে প্যারামিটার, যেমন `?search=react`.
+- **data:** Body-তে যাবে (POST, PUT, PATCH-এ লাগে)।
+- **timeout:** কত সেকেন্ডের মধ্যে না এলে বাতিল হবে।
+- **withCredentials:** Cookie বা অন্য সিকিউর ডাটা পাঠাতে হবে কিনা।
+- **auth:** Username-password দিয়ে বেসিক অথেনটিকেশন।
+- **responseType:** json, blob, text ইত্যাদি।
+- **onUploadProgress, onDownloadProgress:** প্রগ্রেস ট্র্যাকিং, যেমন বড় ফাইল আপলোডের সময় লোডার দেখানো।
+
+---
+
+## ✅ **৪. রেসপন্সের কাঠামো**
+
+যখন খাবার চলে আসে, তুমি শুধু খাবারই দেখ না। তুমি বিল দেখো, কবে এসেছে তা দেখো, কোন রেস্তোরাঁ থেকে এসেছে তা দেখো। ঠিক তেমনি, Axios রেসপন্সেও অনেক ইনফো থাকে।
+
+```js
+{
+  data: {...},        // মূল ডেটা
+  status: 200,        // HTTP স্ট্যাটাস কোড
+  statusText: "OK",  // Text description
+  headers: {...},     // হেডার
+  config: {...},      // রিকোয়েস্টের কনফিগ
+  request: {...},     // একচুয়াল রিকোয়েস্ট অবজেক্ট
+}
+```
+
+আমরা সাধারণত `response.data` ব্যবহার করি।
+
+---
+
+## 🧰 **৫. Axios Instance: কোডকে ক্লিন ও Reusable রাখা**
+
+বড় প্রজেক্টে বারবার `baseURL`, `headers` লিখতে বিরক্তিকর, যেমন বারবার একই ঠিকানা ও একই রাঁধুনির নাম বলা। এর সমাধান — **Instance**।
+
+#### উদাহরণ:
+
+```javascript
+// src/api/api.js
+import axios from "axios";
+
+const apiClient = axios.create({
+  baseURL: "https://api.react-bangla.com/v1",
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+  },
+});
+
+export default apiClient;
+```
+
+#### ব্যবহার
+
+```javascript
+import apiClient from "./api/api";
+
+async function getCourses() {
+  const res = await apiClient.get("/courses");
+  console.log(res.data);
+}
+```
+
+ফলে কোড সুন্দর ও DRY হয়।
+
+---
+
+## 🛡 **৬. Interceptors: প্রি-চেক ও পোস্ট-চেক**
+
+Interceptors হলো মাঝখানে বসা সেই "দারোয়ান", যে রিকোয়েস্ট যাওয়ার আগে সব চেক করে নেয়, আর রেসপন্স আসার পরও চেক করে।
+
+### ✅ Request Interceptor
+
+```javascript
+apiClient.interceptors.request.use(
+  (config) => {
+    console.log("রিকোয়েস্ট যাচ্ছে...");
+    // টোকেন, লোডার ইত্যাদি অ্যাড করতে পারো
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+```
+
+### ✅ Response Interceptor
+
+```javascript
+apiClient.interceptors.response.use(
+  (response) => {
+    console.log("রেসপন্স এসেছে!");
+    return response;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      alert("সেশন শেষ, আবার লগইন করুন।");
+      // window.location.href = "/login";
+    } else if (error.response?.status === 500) {
+      alert("সার্ভার এরর, একটু পরে চেষ্টা করুন।");
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+---
+
+## 💣 **৭. এরর হ্যান্ডলিং**
+
+Axios দিয়ে এরর হ্যান্ডল করা অনেক সহজ।
+যদি সার্ভার unavailable হয়, বা ইন্টারনেট যায়, বা সার্ভার থেকে 404/500 আসে — সব সহজে ধরা যায়।
+
+```javascript
+try {
+  const res = await axios.get("/api/abc");
+  console.log(res.data);
+} catch (error) {
+  if (error.response) {
+    console.log("সার্ভার এরর:", error.response.status);
+  } else if (error.request) {
+    console.log("কোনো রেসপন্সই আসে নাই।");
+  } else {
+    console.log("Config এরর:", error.message);
+  }
+}
+```
+
+---
+
+## 🎯 **কেন Axios বেছে নেব?**
+
+- সহজে ব্যবহারযোগ্য (অন্যদের তুলনায় কম কনফিগ)।
+- Interceptors ফিচারের কারণে বড় প্রজেক্টেও সহজে হ্যান্ডল করা যায়।
+- Default JSON পার্সিং।
+- সার্ভার ও ব্রাউজার দুই জায়গাতেই কাজ করে।
+- Promise-based, তাই async/await এর সাথে জোড়ালো ফ্রেন্ডশিপ!
+
+---
+
+## 🔥 **শেষ কথা: React অ্যাপে কিভাবে ব্যবহার করব?**
+
+ধরা যাক, তুমি React এ কোনো ইউজার প্রোফাইল লোড করবে:
+
+```javascript
+import { useEffect, useState } from "react";
+import apiClient from "./api/api";
+
+function UserProfile() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await apiClient.get("/user/profile");
+        setUser(res.data);
+      } catch (error) {
+        console.log("এরর:", error.message);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  if (!user) return <p>লোড হচ্ছে...</p>;
+  return (
+    <div>
+      <h1>নাম: {user.name}</h1>
+      <p>ইমেইল: {user.email}</p>
+    </div>
+  );
+}
+
+export default UserProfile;
+```
+
+---
+
+## ✅ **উপসংহার**
+
+Axios হলো সেই বিশ্বস্ত দৌড়বিদ, যে সার্ভারে গিয়ে বার্তা নিয়ে আসে এবং ফেরত দেয়।
+তুমি চাইলে তাকে বলো — “এই দৌড়াও”, সে ঠিকমতোই কাজ করবে।
+
+সঠিকভাবে instance, interceptor, এবং error handling ব্যবহার করলে তোমার অ্যাপ হবে বেশি প্রফেশনাল, রিডেবল এবং ইউজার-ফ্রেন্ডলি।
+
+---
+
+<Donate />
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

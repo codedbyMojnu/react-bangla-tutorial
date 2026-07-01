@@ -1,0 +1,250 @@
+---
+title: Dynamic Routing with React Router
+description: >-
+  Absolutely, ভাই! চলুন Routing টপিকটা আমরা একদম একে একে, সহজ ও সরল বাংলায়
+  লিখি—ভাবুন আপনি একজন বন্ধুর পাশে বসেই শেখাচ্ছেন।
+---
+Absolutely, ভাই! চলুন **Routing** টপিকটা আমরা একদম একে একে, সহজ ও সরল বাংলায় লিখি—ভাবুন আপনি একজন বন্ধুর পাশে বসেই শেখাচ্ছেন।
+
+---
+
+# Routing (রাউটিং)
+
+**React Router-এ রাউটিং কনফিগার করার জন্য** `<Routes>` আর `<Route>` ব্যবহার করা হয়। এগুলো URL এর সেগমেন্টগুলোকে UI কম্পোনেন্ট বা পেজের সাথে যুক্ত করে।
+
+---
+
+## ১. রুট কনফিগার করা
+
+একটা খুব সাধারণ উদাহরণ দিয়ে শুরু করি:
+
+```tsx
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router";
+import App from "./app";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />} />
+    </Routes>
+  </BrowserRouter>
+);
+```
+
+এখানে `<BrowserRouter>` আপনার রাউটার ফ্রেমওয়ার্ক, `<Routes>` ভিতরে `<Route>`গুলোতে URL লিখে UI নির্ধারণ করছেন।
+
+আরেকটু বড় উদাহরণ:
+
+```tsx
+<Routes>
+  <Route index element={<Home />} />
+  <Route path="about" element={<About />} />
+
+  <Route element={<AuthLayout />}>
+    <Route path="login" element={<Login />} />
+    <Route path="register" element={<Register />} />
+  </Route>
+
+  <Route path="concerts">
+    <Route index element={<ConcertsHome />} />
+    <Route path=":city" element={<City />} />
+    <Route path="trending" element={<Trending />} />
+  </Route>
+</Routes>
+```
+
+- `index` প্রপ দিয়ে মূল (default) পেজ বোঝানো হয়।
+- `path="about"` এ গিয়ে `About` কম্পোনেন্ট দেখা যাবে।
+- `AuthLayout` একটা লেআউট—তার ভেতরের `login` ও `register` রুটগুলোও সেট হবে।
+- `concerts` এর নিচে nested রুটগুলো: মূল, ডায়নামিক সিটি, আর ট্রেন্ডিং।
+
+---
+
+## ২. নেস্টেড রুট (Nested Routes)
+
+নেস্টেড রুটের মাধ্যমে আপনি প্যারেন্ট URL-এর ভেতরে চাইল্ড URL রাখতে পারেন।
+
+```tsx
+<Routes>
+  <Route path="dashboard" element={<Dashboard />}>
+    <Route index element={<Home />} />
+    <Route path="settings" element={<Settings />} />
+  </Route>
+</Routes>
+```
+
+- `/dashboard` → `Dashboard` + তার ভিতরের `Home`
+- `/dashboard/settings` → `Dashboard` + `Settings`
+
+**জোরালো কথা**: প্যারেন্টে `<Outlet />` থাকা আবশ্যক, তবেই চাইল্ড রেন্ডার হবে।
+
+```tsx
+export function Dashboard() {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <Outlet />
+    </div>
+  );
+}
+```
+
+---
+
+## ৩. লে-আউট রুট (Layout Routes)
+
+যখন আপনি চান এক ধরনের পেইজ সেটআপ (রে-ইউজেবল UI) অনেক পেজে, কিন্তু URL আলাদা না হোক, তখন কাজ দেয় লে-আউট রুট:
+
+```tsx
+<Routes>
+  <Route element={<MarketingLayout />}>
+    <Route index element={<MarketingHome />} />
+    <Route path="contact" element={<Contact />} />
+  </Route>
+
+  <Route path="projects">
+    <Route index element={<ProjectsHome />} />
+    <Route element={<ProjectsLayout />}>
+      <Route path=":pid" element={<Project />} />
+      <Route path=":pid/edit" element={<EditProject />} />
+    </Route>
+  </Route>
+</Routes>
+```
+
+- `MarketingLayout` লে-আউট হিসেবে কাজ করে, কিন্তু URL এ কিছু যোগ করে না।
+- `projects` এর ভেতরে আবার ডায়নামিক ও এডিট পেইজগুলো একটি ভিন্ন লে-আউট ব্যবহার করছে।
+
+---
+
+## ৪. ইনডেক্স রুট (Index Routes)
+
+ইনডেক্স রুট হলো ডিফল্ট চাইল্ড যখন URL চাইল্ড না থাকলে:
+
+```tsx
+<Routes>
+  <Route path="/" element={<Root />}>
+    <Route index element={<Home />} />
+
+    <Route path="dashboard" element={<Dashboard />}>
+      <Route index element={<DashboardHome />} />
+      <Route path="settings" element={<Settings />} />
+    </Route>
+  </Route>
+</Routes>
+```
+
+- `/` → `Root` + `Home`
+- `/dashboard` → `Dashboard` + `DashboardHome`
+- `/dashboard/settings` → `Dashboard` + `Settings`
+
+**মনে রাখবেন**: ইনডেক্স রুটের জায়গায় চাইল্ড থাকতে পারে না। সেখানে চাইলে লে-আউট রুট ব্যবহার করবেন।
+
+---
+
+## ৫. রাউট প্রিফিক্স (Route Prefixes)
+
+`<Route path="projects">`–এর মতো রুট শুধু URL প্রিফিক্স যোগ করে, কিন্তু নিজে UI দেয় না, যদি `element` না দেওয়া হয়।
+
+```tsx
+<Route path="projects">
+  <Route index element={<ProjectsHome />} />
+  <Route element={<ProjectsLayout />}>
+    <Route path=":pid" element={<Project />} />
+    <Route path=":pid/edit" element={<EditProject />} />
+  </Route>
+</Route>
+```
+
+এতে `/projects`, `/projects/123`, `/projects/123/edit` কাজ করবে।
+
+---
+
+## ৬. ডায়নামিক সেগমেন্ট (Dynamic Segments)
+
+URL-এর নির্দিষ্ট অংশ ধরে ডায়নামিক ডাটা পেতে `:paramName` ব্যবহার করা হয়:
+
+```tsx
+<Route path="teams/:teamId" element={<Team />} />;
+
+// Team কম্পোনেন্টে:
+import { useParams } from "react-router";
+export function Team() {
+  let { teamId } = useParams();
+  // এখন teamId থেকে data fetch করা যাবে
+}
+```
+
+একাধিক ডায়নামিক সেগমেন্টও করা যায়:
+
+```tsx
+<Route path="/c/:categoryId/p/:productId" element={<Product />} />
+```
+
+`useParams()`-এ `{ categoryId, productId }` পেয়ে যাবেন।
+
+সেগুলা ইউনিক নাম দিন, না হলে শেষেরটাই ওভাররাইট হয়ে যাবে।
+
+---
+
+## ৭. অপশনাল সেগমেন্ট (Optional Segments)
+
+কখনো URL-এর সেগমেন্ট থাকতে অথবা না-ও থাকতে পারে:
+
+```tsx
+<Route path=":lang?/categories" element={<Categories />} />
+<Route path="users/:userId/edit?" element={<User />} />
+```
+
+- `?lang` না থাকলেও `/categories` চলে।
+- `users/123` & `users/123/edit` — দুটোই `/users/:userId`-এ মেলে।
+
+---
+
+## ৮. স্প্লাট (Splats – Catch‑all)
+
+এটা দিয়ে URL এর বাকি অংশ ক্যাপচার করা যায়:
+
+```tsx
+<Route path="files/*" element={<File />} />;
+
+// File কম্পোনেন্টে:
+import { useParams } from "react-router";
+let { "*": splat } = useParams();
+// splat-এ থাকবে files/ পয়েন্টের পরের অংশ
+```
+
+উদাহরণ: `/files/a/b/c` → `splat = "a/b/c"`।
+
+---
+
+## ৯. লিংক দেওয়া
+
+UI-তে আমরা `Link` ও `NavLink` ব্যবহার করি, URL-এ যেতে:
+
+```jsx
+import { NavLink, Link } from "react-router";
+
+function Header() {
+  return (
+    <nav>
+      <NavLink to="/" className={({ isActive }) => (isActive ? "active" : "")}>
+        Home
+      </NavLink>
+      <Link to="/concerts/salt-lake-city">Concerts</Link>
+    </nav>
+  );
+}
+```
+
+- `NavLink` দিয়ে ইজলি `active` কন্ডিশন চেক করা যায়, যখন আগের লিংকটি এখনকার পেজ হয়।
+- `Link` দিয়ে সাধারণ রাউটিং হয়।
+
+---
+
+🎯 **সব হয়ে গেলো!**
+
+এই পুরো গাইড আপনার পাশে বসে বুঝিয়েছে, ঠিক React Router-এ সেকশন বাই সেকশন—যে কোন বিষয়ে বাদ নেই, সবই কভার করা হয়েছে।
+
+

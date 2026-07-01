@@ -1,9 +1,0 @@
-{
-  "reacting-to-input-with-state": "Reacting to Input with State",
-  "choosing-the-state-structure": "Choosing the State Structure",
-  "sharing-state-between-components": "Sharing State Between Components",
-  "preserving-and-resetting-state": "Preserving and Resetting State",
-  "extracting-state-logic-into-a-reducer": "Extracting State Logic into a Reducer",
-  "passing-data-deeply-with-context": "Passing Data Deeply with Context",
-  "scaling-up-with-reducer-and-context": "Scaling Up with Reducer and Context"
-}

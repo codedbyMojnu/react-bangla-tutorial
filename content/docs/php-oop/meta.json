@@ -1,0 +1,23 @@
+{
+  "pages": [
+    "php-oop-what-is",
+    "php-oop-classes-objects",
+    "php-oop-constructor",
+    "php-oop-destructor",
+    "php-oop-access-modifiers",
+    "php-oop-inheritance",
+    "php-oop-constants",
+    "php-oop-classes-abstract",
+    "php-oop-interfaces",
+    "php-oop-traits",
+    "php-oop-static-methods",
+    "php-oop-static-properties",
+    "php-namespaces",
+    "php-iterables",
+    "..."
+  ],
+  "title": "PHP OOP",
+  "description": "বাংলায় PHP অবজেক্ট-ওরিয়েন্টেড প্রোগ্রামিং (OOP) শিখুন।",
+  "icon": "FileCode",
+  "root": true
+}

@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "index",
+    "react-query-all-in-one-example",
+    "rtk-query-vs-react-query",
+    "react-query-introduction",
+    "react-query-server-side-rendering",
+    "react-query-ui-updates-prefetching",
+    "react-query-mutations",
+    "react-query-stale-fresh-data",
+    "react-query-real-world-application",
+    "..."
+  ],
+  "title": "React Query",
+  "description": "বাংলায় TanStack React Query দিয়ে সার্ভার-স্টেট ও ডাটা ফেচিং শিখুন।",
+  "icon": "RefreshCw",
+  "root": true
+}

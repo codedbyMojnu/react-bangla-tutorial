@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import styles from "./showcase.module.css";
 
 interface Project {
@@ -18,17 +19,17 @@ const projects: Project[] = [
     id: 1,
     title: "React Bangla Tutorial Website",
     description:
-      "Banglay React শেখার জন্য তৈরি করা একটি সম্পূর্ণ লার্নিং প্ল্যাটফর্ম, যেখানে রয়েছে ইন্টারঅ্যাকটিভ উদাহরণ, কুইজ এবং প্রজেক্ট-ভিত্তিক শেখা।",
-    technologies: ["Next.js", "Nextra", "React", "TypeScript", "MDX"],
+      "Banglay React শেখার জন্য তৈরি করা একটি সম্পূর্ণ লার্নিং প্ল্যাটফর্ম, যেখানে রয়েছে ইন্টারঅ্যাকটিভ উদাহরণ, কুইজ এবং প্রজেক্ট-ভিত্তিক শেখা।",
+    technologies: ["Next.js", "Fumadocs", "React", "TypeScript", "MDX"],
     imageUrl: "/images/projects/react-bangla-platform.png",
     liveUrl: "https://react-bangla.vercel.app",
-    sourceCodeUrl: "https://github.com/codedbymojnu/react-bangla-tutorial",
+    sourceCodeUrl: "https://github.com/codedbymojnu/react-bangla",
     category: "Education",
     featured: true,
   },
 ];
 
-const Showcase: React.FC = () => {
+export default function Showcase() {
   const featuredProjects = projects.filter((p) => p.featured);
 
   return (
@@ -37,13 +38,13 @@ const Showcase: React.FC = () => {
         {featuredProjects.map((project) => (
           <div key={project.id} className={styles.projectCard}>
             <div className={styles.imageContainer}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={project.imageUrl}
                 alt={project.title}
                 className={styles.projectImage}
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "/images/projects/placeholder.png";
+                  (e.target as HTMLImageElement).src = "/images/projects/placeholder.png";
                 }}
               />
             </div>
@@ -60,12 +61,7 @@ const Showcase: React.FC = () => {
               </div>
 
               <div className={styles.projectActions}>
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.liveButton}
-                >
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={styles.liveButton}>
                   🌐 Demo
                 </a>
                 <a
@@ -83,6 +79,4 @@ const Showcase: React.FC = () => {
       </div>
     </section>
   );
-};
-
-export default Showcase;
+}

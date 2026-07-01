@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "responding-to-events",
+    "state-a-component-memory",
+    "render-and-commit-phase",
+    "state-as-a-snapshot",
+    "queueing-a-series-of-state-updates",
+    "updating-arrays-in-state",
+    "updating-objects-in-state",
+    "..."
+  ],
+  "title": "Adding Interactivity"
+}

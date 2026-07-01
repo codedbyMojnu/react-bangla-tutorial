@@ -1,9 +1,0 @@
-{
-  "responding-to-events": "Responding to Events",
-  "state-a-component-memory": "State: A Component's Memory",
-  "render-and-commit-phase": "Render and Commit Phase",
-  "state-as-a-snapshot": "State as a Snapshot",
-  "queueing-a-series-of-state-updates": "Queueing a Series of State Updates",
-  "updating-arrays-in-state": "Updating Arrays in State",
-  "updating-objects-in-state": "Updating Objects in State"
-}

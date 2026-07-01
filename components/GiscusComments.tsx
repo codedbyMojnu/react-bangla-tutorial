@@ -1,5 +1,6 @@
+"use client";
+
 import Giscus from "@giscus/react";
-import React from "react";
 
 interface GiscusCommentsProps {
   repo: `${string}/${string}`;
@@ -12,7 +13,7 @@ interface GiscusCommentsProps {
   lang?: string;
 }
 
-const GiscusComments: React.FC<GiscusCommentsProps> = ({
+export default function GiscusComments({
   repo,
   repoId,
   category,
@@ -21,7 +22,7 @@ const GiscusComments: React.FC<GiscusCommentsProps> = ({
   inputPosition = "bottom",
   theme = "light",
   lang = "bn",
-}) => {
+}: GiscusCommentsProps) {
   return (
     <div style={{ marginTop: "2.5rem" }}>
       <Giscus
@@ -39,6 +40,4 @@ const GiscusComments: React.FC<GiscusCommentsProps> = ({
       />
     </div>
   );
-};
-
-export default GiscusComments;
+}

@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "referencing-values-with-refs",
+    "manipulating-dom-with-refs",
+    "synchronizing-with-useeffect",
+    "you-might-not-need-an-effect",
+    "lifecycle-of-reactive-effects",
+    "separating-events-from-effect",
+    "removing-effect-dependencies",
+    "reusing-logic-with-custom-hooks",
+    "..."
+  ],
+  "title": "Escape Hatches"
+}

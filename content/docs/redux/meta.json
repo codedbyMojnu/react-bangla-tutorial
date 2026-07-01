@@ -1,0 +1,6 @@
+{
+  "title": "Redux",
+  "description": "বাংলায় Redux Toolkit ও RTK Query দিয়ে স্টেট ম্যানেজমেন্ট শিখুন।",
+  "icon": "Boxes",
+  "root": true
+}

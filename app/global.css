@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  /* Bengali matras & conjuncts need extra vertical space vs Latin text */
+  line-height: 1.8;
+  font-family:
+    var(--font-anek-bangla), "Noto Sans Bengali", "Hind Siliguri", Roboto,
+    Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  /* Baloo Da 2: rounded display quality, strong hierarchy for tutorial headers */
+  font-family: var(--font-baloo-da-2), var(--font-anek-bangla), sans-serif;
+  line-height: 1.4;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}

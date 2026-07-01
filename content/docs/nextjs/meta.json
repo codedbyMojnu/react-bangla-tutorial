@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "index",
+    "before-move-to-next-js",
+    "introduction",
+    "01-app",
+    "..."
+  ],
+  "title": "Next.js",
+  "description": "বাংলায় Next.js অফিসিয়াল ডকুমেন্টেশন ভিত্তিক সম্পূর্ণ টিউটোরিয়াল।",
+  "icon": "Layers",
+  "root": true
+}

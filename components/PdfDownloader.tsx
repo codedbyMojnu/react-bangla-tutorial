@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./pdfDownloader.module.css";
 
 interface PdfDownloaderProps {
@@ -6,7 +5,7 @@ interface PdfDownloaderProps {
   title: string; // Tutorial title
 }
 
-const PdfDownloader: React.FC<PdfDownloaderProps> = ({ src, title }) => {
+export default function PdfDownloader({ src, title }: PdfDownloaderProps) {
   return (
     <div className={styles.pdfContainer}>
       <div className={styles.pdfCard}>
@@ -16,12 +15,8 @@ const PdfDownloader: React.FC<PdfDownloaderProps> = ({ src, title }) => {
           ⬇️ Download PDF
         </a>
 
-        <div className={styles.pdfFooter}>
-          👉 টিউটোরিয়ালটি PDF আকারে ডাউনলোড করে পড়ুন 🚀
-        </div>
+        <div className={styles.pdfFooter}>👉 টিউটোরিয়ালটি PDF আকারে ডাউনলোড করে পড়ুন 🚀</div>
       </div>
     </div>
   );
-};
-
-export default PdfDownloader;
+}

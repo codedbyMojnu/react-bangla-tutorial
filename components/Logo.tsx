@@ -1,15 +1,15 @@
 import Image from "next/image";
 
-const Logo = () => {
+export default function Logo() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
       <Image
         src="/icons/react-bangla-icon.png"
-        alt="React Bangla Tutorial Logo"
+        alt="React Bangla Logo"
         width={32}
         height={32}
         style={{ borderRadius: "6px" }}
-        priority // ensures logo loads immediately (good for header)
+        priority
       />
       <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
         <span
@@ -34,6 +34,4 @@ const Logo = () => {
       </div>
     </div>
   );
-};
-
-export default Logo;
+}

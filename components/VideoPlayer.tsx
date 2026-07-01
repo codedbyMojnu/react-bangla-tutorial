@@ -1,18 +1,13 @@
-import React from "react";
 import styles from "./videoPlayer.module.css";
 
 interface VideoPlayerProps {
-  src: string; // should be YouTube link
+  src: string; // should be a YouTube link
   title: string;
   optionalMessage?: string;
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({
-  src,
-  title,
-  optionalMessage,
-}) => {
-  // Convert normal YouTube link into embeddable one
+export default function VideoPlayer({ src, title, optionalMessage }: VideoPlayerProps) {
+  // Convert a normal YouTube link into an embeddable one
   const embedUrl = src.replace("watch?v=", "embed/");
 
   return (
@@ -25,22 +20,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             className={styles.videoPlayer}
             src={embedUrl}
             title={title}
-            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
         </div>
 
         <div className={styles.videoFooter}>
-          {optionalMessage && (
-            <blockquote className={styles.inlineQuote}>
-              {optionalMessage}
-            </blockquote>
-          )}
+          {optionalMessage && <blockquote className={styles.inlineQuote}>{optionalMessage}</blockquote>}
         </div>
       </div>
     </div>
   );
-};
-
-export default VideoPlayer;
+}

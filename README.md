@@ -1,155 +1,45 @@
-# React Bangla Tutorial 🇧🇩
+# react-bangla
 
-**React Bangla Tutorial** একটি ওপেন সোর্স প্রজেক্ট, যেখানে আমরা React-এর অফিসিয়াল ডকুমেন্টেশনকে বাংলায় সহজ ভাষায় উপস্থাপন করেছি। আমাদের লক্ষ্য হলো বাংলা ভাষাভাষী ডেভেলপারদের জন্য React শেখাকে আরও সহজ ও আনন্দদায়ক করা।
+This is a Next.js application generated with
+[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
 
-📘 **লাইভ টিউটোরিয়াল সাইট:** [react-bangla.vercel.app](https://react-bangla.vercel.app)
-
----
-
-<!-- SEO & Social Meta -->
-<meta name="description" content="React Bangla Tutorial - সহজ বাংলায় React শেখার জন্য ওপেন সোর্স গাইড। লাইভ টিউটোরিয়াল এবং উদাহরণ সহ।">
-<meta property="og:title" content="React Bangla Tutorial 🇧🇩">
-<meta property="og:description" content="React Bangla Tutorial - সহজ বাংলায় React শেখার জন্য ওপেন সোর্স গাইড।">
-<meta property="og:url" content="https://github.com/codedbyMojnu/react-bangla-tutorial">
-<meta property="og:image" content="https://contrib.rocks/image?repo=codedbyMojnu/react-bangla-tutorial">
-<meta name="twitter:card" content="summary_large_image">
-
----
-
-## ✨ React Bangla Tutorial এ কি কি পাবেন-
-
-- ✅ অফিসিয়াল React ডকুমেন্টেশন অনুসরণ করে লেখা
-- ✅ সহজ ও প্রাঞ্জল বাংলা ভাষায় প্রত্যেকটা টপিকের ব্যাখ্যা
-- ✅ প্রতিটি অধ্যায়ে উদাহরণসহ ব্যাখ্যা ও অনুশীলনী
-- ✅ ওপেন সোর্স ও কমিউনিটি চালিত
-
-<hr/>
-
-## 🚀 কিভাবে শুরু করবেন
-
-### ১. প্রজেক্ট ক্লোন করুন
-
-```bash
-git clone https://github.com/codedbyMojnu/react-bangla-tutorial.git
-cd react-bangla-tutorial
-```
-
-### ২. ডিপেন্ডেন্সি ইনস্টল করুন
-
-```bash
-npm install
-# অথবা
-pnpm install
-```
-
-### ৩. ডেভেলপমেন্ট সার্ভার চালু করুন
+Run development server:
 
 ```bash
 npm run dev
-# অথবা
+# or
 pnpm dev
+# or
+yarn dev
 ```
 
-এখন আপনার ব্রাউজারে যান: [http://localhost:3000](http://localhost:3000)
+Open http://localhost:3000 with your browser to see the result.
 
----
+## Explore
 
-## 🤝 কিভাবে অবদান রাখবেন
+In the project, you can see:
 
-আমরা আপনাকে আমাদের প্রজেক্টে অবদান রাখতে আন্তরিকভাবে স্বাগত জানাই! নিচের ধাপগুলো অনুসরণ করুন:
+- `lib/source.ts`: Code for content source adapter, [`loader()`](https://fumadocs.dev/docs/headless/source-api) provides the interface to access your content.
+- `lib/layout.shared.tsx`: Shared options for layouts, optional but preferred to keep.
 
-1. **ফর্ক করুন** এই রিপোজিটরিটি।
-2. **ক্লোন করুন** আপনার ফর্ক করা রিপোজিটরিটি:
+| Route                     | Description                                            |
+| ------------------------- | ------------------------------------------------------ |
+| `app/(home)`              | The route group for your landing page and other pages. |
+| `app/docs`                | The documentation layout and pages.                    |
+| `app/api/search/route.ts` | The Route Handler for search.                          |
 
-   ```bash
-   git clone https://github.com/your-username/react-bangla-tutorial.git
-   ```
+### Fumadocs MDX
 
-3. **নতুন ব্রাঞ্চ তৈরি করুন**:
+A `source.config.ts` config file has been included, you can customise different options like frontmatter schema.
 
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+Read the [Introduction](https://fumadocs.dev/docs/mdx) for further details.
 
-4. **আপনার পরিবর্তন করুন** এবং **কমিট করুন**:
+## Learn More
 
-   ```bash
-   git commit -m "আপনার পরিবর্তনের সংক্ষিপ্ত বিবরণ"
-   ```
+To learn more about Next.js and Fumadocs, take a look at the following
+resources:
 
-5. **পুশ করুন** আপনার ব্রাঞ্চ:
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-6. **পুল রিকোয়েস্ট (Pull Request)** তৈরি করুন মূল রিপোজিটরিতে।
-
-### 🛠️ অবদান রাখার কিছু পরামর্শ
-
-- বানান ও ব্যাকরণ ঠিক রাখুন।
-- কোড উদাহরণগুলো পরীক্ষা করে যুক্ত করুন।
-- প্রতিটি পরিবর্তনের জন্য স্পষ্ট কমিট মেসেজ ব্যবহার করুন।
-- বড় পরিবর্তনের আগে Issue খুলে আলোচনা করুন।
-
-<hr/>
-
-## 📂 রিপোজিটরির গঠন
-
-```
-react-bangla-tutorial/
-├── pages/                 # প্রতিটি অধ্যায়ের জন্য আলাদা ফাইল
-├── components/            # পুনর্ব্যবহারযোগ্য কম্পোনেন্ট
-├── public/                # পাবলিক অ্যাসেট (ছবি, ফন্ট ইত্যাদি)
-├── theme.config.tsx       # থিম কনফিগারেশন
-├── package.json           # প্রজেক্ট কনফিগারেশন
-└── README.md              # এই ফাইল
-```
-
----
-
-## 👋 ভিজিটরদের জন্য বিশেষ অনুরোধ
-
-আপনি যদি এই রিপোজিটরিটি ভিজিট করে থাকেন তবে দয়া করে ⭐ **Star দিন** অথবা 🍴 **Fork করুন**।  
-👉 এতে আমি জানতে পারব কে কে এখানে এসেছেন, কারণ আপনার GitHub Username তখন স্টার/ফর্ক লিস্টে দেখা যাবে।
-
----
-
-## 🙌 Contributors Wall 🎉
-
-এই প্রজেক্টে যারা অবদান রেখেছেন, তাদেরকে ধন্যবাদ! 💙
-
-<a href="https://github.com/codedbyMojnu/react-bangla-tutorial/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=codedbyMojnu/react-bangla-tutorial" />
-</a>
-
----
-
-## ⭐ Stargazers Wall 🎉
-
-যারা এই রিপো ⭐ **Star** দিয়েছেন — আপনাদের ধন্যবাদ! 🙏
-
-[![Stargazers repo roster for @codedbyMojnu/react-bangla-tutorial](https://bytecrank.com/nastyox/reporoster/php/stargazersSVG.php?user=codedbyMojnu&repo=react-bangla-tutorial)](https://github.com/codedbyMojnu/react-bangla-tutorial/stargazers)
-
----
-
-## 🍴 Forkers Wall
-
-যারা এই রিপো 🍴 **Fork** করেছেন — আপনারাও আমাদের পরিবারের অংশ! 🚀
-
-[![Forkers repo roster for @codedbyMojnu/react-bangla-tutorial](https://bytecrank.com/nastyox/reporoster/php/forkersSVG.php?user=codedbyMojnu&repo=react-bangla-tutorial)](https://github.com/codedbyMojnu/react-bangla-tutorial/network/members)
-
-## 📚 অন্যান্য রিসোর্স
-
-- 📘 [React অফিসিয়াল ডকুমেন্টেশন](https://react.dev/)
-- 🎥 [LWS React Bangla Course](https://learnwithsumit.com/rnext)
-
-<hr/>
-
-## 📢 যোগাযোগ
-
-আপনার যদি কোনো প্রশ্ন, পরামর্শ বা সমস্যা থাকে, তাহলে [Issues](https://github.com/codedbyMojnu/react-bangla-tutorial/issues) বিভাগে জানান অথবা সরাসরি [Pull Request](https://github.com/codedbyMojnu/react-bangla-tutorial/pulls) পাঠান।
-
-<hr/>
-
-আপনার অবদান আমাদের প্রজেক্টকে আরও সমৃদ্ধ করবে। ধন্যবাদ! 💙
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
+  features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Fumadocs](https://fumadocs.dev) - learn about Fumadocs

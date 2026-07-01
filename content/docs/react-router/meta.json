@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "index",
+    "react-router-introduction",
+    "why-use-react-router-dom",
+    "react-router-installation",
+    "react-router-programmatic-navigation",
+    "react-router-dynamic-routing",
+    "react-router-url-parameters",
+    "..."
+  ],
+  "title": "React Router",
+  "description": "বাংলায় React Router ব্যবহার করে ক্লায়েন্ট-সাইড রাউটিং শিখুন।",
+  "icon": "Route",
+  "root": true
+}

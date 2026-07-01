@@ -1,7 +1,7 @@
 {
-  "name": "React JS Bangla Tutorial",
+  "name": "React Bangla",
   "short_name": "React Bangla",
-  "description": "React JS Bangla Tutorial - স্টেপ বাই স্টেপ ফলো করে বাংলা ভাষায় রিয়েক্ট জেএস শিখুন।",
+  "description": "React, Next.js, Git, JavaScript, Redux, Framer Motion, Laravel সহ একাধিক টেকনোলজির বাংলা টিউটোরিয়াল।",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

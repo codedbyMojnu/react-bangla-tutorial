@@ -1,0 +1,189 @@
+---
+title: React Hook Form
+description: >-
+  React-এ ফর্ম নিয়ে কাজ করতে গেলে আমাদের useState দিয়ে প্রতিটি ইনপুটের জন্য
+  স্টেট ম্যানেজ করতে হয়। এতে কোড অনেক বড় এবং জটিল হয়ে যায়। এই সমস্যার সমাধান
+  হলো…
+---
+### React Hook Form কী এবং কেন ব্যবহার করব?
+
+React-এ ফর্ম নিয়ে কাজ করতে গেলে আমাদের `useState` দিয়ে প্রতিটি ইনপুটের জন্য স্টেট ম্যানেজ করতে হয়। এতে কোড অনেক বড় এবং জটিল হয়ে যায়। এই সমস্যার সমাধান হলো React Hook Form।
+
+React Hook Form আমাদের পারফরম্যান্স আর কোড লেখার অভিজ্ঞতা—দুটোই উন্নত করে। এটা কন্ট্রোলড কম্পোনেন্টের ওপর নির্ভর করে না, তাই রি-রেন্ডারিং কম হয় এবং অ্যাপ অনেক ফাস্ট থাকে।
+
+### শুরু করার ধাপ
+
+প্রথমেই আমাদের প্রোজেক্টে React Hook Form ইনস্টল করে নিতে হবে। আপনার Vite এবং Tailwind CSS দিয়ে বানানো প্রোজেক্টে নিচের কমান্ডটি টার্মিনালে রান করুন:
+
+```bash
+npm install react-hook-form
+```
+
+ইনস্টল হয়েছে কি না, তা `package.json` ফাইল চেক করে নিশ্চিত হতে পারেন।
+
+---
+
+### চলুন, প্রথম ফর্ম বানাই
+
+আমরা একটা বেসিক রেজিস্ট্রেশন ফর্ম বানাব। ভাবুন তো, মাউস ছাড়া শুধু কি-বোর্ড দিয়েও ব্যবহারকারীরা যেন সহজে ফর্মটি পূরণ করতে পারে, সেই ব্যবস্থাও আমরা করব।
+
+**১. কম্পোনেন্ট তৈরি**
+
+প্রথমে `components` ফোল্ডারে আমরা কিছু পুনঃব্যবহারযোগ্য (reusable) কম্পোনেন্ট বানাব, যেমন `FieldSet`, `Field`, এবং `Input`।
+
+**FieldSet.jsx:**
+এই কম্পোনেন্ট দিয়ে আমরা সম্পর্কিত ইনপুটগুলোকে এক জায়গায় রাখব।
+
+```jsx
+const FieldSet = ({ label, children }) => {
+  return (
+    <fieldset className="m-2 border-2 p-4">
+      {label && <legend className="px-2">{label}</legend>}
+      <div className="flex flex-col gap-4">{children}</div>
+    </fieldset>
+  );
+};
+
+export default FieldSet;
+```
+
+**Field.jsx:**
+এটা প্রতিটি ইনপুট ফিল্ড এবং তার লেবেল ও এরর মেসেজ দেখানোর জন্য।
+
+```jsx
+import React from "react";
+
+const getChildId = (children) => {
+  const child = React.Children.only(children);
+  if ("id" in child.props) {
+    return child.props.id;
+  }
+};
+
+const Field = ({ label, children, error }) => {
+  const id = getChildId(children);
+
+  return (
+    <div className="flex flex-col">
+      {label && (
+        <label htmlFor={id} className="mb-2">
+          {label}
+        </label>
+      )}
+      {children}
+      {error && <div className="text-red-500 mt-1">{error.message}</div>}
+    </div>
+  );
+};
+
+export default Field;
+```
+
+**২. রেজিস্ট্রেশন ফর্ম**
+
+এবার `RegistrationForm.jsx` নামে একটি ফাইল তৈরি করে নিচের কোডটি লিখুন:
+
+```jsx
+import { useForm } from "react-hook-form";
+import FieldSet from "./FieldSet";
+import Field from "./Field";
+
+const RegistrationForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const submitForm = (formData) => {
+    console.log(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(submitForm)}>
+      <FieldSet label="Basic Information">
+        <Field label="First Name" error={errors.fname}>
+          <input
+            {...register("fname", { required: "First Name is required!" })}
+            type="text"
+            id="fname"
+            name="fname"
+            className={`p-2 border-2 ${
+              errors.fname ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+        </Field>
+
+        <Field label="Password" error={errors.password}>
+          <input
+            {...register("password", {
+              required: "Password is required!",
+              minLength: {
+                value: 8,
+                message: "Your password must be at least 8 characters long.",
+              },
+            })}
+            type="password"
+            id="password"
+            name="password"
+            className={`p-2 border-2 ${
+              errors.password ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+        </Field>
+
+        <Field>
+          <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+            Submit
+          </button>
+        </Field>
+      </FieldSet>
+    </form>
+  );
+};
+
+export default RegistrationForm;
+```
+
+**কীভাবে কাজ করছে?**
+
+- **`useForm()` Hook:** এই হুক থেকে আমরা `register`, `handleSubmit`, এবং `formState: { errors }` এই জিনিসগুলো পাই।
+- **`register`:** এটাই মূল جادو (জাদু)। `useState` বা `onChange` ছাড়াই আমরা ইনপুট ফিল্ডগুলোকে রেজিস্টার করি। শুধু `...register("fieldName")` লিখে দিলেই হয়।
+- **`handleSubmit`:** এটা একটা র‍্যাপার ফাংশন। ফর্ম সাবমিট করার আগে সে ভ্যালিডেশন চেক করে। যদি সব ঠিক থাকে, তাহলে আমাদের `submitForm` ফাংশনকে কল করে, আর সব ডেটা একটা অবজেক্ট আকারে পাঠিয়ে দেয়।
+- **ভ্যালিডেশন:** `register` ফাংশনের দ্বিতীয় প্যারামিটারে আমরা ভ্যালিডেশনের নিয়ম বলে দিতে পারি। যেমন: `required` বা `minLength`। যদি ভ্যালিডেশন ফেইল করে, তাহলে `errors` অবজেক্টের মধ্যে সেই ফিল্ডের জন্য এরর মেসেজ চলে আসে।
+- **এরর দেখানো:** `errors.fieldName?.message` দিয়ে আমরা খুব সহজে ইনপুটের নিচে এরর মেসেজ দেখাতে পারি। আর ইনপুটের বর্ডার লাল করার জন্য আমরা `errors.fieldName` আছে কি না, তা চেক করে ক্লাস যুক্ত করতে পারি।
+
+---
+
+### ডায়নামিক ফর্ম ইনপুট
+
+অনেক সময় আমাদের এমন ফর্ম বানাতে হয় যেখানে ব্যবহারকারী প্রয়োজনমতো ইনপুট ফিল্ড যোগ বা মুছে ফেলতে পারে। যেমন, সোস্যাল মিডিয়া প্রোফাইলের লিঙ্ক যোগ করা। এর জন্য আমরা `useFieldArray` হুক ব্যবহার করব।
+এই হুক bize (আমাদের) `fields`, `append`, `remove`-এর মতো কিছু মেথড দেয়, যা দিয়ে আমরা সহজেই ডায়নামিক ইনপুট ফিল্ড ম্যানেজ করতে পারি।
+
+---
+
+### ফাইল আপলোড
+
+ফাইল আপলোডের জন্য ইনপুটের `type` হবে `"file"`। বাকি সব নিয়ম একই। `register` ব্যবহার করেই আমরা ফাইল ইনপুট রেজিস্টার করতে পারি।
+
+```jsx
+<Field label="Your Photo" error={errors.photo}>
+  <input {...register("photo")} type="file" id="photo" name="photo" />
+</Field>
+```
+
+আশা করি, এই টিউটোরিয়ালটি আপনার ওয়েবসাইটের পাঠকদের জন্য অনেক সহায়ক হবে। React Hook Form নিয়ে আরও বিস্তারিত জানতে হলে এর অফিসিয়াল ডকুমেন্টেশন দেখতে পারেন: [react-hook-form.com/get-started](https://react-hook-form.com/get-started)
+
+শুভ কোডিং\! 🚀
+
+<Donate/>
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

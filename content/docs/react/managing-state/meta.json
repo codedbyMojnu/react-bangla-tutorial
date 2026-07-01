@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "reacting-to-input-with-state",
+    "choosing-the-state-structure",
+    "sharing-state-between-components",
+    "preserving-and-resetting-state",
+    "extracting-state-logic-into-a-reducer",
+    "passing-data-deeply-with-context",
+    "scaling-up-with-reducer-and-context",
+    "..."
+  ],
+  "title": "Managing State"
+}

@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "your-first-react-component",
+    "import-export-components",
+    "writing-markup-with-jsx",
+    "javascript-in-jsx-with-curly-braces",
+    "passing-props-to-a-component",
+    "conditional-rendering",
+    "rendering-lists",
+    "keeping-components-pure",
+    "understanding-your-ui-as-a-tree",
+    "..."
+  ],
+  "title": "Describing the UI"
+}

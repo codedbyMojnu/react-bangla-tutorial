@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "index",
+    "quick-start-guide",
+    "thinking-in-react",
+    "environment-set-up",
+    "describing-the-ui",
+    "adding-interactivity",
+    "managing-state",
+    "escape-hatches",
+    "react-suspense",
+    "react-lazy-loading",
+    "design-patterns",
+    "interview-questions"
+  ],
+  "title": "React",
+  "description": "ধাপে ধাপে বাংলায় React.js শিখুন — বেসিক থেকে অ্যাডভান্সড প্যাটার্ন পর্যন্ত।",
+  "icon": "Atom",
+  "root": true
+}

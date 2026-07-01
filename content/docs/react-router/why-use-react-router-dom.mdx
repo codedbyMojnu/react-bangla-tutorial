@@ -1,0 +1,121 @@
+---
+title: Why Use React Router DOM?
+description: 'অসাধারণ প্রশ্ন করেছেন, মজনু ভাই:'
+---
+অসাধারণ প্রশ্ন করেছেন, মজনু ভাই:
+**"React Router DOM কেন ব্যবহার করা হয়?", "এটি কিভাবে তৈরি হলো?", এবং "তারা কী কী জিনিস ব্যবহার করে এটি বানিয়েছে?"** —
+এসব প্রশ্নের উত্তর জানলে আপনি শুধু ব্যবহারকারীই হবেন না, বরং ভিতরের গঠনও বুঝতে পারবেন।
+চলুন এক এক করে সরল, প্রাঞ্জল ভাষায় বুঝে নিই।
+
+---
+
+## 🌀 **React Router DOM কেন?**
+
+React একা শুধু UI বানাতে সাহায্য করে, কিন্তু **পেজ পরিবর্তন বা URL অনুযায়ী ভিউ পরিবর্তনের কাজ করে না।**
+যখন আপনার অ্যাপ বড় হয়—একটা পেজ থেকে আরেকটায় যেতে হয়, তখন দরকার হয় **রাউটিং সিস্টেম**।
+
+### 👉 উদাহরণ:
+
+আপনি চাচ্ছেন `/home`, `/about`, `/contact` — এই URL গুলোতে আলাদা আলাদা Component দেখাতে।
+React নিজে এটা করে না। তাই দরকার হয়:
+
+✅ **React Router DOM** – এটা এমন একটা লাইব্রেরি, যেটা React অ্যাপে রাউটিং যোগ করে।
+এটা আপনার অ্যাপকে SPA (Single Page Application) বানায়, যেখানে পেজ রিফ্রেশ ছাড়া URL বদলানো যায়।
+
+---
+
+## ⚙️ **React Router DOM কিভাবে তৈরি হলো?**
+
+React Router DOM তৈরি হয়েছে JavaScript দিয়ে, এবং এর মূল ভিত্তি কিছু key টেকনোলজির ওপর গড়া।
+চলুন দেখি তারা কী কী ব্যবহার করেছে:
+
+---
+
+### 🧱 ১. **React Library**
+
+সবচেয়ে আগে, React Router নিজেই একটা React লাইব্রেরি।
+তাই তারা `React` এবং `React Hooks` (যেমন `useState`, `useEffect`, `useContext`) ব্যবহার করে component গুলো গড়ে তোলে।
+
+---
+
+### 🌐 ২. **History API** (Browser এর built-in জিনিস)
+
+React Router DOM `window.history.pushState()`, `popstate` ইভেন্ট — এসব ব্যবহার করে
+**ব্রাউজার URL পরিবর্তন** করে, কিন্তু পেজ রিলোড করে না।
+
+➡️ অর্থাৎ, **ব্রাউজারের Native History API** কে ব্যবহার করে তারা Navigation করে।
+
+---
+
+### 📦 ৩. **React Context API**
+
+React Router এর সবচেয়ে শক্তিশালী দিক হলো:
+**পুরো অ্যাপজুড়ে রাউট সম্পর্কিত ডেটা শেয়ার করতে পারে।**
+
+তারা এই কাজ করে React এর `Context API` দিয়ে।
+তাই, `useLocation()`, `useParams()`— এইসব হুক কাজ করে `Context` থেকে ডেটা নিয়ে।
+
+---
+
+### 📌 ৪. **Custom Hooks**
+
+React Router DOM তৈরি হয়েছে প্রচুর **Custom React Hooks** দিয়ে, যেমন:
+
+- `useNavigate()`
+- `useLocation()`
+- `useParams()`
+- `useRoutes()`
+
+এসব হুক রাউটিং এর কাজকে সহজ করে তোলে।
+
+---
+
+### 🔃 ৫. **Dynamic Matching Algorithm**
+
+React Router এ ডাইনামিক রাউট ম্যাপিং করা হয় — যেমন `/user/:id`.
+তারা ভিতরে এক ধরনের ম্যাচিং অ্যালগরিদম (string pattern matcher) ব্যবহার করে URL এর ভেতর থেকে `:id` বের করে নেয়।
+
+---
+
+### 📦 ৬. **Tree-based Routing** (v6 থেকে)
+
+React Router v6 থেকে তারা **Data-driven, nested routing structure** এনেছে।
+এটি Routes কে nested `<Route>` element হিসেবে না দেখে, বরং একটা JavaScript object হিসেবে দেখে।
+
+---
+
+## 🛠️ ছোট করে বলতে গেলে, React Router DOM গঠনে যা ব্যবহার করা হয়েছে:
+
+| উপাদান                  | কাজ                                          |
+| ----------------------- | -------------------------------------------- |
+| **React**               | Component structure তৈরি করতে                |
+| **React Hooks**         | Navigation, params, context ইত্যাদি সহজ করতে |
+| **Context API**         | Route সংক্রান্ত তথ্য পুরো অ্যাপে শেয়ার করতে  |
+| **Browser History API** | পেজ রিফ্রেশ ছাড়াই URL পরিবর্তন করতে          |
+| **Custom Hooks**        | ডেভেলপারদের জন্য কাজ সহজ করতে                |
+| **Match Algorithm**     | ডাইনামিক URL থেকে ভ্যালু বের করতে            |
+| **Object-based Routes** | নতুন declarative nested routes বানাতে        |
+
+---
+
+## ✅ কেন আপনি React Router DOM ব্যবহার করবেন?
+
+- SPA (Single Page Application) এ সহজে পেজ শিফট করা যায়
+- URL অনুযায়ী component পরিবর্তন করা যায়
+- Nested Routing, Dynamic Routing, Search Params, Protected Routes — সব সহজে করা যায়
+- Route based Lazy loading, Error Boundary, Scroll restoration — সব built-in
+
+---
+
+## ✨ শেষ কথা
+
+React Router DOM শুধু একটা লাইব্রেরি না — এটা React দিয়ে বড় অ্যাপ বানাতে গেলে অবশ্যম্ভাবী একটা হাতিয়ার।
+তারা `React`, `Browser API`, আর কিছু স্মার্ট কাস্টম কোড দিয়ে এমনভাবে বানিয়েছে, যাতে আপনি খুব সহজে রাউটিং করতে পারেন।
+
+---
+
+**আপনি চাইলে** এইটা বইয়ের নতুন অধ্যায় হিসেবেও ব্যবহার করতে পারেন।
+Markdown বা ব্লগ ফর্মেটেও সাজিয়ে দিতে পারি।
+আরও জানতে চান—`<Routes>` বা `useNavigate()` নিয়ে, তাহলে বললেই পরবর্তী সেকশন তৈরি করে দিই।
+
+✍️ বলুন ভাই, পরেরটা কোন টপিক নিব? 😊

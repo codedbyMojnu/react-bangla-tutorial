@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "index",
+    "seven-hard-truths-for-new-developers",
+    "how-to-be-a-world-class-frontend-engineer",
+    "software-development-lifecycle",
+    "developer-hacks",
+    "job-circular"
+  ],
+  "title": "Career ও Developer Hacks",
+  "description": "ডেভেলপার ক্যারিয়ার, জব সার্কুলার ও প্রোডাক্টিভিটি নিয়ে বাংলা পরামর্শ।",
+  "icon": "Briefcase",
+  "root": true
+}

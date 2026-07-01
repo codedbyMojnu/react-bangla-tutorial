@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "01-installation",
+    "02-project-structure",
+    "03-layouts-and-pages",
+    "04-linking-and-navigating",
+    "07-fetching-data",
+    "..."
+  ]
+}

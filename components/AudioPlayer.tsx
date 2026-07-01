@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./audioPlayer.module.css";
 
 interface AudioPlayerProps {
@@ -6,7 +5,7 @@ interface AudioPlayerProps {
   title: string;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title }) => {
+export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   return (
     <div className={styles.audioContainer}>
       <div className={styles.audioCard}>
@@ -17,10 +16,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title }) => {
           আপনার ব্রাউজার অডিও সাপোর্ট করে না।
         </audio>
 
-        <div className={styles.audioFooter}>👉 সময় কম অডিও ফাইলটি শুনুন 🚀</div>
+        <div className={styles.audioFooter}>👉 সময় কম? অডিও ফাইলটি শুনুন 🚀</div>
       </div>
     </div>
   );
-};
-
-export default AudioPlayer;
+}

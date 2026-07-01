@@ -1,0 +1,104 @@
+---
+title: Escape Hatches in React মানে কী?
+description: '> React-এর কিছু জরুরি কৌশল— যখন সহজ পথে কাজ হবে না'
+---
+> React-এর কিছু জরুরি কৌশল— যখন সহজ পথে কাজ হবে না
+
+যখন React এর বাইরের জিনিস যেমন, ব্রাউজার API নিয়ে কাজ করব।
+
+## 🛠️ **Escape Hatches in React** মানে কী?
+
+**React আপনাকে বলে — সবকিছু আমি ম্যানেজ করবো।**
+→ আপনি শুধু state, props আর component দিয়ে কাজ করুন।
+
+**কিন্তু**, কিছু কাজ আছে যেটা React একা পারে না বা করা উচিত না।
+
+**তখনই আমরা “Escape Hatch” ব্যবহার করি।**
+মানে, React-এর বাইরে গিয়ে কাজ করি।
+
+---
+
+গোপন দরজা দিয়ে বের হয়ে যাওয়া।
+
+<img src="/images/escape-hatches.png" alt="Escape Hatch" />
+
+#### ✅ সাধারণ React নিয়ম:
+
+```jsx
+const [text, setText] = useState("");
+<input value={text} onChange={(e) => setText(e.target.value)} />;
+```
+
+React সবকিছু নিয়ন্ত্রণ করছে।
+
+---
+
+#### ❗ কিন্তু আপনি যদি চান:
+
+- এই ইনপুট ফোকাস হয়ে যাক স্বয়ংক্রিয়ভাবে
+- React নয়, ব্রাউজারের API দিয়ে কাজ করতে চান
+
+#### ✅ তখন করতে হয়:
+
+```jsx
+const inputRef = useRef(null);
+
+useEffect(() => {
+  inputRef.current.focus(); // ব্রাউজার API
+}, []);
+
+return <input ref={inputRef} />;
+```
+
+**এটাই Escape Hatch** — কারণ আপনি React-এর বাইরে গিয়ে ব্রাউজারের সাথে সরাসরি কাজ করলেন।
+
+---
+
+### 🔥 সহজ ভাষায় বললে:
+
+- React বলছে: “সব কাজ আমার নিয়মে করো।”
+- আপনি বললেন: “না, এই কাজ আমাকে React-এর বাইরে গিয়ে করতে হবে।”
+- সেই দরজাটা যেখানে React আপনাকে বাইরে যেতে দিচ্ছে, সেটাই হলো **Escape Hatch**.
+
+---
+
+### 📌 কোথায় দরকার হয়?
+
+- DOM element ফোকাস করতে
+- ভিডিও প্লেয়ার চালাতে
+- স্ক্রল পজিশন ম্যানেজ করতে
+- WebSocket বা অন্য external API-এর সাথে কাজ করতে
+
+---
+
+এই অধ্যায়ে যা শিখবেন:
+
+- কীভাবে রি-রেন্ডার ছাড়া কোনো তথ্য মনে রাখা যায়
+
+- কীভাবে React যে DOM নিয়ন্ত্রণ করে, তাতে এক্সেস নেওয়া যায়
+
+- কীভাবে বাইরের সিস্টেমের সাথে কম্পোনেন্টের কাজ মিলিয়ে নেওয়া যায়
+
+- কীভাবে অপ্রয়োজনীয় Effect বাদ দেওয়া যায়
+
+- কীভাবে একটি Effect-এর জীবনচক্র কম্পোনেন্টের জীবনচক্রের চেয়ে আলাদা
+
+- কীভাবে কিছু মানকে বারবার Effect চালানো থেকে রক্ষা করা যায়
+
+- কীভাবে Effect কম বার চালানো যায়
+
+- কীভাবে একাধিক কম্পোনেন্টের মাঝে লজিক ভাগ করে নেওয়া যায়
+
+<hr />
+<Donate />
+<hr />
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>
