@@ -213,18 +213,14 @@ Made with ❤️ for Bangladeshi developers
 
 </div>
 
-### Fumadocs MDX
+---
 
-A `source.config.ts` config file has been included, you can customise different options like frontmatter schema.
+## 📄 লাইসেন্স
 
-Read the [Introduction](https://fumadocs.dev/docs/mdx) for further details.
+এই প্রজেক্টটি **[MIT License](./LICENSE)** এর অধীনে পরিচালিত।
 
-## Learn More
+এর মানে হলো আপনি এই কনটেন্ট ও কোড **বিনামূল্যে ব্যবহার, কপি, পরিবর্তন ও বিতরণ** করতে পারবেন — শুধু মূল লেখকের ক্রেডিট রাখুন।
 
-To learn more about Next.js and Fumadocs, take a look at the following
-resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-  features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [Fumadocs](https://fumadocs.dev) - learn about Fumadocs
+```
+Copyright (c) 2025 Md. Mojnu Miah
+```
