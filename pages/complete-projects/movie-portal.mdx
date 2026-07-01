@@ -1,0 +1,897 @@
+---
+title: "🎬 Movie Portal App বানানোর সম্পূর্ণ গল্প — কনসেপ্ট থেকে প্রোডাকশন-রেডি কোড"
+description: "React 19, Vite 8, Tailwind CSS v4 আর React Router v8 দিয়ে একদম শুরু থেকে শেষ — একটি পূর্ণাঙ্গ Movie Portal App বানানোর Step by Step হাতে-কলমে গাইড।"
+---
+
+চলুন, আজ আমরা একটা সিনেমা হল বানাবো — কোড দিয়ে। 🎬
+
+ভয় পাবেন না, পপকর্ন লাগবে না। কিন্তু একটা জিনিস লাগবে: ধৈর্য। কারণ আমরা শুধু একটা মুভি লিস্ট সাজিয়ে রাখবো না — একটা পুরো **Production-Grade Frontend Architecture** দাঁড় করাবো, একদম স্ক্র্যাচ থেকে। প্ল্যানিং, ডিজাইন, কম্পোনেন্ট, স্টেট ম্যানেজমেন্ট — সবকিছু।
+
+তাহলে স্ক্রিনে চোখ রাখুন — শুরু করা যাক।
+
+---
+
+## Step 1: Movie Portal আসলে কী জিনিস? 🎥
+
+কোনো প্রজেক্টে হাত দেওয়ার আগে সবচেয়ে জরুরি কাজটা হলো — **ডোমেইন বোঝা**। মানে, যে প্রোডাক্টটা আমরা বানাতে যাচ্ছি, _বাস্তবে সেটা কী এবং কীভাবে কাজ করে_ — এটা না বুঝে কোড লিখতে বসা মানে স্ক্রিপ্ট না পড়েই শুটিং শুরু করে দেওয়া।
+
+**"Movie Portal"** শব্দটা শুনলে সাধারণত যা মাথায় আসে তা হলো:
+
+> এমন একটি ওয়েবসাইট বা অ্যাপ, যেখানে ব্যবহারকারীরা সিনেমা খুঁজে দেখতে পারে, তথ্য জানতে পারে, ট্রেলার দেখতে পারে — এবং কখনো কখনো রেন্ট বা স্ট্রিমও করতে পারে।
+
+টেকনিক্যাল ভাষায় বললে, এটা একটা **content-catalog application** — যার মূল কাজ হলো একটা structured dataset (মুভি ক্যাটালগ)-কে browsable, searchable আর interactive UI-তে রূপান্তর করা। একজন React developer হিসেবে আপনি যদি একটা ভালো content catalog architecture বুঝে ফেলেন, তাহলে অনেক ধরনের app বানানোর base তৈরি হয়ে যায়। এর তিনটা মূল বিল্ডিং ব্লক:
+
+- একটা **data layer**, যেখানে অনেকগুলো সিনেমার মেটাডেটা (নাম, পোস্টার, রেটিং, ভিউ, প্রাইস) জমা থাকে।
+- একটা **discovery layer**, যেখানে ইউজার সার্চ আর ফিল্টার করতে পারে।
+- একটা **detail/interaction layer**, যেখানে একটা নির্দিষ্ট আইটেমের ডিটেইলস দেখা যায়, আর অ্যাকশন (যেমন কার্টে যোগ করা) নেওয়া যায়।
+
+**চেনা উদাহরণ:** Netflix একটা Movie Portal (সাথে Streaming Service-ও বটে)। IMDB আরেকটা — যেখানে তথ্য, ট্রেলার, রেটিং, রিভিউ সব এক জায়গায়।
+
+🔵 তাহলে কেউ যদি বলে "Movie Portal Website বানাও" — সহজ ভাষায় এর মানে দাঁড়ায়:
+
+> এমন একটা ওয়েবসাইট, যেখানে অনেক সিনেমার তথ্য থাকবে, আর মানুষ সহজেই নিজের পছন্দের সিনেমা খুঁজে নিতে পারবে।
+
+আমরা এই টিউটোরিয়ালে যেটা বানাবো, সেটা একটু স্পেসিফিক — একটা **Cinema Rental Portal**। মানে মুভি ব্রাউজ করা, ডিটেইলস দেখা, আর একটা Cart-ভিত্তিক rental flow পার হয়ে যাওয়া।
+
+Data Model
+↓
+Fetch Data
+↓
+Transform Data
+↓
+Display Cards/List
+↓
+Search + Filter + Sort
+↓
+User Interaction
+
+---
+
+## Step 2: কোড লেখার আগে — স্ক্রিপ্ট রেডি করুন 📝
+
+বড় ডিরেক্টররা শুটিং শুরু করার আগে পুরো স্ক্রিপ্ট, স্টোরিবোর্ড, শট-লিস্ট রেডি রাখেন। প্রোগ্রামিংয়েও ঠিক একই নিয়ম — কোড লেখার আগে **Requirement Analysis** আর **System Design** না করলে, পরে গিয়ে Component re-architecture, state management জট আর technical debt-এর পাহাড় জমে যায়। আর বিশ্বাস করুন, মাঝপথে পুরো সেট ভেঙে আবার বানানোর চেয়ে কষ্টের আর কিছু নেই।
+
+### ১. প্রজেক্টের স্কোপ ঠিক করুন
+
+- **App-এর উদ্দেশ্য কী?** (মুভি ব্রাউজ করা, রেটিং দেখা, সার্চ করা, কার্টে যোগ করে রেন্ট করা)
+- **দর্শক কারা?** কোন বয়সের, কোন ডিভাইস থেকে আসবে — মোবাইল-ফার্স্ট নাকি ডেস্কটপ-ফার্স্ট?
+- **Functional Requirements** — অ্যাপ আসলে কী কী করতে পারবে।
+- **Non-Functional Requirements** — পারফরম্যান্স, রেসপনসিভনেস, অ্যাক্সেসিবিলিটি।
+
+### ২. ফিচার লিস্ট ও ইউজার স্টোরি
+
+তাপস ভাই এই ভিডিওতে দেখিয়েছেন, একটা সিনেমা রেন্টাল পোর্টালে আসলে কী কী ফিচার থাকা দরকার:
+
+<video width="600" controls>
+  <source
+    src="/videos/MoviePortal/movie-portal-app-feature.webm"
+    type="video/webm"
+  />
+  আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
+</video>
+
+ফিচারগুলোকে শুধু একটা লিস্ট হিসেবে না রেখে **User Story** ফরম্যাটে লিখলে একটা বাড়তি সুবিধা পাওয়া যায় — প্রতিটা ফিচারের পেছনের টেকনিক্যাল চাহিদাটা (কোন state, কোন component লাগবে) আগেই স্পষ্ট হয়ে যায়:
+
+| Feature             | User Story                                                                                       | Technical Implication                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| Movie Grid          | একজন ব্যবহারকারী হিসেবে আমি সব মুভি একটা গ্রিডে দেখতে চাই — পোস্টার, রেটিং, ক্যাটাগরি ও প্রাইসসহ | `MovieGrid` + `MovieCard` কম্পোনেন্ট, `movies` array-তে `.map()` |
+| Movie Details Modal | আমি যেকোনো মুভি কার্ডে ক্লিক করে এর বিস্তারিত মডালে দেখতে চাই                                    | "selected movie" state, Modal কম্পোনেন্ট, `createPortal`         |
+| Add to Cart         | আমি মুভি কার্টে যোগ করতে চাই, আগে থেকে থাকলে ওয়ার্নিং পেতে চাই                                  | Global Cart state (Context + Reducer), duplicate-check action    |
+| Cart Counter        | কার্টে ক্লিক করলে আমি মুভির নাম, প্রাইস ও সংখ্যা দেখতে চাই                                       | Derived state — cart items থেকে কাউন্ট ও টোটাল প্রাইস ক্যালকুলেট |
+| Remove from Cart    | আমি কার্ট থেকে মুভি রিমুভ করতে চাই, সব রিমুভ করলে empty message দেখতে চাই                        | `REMOVE_FROM_CART` reducer action, conditional rendering         |
+| Theme Switch        | আমি Light/Dark থিমের মধ্যে টগল করতে চাই                                                          | Global Theme state (Context), `localStorage` persistence         |
+
+প্রথম পর্বে আমরা এই ফিচারগুলোই কভার করব:
+
+- মুভি লিস্ট রেন্ডার করা — প্রতিটা কার্ডে ফটো, রেটিং, ক্যাটাগরি ও প্রাইস দেখানো।
+- কোনো মুভি কার্ডে ক্লিক করলে ডিটেইলস মডাল পপ-আপ হয়ে ফুল ইনফো দেখানো।
+- কার্ট বাটনে ক্লিক করলে মুভি কার্টে যোগ হবে, কাউন্ট +১ হবে, আগে থেকে থাকলে ওয়ার্নিং দেখাবে।
+- কার্ট থেকে মুভি রিমুভ করার ফিচার — সব রিমুভ হলে empty message দেখাবে।
+
+_(Search, Watchlist, Review System, Login — এগুলো পরের সিজনের জন্য তোলা থাকলো 😉)_
+
+### ৩. UI/UX ডিজাইন রেডি করুন
+
+ক্যামেরা চালানোর আগে স্টোরিবোর্ড লাগে — অ্যাপের ক্ষেত্রেও তাই। Figma বা যেকোনো টুলে ফুল UI ডিজাইন বানান, নিজে না পারলে ডিজাইনারের সাহায্য নিন। শুরুতেই একটা **Design System** (color tokens, spacing scale, typography scale) ঠিক করে নিলে পরে Tailwind কনফিগারেশন করাটা অনেক সহজ হয়ে যায়।
+
+এই অ্যাপের ডিজাইন:
+
+১। Movie Portal Homepage
+
+<img
+  src="/movie-portal-project/movie-portal-homepage.png"
+  alt="Full Page Screenshot"
+  width="600"
+/>
+
+২। Movie Details Modal
+
+<img
+  src="/movie-portal-project/movie-details-modal.png"
+  alt="Full Page Screenshot"
+  width="600"
+/>
+
+৩। Cart Page
+
+<img
+  src="/movie-portal-project/cart-page.png"
+  alt="Full Page Screenshot"
+  width="600"
+/>
+
+৪। Theme Switch UI
+
+<img
+  src="/movie-portal-project/switch-theme.png"
+  alt="switch theme"
+  width="600"
+/>
+
+### ৪. কম্পোনেন্ট ব্রেকডাউন — UI-কে টুকরো টুকরো করুন
+
+ডিজাইন রেডি হয়ে গেলে পরের কাজ — পুরো UI-কে ছোট ছোট, স্বাধীন অংশে ভাগ করা। একেই বলে **UI Decomposition**। মূল নীতি একটাই — **Single Responsibility**: প্রতিটা অংশ একটা নির্দিষ্ট কাজের জন্য দায়ী থাকবে, আর দরকার পড়লে অন্য জায়গাতেও রিইউজ করা যাবে।
+
+_আপনার স্কেচ UI-কে এভাবে ভেঙে ফেলুন:_
+
+<img
+  src="/movie-portal-project/design-break-down.png"
+  alt="break down your sketch UI"
+  width="700"
+/>
+
+তাপস ভাই দেখিয়েছেন কীভাবে UI breakdown করতে হয়:
+
+<video width="600" controls>
+  <source
+    src="/videos/MoviePortal/components-breakdown.webm"
+    type="video/webm"
+  />
+  আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
+</video>
+
+UI দেখে ঠিক করুন কোন কোন অংশ আলাদা কম্পোনেন্ট হবে। _(যেমন: Header, Footer, MovieCard, SearchBar, Sidebar)_
+
+### ৫. কম্পোনেন্ট হায়ারার্কি — কে কার ভেতরে থাকবে
+
+**Component Hierarchy** মানে হলো — কোন কম্পোনেন্টের ভেতরে কোনটা থাকবে, অর্থাৎ component tree-র parent-child সম্পর্ক ঠিক করা। এটাই পরে ঠিক করে দেবে data কোন দিক থেকে কোন দিকে যাবে — React-এ ডেটা সবসময় **unidirectional**: উপর থেকে নিচে props, নিচ থেকে উপরে callback function।
+
+<img
+  src="/movie-portal-project/components-hierarchy.png"
+  alt="component hierarchy"
+  width="600"
+/>
+
+কোন কম্পোনেন্টের ভেতরে কোনটা থাকবে, সেটা একটা Tree আকারে সাজিয়ে ফেলুন। _(App → Header, Main → Sidebar, MovieList → MovieCard)_
+
+তাপস ভাই দেখিয়েছেন কীভাবে Component Hierarchy বানাতে হয়:
+
+<video width="600" controls>
+  <source
+    src="/videos/MoviePortal/components-hierarchy.webm"
+    type="video/webm"
+  />
+  আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
+</video>
+
+### ৬. Data Flow / State Planning
+
+প্রতিটা React প্রজেক্টে State-কে তিন ভাগে ভাগ করে ভাবা উচিত:
+
+- **Local UI State** — শুধু একটা কম্পোনেন্টের ভেতরে দরকার (যেমন: dropdown খোলা আছে কিনা)। `useState` দিয়ে সামলানো যায়।
+- **Shared/Global State** — একসাথে একাধিক, দূরে দূরে থাকা কম্পোনেন্টের দরকার (Cart Items, Active Theme)। এখানে আমরা **Context + Reducer** প্যাটার্ন ব্যবহার করব, যাতে prop drilling এড়ানো যায়।
+- **Derived State** — অন্য state থেকে হিসাব করে বের করা যায় এমন ভ্যালু, যেমন কার্টের মোট দাম। এগুলোকে আলাদা state হিসেবে না রেখে render-এর সময় calculate করাই ভালো অভ্যাস।
+
+কোন Data কোন কম্পোনেন্টে দরকার, আর MovieData কীভাবে Cart-এ পৌঁছাবে — তার একটা সমস্যা-চিত্র:
+
+<img
+  src="/movie-portal-project/data-passing-hierarchy.png"
+  alt="data passing"
+  width="600"
+/>
+
+আমাদের অ্যাপে: `Movies List` আর `Selected Movie Details` থাকবে component-local state হিসেবে। আর `Cart Items` ও `Theme` থাকবে global Context-এ — কারণ `Navbar` (কার্ট আইকনের জন্য), `MovieCard` (Add to Cart বাটনের জন্য) আর `CartPage` — তিনজনেরই একই cart data দরকার, অথচ component tree-তে এরা একে অপর থেকে অনেক দূরে।
+
+### ৭. Routes Planning (React Router)
+
+কোন পেজে কী থাকবে, তার একটা ম্যাপ থাকা দরকার — Modal-based UI হলেও। কারণ deep-linking (সরাসরি একটা URL শেয়ার করে নির্দিষ্ট মুভির ডিটেইলস বা কার্ট খুলে যাওয়া) একটা সলিড UX প্র্যাকটিস।
+
+_(Route map: `/`, `/movies/:id` — `:id` থাকলে Movie Details Modal URL থেকেই খুলে যাবে, `/cart`)_
+
+এই রাউটিং আমরা পরে **React Router v8** দিয়ে বসাবো (এখন প্যাকেজের নাম শুধু `react-router` — আলাদা করে `react-router-dom` ইন্সটল করার দরকার নেই)।
+
+### ৮. ফোল্ডার স্ট্রাকচার প্ল্যান করুন
+
+প্রজেক্টের ফোল্ডার কীভাবে সাজাবেন, সেটা আগেই ঠিক করে নিন। _(components/, pages/, context/, data/, hooks/ ইত্যাদি)_ — পুরো ফোল্ডার স্ট্রাকচার আমরা Step 3-এ ডিটেইলে দেখব।
+
+---
+
+### ⚡ বোনাস টিপস
+
+- **Version Control:** Git ব্যবহার করুন। বড় কোনো পরিবর্তনের আগে commit করুন, আর সম্ভব হলে Conventional Commits ফরম্যাট (`feat:`, `fix:`, `refactor:`) মেনে চলুন — পরে commit history পড়তে সুবিধা হবে।
+- **Documentation:** কোডের পাশাপাশি ডকুমেন্টেশনও রাখুন। _(README.md, কোডে JSDoc কমেন্ট)_
+
+---
+
+## ব্যবহৃত টেকনোলজি ও আর্কিটেকচার 🏗️
+
+এই Movie Portal বানাতে গিয়ে আমরা আধুনিক React Development-এর কয়েকটা গুরুত্বপূর্ণ ধারণা কাজে লাগাবো।
+
+### ১. Component-Based Architecture
+
+React-এর সবচেয়ে শক্তিশালী আইডিয়াগুলোর একটা হলো **Component-Based Architecture** — পুরো অ্যাপকে ছোট ছোট, পুনঃব্যবহারযোগ্য আর স্বাধীন UI অংশে ভাগ করে ফেলা।
+
+আমাদের Movie Portal-এ যেমন আলাদা কম্পোনেন্ট থাকবে:
+
+- `Navbar` → নেভিগেশন আর কার্ট আইকন
+- `MovieCard` → একটা সিনেমার তথ্য দেখানোর জন্য
+- `MovieGrid` → একসাথে অনেক সিনেমা দেখানোর জন্য
+- `MovieDetailsModal` → একটা সিনেমার বিস্তারিত তথ্য
+- `SearchBar` → সিনেমা খোঁজার জন্য
+- `Cart` → কার্টে থাকা মুভিগুলো দেখানোর জন্য
+
+ফলাফল:
+
+✅ Code Maintain করা সহজ হয়
+✅ Component Reuse করা যায়
+✅ Project Structure পরিষ্কার থাকে
+✅ Development দ্রুত হয়
+
+### ২. Component Mind Map & UI Planning
+
+বড় React Application-এ হাত দেওয়ার আগে Component Structure প্ল্যান করাটা মাস্ট। **Component Mind Map** দিয়ে আমরা ঠিক করি — কোন Component লাগবে, কার ভেতরে কে থাকবে, আর কার দায়িত্ব কী।
+
+```text
+MoviePortalApp
+│
+├── Navbar (Cart Icon, Theme Toggle)
+│
+├── HomePage
+│   │
+│   ├── SearchBar
+│   │
+│   └── MovieGrid
+│       │
+│       └── MovieCard
+│
+├── MovieDetailsModal
+│   │
+│   ├── MovieInfo
+│   │
+│   └── AddToCartButton
+│
+└── CartPage
+    │
+    └── CartItem
+```
+
+এই ম্যাপটাই আমাদের UI আর Data Flow আগে থেকে প্ল্যান করতে সাহায্য করে।
+
+### ৩. Context API — Prop Drilling-এর যন্ত্রণা থেকে মুক্তি
+
+**Context API** হলো React-এর বিল্ট-ইন State Management সলিউশন। যখন অনেকগুলো Component-এর একই Data দরকার হয়, তখন এটাই বাঁচায়।
+
+সাধারণত Parent থেকে Child-এ Data পাঠাতে গেলে বারবার Props পাস করতে হয় — একে বলে **Prop Drilling**, আর এটা যত গভীরে যায়, কোড তত এলোমেলো হয়ে ওঠে। Context API এই সমস্যার সমাধান।
+
+আমাদের Movie Portal-এ Context API দিয়ে যা যা গ্লোবালি রাখব:
+
+- Cart Items ও Cart Actions
+- Theme Settings (Light/Dark)
+- Selected Movie (Modal-এর জন্য)
+- Favorite Movies
+- Authentication Status
+
+```text
+Context Provider
+      │
+      ▼
+Multiple Components
+      │
+      ▼
+Access Shared Data via useContext()
+```
+
+ফলে যেকোনো Component প্রপ-চেইন না ভেঙেই সরাসরি দরকারি Data অ্যাক্সেস করতে পারে।
+
+### ৪. Reducer Pattern (useReducer) — জটিল State-কে শৃঙ্খলায় আনা
+
+**Reducer Pattern**-এ Complex State Logic একটা আলাদা pure function-এর হাতে তুলে দেওয়া হয়। React-এর `useReducer` Hook দিয়ে এটা implement করা হয়, আর এর মূল আইডিয়া Redux থেকেই ধার করা — `State + Action + Reducer Function`।
+
+Cart-এর জন্য আমাদের State shape ও Action:
+
+```javascript
+const initialCartState = {
+  items: [], // [{ id, title, poster, price, qty }]
+};
+```
+
+Action:
+
+```javascript
+{
+  type: "ADD_TO_CART",
+  payload: movie,
+}
+```
+
+Reducer:
+
+```javascript
+function cartReducer(state, action) {
+  switch (action.type) {
+    case "ADD_TO_CART": {
+      const alreadyExists = state.items.some(
+        (item) => item.id === action.payload.id,
+      );
+      if (alreadyExists) {
+        return state; // duplicate হলে state অপরিবর্তিত থাকবে, UI warning দেখাবে
+      }
+      return {
+        ...state,
+        items: [...state.items, { ...action.payload, qty: 1 }],
+      };
+    }
+
+    case "REMOVE_FROM_CART":
+      return {
+        ...state,
+        items: state.items.filter((item) => item.id !== action.payload.id),
+      };
+
+    default:
+      return state;
+  }
+}
+```
+
+Reducer ব্যবহারের সুবিধা:
+
+✅ Complex State Logic ম্যানেজ করা সহজ
+✅ State Update Predictable হয় (pure function — same input, same output সবসময়)
+✅ Code Scalable হয়
+✅ Large Application Maintain করা সহজ হয়
+
+এই প্রজেক্টে **Component Architecture + Context API + Reducer Pattern** — এই তিনের মিশেলেই আমরা বানাবো একটা Scalable, Maintainable Movie Portal। এখন চলুন, এটাকে সত্যি সত্যি কোডে রূপ দেওয়া যাক — Step 3।
+
+---
+
+## Step 3: অ্যাকশন! কোড লেখা শুরু করি 🎬
+
+HTML Template/UX হাতে পেয়ে গেলে, প্রথম কাজ — সেই markup-কে JSX-এ রূপান্তর করে কম্পোনেন্ট বানানো। এই ধাপে Step 2-এ যা প্ল্যান করেছিলাম (Component Breakdown, Context + Reducer, Routing), সব বাস্তবে রূপ দেব — একটা প্রোডাকশন-গ্রেড স্ট্যাক দিয়ে: **Vite 8 + React 19.2 + Tailwind CSS v4 + React Router v8**।
+
+তাপস ভাই নিচের ভিডিওতে দেখিয়েছেন কীভাবে HTML থেকে JSX-এ রূপান্তর করতে হয়, আর ফটো/আইকন গুলো JSX-এ কীভাবে বসাতে হয়:
+
+<video width="600" controls>
+  <source
+    src="/videos/MoviePortal/html-template-to-jsx.webm"
+    type="video/webm"
+  />
+  আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
+</video>
+
+### এই ধাপের পুরো ওয়ার্কফ্লো
+
+১। Vite দিয়ে React প্রজেক্ট বুটস্ট্র্যাপ করা ও Tailwind CSS v4 ইন্সটল করা।
+২। HTML template থেকে JSX রূপান্তর, assets/icons মাইগ্রেশন।
+৩। Tailwind CSS v4-এর CSS-first কনফিগারেশন সেটআপ (`vite.config.js` ও `@theme` ডিরেক্টিভ)।
+৪। ফোল্ডার আর্কিটেকচার ডিজাইন করে একে একে কম্পোনেন্ট বানানো।
+৫। `data` ফোল্ডার বানিয়ে মুভি ডেটা হার্ডকোড রাখা (পরে API দিয়ে রিপ্লেস করার জন্য একই shape মেনে)।
+৬। `CartContext` ও `useReducer` দিয়ে Cart সিস্টেম implement করা।
+৭। `MovieDetailsModal` বানানো এবং (ঐচ্ছিকভাবে) React Router দিয়ে URL-driven modal বানানো।
+৮। `ThemeContext` দিয়ে Light/Dark থিম সুইচিং বানানো।
+৯। ESLint/Prettier দিয়ে কোড কোয়ালিটি নিশ্চিত করা।
+
+চলুন, একে একে ঢুকে পড়ি প্রতিটা ধাপে।
+
+---
+
+### ধাপ ১: Vite + React প্রজেক্ট বুটস্ট্র্যাপ
+
+Create React App (deprecated) বাদ দিয়ে আমরা **Vite** ব্যবহার করব — কারণ Vite ডেভেলপমেন্টে native ES modules ব্যবহার করে instant server start আর Hot Module Replacement (HMR) দেয়। প্রোডাকশন বিল্ডে এখন **Rolldown** (Rust-based unified bundler, Vite 8 থেকে ডিফল্ট) ব্যবহার হয়, যা আগের esbuild + Rollup dual-bundler আর্কিটেকচারকে রিপ্লেস করে বিল্ড স্পিড বহুগুণ বাড়িয়ে দিয়েছে।
+
+```bash
+# Node.js 20.19+ অথবা 22.12+ প্রয়োজন
+npm create vite@latest movie-portal -- --template react
+
+cd movie-portal
+npm install
+npm run dev
+```
+
+TypeScript চাইলে `--template react-ts` দিন। বড় প্রজেক্টে টাইপ সেফটি ও autocomplete-এর জন্য TypeScript রিকমেন্ডেড, তবে এই টিউটোরিয়ালে আমরা plain JavaScript (JSX) দিয়ে এগোবো — যাতে কনসেপ্টগুলো পরিষ্কার থাকে, ভাষার জটিলতায় হারিয়ে না যায়।
+
+---
+
+### ধাপ ২: Tailwind CSS v4 — কনফিগারেশনের নতুন নিয়ম
+
+Tailwind CSS v4 একদম গ্রাউন্ড-আপ রিরাইট — এখন এটি Lightning CSS (Rust-based parser/transformer)-এর উপর দাঁড়ানো। সবচেয়ে বড় পরিবর্তন: **`tailwind.config.js` ফাইল আর লাগে না!** কনফিগারেশন এখন সরাসরি CSS ফাইলে `@theme` ডিরেক্টিভ দিয়ে হয় (CSS-first configuration), যা design token গুলোকে native CSS custom properties হিসেবে এক্সপোজ করে দেয়।
+
+প্রথমে first-party Vite প্লাগিনসহ ইন্সটল করুন:
+
+```bash
+npm install tailwindcss @tailwindcss/vite
+```
+
+`vite.config.js`-এ প্লাগিন যোগ করুন:
+
+```js
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+```
+
+এরপর `src/index.css`-এ একটা ইম্পোর্ট লাইন আর কাস্টম থিম টোকেন যোগ করুন:
+
+```css
+@import "tailwindcss";
+
+@theme {
+  /* কাস্টম কালার — আমাদের ডিজাইন সিস্টেম টোকেন */
+  --color-primary: #ff0000;
+  --color-secondary: #00ff00;
+
+  /* কাস্টম ফন্ট ও স্পেসিং স্কেল-ও এখানেই যোগ করা যাবে */
+  --font-display: "Hind Siliguri", sans-serif;
+}
+
+/* Dark mode variant — v4-তে darkMode আর JS config-এ থাকে না */
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+মজার ব্যাপার হলো — `--color-primary` ডিফাইন করার সাথে সাথেই Tailwind নিজে থেকে `bg-primary`, `text-primary`, `border-primary` ইত্যাদি ক্লাস জেনারেট করে দেয়। আলাদা করে `colors: { primary: ... }` লিখে extend করার দরকারই নেই।
+
+> **Container utility কাস্টমাইজেশন:** v3-তে `container: { center: true, padding: "2rem" }` যেভাবে JS অবজেক্টে লেখা হতো, v4-তে সেটা `@utility` ডিরেক্টিভ দিয়ে override করতে হয়:
+
+```css
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+```
+
+> v4 দ্রুত evolve করছে, তাই সর্বশেষ সিনট্যাক্সের জন্য অফিসিয়াল Tailwind CSS ডকুমেন্টেশন একবার চেক করে নেওয়াই বুদ্ধিমানের কাজ।
+
+---
+
+### ধাপ ৩: HTML Template থেকে JSX — অনুবাদের নিয়মকানুন
+
+HTML markup-কে JSX-এ রূপান্তরের সময় কিছু সিনট্যাক্স নিয়ম মনে রাখতে হয়, কারণ JSX আসলে HTML নয় — এটা JavaScript-এরই সিনট্যাক্টিক সুগার (পেছনে গিয়ে `React.createElement()` কলে কম্পাইল হয়):
+
+- **`class` → `className`** (কারণ `class` JavaScript-এর reserved keyword)
+- **`for` → `htmlFor`** (লেবেল এলিমেন্টে)
+- **inline `style`** স্ট্রিং না হয়ে JavaScript object হবে, প্রপার্টি নেম camelCase: `style={{ backgroundColor: "#000", marginTop: "10px" }}`
+- সব **attribute camelCase**: `onclick` → `onClick`, `tabindex` → `tabIndex`, `readonly` → `readOnly`
+- **Self-closing void elements**: `<img>`, `<input>`, `<br>` অবশ্যই self-close করতে হবে — `<img src="..." />`
+- **Comment syntax**: HTML কমেন্ট (`<!-- -->`)-এর বদলে `{/* comment */}`
+- **JavaScript expression embedding**: কার্লি ব্রেস `{}` দিয়ে dynamic ভ্যালু বসানো হয় — `<h1>{movie.title}</h1>`
+- **একটাই root element**: প্রতিটা কম্পোনেন্ট একটা single root return করবে — বাড়তি wrapper `<div>` এড়াতে `<>...</>` (Fragment) ব্যবহার করা যায়
+- **List rendering-এ `key` prop**: `.map()` দিয়ে লুপ করার সময় প্রতিটা child-এ ইউনিক `key` দিতেই হবে — `movies.map((m) => <MovieCard key={m.id} movie={m} />)`
+
+**Assets ও আইকন মাইগ্রেশন:**
+
+HTML template-এর `assets/images`, `assets/fonts`, `assets/icons` ফোল্ডারগুলো `src/assets`-এ কপি করুন। Vite-এ দুই রকম asset handling আছে:
+
+1. **`src/assets`**-এ রাখা ফাইল `import` করে ব্যবহার করতে হয় — Vite এগুলোকে build-time-এ hash করে, optimize করে bundle-এ ঢুকিয়ে দেয়:
+
+   ```jsx
+   import heroBanner from "../assets/images/hero-banner.jpg";
+
+   <img src={heroBanner} alt="Hero banner" />;
+   ```
+
+2. **`public/`** ফোল্ডারের ফাইল প্রসেস হয় না, সরাসরি root path দিয়ে রেফার করা হয় (favicon, robots.txt ইত্যাদি)।
+
+আইকনের ক্ষেত্রে raw SVG ফাইল কপি না করে `lucide-react`-এর মতো tree-shakeable, component-based icon library ব্যবহার করা অনেক বেশি মেইনটেইনেবল:
+
+```bash
+npm install lucide-react
+```
+
+```jsx
+import { ShoppingCart, Star, Sun, Moon } from "lucide-react";
+
+<button>
+  <ShoppingCart size={20} className="text-primary" />
+</button>;
+```
+
+---
+
+### ধাপ ৪: ফোল্ডার আর্কিটেকচার ও কম্পোনেন্ট তৈরি
+
+স্কেলেবল প্রজেক্টের জন্য আমরা feature-based ফোল্ডার স্ট্রাকচার ফলো করব:
+
+```bash
+src/
+├── assets/          # images, fonts, raw svg
+├── components/
+│   ├── ui/          # Button, Badge, Modal — পুনঃব্যবহারযোগ্য প্রিমিটিভ
+│   ├── layout/      # Navbar, Footer
+│   └── movies/      # MovieCard, MovieGrid, MovieDetailsModal
+├── context/         # ThemeContext, CartContext
+├── data/            # hardcoded mock data
+├── hooks/           # useTheme, useCart, custom hooks
+├── pages/           # HomePage, CartPage
+├── lib/             # utils, helper functions
+├── App.jsx
+├── main.jsx
+└── index.css
+```
+
+কম্পোনেন্ট বানানোর সময় আমরা কিছু নীতি মাথায় রাখব:
+
+- **Single Responsibility** — প্রতিটা কম্পোনেন্ট একটাই কাজ করবে (`MovieCard` শুধু একটা মুভির কার্ড দেখাবে, cart logic তার দায়িত্ব না)।
+- **Composition over prop drilling** — গভীর component tree-তে বারবার props না পাঠিয়ে Context API ব্যবহার।
+- **Presentational vs Container split** — `MovieCard` শুধু UI দেখাবে (presentational), আর actual cart action আসবে `useCart()` hook থেকে (container logic হুকে বন্দি)।
+- React 19.2-এর **React Compiler** (এখনো opt-in, `@vitejs/plugin-react` v6-এর সাথে babel/Oxc প্রিসেট দিয়ে এনাবল করা যায়) কম্পোনেন্টগুলোকে অটোমেটিক্যালি মেমোয়াইজ করে দেয় — ফলে বেশিরভাগ ক্ষেত্রে ম্যানুয়ালি `useMemo`/`useCallback` ছড়িয়ে দেওয়ার দরকার কমে আসে। তবে এটা এখনো maturing স্টেজে, তাই প্রোডাকশনে এনাবল করার আগে নিজের লাইব্রেরিগুলোর কম্প্যাটিবিলিটি একবার যাচাই করে নিন।
+
+একে একে এই কম্পোনেন্টগুলো বানাবো: `Navbar`, `MovieCard`, `MovieGrid`, `MovieDetailsModal`, `Cart`, `Footer` — এবং প্রতিটা বানানোর পর `App.jsx`-এ জোড়া লাগিয়ে পেজ অ্যাসেম্বল করব।
+
+---
+
+### ধাপ ৫: Data ফোল্ডার — মুভি ডেটা হার্ডকোড রাখা
+
+API ইন্টিগ্রেশনের আগে UI develop ও test করার জন্য hardcoded mock data layer বানানো একটা কমন আর স্মার্ট প্র্যাকটিস। ভবিষ্যতে এই array-কে একই shape মেনে API response দিয়ে রিপ্লেস করলে কম্পোনেন্ট কোডে এক লাইনও বদলাতে হবে না।
+
+```js
+// src/data/movies.js
+
+/**
+ * @typedef {Object} Movie
+ * @property {number} id
+ * @property {string} title
+ * @property {string} poster
+ * @property {number} rating
+ * @property {string[]} genres
+ * @property {number} price
+ */
+
+/** @type {Movie[]} */
+export const movies = [
+  {
+    id: 1,
+    title: "ইন্টারস্টেলার",
+    poster: "/images/movies/interstellar.jpg",
+    rating: 8.7,
+    genres: ["Sci-Fi", "Drama"],
+    price: 120,
+  },
+  {
+    id: 2,
+    title: "ইনসেপশন",
+    poster: "/images/movies/inception.jpg",
+    rating: 8.8,
+    genres: ["Action", "Sci-Fi"],
+    price: 150,
+  },
+];
+```
+
+এখানে JSDoc `@typedef` ব্যবহার করায় plain JavaScript প্রজেক্টেও VS Code-এ IntelliSense আর type-checking-এর সুবিধা পাওয়া যায় — আর পরবর্তীতে TypeScript-এ মাইগ্রেট করাও সহজ হয়ে যায়।
+
+প্রাইস ফরম্যাট করার জন্য hardcoded `৳` স্ট্রিং জোড়া দেওয়ার বদলে `Intl.NumberFormat` ব্যবহার করুন:
+
+```js
+// src/lib/formatPrice.js
+export function formatPrice(amount) {
+  return new Intl.NumberFormat("bn-BD", {
+    style: "currency",
+    currency: "BDT",
+  }).format(amount);
+}
+```
+
+---
+
+### ধাপ ৬: CartContext ও useReducer দিয়ে Cart সিস্টেম
+
+Step 2-এ প্ল্যান করা Reducer Pattern এখন বাস্তবে নামাবো। `cartReducer`-কে আলাদা ফাইলে রাখব, যাতে logic আর Context configuration আলাদা থাকে (separation of concerns):
+
+```js
+// src/context/cartReducer.js
+export const initialCartState = { items: [] };
+
+export function cartReducer(state, action) {
+  switch (action.type) {
+    case "ADD_TO_CART": {
+      const exists = state.items.some((item) => item.id === action.payload.id);
+      if (exists) return state; // duplicate হলে warning component লেভেলে দেখাব
+      return { items: [...state.items, action.payload] };
+    }
+
+    case "REMOVE_FROM_CART":
+      return {
+        items: state.items.filter((item) => item.id !== action.payload.id),
+      };
+
+    case "CLEAR_CART":
+      return { items: [] };
+
+    default:
+      return state;
+  }
+}
+```
+
+```jsx
+// src/context/CartContext.jsx
+import { createContext, useContext, useReducer, useMemo } from "react";
+import { cartReducer, initialCartState } from "./cartReducer";
+
+const CartContext = createContext(null);
+
+export function CartProvider({ children }) {
+  const [state, dispatch] = useReducer(cartReducer, initialCartState);
+
+  // Derived state — মোট দাম ও আইটেম সংখ্যা আলাদা state হিসেবে না রেখে calculate করছি
+  const totalPrice = useMemo(
+    () => state.items.reduce((sum, item) => sum + item.price, 0),
+    [state.items],
+  );
+
+  const value = {
+    items: state.items,
+    totalPrice,
+    itemCount: state.items.length,
+    addToCart: (movie) => dispatch({ type: "ADD_TO_CART", payload: movie }),
+    removeFromCart: (id) =>
+      dispatch({ type: "REMOVE_FROM_CART", payload: { id } }),
+    clearCart: () => dispatch({ type: "CLEAR_CART" }),
+    isInCart: (id) => state.items.some((item) => item.id === id),
+  };
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+}
+
+export function useCart() {
+  const context = useContext(CartContext);
+  if (!context) throw new Error("useCart must be used within a CartProvider");
+  return context;
+}
+```
+
+`MovieCard`-এ duplicate-add হলে ওয়ার্নিং দেখানোর জন্য `isInCart` চেক করে কন্ডিশনালি মেসেজ দেখাবো:
+
+```jsx
+// src/components/movies/MovieCard.jsx
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "../../context/CartContext";
+import { formatPrice } from "../../lib/formatPrice";
+
+export function MovieCard({ movie }) {
+  const { addToCart, isInCart } = useCart();
+  const alreadyAdded = isInCart(movie.id);
+
+  function handleAddToCart() {
+    if (alreadyAdded) {
+      alert(`"${movie.title}" আগে থেকেই কার্টে যুক্ত আছে।`); // প্রোডাকশনে toast notification ব্যবহার করা ভালো
+      return;
+    }
+    addToCart(movie);
+  }
+
+  return (
+    <div className="rounded-lg border border-secondary/20 p-4">
+      <img src={movie.poster} alt={movie.title} className="rounded-md" />
+      <h3 className="mt-2 font-display font-semibold">{movie.title}</h3>
+      <p className="text-sm text-secondary">⭐ {movie.rating}</p>
+      <button
+        onClick={handleAddToCart}
+        className="mt-3 flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-white"
+      >
+        <ShoppingCart size={16} />
+        {formatPrice(movie.price)}
+      </button>
+    </div>
+  );
+}
+```
+
+---
+
+### ধাপ ৭: MovieDetailsModal — ক্লোজ আপ শট
+
+মুভি কার্ডে ক্লিক করলে যে modal খুলবে, সেটাকে DOM hierarchy-তে `MovieCard`-এর ভেতরে নেস্টেড না রেখে `createPortal` দিয়ে সরাসরি `document.body`-এর চাইল্ড হিসেবে রেন্ডার করাই বুদ্ধিমানের কাজ — এতে `overflow: hidden` বা `z-index` stacking context-জনিত হ্যাপা এড়ানো যায়:
+
+```jsx
+// src/components/movies/MovieDetailsModal.jsx
+import { createPortal } from "react-dom";
+import { useEffect } from "react";
+import { X } from "lucide-react";
+
+export function MovieDetailsModal({ movie, onClose }) {
+  // Escape কী দিয়ে modal বন্ধ করার accessibility support
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  if (!movie) return null;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+      onClick={onClose}
+    >
+      <div
+        className="relative max-w-lg rounded-lg bg-white p-6 dark:bg-zinc-900"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button onClick={onClose} className="absolute right-4 top-4">
+          <X size={20} />
+        </button>
+        <img src={movie.poster} alt={movie.title} className="rounded-md" />
+        <h2 className="mt-4 text-xl font-bold">{movie.title}</h2>
+        <p className="mt-2 text-sm">জনরা: {movie.genres.join(", ")}</p>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+```
+
+`selected movie`-এর state রাখব `HomePage`-এ — লোকাল state হিসেবে, কারণ এটা শুধু এই পেজের modal-এর জন্যই দরকার, গ্লোবাল করার দরকার নেই:
+
+```jsx
+// src/pages/HomePage.jsx
+import { useState } from "react";
+import { movies } from "../data/movies";
+import { MovieCard } from "../components/movies/MovieCard";
+import { MovieDetailsModal } from "../components/movies/MovieDetailsModal";
+
+export function HomePage() {
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
+  return (
+    <div className="container grid grid-cols-2 gap-4 md:grid-cols-4">
+      {movies.map((movie) => (
+        <div key={movie.id} onClick={() => setSelectedMovie(movie)}>
+          <MovieCard movie={movie} />
+        </div>
+      ))}
+      <MovieDetailsModal
+        movie={selectedMovie}
+        onClose={() => setSelectedMovie(null)}
+      />
+    </div>
+  );
+}
+```
+
+**বোনাস — URL-driven Modal (React Router v8):** Deep-linking সাপোর্ট চাইলে `/movies/:id` রাউটে মডাল-ভিত্তিক ডিটেইলস পেজ ম্যাপ করা যায়:
+
+```bash
+npm install react-router
+```
+
+```jsx
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useParams,
+  useNavigate,
+} from "react-router";
+
+function MovieDetailsRoute() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const movie = movies.find((m) => m.id === Number(id));
+  return <MovieDetailsModal movie={movie} onClose={() => navigate(-1)} />;
+}
+```
+
+লক্ষ করুন — এখন থেকে শুধু `react-router` প্যাকেজ ইম্পোর্ট করলেই হয়। `react-router-dom` এখন `react-router`-এরই একটা re-export মাত্র।
+
+---
+
+### ধাপ ৮: লাইট অফ, ডার্ক অন — Theme Switch 🌗
+
+থিম সুইচিংয়ের জন্য আলাদা একটা `ThemeContext` বানাবো, যা পুরো অ্যাপে theme state শেয়ার করবে এবং `localStorage`-এ persist করবে — যাতে পেজ রিফ্রেশের পরও ইউজারের পছন্দ মনে থাকে।
+
+```jsx
+// src/context/ThemeContext.jsx
+import { createContext, useContext, useEffect, useState } from "react";
+
+const ThemeContext = createContext(null);
+
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function useTheme() {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+  return context;
+}
+```
+
+`main.jsx`-এ পুরো অ্যাপকে `ThemeProvider` ও `CartProvider` দিয়ে wrap করে দেব (Provider-এর nesting order টেকনিক্যালি ম্যাটার করে না, তবে readability-র জন্য সবচেয়ে গ্লোবাল context বাইরে রাখাই ভালো):
+
+```jsx
+import { ThemeProvider } from "./context/ThemeContext";
+import { CartProvider } from "./context/CartContext";
+
+createRoot(document.getElementById("root")).render(
+  <ThemeProvider>
+    <CartProvider>
+      <App />
+    </CartProvider>
+  </ThemeProvider>,
+);
+```
+
+Tailwind v4-এর dark variant আমরা আগেই ধাপ ২-এ `@custom-variant dark (&:where(.dark, .dark *));` দিয়ে কনফিগার করে রেখেছি। ফলে `dark:bg-black dark:text-white`-এর মতো ক্লাসগুলো `<html>` ট্যাগে `.dark` ক্লাস থাকলেই অ্যাক্টিভ হয়ে যাবে — যেটা আমাদের `ThemeContext` টগল করে দিচ্ছে।
+
+**Flash of Unstyled Theme (FOUC) ঠেকান:** React hydrate হওয়ার আগেই যেন সঠিক থিম apply হয়ে যায়, তার জন্য `index.html`-এ `<body>`-এর আগে একটা ছোট্ট blocking script বসিয়ে দিন:
+
+```html
+<script>
+  (function () {
+    const theme = localStorage.getItem("theme") || "light";
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  })();
+</script>
+```
+
+থিম সুইচার স্টাইলের রেফারেন্স ক্লাস — `styles.css`-এ যোগ করতে হবে:
+
+<img
+  src="/movie-portal-project/theme-switcher-style.png"
+  alt="theme-switcher-class"
+  width="600"
+/>
+
+---
+
+### ধাপ ৯: কোড কোয়ালিটি — শেষ পালিশ
+
+Vite-এর React টেমপ্লেটে ডিফল্ট **ESLint flat config** (`eslint.config.js`) আগে থেকেই থাকে, যা React Hooks rules আর Fast Refresh কনভেনশন এনফোর্স করে। সাথে **Prettier** যোগ করে দিলে কোড ফরম্যাটিং কনসিস্টেন্ট থাকে:
+
+```bash
+npm install -D prettier eslint-config-prettier
+```
+
+টিমে কাজ করলে commit-এর আগে lint/format নিশ্চিত করতে `husky` + `lint-staged` সেটআপ করে নিতে পারেন — এতে inconsistent কোড মেইন ব্রাঞ্চে ঢুকতে পারবে না।
+
+---
+
+## 🎬 কাট! — পরের ধাপে যাওয়ার আগে চেকলিস্ট
+
+- [ ] Vite + React 19.2 প্রজেক্ট রান হচ্ছে, HMR কাজ করছে।
+- [ ] Tailwind CSS v4 `@theme` কনফিগসহ ইন্সটল করা হয়েছে; কাস্টম কালার টোকেন ও `@custom-variant dark` ভেরিফাই করা হয়েছে।
+- [ ] HTML template-এর সব মার্কআপ JSX সিনট্যাক্স অনুযায়ী রূপান্তরিত হয়েছে, assets ও আইকন মাইগ্রেট হয়েছে।
+- [ ] ফোল্ডার আর্কিটেকচার অনুযায়ী কম্পোনেন্টগুলো (`Navbar`, `MovieCard`, `MovieGrid`, `Footer` ইত্যাদি) তৈরি ও composed হয়েছে।
+- [ ] `src/data/movies.js`-এ mock ডেটা তৈরি ও কম্পোনেন্টে wire করা হয়েছে।
+- [ ] `CartContext` + `cartReducer` দিয়ে Add/Remove/Duplicate-warning ফিচার কাজ করছে।
+- [ ] `MovieDetailsModal` `createPortal` দিয়ে কাজ করছে, Escape কী দিয়ে বন্ধ হচ্ছে।
+- [ ] Theme Context দিয়ে Light/Dark mode টগল কাজ করছে, রিফ্রেশের পরও persist করছে, FOUC নেই।
+- [ ] ESLint/Prettier সেটআপ করা হয়েছে।
+
+সব বক্সে টিক পড়লে — কাট, প্রিন্ট! 🎥 আপনার Movie Portal-এর Act 1 শেষ। পরের পর্বে আমরা সার্চ, ফিল্টার আর রিয়েল API নিয়ে কথা বলব।
