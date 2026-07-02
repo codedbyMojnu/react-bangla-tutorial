@@ -1,28 +1,31 @@
 ---
-title: 🌍 World Class Computer Environment Setup Guide Tutorial in Detail for Professional Modern Web Developer 2025
-description: Web Developer হওয়ার জন্য কম্পিউটারে সঠিকভাবে পরিবেশ তৈরি করুন। Node.js, VS Code, Extensions, Git, Snippets, এবং React Setup সহ বিস্তারিত গাইড। এটি ২০২৫ সালের জন্য সবচেয়ে আপডেটেড টিউটোরিয়াল।
+title: আপনার কম্পিউটারে পরিবেশ তৈরি করুন
+description: React ও Next.js Developer হওয়ার জন্য কম্পিউটারে প্রফেশনাল পরিবেশ তৈরি করুন। Node.js, VS Code, Extensions, Git, Snippets, Package Manager, Tailwind CSS এবং প্রোডাক্টিভিটি হ্যাকস সহ ২০২৬ সালের সবচেয়ে আপডেটেড টিউটোরিয়াল।
 ---
 
-# 💻 Web Developer হওয়ার জন্য কম্পিউটারে পরিবেশ তৈরি 
+# 💻 React ও Next.js Developer হওয়ার জন্য কম্পিউটারে পরিবেশ তৈরি
 
-Web Development শেখা শুরু করার আগে সবচেয়ে গুরুত্বপূর্ণ বিষয় হলো — **আপনার কম্পিউটারকে ঠিকভাবে প্রস্তুত করা।**  
-কারণ একটি ভালো পরিবেশ (Development Environment) থাকলে শেখার গতি, পারফর্মেন্স এবং কাজের আনন্দ — সবকিছুই বহুগুণ বেড়ে যায়।  
+Web Development শেখা শুরু করার আগে সবচেয়ে গুরুত্বপূর্ণ বিষয় হলো — **আপনার কম্পিউটারকে ঠিকভাবে প্রস্তুত করা।**  
+কারণ একটি ভালো পরিবেশ (Development Environment) থাকলে শেখার গতি, পারফর্মেন্স এবং কাজের আনন্দ — সবকিছুই বহুগুণ বেড়ে যায়।
 
-এই টিউটোরিয়ালে আমি দেখাবো কীভাবে একজন **Professional Modern Web Developer (2025)**-এর মতো আপনার কম্পিউটার সেটআপ করবেন —  
-**React**, **Vite**, **VS Code**, **Snippets**, **Git**, এবং আরও অনেক কিছু সহ ধাপে ধাপে।  
+এই টিউটোরিয়ালে আমি দেখাবো কীভাবে একজন **Professional Modern Web Developer (2026)**-এর মতো আপনার কম্পিউটার সেটআপ করবেন —  
+**React**, **Vite**, **Next.js**, **Tailwind CSS**, **VS Code**, **Git**, এবং আরও অনেক কিছু সহ ধাপে ধাপে।
+
+শুধু বেসিক সেটআপ নয় — সাথে থাকছে বেশ কিছু **প্রো-লেভেল ডেভেলপমেন্ট হ্যাক**, যা প্রতিদিনের কোডিং লাইফকে অনেকখানি সহজ করে দেবে। 🔥
 
 ---
 
 ## 🧩 ধাপ ১: Node.js ইনস্টল করুন
 
-JavaScript কোড রান করানোর জন্য Node.js হলো সবচেয়ে গুরুত্বপূর্ণ সফটওয়্যার।  
-এটি আপনার মেশিনকে একটি JavaScript রানটাইম এনভায়রনমেন্টে পরিণত করে।
+JavaScript কোড রান করানোর জন্য Node.js হলো সবচেয়ে গুরুত্বপূর্ণ সফটওয়্যার।  
+এটি আপনার মেশিনকে একটি JavaScript রানটাইম এনভায়রনমেন্টে পরিণত করে।
 
-> ⚙️ React, Vite, Next.js — সবই Node.js ছাড়া চলবে না।
+> ⚙️ React, Vite, Next.js — সবই Node.js ছাড়া চলবে না।
 
 ### 🔽 ইনস্টল পদ্ধতি:
-1. [Node.js অফিসিয়াল ওয়েবসাইটে যান](https://nodejs.org/)
-2. **LTS (Long Term Support)** ভার্সন ডাউনলোড করুন
+
+1. [Node.js অফিসিয়াল ওয়েবসাইটে যান](https://nodejs.org/)
+2. **LTS (Long Term Support)** ভার্সন ডাউনলোড করুন — এটাই সবচেয়ে stable ভার্সন। (২০২৬ সালের মাঝামাঝি সময়ে এই লেখা পর্যন্ত এটি **Node.js 24**)
 3. ইনস্টল শেষে টার্মিনাল খুলে দেখুন:
 
 ```bash
@@ -30,19 +33,26 @@ node -v
 npm -v
 ```
 
-যদি দুইটি ভার্সন নাম্বার দেখায়, তাহলে বুঝবেন — Node.js ঠিকভাবে ইনস্টল হয়েছে ✅
+যদি দুইটি ভার্সন নাম্বার দেখায়, তাহলে বুঝবেন — Node.js ঠিকভাবে ইনস্টল হয়েছে ✅
+
+> 💡 Hack: একই কম্পিউটারে একাধিক প্রজেক্টে কাজ করলে (কোনোটা পুরনো Node ভার্সন চায়, কোনোটা নতুন) বারবার আনইনস্টল-ইনস্টল না করে **nvm** (Node Version Manager) বা **fnm** ইনস্টল করে নিন। এতে এক কমান্ডে যেকোনো Node ভার্সনে সুইচ করতে পারবেন:
+>
+> ```bash
+> nvm install 24
+> nvm use 24
+> ```
 
 ---
 
 ## 🧠 ধাপ ২: VS Code ইনস্টল করুন
 
-একজন আধুনিক ডেভেলপারের প্রিয় টুল — **Visual Studio Code**।
-এটি ফ্রি, হালকা, এবং এক্সটেনশন দিয়ে অনেক শক্তিশালী করা যায়।
+একজন আধুনিক ডেভেলপারের প্রিয় টুল — **Visual Studio Code**।
+এটি ফ্রি, হালকা, এবং এক্সটেনশন দিয়ে অনেক শক্তিশালী করা যায়।
 
 ### 🔽 ইনস্টল পদ্ধতি:
 
-* [VS Code ওয়েবসাইটে যান](https://code.visualstudio.com/)
-* ডাউনলোড ও ইনস্টল করুন
+- [VS Code ওয়েবসাইটে যান](https://code.visualstudio.com/)
+- ডাউনলোড ও ইনস্টল করুন
 
 ইনস্টল শেষে টার্মিনালে চেক করুন:
 
@@ -50,7 +60,7 @@ npm -v
 code .
 ```
 
-যদি VS Code খুলে যায়, তাহলে কমান্ড ঠিকভাবে কাজ করছে 🎯
+যদি VS Code খুলে যায়, তাহলে কমান্ড ঠিকভাবে কাজ করছে 🎯
 না হলে Command Palette (`Ctrl + Shift + P`) খুলে লিখুন:
 
 > **Shell Command: Install 'code' command in PATH**
@@ -66,20 +76,26 @@ code .
 
 1. `Ctrl + Shift + X` চাপুন (Extension Panel খুলবে)
 2. সার্চ দিন → **LWS VS Code Theme**
-3. ইনস্টল করে সক্রিয় করুন (Peace of the eye variant ব্যবহার করুন)
+3. ইনস্টল করে সক্রিয় করুন (Peace of the eye variant ব্যবহার করুন)
+
+> 🎯 চাইলে **One Dark Pro**, **Dracula Official**, বা **GitHub Theme** ট্রাই করতে পারেন — সবগুলোই চোখের জন্য আরামদায়ক এবং জনপ্রিয়। ফন্ট হিসেবে **Fira Code** বা **JetBrains Mono** ব্যবহার করলে `=>`, `!==` এর মতো সিম্বলগুলো সুন্দর ligature আকারে দেখাবে।
 
 ---
 
 ## ⚡ ধাপ ৪: দরকারি এক্সটেনশন ইনস্টল করুন
 
-এক্সটেনশনগুলো আপনার কোডিং এক্সপেরিয়েন্সকে স্মার্ট, দ্রুত, এবং সুন্দর করে তোলে।
+এক্সটেনশনগুলো আপনার কোডিং এক্সপেরিয়েন্সকে স্মার্ট, দ্রুত, এবং সুন্দর করে তোলে।
 
-| এক্সটেনশন             | কাজ                                       |
-| --------------------- | ----------------------------------------- |
-| **ESLint**            | কোডে ভুল বা সতর্কতা ধরবে                  |
-| **Prettier**          | কোড অটো ফরম্যাট করবে                      |
-| **Path Autocomplete** | ইমপোর্ট পাথ সাজেস্ট করবে                  |
-| **Auto Rename Tag**   | HTML ট্যাগ rename করলে pair ট্যাগও বদলাবে |
+| এক্সটেনশন                                  | কাজ                                                |
+| ------------------------------------------ | -------------------------------------------------- |
+| **ESLint**                                 | কোডে ভুল বা সতর্কতা ধরবে                           |
+| **Prettier**                               | কোড অটো ফরম্যাট করবে                               |
+| **Tailwind CSS IntelliSense**              | Tailwind ক্লাসনেম অটোকমপ্লিট ও লাইভ প্রিভিউ দেখাবে |
+| **Error Lens**                             | এরর/ওয়ার্নিং কোড লাইনের ঠিক পাশেই ইনলাইন দেখাবে   |
+| **GitLens**                                | কোন লাইন কে, কবে, কেন বদলেছে — তা ইনলাইনে দেখাবে   |
+| **ES7+ React/Redux/React-Native Snippets** | React-এর জন্য রেডিমেড শর্টকাট স্নিপেট দেবে         |
+| **Path Intellisense**                      | ইমপোর্ট পাথ অটোকমপ্লিট সাজেস্ট করবে                |
+| **Auto Rename Tag**                        | HTML/JSX ট্যাগ rename করলে pair ট্যাগও বদলাবে      |
 
 ইনস্টল করতে যান: **Extensions Panel → সার্চ দিন → Install**
 
@@ -124,7 +140,40 @@ VS Code যেন ESLint ও Prettier ঠিকভাবে কাজ করে,
 
 ---
 
-## 🚀 ধাপ ৭: React প্রজেক্ট তৈরি করুন (Vite দিয়ে)
+## 📦 ধাপ ৭: সঠিক Package Manager বেছে নিন
+
+Node.js ইনস্টল করলে সাথে সাথেই **npm** পেয়ে যান — এই পুরো গাইডের সব কমান্ড npm দিয়েই দেখানো হয়েছে। তবে ২০২৬ সালে npm-এর পাশাপাশি আরও দুটি অপশন খুবই জনপ্রিয়, যেগুলো সম্পর্কে জানা থাকা ভালো।
+
+| Package Manager | সুবিধা                                                                        | কখন বেছে নেবেন                              |
+| --------------- | ----------------------------------------------------------------------------- | ------------------------------------------- |
+| **npm**         | ডিফল্ট, সবচেয়ে বেশি compatible, শেখার জন্য সবচেয়ে নিরাপদ                    | নতুন অবস্থায়, যেকোনো প্রজেক্টে             |
+| **pnpm**        | একই প্যাকেজ বারবার কপি না করে ডিস্ক স্পেস বাঁচায়, monorepo-তে দুর্দান্ত      | বড় বা একাধিক প্রজেক্ট নিয়ে কাজ করলে       |
+| **Bun**         | সবচেয়ে দ্রুত ইনস্টল স্পিড — সাথে runtime, bundler, test runner সবকিছু একসাথে | স্পিড চাইলে, নতুন প্রজেক্টে experiment করতে |
+
+ইনস্টল করতে:
+
+```bash
+# pnpm ইনস্টল করুন
+npm install -g pnpm
+```
+
+```bash
+# Bun ইনস্টল করুন (macOS, Linux, WSL)
+curl -fsSL https://bun.com/install | bash
+```
+
+```powershell
+# Bun ইনস্টল করুন (Windows PowerShell)
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+> 🔥 মজার তথ্য: ২০২৫ সালের ডিসেম্বরে **Anthropic** (যে কোম্পানি Claude তৈরি করে) পুরো **Bun** প্রজেক্টটিই অধিগ্রহণ (acquire) করে নিয়েছে, যাতে তাদের AI coding agent **Claude Code** আরও দ্রুত ও শক্তিশালী হয়। ভালো খবর হলো, Bun এখনো সম্পূর্ণ open-source ও MIT-licensed থাকবে, এবং সব ডেভেলপারের জন্যই ফ্রি।
+
+এই গাইডের বাকি অংশে সহজবোধ্যতার জন্য আমরা **npm** দিয়েই কমান্ড দেখাবো — চাইলে যেকোনো জায়গায় `npm` এর বদলে `pnpm` বা `bun` বসিয়ে একই কাজ করতে পারবেন।
+
+---
+
+## 🚀 ধাপ ৮: React প্রজেক্ট তৈরি করুন (Vite দিয়ে)
 
 আগে create-react-app ব্যবহার হতো,
 এখন সবাই **Vite** ব্যবহার করে কারণ এটি দ্রুত ও আধুনিক।
@@ -138,25 +187,123 @@ npm run dev
 
 এখন ব্রাউজারে `http://localhost:5173` খুলে দেখুন — আপনার প্রথম React অ্যাপ চলছে! 🎉
 
+> 🎯 TypeScript-এ কমফোর্টেবল হলে `--template react` এর বদলে `--template react-ts` ব্যবহার করুন — বাকি সব কমান্ড একই থাকবে।
+
+> 💡 Hack: বারবার `../../../components/Button` এর মতো লম্বা রিলেটিভ পাথ লিখতে না চাইলে, `vite.config.js`-এ একটি path alias সেট করে নিন:
+>
+> ```js
+> import path from "path";
+>
+> export default defineConfig({
+>   // ...আগের কনফিগ
+>   resolve: {
+>     alias: {
+>       "@": path.resolve(__dirname, "./src"),
+>     },
+>   },
+> });
+> ```
+>
+> এরপর থেকে `@/components/Button` লিখলেই চলবে।
+
 ---
 
-## 📁 ধাপ ৮: `.js` বনাম `.jsx`
+## ▲ ধাপ ৯: Next.js প্রজেক্ট তৈরি করুন
 
-React কম্পোনেন্ট লেখার জন্য `.jsx` এক্সটেনশন ব্যবহার করা উত্তম।
-এতে আপনার ফাইলের ধরন পরিষ্কারভাবে বোঝা যায়।
+**Next.js** হলো React-এর উপর তৈরি একটি ফুল-স্ট্যাক ফ্রেমওয়ার্ক — এটি শুধু UI বানায় না, বরং routing, server-side rendering, API route, image optimization ইত্যাদি বিল্ট-ইন হিসেবেই দিয়ে দেয়।
+
+> ⚙️ কখন কোনটা বাছাই করবেন?
+>
+> - শুধু React শিখছেন, বা ছোট widget/dashboard বানাচ্ছেন → **Vite + React**
+> - পুরো ওয়েবসাইট বানাচ্ছেন, SEO দরকার, বা নিজের backend API দরকার → **Next.js**
+
+### 🔽 প্রজেক্ট তৈরি:
+
+```bash
+npx create-next-app@latest my-next-app
+cd my-next-app
+npm run dev
+```
+
+কমান্ড রান করলে কয়েকটি প্রশ্ন আসবে — নতুন অবস্থায় ডিফল্ট (recommended) উত্তরগুলোই বেছে নিন:
+
+```
+Would you like to use TypeScript?        → Yes
+Which linter would you like to use?      → ESLint
+Would you like to use Tailwind CSS?      → Yes
+Would you like your code inside src/?    → Yes
+Would you like to use App Router?        → Yes (recommended)
+Customize the default import alias @/*?  → No
+```
+
+এখন ব্রাউজারে `http://localhost:3000` খুলুন — আপনার Next.js অ্যাপ রেডি! 🎉
+
+লক্ষ্য করবেন dev server আগের চেয়ে চোখের পলকে বুট হচ্ছে — এর পেছনে আছে **Turbopack**, Next.js-এর নতুন Rust-ভিত্তিক বান্ডলার, যা এখন ডিফল্ট হিসেবেই চালু থাকে।
+
+> 🔥 React Bangla হ্যাক: create-next-app এখন একটি `AGENTS.md` (আর তার সাথে একটা `CLAUDE.md`-ও) ফাইল বানিয়ে দেয়, যেটা Claude Code বা অন্য যেকোনো AI coding agent-কে আপনার প্রজেক্টের নিয়মকানুন বুঝিয়ে দেয়। এই ফাইলটা ডিলিট না করে বরং নিজের প্রজেক্ট অনুযায়ী কাস্টমাইজ করুন — AI যত ভালো কনটেক্সট পাবে, কোডও তত ভালো লিখবে (ধাপ ১৭-এ আরও বিস্তারিত)।
+
+---
+
+## 📁 ধাপ ১০: `.js`/`.jsx` বনাম `.ts`/`.tsx`
+
+React কম্পোনেন্ট লেখার জন্য `.jsx` এক্সটেনশন ব্যবহার করা উত্তম — এতে আপনার ফাইলের ধরন পরিষ্কারভাবে বোঝা যায়।
 
 ✅ উদাহরণ:
 `App.jsx`, `Navbar.jsx`, `LoginForm.jsx`
 
+২০২৬ সালে এসে বেশিরভাগ নতুন প্রজেক্টে (এমনকি create-next-app-ও ডিফল্টভাবে) **TypeScript** (`.tsx`) ব্যবহার হয়। সহজ ভাষায়, TypeScript হলো JavaScript-এর উপর একটা টাইপ-চেকিং লেয়ার — ভুল টাইপের ডেটা ব্যবহার করলে কোড রান করার আগেই এডিটরে ধরিয়ে দেয়।
+
+> 🎯 পরামর্শ: React শেখা শুরু করলে `.jsx` দিয়েই শুরু করুন — সিনট্যাক্স নিয়ে বেশি না ভেবে React-এর মূল কনসেপ্টে ফোকাস করুন। কয়েক মাস পর কম্ফোর্টেবল হয়ে গেলে একটা ছোট প্রজেক্টে `.tsx` ট্রাই করে দেখুন। create-next-app-এ "Would you like to use TypeScript?" প্রশ্নে "No" বললেই পুরোপুরি `.jsx`-এ থেকে যেতে পারবেন।
+
 ---
 
-## 🧠 ধাপ ৯: User Snippets দিয়ে Productivity বাড়ান
+## 🌊 ধাপ ১১: Tailwind CSS সেটআপ করুন
+
+Tailwind CSS দিয়ে ক্লাসনেম লিখেই দ্রুত সুন্দর ডিজাইন বানানো যায় — এখন প্রায় প্রতিটি প্রফেশনাল React/Next.js প্রজেক্টে এটি ব্যবহার হয়। **Tailwind CSS v4** পুরোনো `tailwind.config.js` ফাইলের ঝামেলা প্রায় শেষ করে দিয়েছে — এখন কনফিগারেশন হয় সরাসরি CSS ফাইলে।
+
+**Next.js ব্যবহার করলে:** create-next-app-এর সময় "Tailwind CSS → Yes" সিলেক্ট করলেই এটি ইনস্টল ও কনফিগার হয়ে যায় — আলাদা কিছু করতে হবে না।
+
+**Vite + React ব্যবহার করলে**, নিজে ইনস্টল করে নিন:
+
+```bash
+npm install tailwindcss @tailwindcss/vite
+```
+
+`vite.config.js`-এ প্লাগইন যুক্ত করুন:
+
+```js
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+```
+
+আপনার মূল CSS ফাইলে (`src/index.css`) একটি লাইন যোগ করুন:
+
+```css
+@import "tailwindcss";
+```
+
+ব্যস, এতটুকুই! আলাদা কোনো `tailwind.config.js`, `content` array বা `autoprefixer` লাগবে না — Tailwind v4 নিজে থেকেই আপনার ফাইল স্ক্যান করে নেবে।
+
+> 💡 Hack: `prettier-plugin-tailwindcss` ইনস্টল করলে Prettier প্রতিবার সেভের সময় আপনার Tailwind ক্লাসগুলো recommended অর্ডারে সাজিয়ে দেবে — কোড পরিষ্কার দেখাবে, আর টিমমেটদের সাথে merge conflict-ও কমে যাবে।
+>
+> ```bash
+> npm install -D prettier-plugin-tailwindcss
+> ```
+
+---
+
+## 🧠 ধাপ ১২: User Snippets দিয়ে Productivity বাড়ান
 
 প্রতিবার একই কোড লিখতে লিখতে বিরক্ত লাগছে? 😩
 
-তাহলে এবার থেকে ব্যবহার করুন User Snippets — যা কয়েকটি কীওয়ার্ড লিখেই পুরো কোড তৈরি করে দিতে পারে। একই কোড বারবার না লিখে **VS Code Snippet** ব্যবহার করুন।
+তাহলে এবার থেকে ব্যবহার করুন User Snippets — যা কয়েকটি কীওয়ার্ড লিখেই পুরো কোড তৈরি করে দিতে পারে। একই কোড বারবার না লিখে **VS Code Snippet** ব্যবহার করুন।
 
-**🔹 ধাপ ১: `ctrl + shift + p` দিয়ে Command Palette খুলে → সার্চ দিন “snippets”**
+**🔹 ধাপ ১: `ctrl + shift + p` দিয়ে Command Palette খুলে → সার্চ দিন "snippets"**
 
 **🔹 ধাপ ২: Configure User Snippets → `javascriptreact` এবং `javascript` সিলেক্ট করুন**
 
@@ -198,31 +345,71 @@ _javascriptreact.json এবং javascript.json — এই দুই ফাই�
 
 ✅ এখন থেকে কী লাভ?
 
-- ⏱ সময় বাঁচবে — বারবার একই কোড লিখতে হবে না
+- ⏱ সময় বাঁচবে — বারবার একই কোড লিখতে হবে না
 - 🎯 টাইপো কমবে
-- ⚙️ কোডের ধারাবাহিকতা (consistency) বজায় থাকবে
+- ⚙️ কোডের ধারাবাহিকতা (consistency) বজায় থাকবে
 
-🔥 React Bangla টিপস:
-নিজের প্রয়োজন অনুযায়ী আরও স্নিপেট বানাতে পারেন — যেমন useState, useEffect, বা custom hook স্নিপেট।
+🔥 React Bangla টিপস: আগে বলেছিলাম "Custom Hook Snippet"-এর world-class ভার্সন লিখে দেব — এই নিন, এখনই দিয়ে দিচ্ছি! নিচের স্নিপেটগুলো একই JSON-এর ভেতরে (কমা দিয়ে আলাদা করে) যোগ করে দিন 👇
 
-চাইলে আমি পরের অধ্যায়ে “Custom Hook Snippet” বানানোর world-class ভার্সনটিও লিখে দিতে পারি। 
+```json
+{
+  "useState Hook": {
+    "prefix": "ust",
+    "body": ["const [$1, set${2}] = useState($3);"],
+    "description": "Create a useState hook"
+  },
+  "useEffect Hook": {
+    "prefix": "uef",
+    "body": ["useEffect(() => {", "  $1", "}, [$2]);"],
+    "description": "Create a useEffect hook"
+  },
+  "Custom Hook Boilerplate": {
+    "prefix": "chook",
+    "body": [
+      "import { useState, useEffect } from 'react';",
+      "",
+      "export default function use$1() {",
+      "  const [$2, set${3}] = useState($4);",
+      "",
+      "  useEffect(() => {",
+      "    $5",
+      "  }, []);",
+      "",
+      "  return { $2 };",
+      "}"
+    ],
+    "description": "Create a custom React hook boilerplate"
+  }
+}
+```
+
+এখন `ust` লিখলে useState, `uef` লিখলে useEffect, আর `chook` লিখলে নিজের একটা কাস্টম হুকের পুরো কাঠামো মুহূর্তেই তৈরি হয়ে যাবে 🚀
+
+নিজের প্রয়োজন অনুযায়ী আরও স্নিপেট বানিয়ে নিতে পারেন — Next.js-এর `"use client";` লাইন দিয়ে শুরু হওয়া কম্পোনেন্টের জন্যও একটা স্নিপেট বানিয়ে ফেলতে পারেন, ইচ্ছেমতো।
 
 ---
 
-## 🧰 ধাপ ১০: Git এবং GitHub সেটআপ করুন
+## 🧰 ধাপ ১৩: Git এবং GitHub সেটআপ করুন
 
 কোড ট্র্যাক রাখতে ও ব্যাকআপ রাখতে Git অপরিহার্য।
 
 ### 🔽 ইনস্টল:
 
-* [Git ডাউনলোড করুন](https://git-scm.com/downloads)
-* ইনস্টল শেষে চেক করুন:
+- [Git ডাউনলোড করুন](https://git-scm.com/downloads)
+- ইনস্টল শেষে চেক করুন:
 
   ```bash
   git --version
   ```
 
-### 🔽 নতুন প্রজেক্টে ইনিশিয়ালাইজ:
+প্রথমবার ব্যবহারের আগে আপনার নাম ও ইমেইল সেট করে নিন (প্রতিটি কমিটে এই তথ্য যুক্ত থাকবে):
+
+```bash
+git config --global user.name "আপনার নাম"
+git config --global user.email "you@example.com"
+```
+
+### 🔽 নতুন প্রজেক্টে ইনিশিয়ালাইজ:
 
 ```bash
 git init
@@ -232,46 +419,176 @@ git commit -m "Initial commit"
 
 GitHub অ্যাকাউন্ট খুলে কোড আপলোড করুন 💪
 
+> 💡 Hack: `git status`, `git commit -m`, `git checkout` বারবার পুরো লিখতে না চাইলে shortcut alias বানিয়ে নিন:
+>
+> ```bash
+> git config --global alias.st status
+> git config --global alias.cm "commit -m"
+> git config --global alias.co checkout
+> ```
+>
+> এখন শুধু `git st`, `git cm "message"`, `git co branch-name` লিখলেই চলবে।
+
 ---
 
-## 🔒 ধাপ ১১: `.gitignore` ও `.env` ফাইল
+## 🔒 ধাপ ১৪: `.gitignore` ও `.env` ফাইল
 
 প্রজেক্টের গোপন বা ভারি ফাইল বাদ দিতে `.gitignore` ব্যবহার করুন।
 
 ```
 node_modules/
 .env
+.env.local
 dist/
+.next/
+.turbo/
+out/
+.DS_Store
 ```
 
-`.env` ফাইল গোপন রাখুন — কখনোই GitHub-এ পুশ করবেন না।
+React (Vite) প্রজেক্টে `dist/` ফোল্ডার তৈরি হয়, আর Next.js প্রজেক্টে `.next/` ফোল্ডার — দুটোরই গিটে থাকার দরকার নেই, কারণ এগুলো প্রতিবার বিল্ড করলেই আবার তৈরি হয়ে যায়।
+
+`.env` ফাইল গোপন রাখুন — কখনোই GitHub-এ পুশ করবেন না। Next.js প্রজেক্টে ব্রাউজারে পাঠাতে চাওয়া ভেরিয়েবলের নাম অবশ্যই `NEXT_PUBLIC_` দিয়ে শুরু করতে হয় (যেমন `NEXT_PUBLIC_API_URL`), না হলে সেটা শুধু সার্ভার সাইডেই থেকে যাবে।
+
+> 💡 Hack: প্রজেক্টে একটা `.env.example` ফাইল রাখুন — আসল ভ্যালু ছাড়া, শুধু key-গুলো — আর সেটাই গিটে কমিট করে দিন। এতে টিমের অন্য কেউ প্রজেক্ট ক্লোন করলে ঠিক বুঝতে পারবে কী কী environment variable লাগবে।
+>
+> ```
+> NEXT_PUBLIC_API_URL=
+> DATABASE_URL=
+> ```
 
 ---
 
-## ⚡ ধাপ ১২: VS Code টার্মিনাল শর্টকাট
+## ⚡ ধাপ ১৫: VS Code টার্মিনাল শর্টকাট
 
 টার্মিনাল খুলুন সহজে:
-`Ctrl + `` (Backtick) চাপুন
-একাধিক টার্মিনাল ট্যাবও খুলতে পারবেন। 
+`` Ctrl + ` `` (Backtick) চাপুন
+একাধিক টার্মিনাল ট্যাবও খুলতে পারবেন, এমনকি স্ক্রিন ভাগ করে পাশাপাশিও রাখতে পারবেন (split terminal আইকনে ক্লিক করে)।
 
 ---
 
-## 💎 কিছু অতিরিক্ত প্রো টিপস
+## 🪝 ধাপ ১৬: Pre-commit Hook দিয়ে কোড কোয়ালিটি অটোমেট করুন
+
+ধরুন তাড়াহুড়োয় ফরম্যাট না করা বা ESLint এরর থাকা কোড কমিট করে ফেললেন। **Husky** আর **lint-staged** দিয়ে এটা আটকানো যায় — প্রতিটা কমিটের ঠিক আগে স্বয়ংক্রিয়ভাবে lint ও format রান হয়ে যাবে, ভাঙা কোড কখনোই কমিট হবে না।
+
+```bash
+npm install --save-dev husky lint-staged
+npx husky init
+```
+
+এটি একটা `.husky/pre-commit` ফাইল বানিয়ে দেবে। এর ভেতরে লিখুন:
+
+```bash
+npx lint-staged
+```
+
+এবার `package.json`-এ এই অংশটুকু যোগ করুন:
+
+```json
+{
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{css,md,json}": ["prettier --write"]
+  }
+}
+```
+
+এখন থেকে যতবার `git commit` করবেন, ততবার শুধু আপনার staged ফাইলগুলোর উপর lint + format অটোমেটিক চলবে। কোনো এরর থাকলে কমিটই আটকে যাবে — অর্থাৎ ভাঙা কোড GitHub-এ যাওয়ার আগেই ধরা পড়ে যাবে।
+
+---
+
+## 🤖 ধাপ ১৭: AI Coding Assistant দিয়ে গতি বাড়ান
+
+২০২৬ সালে এসে প্রায় প্রতিটি প্রফেশনাল ডেভেলপারের ওয়ার্কফ্লোতে একটি AI coding assistant থাকে — এটা কোড লিখে দেওয়ার পাশাপাশি বাগ খুঁজতে, রিফ্যাক্টর করতে, এমনকি ছোটখাটো ফিচার একাই বানাতেও সাহায্য করে।
+
+**Claude Code** (Anthropic-এর টার্মিনাল-ভিত্তিক AI coding agent) ইনস্টল করতে:
+
+```bash
+# macOS, Linux, WSL
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+```powershell
+# Windows PowerShell
+irm https://claude.ai/install.ps1 | iex
+```
+
+ইনস্টল শেষে যেকোনো প্রজেক্ট ফোল্ডারে গিয়ে টার্মিনালে লিখুন:
+
+```bash
+claude
+```
+
+প্রথমবার ব্রাউজারে লগইন করতে বলবে। মনে রাখবেন, Claude Code ব্যবহার করতে Claude-এর Pro, Max, Team, Enterprise বা Console — এই অ্যাকাউন্টগুলোর একটা লাগে; ফ্রি claude.ai প্ল্যানে এটি নেই।
+
+একবার সেটআপ হয়ে গেলে স্বাভাবিক ভাষায় কথা বলার মতো করেই কাজ বলতে পারবেন, যেমন:
+
+```
+> এই কম্পোনেন্টে একটা loading state যোগ করে দাও
+> এই ফাংশনের জন্য টেস্ট লিখে দাও
+> এই bug-টা খুঁজে বের করে ফিক্স করে দাও
+```
+
+বিকল্প হিসেবে **GitHub Copilot**-ও অনেকে VS Code-এর ভেতরে ইনলাইন সাজেশন হিসেবে ব্যবহার করেন। দুটোর কাজের ধরন কিছুটা আলাদা — Copilot বেশি ইনলাইন অটোকমপ্লিট-নির্ভর, আর Claude Code পুরো এজেন্টের মতো কাজ করে: ফাইল পড়ে, লিখে, দরকার হলে টেস্টও রান করে।
+
+> 🎯 শুরুতে চাইলে টার্মিনাল ছাড়াই, সরাসরি [claude.ai](https://claude.ai)-তে গিয়ে চ্যাটের মাধ্যমে কোড নিয়ে প্রশ্ন করা, এরর ডিবাগ করা বা কনসেপ্ট বোঝাও শুরু করতে পারেন — এটা সম্পূর্ণ ফ্রি প্ল্যানেও ব্যবহারযোগ্য।
+
+---
+
+## 💎 আরও কিছু Pro-Level Development Hacks
+
+এতদূর ফলো করলে আপনার এনভায়রনমেন্ট এখন প্রায় প্রফেশনাল লেভেলের। এবার শিখে নিন আরও কিছু ছোট কিন্তু শক্তিশালী হ্যাক, যা প্রতিদিনের কাজকে অনেক দ্রুত করে দেবে।
+
+### ⌨️ কীবোর্ড শর্টকাট যা সময় বাঁচাবে
+
+| শর্টকাট (Windows/Linux) | কাজ                                                      |
+| ----------------------- | -------------------------------------------------------- |
+| `Ctrl + D`              | পরবর্তী একই word সিলেক্ট করে multi-cursor বানায়         |
+| `Ctrl + Shift + L`      | একই word-এর সব জায়গায় একসাথে cursor বসায়              |
+| `Alt + ↑ / ↓`           | পুরো লাইন উপরে/নিচে সরায়                                |
+| `Ctrl + /`              | লাইন কমেন্ট/আনকমেন্ট করে                                 |
+| `Ctrl + P`              | ফাইল দ্রুত খুঁজে খোলে                                    |
+| `F2`                    | ভ্যারিয়েবল/ফাংশনের নাম পুরো প্রজেক্টে একসাথে rename করে |
+| `F12`                   | ফাংশন/ভ্যারিয়েবল যেখানে ডিফাইন করা, সেখানে নিয়ে যায়   |
+| `Ctrl + K Z`            | Zen Mode — সব sidebar লুকিয়ে শুধু কোডে ফোকাস করায়      |
+
+(Mac ইউজার হলে `Ctrl` এর জায়গায় `Cmd` চাপুন)
+
+### ✍️ Emmet দিয়ে JSX ঝড়ের গতিতে লিখুন
+
+VS Code-এ built-in Emmet সাপোর্ট আছে। JSX ফাইলে লিখুন:
+
+```
+div.container>ul.list>li.item*3
+```
+
+তারপর `Tab` চাপুন — পুরো নেস্টেড স্ট্রাকচার এক সেকেন্ডে তৈরি হয়ে যাবে!
+
+### 🔍 ব্রাউজারে React DevTools
+
+Chrome বা Firefox-এ **React Developer Tools** এক্সটেনশন ইনস্টল করুন। এতে ব্রাউজারের DevTools-এ নতুন "Components" আর "Profiler" ট্যাব যোগ হবে, যেখানে পুরো কম্পোনেন্ট ট্রি, props, state — সব লাইভ দেখতে পারবেন। ডিবাগিং অনেক সহজ হয়ে যায়।
+
+### 🧭 পরিষ্কার Import পাথ
+
+Next.js-এ ডিফল্টভাবেই `@/` alias থাকে (ধাপ ৯ দেখুন), আর Vite প্রজেক্টে ধাপ ৮-এর হ্যাক অনুযায়ী নিজে সেট করে নিতে পারবেন। `../../../../components/Button` এর বদলে `@/components/Button` লেখা — কোড অনেক পরিষ্কার দেখায়।
+
+### 📋 পুরনো কিছু টিপস, এখনো সমান গুরুত্বপূর্ণ
 
 - ✅ প্রতিদিন ছোট ছোট টাস্ক লিস্ট করুন
-- ✅ বড় কাজকে ছোট ভাগে ভাগ করুন
+- ✅ বড় কাজকে ছোট ভাগে ভাগ করুন
 - ✅ VS Code শর্টকাট শিখে ফেলুন
-- ✅ StackOverflow আর অফিসিয়াল ডকুমেন্টেশন পড়ার অভ্যাস করুন
-- ✅ আরামদায়ক চেয়ার + মনোযোগী workspace তৈরি করুন
+- ✅ StackOverflow আর অফিসিয়াল ডকুমেন্টেশন পড়ার অভ্যাস করুন
+- ✅ আরামদায়ক চেয়ার + মনোযোগী workspace তৈরি করুন
+- ✅ কোড লেখার আগে ২ মিনিট ভেবে নিন কী বানাচ্ছেন — তাড়াহুড়োয় বাগ বেশি হয়
 
 ---
 
 ## 🏁 উপসংহার
 
-এতদূর ফলো করলে আপনি এখন একজন **Modern Web Developer (2025)** হওয়ার জন্য একদম প্রস্তুত।
-আপনার কম্পিউটার এখন একটি **Powerful Web Development Environment** 💪
+এতদূর ফলো করলে আপনি এখন একজন **Modern React ও Next.js Developer (2026)** হওয়ার জন্য একদম প্রস্তুত।
+আপনার কম্পিউটার এখন একটি **Powerful, Production-Ready Development Environment** 💪
 
-React, Tailwind CSS, Next.js, Node.js — যা-ই শিখতে চান, সব এখন হাতের নাগালে।
+Node.js, সঠিক Package Manager, React, Next.js, Tailwind CSS, VS Code, Git, Snippets, Pre-commit Hook, এমনকি AI Coding Assistant — যা-ই লাগুক, সব এখন হাতের নাগালে। এখন বাকি শুধু একটাই কাজ — কোড লেখা শুরু করা! 🚀
 
 ---
 
@@ -280,14 +597,12 @@ React, Tailwind CSS, Next.js, Node.js — যা-ই শিখতে চান, 
 <hr />
 
 <GiscusComments
-repo="codedbyMojnu/react-bangla-tutorial"
-repoId="R_kgDOLDE87Q"
-category="General"
-categoryId="DIC_kwDOLDE87c4CtCIY"
-mapping="pathname"
-inputPosition="top"
-theme="preferred_color_scheme"
-lang="bn"
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="bn"
 />
-
-```
