@@ -1,291 +1,1724 @@
 ---
-title: Axios HTTP Requests
+title: Axios HTTP Requests Complete Guide
 description: >-
   ডেভেলপারদের জীবনে সার্ভারের সাথে ডেটা আদান-প্রদান করা খুব সাধারণ এবং
-  গুরুত্বপূর্ণ কাজ। তুমি যখনই কোনো অ্যাপ্লিকেশনে ইউজার লিস্ট, পোস্ট, বা কোনো
-  অর্ডার…
----
-# ✅ **Axios: সহজ ভাষায় পূর্ণাঙ্গ গাইড (একদম জিরো থেকে প্রো লেভেল)**
-
-ডেভেলপারদের জীবনে **সার্ভারের সাথে ডেটা আদান-প্রদান** করা খুব সাধারণ এবং গুরুত্বপূর্ণ কাজ। তুমি যখনই কোনো অ্যাপ্লিকেশনে **ইউজার লিস্ট**, **পোস্ট**, বা কোনো **অর্ডার লিস্ট** দেখাও, তখনই ব্যাকএন্ড সার্ভার থেকে ডেটা নিয়ে আসতে হয়।
-
-এর জন্য অনেক টুলস আছে, কিন্তু **Axios** সবচেয়ে বেশি জনপ্রিয়, কারণ এটা ব্যবহার করা সহজ, ফিচার-রিচ এবং অনেক ফ্লেক্সিবল।
-
-এক কথায় বললে, **Axios মানে হলো, অন্যের বাড়িতে খবর পাঠানো ও খবর আনা, কিন্তু ভদ্রভাবে, নিয়মমাফিক এবং সেফলি!**
-
+  গুরুত্বপূর্ণ কাজ। এই গাইডে আমরা Axios একদম বেসিক থেকে শুরু করে instance,
+  interceptors, JWT auth, auto refresh-token, profile system এবং একটা সম্পূর্ণ
+  CRUD প্রজেক্ট বানিয়ে শিখবো।
 ---
 
-## 🌟 **১. Axios কী? এবং এর দর্শন**
+# Axios: সহজ ভাষায় পূর্ণাঙ্গ গাইড — জিরো থেকে প্রো
 
-**Axios হলো একটি Promise-ভিত্তিক HTTP ক্লায়েন্ট।**
-এর মানে হলো, তুমি চাইলে `async/await` ব্যবহার করে সহজে কোড লিখতে পারো।
+ধরো, তুমি একটা React অ্যাপ বানাচ্ছো যেখানে পোস্ট দেখাতে হবে, নতুন পোস্ট তৈরি করতে হবে, লাইক-কমেন্ট করতে হবে। এই সব কাজে সার্ভারের সাথে কথা বলতে হয় — ডেটা পাঠাতে হয়, ডেটা আনতে হয়। এই কাজকে বলে **HTTP Request**।
 
-যেমন ধরো, তোমার ছোট ভাই মোমিনুলকে চা আনতে পাঠালে। তুমি জানো, ও একসময় ফিরে আসবে। তুমি চাইলে বসে বসে ওর জন্য অপেক্ষা করতে পারো (যেমন `await`), অথবা অন্য কাজ করতে পারো (যেমন `.then()` দিয়ে)।
+HTTP Request করার জন্য JavaScript-এ `fetch` আছে, কিন্তু **Axios** ব্যবহার করা বেশি সুবিধাজনক। কারণ Axios অনেক কাজ নিজেই করে দেয়: JSON পার্স করা, error সহজে ধরা, request যাওয়ার আগে বা পরে কিছু করা (Interceptors)।
 
-Axios-এর মূল দর্শন:
+এই গাইড দুটো ভাগে:
 
-- ✅ **একই কোড ব্রাউজার ও সার্ভারে চলে** (যেমন, React বা Node.js দুটোতেই)।
-- ✅ **Promise-based** — তাই `async/await` এর সাথে চমৎকারভাবে কাজ করে।
-- ✅ **ডেটাকে অটোমেটিক JSON থেকে অবজেক্টে রূপান্তর করে** — তোমাকে আলাদা পার্স করতে হয় না।
-- ✅ **শক্তিশালী Error Handling** — সার্ভার এরর, নেটওয়ার্ক এরর, সব সহজে ধরা যায়।
-- ✅ **Interceptors** — অর্থাৎ, রিকোয়েস্ট যাওয়ার আগে বা রেসপন্স আসার পরে তুমি কিছু করতে পারো (যেমন, টোকেন অ্যাড করা, লোডার দেখানো)।
+- **Part 1 (সেকশন ১-৭):** Axios-এর বেসিক — request, config, response, error handling, instance।
+- **Part 2 (সেকশন ৮-৩১):** রিয়েল প্রজেক্ট **Connectify** — JWT Auth, Auto Refresh, Post CRUD, Profile System, Avatar Upload — সব হাতে-কলমে।
 
 ---
 
-## 🚀 **২. রিকোয়েস্ট পাঠানোর সহজ উপায়**
+## ⚙️ শুরুর আগে: Backend Server রেডি করো
 
-### ✅ সরাসরি Method ব্যবহার
+Part 2-এর পুরো কাজ একটা **আসল, চলমান Backend Server**-এর উপর নির্ভরশীল। এটা **LearnWithSumit**-এর `rnext` রিপোজিটরির `backend-server`, যেটা Node.js/Express দিয়ে বানানো সম্পূর্ণ ফেসবুক-স্টাইল API।
 
-- `axios.get(url, [config])` — ডেটা আনার জন্য।
-- `axios.post(url, data, [config])` — নতুন ডেটা পাঠানোর জন্য।
-- `axios.put(url, data, [config])` — পুরোপুরি আপডেট করার জন্য।
-- `axios.patch(url, data, [config])` — আংশিক আপডেট করার জন্য।
-- `axios.delete(url, [config])` — ডেটা মুছে ফেলার জন্য।
+**প্রয়োজনীয় জিনিস:** Git, Node.js, GitHub অ্যাকাউন্ট (কোর্স অ্যাক্সেস সহ)।
 
-#### উদাহরণ: GET
+```sh
+# ১. রিপোজিটরি ক্লোন করো
+git clone https://github.com/Learn-with-Sumit/rnext.git
+
+# ২. ফোল্ডারে ঢোকো
+cd rnext
+
+# ৩. সঠিক ব্রাঞ্চে switch করো
+git checkout 5.15
+
+# ৪. backend ফোল্ডারে গিয়ে dependency ইনস্টল করো
+cd backend-server
+npm i
+
+# ৫. সার্ভার চালাও
+npm run dev
+```
+
+সবকিছু ঠিক হলে সার্ভার **`http://localhost:3000`** পোর্টে চলবে। এই টার্মিনাল ট্যাব পুরো টিউটোরিয়াল জুড়ে **খোলা রেখো।**
+
+---
+
+## ১. Axios কী? কেন ব্যবহার করবো?
+
+**Axios হলো একটি Promise-based HTTP Client।**
+
+একটা গল্প দিয়ে বোঝাই। তুমি রেস্টুরেন্টে বসে আছো। Waiter (Axios) তোমার অর্ডার (request) নিয়ে রান্নাঘরে (server) যায়, রান্না হলে খাবার (response) নিয়ে ফেরত আসে। এই পুরো প্রক্রিয়াটাকে Axios পরিচালনা করে।
+
+**কেন `fetch`-এর বদলে Axios?**
+
+| বিষয়             | `fetch`                            | `axios`                       |
+| ----------------- | ---------------------------------- | ----------------------------- |
+| JSON পার্স        | `res.json()` আলাদা call করতে হয়   | অটোমেটিক করে দেয়             |
+| Error ধরা         | শুধু network error, 4xx/5xx ধরে না | সব error সহজে ধরে             |
+| Interceptors      | নেই                                | আছে — request/response উভয়েই |
+| Browser + Node.js | শুধু Browser                       | দুটোতেই কাজ করে               |
+
+**ইনস্টল:**
+
+```sh
+npm install axios
+```
+
+---
+
+## ২. প্রথম Request — GET
 
 ```javascript
+import axios from "axios";
+
 async function fetchUsers() {
   try {
     const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/users"
+      "https://jsonplaceholder.typicode.com/users",
     );
     console.log("ইউজার লিস্ট:", response.data);
   } catch (error) {
-    console.error("এরর:", error.message);
+    console.error("এরর হয়েছে:", error.message);
   }
 }
+
 fetchUsers();
 ```
 
-#### উদাহরণ: POST
-
-```javascript
-async function createPost() {
-  try {
-    const postData = {
-      title: "React Bangla Rocks!",
-      body: "Banglai React শেখা সহজ!",
-      userId: 1,
-    };
-    const response = await axios.post(
-      "https://jsonplaceholder.typicode.com/posts",
-      postData
-    );
-    console.log("নতুন পোস্ট:", response.data);
-  } catch (error) {
-    console.error("পোস্ট এরর:", error.message);
-  }
-}
-createPost();
-```
+`response.data`-ই হলো সার্ভার থেকে আসা আসল ডেটা। Axios নিজেই JSON পার্স করে দিয়েছে।
 
 ---
 
-### ✅ কনফিগ অবজেক্ট দিয়ে
+## ৩. সব HTTP Methods
+
+```javascript
+// GET — ডেটা আনা
+const res = await axios.get("/users");
+
+// POST — নতুন ডেটা তৈরি
+const res = await axios.post("/users", { name: "Mojnu", email: "m@m.com" });
+
+// PUT — পুরো ডেটা আপডেট
+const res = await axios.put("/users/1", {
+  name: "Mojnu Miah",
+  email: "m@m.com",
+});
+
+// PATCH — আংশিক আপডেট
+const res = await axios.patch("/users/1", { name: "Mojnu Miah" });
+
+// DELETE — ডেটা মুছে ফেলা
+const res = await axios.delete("/users/1");
+```
+
+Config object দিয়েও লেখা যায়:
 
 ```javascript
 axios({
-  method: "get",
-  url: "https://jsonplaceholder.typicode.com/todos/1",
-  responseType: "json",
-}).then((response) => {
-  console.log("ডেটা:", response.data);
-});
+  method: "post",
+  url: "/users",
+  data: { name: "Mojnu" },
+}).then((res) => console.log(res.data));
 ```
 
 ---
 
-## ⚙️ **৩. রিকোয়েস্ট কনফিগারেশন**
+## ৪. Request Configuration
 
-যখন তুমি অর্ডার করতে যাও, যেমন খাবারের অর্ডার, তখন শুধু খাবারের নাম বললেই হয় না। তোমাকে ঠিক করতে হয় — কোন রেস্টুরেন্ট থেকে (baseURL), কোন সস লাগবে (headers), কখন দরকার (timeout), কে রিসিভ করবে (auth), ইত্যাদি।
+Axios-এ request পাঠানোর সময় অনেক কিছু configure করা যায়:
 
-Axios-এও ঠিক তাই:
+```javascript
+const config = {
+  url: "/posts",
+  method: "get",
 
-- **url:** কোন এন্ডপয়েন্টে যাবে।
-- **method:** GET/POST/PATCH ইত্যাদি।
-- **baseURL:** প্রতিবার সম্পূর্ণ URL না লিখে, একবারে মূল URL দিয়ে দেওয়া।
-- **headers:** অথেনটিকেশন টোকেন বা কনটেন্ট টাইপ।
-- **params:** Query string হিসেবে প্যারামিটার, যেমন `?search=react`.
-- **data:** Body-তে যাবে (POST, PUT, PATCH-এ লাগে)।
-- **timeout:** কত সেকেন্ডের মধ্যে না এলে বাতিল হবে।
-- **withCredentials:** Cookie বা অন্য সিকিউর ডাটা পাঠাতে হবে কিনা।
-- **auth:** Username-password দিয়ে বেসিক অথেনটিকেশন।
-- **responseType:** json, blob, text ইত্যাদি।
-- **onUploadProgress, onDownloadProgress:** প্রগ্রেস ট্র্যাকিং, যেমন বড় ফাইল আপলোডের সময় লোডার দেখানো।
+  // সব URL-এর আগে যুক্ত হবে
+  baseURL: "http://localhost:3000",
+
+  // HTTP Headers
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer your-token-here",
+  },
+
+  // URL-এ query string: /posts?page=1&limit=10
+  params: { page: 1, limit: 10 },
+
+  // Request body (POST, PUT, PATCH-এ)
+  data: { title: "Hello World" },
+
+  // কত millisecond পরে timeout
+  timeout: 10000,
+
+  // Cookie সহ request পাঠাতে
+  withCredentials: false,
+
+  // Response type: 'json', 'blob', 'text', 'arraybuffer'
+  responseType: "json",
+
+  // Upload progress ট্র্যাক করা
+  onUploadProgress: (progressEvent) => {
+    const percent = Math.round(
+      (progressEvent.loaded * 100) / progressEvent.total,
+    );
+    console.log(`আপলোড: ${percent}%`);
+  },
+};
+
+axios(config).then((res) => console.log(res.data));
+```
 
 ---
 
-## ✅ **৪. রেসপন্সের কাঠামো**
+## ৫. Response-এর কাঠামো
 
-যখন খাবার চলে আসে, তুমি শুধু খাবারই দেখ না। তুমি বিল দেখো, কবে এসেছে তা দেখো, কোন রেস্তোরাঁ থেকে এসেছে তা দেখো। ঠিক তেমনি, Axios রেসপন্সেও অনেক ইনফো থাকে।
+Axios যে response object রিটার্ন করে তার ভেতরে:
 
-```js
-{
-  data: {...},        // মূল ডেটা
-  status: 200,        // HTTP স্ট্যাটাস কোড
-  statusText: "OK",  // Text description
-  headers: {...},     // হেডার
-  config: {...},      // রিকোয়েস্টের কনফিগ
-  request: {...},     // একচুয়াল রিকোয়েস্ট অবজেক্ট
+```javascript
+const response = await axios.get("/users");
+
+response.data; // আসল ডেটা — সাধারণত এটাই ব্যবহার করি
+response.status; // HTTP status code: 200, 201, 404, 500
+response.statusText; // "OK", "Created" ইত্যাদি
+response.headers; // Response headers
+response.config; // যে config দিয়ে request করা হয়েছিল
+```
+
+---
+
+## ৬. Error Handling — সঠিকভাবে Error ধরা
+
+Axios-এ error তিন রকম হতে পারে:
+
+```javascript
+async function fetchData() {
+  try {
+    const res = await axios.get("/users");
+    console.log(res.data);
+  } catch (error) {
+    if (error.response) {
+      // সার্ভার response দিয়েছে, কিন্তু 4xx বা 5xx status সহ
+      console.error("সার্ভার এরর:", error.response.status);
+      console.error("বার্তা:", error.response.data?.message);
+    } else if (error.request) {
+      // Request পাঠানো হয়েছে, কিন্তু কোনো response আসেনি
+      // ইন্টারনেট বন্ধ বা সার্ভার বন্ধ
+      console.error("সার্ভার সাড়া দিচ্ছে না।");
+    } else {
+      // Code লেখার সময় কিছু ভুল হয়েছে
+      console.error("Setup এরর:", error.message);
+    }
+  }
 }
 ```
 
-আমরা সাধারণত `response.data` ব্যবহার করি।
+একটা helper function রেখে দিলে সব জায়গায় কাজে আসে:
+
+```javascript
+function getFriendlyErrorMessage(error) {
+  if (!error.response) {
+    return "ইন্টারনেট কানেকশন বা সার্ভার সমস্যা। একটু পরে চেষ্টা করো।";
+  }
+  const status = error.response.status;
+  const msg = error.response.data?.error || error.response.data?.message;
+
+  switch (status) {
+    case 400:
+      return msg || "Request-এ কিছু ভুল আছে।";
+    case 401:
+      return "লগইন করা নেই বা session শেষ।";
+    case 403:
+      return "এই কাজের অনুমতি নেই।";
+    case 404:
+      return "যা খুঁজছো তা পাওয়া যায়নি।";
+    case 500:
+      return "সার্ভারে সমস্যা। একটু পরে চেষ্টা করো।";
+    default:
+      return "কিছু একটা ভুল হয়েছে।";
+  }
+}
+```
 
 ---
 
-## 🧰 **৫. Axios Instance: কোডকে ক্লিন ও Reusable রাখা**
+## ৭. Axios Instance — কোড DRY রাখা
 
-বড় প্রজেক্টে বারবার `baseURL`, `headers` লিখতে বিরক্তিকর, যেমন বারবার একই ঠিকানা ও একই রাঁধুনির নাম বলা। এর সমাধান — **Instance**।
-
-#### উদাহরণ:
+বড় project-এ প্রতিটা API call-এ `baseURL` আর `headers` বারবার লেখা বিরক্তিকর। **Instance** তৈরি করলে একবারেই সব configure করা যায়:
 
 ```javascript
 // src/api/api.js
 import axios from "axios";
 
-const apiClient = axios.create({
-  baseURL: "https://api.react-bangla.com/v1",
-  timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-  },
+const api = axios.create({
+  baseURL: "http://localhost:3000",
+  timeout: 15000,
 });
 
-export default apiClient;
+export default api;
 ```
 
-#### ব্যবহার
+এরপর যেখানে দরকার:
 
 ```javascript
-import apiClient from "./api/api";
+import api from "./api/api";
 
-async function getCourses() {
-  const res = await apiClient.get("/courses");
-  console.log(res.data);
+// baseURL বারবার লিখতে হচ্ছে না
+const users = await api.get("/users");
+const posts = await api.get("/posts");
+```
+
+> **মনে রেখো:** এখনই `Authorization` header যোগ করো না। Token যোগ করার কাজটা **Interceptor** দিয়ে dynamically করবো, কারণ user login করার আগে token থাকে না।
+
+এই বেসিক জিনিসগুলো জানা হয়ে গেছে। এখন আসল project-এ হাত দেওয়া যাক।
+
+---
+
+## ৮. প্রজেক্ট পরিচিতি: "Connectify"
+
+আমরা একটা মিনি সোশ্যাল মিডিয়া অ্যাপ বানাবো — নাম **Connectify**। Backend হিসেবে আগে setup করা **FaceHook API** ব্যবহার করবো।
+
+| Feature         | Endpoint                        | Method |
+| --------------- | ------------------------------- | ------ |
+| রেজিস্ট্রেশন    | `/auth/register`                | POST   |
+| লগইন            | `/auth/login`                   | POST   |
+| Token রিফ্রেশ   | `/auth/refresh-token`           | POST   |
+| সব পোস্ট দেখা   | `/posts`                        | GET    |
+| একটা পোস্ট দেখা | `/posts/:id`                    | GET    |
+| পোস্ট তৈরি      | `/posts`                        | POST   |
+| পোস্ট আপডেট     | `/posts/:id`                    | PATCH  |
+| পোস্ট ডিলিট     | `/posts/:id`                    | DELETE |
+| লাইক/আনলাইক     | `/posts/:id/like`               | PATCH  |
+| কমেন্ট করা      | `/posts/:id/comment`            | PATCH  |
+| কমেন্ট ডিলিট    | `/posts/:id/comment/:commentId` | DELETE |
+| প্রোফাইল দেখা   | `/profile/:id`                  | GET    |
+| প্রোফাইল আপডেট  | `/profile/:id`                  | PATCH  |
+| Avatar আপলোড    | `/profile/:id/avatar`           | POST   |
+
+Posts ও Profile-এর প্রায় সব endpoint-এ **Bearer Token** লাগে। Login না করলে `401 Unauthorized` পাবে।
+
+---
+
+## ৯. প্রজেক্ট Setup
+
+### ৯.১ Vite দিয়ে Frontend তৈরি করা
+
+Backend চলমান রেখে নতুন টার্মিনালে:
+
+```sh
+npm create vite@latest connectify-frontend -- --template react
+cd connectify-frontend
+npm install
+npm install axios react-router-dom
+```
+
+### ৯.২ Folder Structure
+
+```text
+src/
+├── actions/
+│   └── index.js             ← সব action type এক জায়গায়
+├── api/
+│   └── api.js               ← মূল Axios instance
+├── context/
+│   ├── AuthContext.jsx       ← Login state সবখানে শেয়ার
+│   └── ProfileContext.jsx    ← Profile state সবখানে শেয়ার
+├── hooks/
+│   ├── useAuth.js            ← AuthContext-এর সহজ hook
+│   ├── useAxios.js           ← Auth-aware API hook (interceptors সহ)
+│   └── useProfile.js         ← ProfileContext-এর সহজ hook
+├── reducers/
+│   └── profileReducer.js     ← Profile state management
+├── services/
+│   ├── authService.js        ← register, login
+│   ├── postService.js        ← posts-এর সব CRUD
+│   └── profileService.js     ← profile ও avatar
+├── components/
+│   ├── LoginForm.jsx
+│   ├── RegisterForm.jsx
+│   ├── ProtectedRoute.jsx
+│   ├── PostFeed.jsx
+│   ├── PostCard.jsx
+│   ├── CreatePostForm.jsx
+│   └── profile/
+│       ├── ProfileImage.jsx
+│       └── Bio.jsx
+├── pages/
+│   ├── LoginPage.jsx
+│   ├── RegisterPage.jsx
+│   ├── FeedPage.jsx
+│   └── ProfilePage.jsx
+└── App.jsx
+```
+
+### ৯.৩ .env ফাইল
+
+Project-এর root-এ:
+
+```bash
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+### ৯.৪ Axios Instance তৈরি
+
+```javascript
+// src/api/api.js
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  timeout: 15000,
+});
+
+export default api;
+```
+
+---
+
+## ১০. JWT কী? কেন দরকার?
+
+Login করার পর server দুটো জিনিস দেয়:
+
+```json
+{
+  "user": {
+    "id": "a9f2813e-a0a3-4ae0-80a1-570f3d5fbd23",
+    "firstName": "Mojnu",
+    "lastName": "Miah",
+    "email": "mojnu@example.com",
+    "avatar": null
+  },
+  "token": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
 }
 ```
 
-ফলে কোড সুন্দর ও DRY হয়।
+**Access Token** — তোমার পরিচয়পত্র। প্রতিটা protected API call-এ এটা Header-এ পাঠাতে হয়। নিরাপত্তার জন্য মেয়াদ কম — সাধারণত **১৫–৩০ মিনিট।**
+
+**Refresh Token** — পরিচয়পত্র নবায়নের ফর্ম। মেয়াদ অনেক বেশি — কয়েক দিন থেকে সপ্তাহ। Access Token expire হলে এটা দিয়ে নতুন Access Token চাওয়া যায়, user-কে আবার login না করিয়েই।
+
+**আমাদের কাজ:**
+
+1. Login-এর পর দুটো token state-এ save করা।
+2. প্রতিটা protected request-এ Access Token পাঠানো।
+3. `401` পেলে চুপচাপ Refresh Token দিয়ে নতুন Access Token নেওয়া।
+4. Refresh Token-ও expire হলে logout করে login page-এ পাঠানো।
+
+এই পুরো flow টা **Interceptor** দিয়ে অটোমেট করবো।
 
 ---
 
-## 🛡 **৬. Interceptors: প্রি-চেক ও পোস্ট-চেক**
-
-Interceptors হলো মাঝখানে বসা সেই "দারোয়ান", যে রিকোয়েস্ট যাওয়ার আগে সব চেক করে নেয়, আর রেসপন্স আসার পরও চেক করে।
-
-### ✅ Request Interceptor
+## ১১. Actions — State পরিবর্তনের নাম এক জায়গায়
 
 ```javascript
-apiClient.interceptors.request.use(
-  (config) => {
-    console.log("রিকোয়েস্ট যাচ্ছে...");
-    // টোকেন, লোডার ইত্যাদি অ্যাড করতে পারো
-    return config;
+// src/actions/index.js
+export const actions = {
+  profile: {
+    PROFILE_FETCHING: "PROFILE_FETCHING",
+    PROFILE_FETCHED: "PROFILE_FETCHED",
+    PROFILE_FETCH_ERROR: "PROFILE_FETCH_ERROR",
+    PROFILE_UPDATED: "PROFILE_UPDATED",
+    IMAGE_UPDATED: "IMAGE_UPDATED",
   },
-  (error) => Promise.reject(error)
-);
+};
 ```
 
-### ✅ Response Interceptor
-
-```javascript
-apiClient.interceptors.response.use(
-  (response) => {
-    console.log("রেসপন্স এসেছে!");
-    return response;
-  },
-  (error) => {
-    if (error.response?.status === 401) {
-      alert("সেশন শেষ, আবার লগইন করুন।");
-      // window.location.href = "/login";
-    } else if (error.response?.status === 500) {
-      alert("সার্ভার এরর, একটু পরে চেষ্টা করুন।");
-    }
-    return Promise.reject(error);
-  }
-);
-```
+এভাবে রাখলে IDE autocomplete দেবে, typo হলে সাথে সাথে ধরা পড়বে।
 
 ---
 
-## 💣 **৭. এরর হ্যান্ডলিং**
-
-Axios দিয়ে এরর হ্যান্ডল করা অনেক সহজ।
-যদি সার্ভার unavailable হয়, বা ইন্টারনেট যায়, বা সার্ভার থেকে 404/500 আসে — সব সহজে ধরা যায়।
+## ১২. AuthContext — Login State সবখানে শেয়ার করা
 
 ```javascript
-try {
-  const res = await axios.get("/api/abc");
-  console.log(res.data);
-} catch (error) {
-  if (error.response) {
-    console.log("সার্ভার এরর:", error.response.status);
-  } else if (error.request) {
-    console.log("কোনো রেসপন্সই আসে নাই।");
-  } else {
-    console.log("Config এরর:", error.message);
-  }
-}
+// src/context/AuthContext.jsx
+import { createContext, useState } from "react";
+
+const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState(null);
+  // auth object: { user, authToken, refreshToken }
+
+  return (
+    <AuthContext.Provider value={{ auth, setAuth }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export default AuthContext;
+```
+
+```javascript
+// src/hooks/useAuth.js
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
+
+const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+export default useAuth;
 ```
 
 ---
 
-## 🎯 **কেন Axios বেছে নেব?**
+## ১৩. useAxios Custom Hook — Auth-aware API Client
 
-- সহজে ব্যবহারযোগ্য (অন্যদের তুলনায় কম কনফিগ)।
-- Interceptors ফিচারের কারণে বড় প্রজেক্টেও সহজে হ্যান্ডল করা যায়।
-- Default JSON পার্সিং।
-- সার্ভার ও ব্রাউজার দুই জায়গাতেই কাজ করে।
-- Promise-based, তাই async/await এর সাথে জোড়ালো ফ্রেন্ডশিপ!
+এটাই সবচেয়ে গুরুত্বপূর্ণ অংশ। এই hook:
 
----
-
-## 🔥 **শেষ কথা: React অ্যাপে কিভাবে ব্যবহার করব?**
-
-ধরা যাক, তুমি React এ কোনো ইউজার প্রোফাইল লোড করবে:
+1. প্রতিটা request-এ অটোমেটিক `Authorization` header যোগ করে।
+2. `401` পেলে Refresh Token দিয়ে নতুন Access Token নিয়ে আগের request আবার পাঠায়।
+3. Component unmount হলে interceptor সরিয়ে দেয় (memory leak বন্ধ করা)।
 
 ```javascript
-import { useEffect, useState } from "react";
-import apiClient from "./api/api";
+// src/hooks/useAxios.js
+import { useEffect } from "react";
+import api from "../api/api";
+import useAuth from "./useAuth";
 
-function UserProfile() {
-  const [user, setUser] = useState(null);
+const useAxios = () => {
+  const { auth, setAuth } = useAuth();
 
   useEffect(() => {
-    const fetchUser = async () => {
+    // Request Interceptor — প্রতিটা request-এর আগে চলে
+    const requestIntercept = api.interceptors.request.use(
+      (config) => {
+        const token = auth?.authToken;
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        // FormData (ছবি আপলোড) হলে Content-Type নিজে সেট করো না।
+        // Browser নিজেই সঠিক boundary সহ multipart/form-data বসিয়ে দেয়।
+        // জোর করে set করলে boundary হারিয়ে যাবে, আপলোড ভাঙবে।
+        if (config.data instanceof FormData) {
+          delete config.headers["Content-Type"];
+        } else {
+          config.headers["Content-Type"] = "application/json";
+        }
+
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
+
+    // Response Interceptor — প্রতিটা response আসার পরে চলে
+    const responseIntercept = api.interceptors.response.use(
+      (response) => response, // সফল হলে সরাসরি পাঠাও
+
+      async (error) => {
+        const originalRequest = error.config;
+
+        // 401 এসেছে এবং এই request আগে retry হয়নি?
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true; // অসীম loop ঠেকানোর জন্য
+
+          try {
+            const response = await api.post("/auth/refresh-token", {
+              refreshToken: auth?.refreshToken,
+            });
+
+            const { token } = response.data;
+
+            // নতুন token দিয়ে auth state আপডেট করো
+            setAuth((prev) => ({ ...prev, authToken: token }));
+
+            // আগের request-এ নতুন token বসিয়ে আবার পাঠাও
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return api(originalRequest);
+          } catch (refreshError) {
+            // Refresh Token-ও কাজ করলো না — session শেষ
+            setAuth(null);
+            window.location.href = "/login";
+            return Promise.reject(refreshError);
+          }
+        }
+
+        return Promise.reject(error);
+      },
+    );
+
+    // Cleanup: Component unmount হলে interceptor সরাও
+    // না হলে memory leak হয় এবং interceptor বারবার যোগ হতে থাকে
+    return () => {
+      api.interceptors.request.eject(requestIntercept);
+      api.interceptors.response.eject(responseIntercept);
+    };
+  }, [auth]); // auth বদলালে interceptor নতুন করে বসবে
+
+  return { api };
+};
+
+export default useAxios;
+```
+
+**কেন `_retry` flag?**
+Refresh করার পরেও যদি `401` আসে (ধরো user account suspend হয়েছে), `_retry = true` না থাকলে অসীম loop তৈরি হবে। এই flag দিয়ে বলছি: "এই request সর্বোচ্চ একবারই retry হবে।"
+
+**কেন `useAxios` hook-এ interceptor, সরাসরি `api.js`-এ না?**
+`api.js` একটা সাধারণ JS file, সেখানে `useAuth()` hook ব্যবহার করা যায় না (hooks শুধু React component বা hook-এ কাজ করে)। `useAxios` hook-এ থাকলে React-এর state সরাসরি ব্যবহার করা যাচ্ছে — এটাই এই pattern-এর আসল সুবিধা।
+
+---
+
+## ১৪. Auth Service — Login ও Register
+
+```javascript
+// src/services/authService.js
+import api from "../api/api";
+
+// নতুন একাউন্ট তৈরি
+// payload: { firstName, lastName, email, password }
+export const registerUser = (payload) => {
+  return api.post("/auth/register", payload);
+};
+
+// Login করা
+export const loginUser = (email, password) => {
+  return api.post("/auth/login", { email, password });
+};
+```
+
+এই function গুলো শুধু API call করে। State management বা navigation এখানে করা হয়নি। এতে service file clean ও testable থাকে।
+
+---
+
+## ১৫. Login Form
+
+```jsx
+// src/components/LoginForm.jsx
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { loginUser } from "../services/authService";
+
+export default function LoginForm() {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await loginUser(form.email, form.password);
+
+      if (response.status === 200) {
+        // Server থেকে আসা response:
+        // { user: {...}, token: { token: "...", refreshToken: "..." } }
+        const { user, token } = response.data;
+        const { token: authToken, refreshToken } = token;
+
+        setAuth({ user, authToken, refreshToken });
+        navigate("/");
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.error || "লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করো।",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name="email"
+        type="email"
+        placeholder="ইমেইল"
+        value={form.email}
+        onChange={handleChange}
+        required
+      />
+      <input
+        name="password"
+        type="password"
+        placeholder="পাসওয়ার্ড"
+        value={form.password}
+        onChange={handleChange}
+        required
+      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button type="submit" disabled={loading}>
+        {loading ? "লগইন হচ্ছে..." : "লগইন করো"}
+      </button>
+    </form>
+  );
+}
+```
+
+---
+
+## ১৬. Register Form
+
+Register আর Login-এর pattern একই — শুধু field বেশি, আর সফল হলে সরাসরি Login করিয়ে দেওয়া হচ্ছে:
+
+```jsx
+// src/components/RegisterForm.jsx
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { registerUser, loginUser } from "../services/authService";
+
+export default function RegisterForm() {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      // প্রথমে registration করো
+      await registerUser(form);
+
+      // সফল হলে সাথে সাথে login করিয়ে দাও
+      const loginRes = await loginUser(form.email, form.password);
+      const { user, token } = loginRes.data;
+      const { token: authToken, refreshToken } = token;
+
+      setAuth({ user, authToken, refreshToken });
+      navigate("/");
+    } catch (err) {
+      setError(
+        err.response?.data?.error ||
+          "রেজিস্ট্রেশন ব্যর্থ হয়েছে। আবার চেষ্টা করো।",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name="firstName"
+        placeholder="প্রথম নাম"
+        value={form.firstName}
+        onChange={handleChange}
+        required
+      />
+      <input
+        name="lastName"
+        placeholder="শেষ নাম"
+        value={form.lastName}
+        onChange={handleChange}
+        required
+      />
+      <input
+        name="email"
+        type="email"
+        placeholder="ইমেইল"
+        value={form.email}
+        onChange={handleChange}
+        required
+      />
+      <input
+        name="password"
+        type="password"
+        placeholder="পাসওয়ার্ড"
+        value={form.password}
+        onChange={handleChange}
+        required
+      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button type="submit" disabled={loading}>
+        {loading ? "একাউন্ট তৈরি হচ্ছে..." : "রেজিস্ট্রেশন করো"}
+      </button>
+    </form>
+  );
+}
+```
+
+---
+
+## ১৭. ProtectedRoute — অননুমোদিত প্রবেশ আটকানো
+
+Login না করে কেউ যেন সরাসরি Feed page-এ না যেতে পারে:
+
+```jsx
+// src/components/ProtectedRoute.jsx
+import { Navigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+
+export default function ProtectedRoute({ children }) {
+  const { auth } = useAuth();
+
+  if (!auth) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+```
+
+---
+
+## ১৮. Post Service — সব CRUD Function এক জায়গায়
+
+```javascript
+// src/services/postService.js
+import api from "../api/api";
+
+// সব পোস্ট আনা
+export const getPosts = () => api.get("/posts");
+
+// একটা পোস্ট আনা
+export const getPost = (id) => api.get(`/posts/${id}`);
+
+// নতুন পোস্ট তৈরি (টেক্সট + ঐচ্ছিক ছবি)
+export const createPost = ({ content, image }, onUploadProgress) => {
+  const formData = new FormData();
+  formData.append("postType", image ? "image" : "text");
+  formData.append("content", content);
+  if (image) {
+    formData.append("image", image);
+  }
+
+  return api.post("/posts", formData, {
+    onUploadProgress: (progressEvent) => {
+      if (!onUploadProgress) return;
+      const percent = Math.round(
+        (progressEvent.loaded * 100) / (progressEvent.total || 1),
+      );
+      onUploadProgress(percent);
+    },
+  });
+};
+
+// পোস্ট আপডেট
+export const updatePost = (id, { content }) => {
+  const formData = new FormData();
+  formData.append("content", content);
+  return api.patch(`/posts/${id}`, formData);
+};
+
+// পোস্ট ডিলিট
+export const deletePost = (id) => api.delete(`/posts/${id}`);
+
+// লাইক বা আনলাইক
+export const toggleLike = (id) => api.patch(`/posts/${id}/like`);
+
+// কমেন্ট করা
+export const addComment = (postId, comment) =>
+  api.patch(`/posts/${postId}/comment`, { comment });
+
+// কমেন্ট ডিলিট
+export const deleteComment = (postId, commentId) =>
+  api.delete(`/posts/${postId}/comment/${commentId}`);
+```
+
+> **কোডে একটা গুরুত্বপূর্ণ বিষয়:** এই `api` instance-এ সরাসরি token নেই। Token তো `useAxios` hook-এ interceptor-এ যোগ হয়। কিন্তু কীভাবে কাজ করে?
+>
+> JavaScript module singleton। `useAxios` hook যে `api` instance-এ interceptor attach করে, সেটাই এই service file-এর `api` — কারণ দুটোই একই `src/api/api.js` থেকে import। তাই `useAxios` যখন interceptor দেয়, সেটা পুরো app জুড়ে সেই `api`-তে কাজ করে।
+
+---
+
+## ১৯. Post Feed — সব পোস্ট দেখানো
+
+```jsx
+// src/components/PostFeed.jsx
+import { useEffect, useState } from "react";
+import useAxios from "../hooks/useAxios";
+import { getPosts } from "../services/postService";
+import PostCard from "./PostCard";
+
+export default function PostFeed() {
+  const { api } = useAxios(); // interceptor activate করতে call করতে হবে
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchPosts = async () => {
       try {
-        const res = await apiClient.get("/user/profile");
-        setUser(res.data);
-      } catch (error) {
-        console.log("এরর:", error.message);
+        const res = await getPosts();
+        if (isMounted) setPosts(res.data);
+      } catch (err) {
+        if (isMounted) setError("পোস্ট লোড করা যায়নি। পরে আবার চেষ্টা করো।");
+      } finally {
+        if (isMounted) setLoading(false);
       }
     };
-    fetchUser();
+
+    fetchPosts();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  if (!user) return <p>লোড হচ্ছে...</p>;
+  if (loading) return <p>পোস্ট লোড হচ্ছে...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (posts.length === 0) return <p>এখনো কোনো পোস্ট নেই।</p>;
+
   return (
     <div>
-      <h1>নাম: {user.name}</h1>
-      <p>ইমেইল: {user.email}</p>
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} onListChange={setPosts} />
+      ))}
     </div>
   );
 }
+```
 
-export default UserProfile;
+`isMounted` flag ব্যবহার করার কারণ: component unmount হওয়ার পরেও কখনো কখনো async API call শেষ হয় এবং `setState` call করার চেষ্টা করে। React এতে warning দেয়। `isMounted` দিয়ে এটা ঠেকানো হয়।
+
+---
+
+## ২০. Create Post Form — ছবি আপলোড + Progress Bar
+
+```jsx
+// src/components/CreatePostForm.jsx
+import { useState } from "react";
+import useAxios from "../hooks/useAxios";
+import { createPost } from "../services/postService";
+
+export default function CreatePostForm({ onCreated }) {
+  const { api } = useAxios();
+  const [content, setContent] = useState("");
+  const [image, setImage] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!content.trim()) return;
+
+    setLoading(true);
+    setProgress(0);
+    setError("");
+
+    try {
+      const res = await createPost({ content, image }, setProgress);
+      onCreated?.(res.data);
+      setContent("");
+      setImage(null);
+    } catch (err) {
+      setError(
+        err.response?.data?.error || "পোস্ট তৈরি হয়নি। আবার চেষ্টা করো।",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="তুমি কী ভাবছো?"
+        required
+      />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+      />
+      {loading && (
+        <div>
+          <progress value={progress} max="100" />
+          <span>{progress}%</span>
+        </div>
+      )}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button type="submit" disabled={loading}>
+        {loading ? `আপলোড হচ্ছে... ${progress}%` : "পোস্ট করো"}
+      </button>
+    </form>
+  );
+}
 ```
 
 ---
 
-## ✅ **উপসংহার**
+## ২১. PostCard — Edit, Delete, Like, Comment
 
-Axios হলো সেই বিশ্বস্ত দৌড়বিদ, যে সার্ভারে গিয়ে বার্তা নিয়ে আসে এবং ফেরত দেয়।
-তুমি চাইলে তাকে বলো — “এই দৌড়াও”, সে ঠিকমতোই কাজ করবে।
+```jsx
+// src/components/PostCard.jsx
+import { useState } from "react";
+import useAxios from "../hooks/useAxios";
+import {
+  updatePost,
+  deletePost,
+  toggleLike,
+  addComment,
+  deleteComment,
+} from "../services/postService";
 
-সঠিকভাবে instance, interceptor, এবং error handling ব্যবহার করলে তোমার অ্যাপ হবে বেশি প্রফেশনাল, রিডেবল এবং ইউজার-ফ্রেন্ডলি।
+export default function PostCard({ post, onListChange }) {
+  const { api } = useAxios();
+  const [editing, setEditing] = useState(false);
+  const [content, setContent] = useState(post.content ?? post.body);
+  const [commentText, setCommentText] = useState("");
+
+  const removeFromList = (id) =>
+    onListChange((prev) => prev.filter((p) => p.id !== id));
+
+  // পুরো list re-fetch না করে শুধু একটা পোস্ট update করো
+  const replaceInList = (updated) =>
+    onListChange((prev) =>
+      prev.map((p) => (p.id === updated.id ? updated : p)),
+    );
+
+  const handleUpdate = async () => {
+    try {
+      const res = await updatePost(post.id, { content });
+      replaceInList(res.data);
+      setEditing(false);
+    } catch (err) {
+      console.error("আপডেট ব্যর্থ:", err.message);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!confirm("পোস্টটা কি সত্যিই মুছবে?")) return;
+    try {
+      await deletePost(post.id);
+      removeFromList(post.id);
+    } catch (err) {
+      console.error("ডিলিট ব্যর্থ:", err.message);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const res = await toggleLike(post.id);
+      replaceInList(res.data);
+    } catch (err) {
+      console.error("লাইক ব্যর্থ:", err.message);
+    }
+  };
+
+  const handleComment = async (e) => {
+    e.preventDefault();
+    if (!commentText.trim()) return;
+    try {
+      const res = await addComment(post.id, commentText);
+      replaceInList(res.data);
+      setCommentText("");
+    } catch (err) {
+      console.error("কমেন্ট ব্যর্থ:", err.message);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const res = await deleteComment(post.id, commentId);
+      replaceInList(res.data);
+    } catch (err) {
+      console.error("কমেন্ট ডিলিট ব্যর্থ:", err.message);
+    }
+  };
+
+  return (
+    <div className="post-card">
+      {editing ? (
+        <div>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <button onClick={handleUpdate}>সেভ করো</button>
+          <button onClick={() => setEditing(false)}>বাতিল</button>
+        </div>
+      ) : (
+        <div>
+          <p>{post.content ?? post.body}</p>
+          {post.image && <img src={post.image} alt="পোস্টের ছবি" />}
+          <button onClick={() => setEditing(true)}>এডিট</button>
+          <button onClick={handleDelete}>ডিলিট</button>
+        </div>
+      )}
+
+      <button onClick={handleLike}>👍 লাইক ({post.likes?.length ?? 0})</button>
+
+      <ul>
+        {post.comments?.map((c) => (
+          <li key={c.id}>
+            <strong>{c.author?.firstName}:</strong> {c.comment}{" "}
+            <button onClick={() => handleDeleteComment(c.id)}>✕</button>
+          </li>
+        ))}
+      </ul>
+
+      <form onSubmit={handleComment}>
+        <input
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          placeholder="একটা কমেন্ট লেখো..."
+        />
+        <button type="submit">কমেন্ট করো</button>
+      </form>
+    </div>
+  );
+}
+```
+
+**একটা কৌশল:** Like, comment, বা update-এর পর পুরো post list আবার fetch করা হচ্ছে না। শুধু সেই একটা post-কে server থেকে আসা নতুন data দিয়ে replace করা হচ্ছে। এতে app অনেক দ্রুত মনে হয়।
+
+---
+
+## ২২. Profile System — Reducer + Context Pattern
+
+Profile page-এ অনেক ধরনের action: data fetch, ছবি বদলানো, bio update। এত কিছু component-এ রাখলে component বিশাল হয়ে যাবে। এর সমাধান — **Reducer** pattern।
+
+### ২২.১ Profile Reducer
+
+```javascript
+// src/reducers/profileReducer.js
+import { actions } from "../actions";
+
+export const initialState = {
+  user: null,
+  posts: [],
+  loading: false,
+  error: null,
+};
+
+const profileReducer = (state, action) => {
+  switch (action.type) {
+    case actions.profile.PROFILE_FETCHING:
+      return { ...state, loading: true, error: null };
+
+    case actions.profile.PROFILE_FETCHED:
+      return {
+        ...state,
+        user: action.data.user,
+        posts: action.data.posts,
+        loading: false,
+        error: null,
+      };
+
+    case actions.profile.PROFILE_FETCH_ERROR:
+      return { ...state, loading: false, error: action.error };
+
+    case actions.profile.PROFILE_UPDATED:
+      return { ...state, user: action.data, loading: false };
+
+    case actions.profile.IMAGE_UPDATED:
+      // শুধু avatar বদলাও, বাকি user data ঠিক রাখো
+      return {
+        ...state,
+        user: { ...state.user, avatar: action.data.avatar },
+        loading: false,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export default profileReducer;
+```
+
+### ২২.২ ProfileContext ও ProfileProvider
+
+```javascript
+// src/context/ProfileContext.jsx
+import { createContext, useReducer } from "react";
+import profileReducer, { initialState } from "../reducers/profileReducer";
+
+const ProfileContext = createContext(null);
+
+export const ProfileProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(profileReducer, initialState);
+
+  return (
+    <ProfileContext.Provider value={{ state, dispatch }}>
+      {children}
+    </ProfileContext.Provider>
+  );
+};
+
+export default ProfileContext;
+```
+
+```javascript
+// src/hooks/useProfile.js
+import { useContext } from "react";
+import ProfileContext from "../context/ProfileContext";
+
+const useProfile = () => {
+  return useContext(ProfileContext);
+};
+
+export default useProfile;
+```
+
+---
+
+## ২৩. Profile Page — Data Fetch করা
+
+```jsx
+// src/pages/ProfilePage.jsx
+import { useEffect } from "react";
+import { actions } from "../actions";
+import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
+import useProfile from "../hooks/useProfile";
+import ProfileImage from "../components/profile/ProfileImage";
+import Bio from "../components/profile/Bio";
+
+const ProfilePage = () => {
+  const { auth } = useAuth();
+  const { api } = useAxios();
+  const { state, dispatch } = useProfile();
+
+  useEffect(() => {
+    if (!auth?.user?.id) return;
+
+    const fetchProfile = async () => {
+      dispatch({ type: actions.profile.PROFILE_FETCHING });
+
+      try {
+        const response = await api.get(`/profile/${auth.user.id}`);
+        dispatch({
+          type: actions.profile.PROFILE_FETCHED,
+          data: response.data,
+        });
+      } catch (error) {
+        dispatch({
+          type: actions.profile.PROFILE_FETCH_ERROR,
+          error: error.response?.data?.message || error.message,
+        });
+      }
+    };
+
+    fetchProfile();
+  }, [auth?.user?.id]);
+
+  if (state.loading) return <p>প্রোফাইল লোড হচ্ছে...</p>;
+  if (state.error) return <p style={{ color: "red" }}>এরর: {state.error}</p>;
+  if (!state.user) return null;
+
+  return (
+    <div>
+      <ProfileImage />
+      <h1>
+        {state.user.firstName} {state.user.lastName}
+      </h1>
+      <Bio />
+      <p>{state.posts?.length} টা পোস্ট</p>
+    </div>
+  );
+};
+
+export default ProfilePage;
+```
+
+---
+
+## ২৪. ProfileImage — ছবি আপলোড useRef দিয়ে
+
+`useRef` ব্যবহার করে লুকানো file input-এ programmatically click করা হচ্ছে — এতে custom styled button দেখানো যায়:
+
+```jsx
+// src/components/profile/ProfileImage.jsx
+import { useRef } from "react";
+import { actions } from "../../actions";
+import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
+import useProfile from "../../hooks/useProfile";
+
+const ProfileImage = () => {
+  const { auth } = useAuth();
+  const { api } = useAxios();
+  const { state, dispatch } = useProfile();
+  const fileInputRef = useRef(null);
+
+  // Edit button click করলে লুকানো file input খুলবে
+  const handleEditClick = (e) => {
+    e.preventDefault();
+    fileInputRef.current.click();
+  };
+
+  // ফাইল select হলে সাথে সাথে upload করবে
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("avatar", file);
+
+      // Content-Type header useAxios interceptor নিজেই handle করবে
+      const response = await api.post(
+        `/profile/${auth.user.id}/avatar`,
+        formData,
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: actions.profile.IMAGE_UPDATED,
+          data: response.data,
+        });
+      }
+    } catch (err) {
+      dispatch({
+        type: actions.profile.PROFILE_FETCH_ERROR,
+        error: err.message,
+      });
+    }
+  };
+
+  // Server থেকে avatar path আসে: "uploads/avatar/filename.jpg"
+  // পুরো URL বানাতে base URL যোগ করতে হয়
+  const avatarUrl = state.user?.avatar
+    ? `${import.meta.env.VITE_API_BASE_URL}/${state.user.avatar}`
+    : "https://via.placeholder.com/180";
+
+  return (
+    <div style={{ position: "relative", width: 180, height: 180 }}>
+      <img
+        src={avatarUrl}
+        alt={state.user?.firstName}
+        style={{
+          width: "100%",
+          height: "100%",
+          borderRadius: "50%",
+          objectFit: "cover",
+        }}
+      />
+
+      <button
+        onClick={handleEditClick}
+        style={{
+          position: "absolute",
+          bottom: 8,
+          right: 8,
+          background: "rgba(0,0,0,0.6)",
+          border: "none",
+          borderRadius: "50%",
+          cursor: "pointer",
+          padding: 6,
+        }}
+        title="ছবি বদলাও"
+      >
+        ✏️
+      </button>
+
+      {/* লুকানো file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
+    </div>
+  );
+};
+
+export default ProfileImage;
+```
+
+**কেন `useRef` দিয়ে click করছি?**
+Default file input কুৎসিত দেখায়। নিজের design করা button দেখাই, কিন্তু আসল file-select কাজটা hidden input করে। `useRef` দিয়ে সেই hidden input-এর DOM element ধরে `.click()` করলে file picker খোলে।
+
+---
+
+## ২৫. Bio — Text Update editMode দিয়ে
+
+```jsx
+// src/components/profile/Bio.jsx
+import { useState } from "react";
+import { actions } from "../../actions";
+import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
+import useProfile from "../../hooks/useProfile";
+
+const Bio = () => {
+  const { auth } = useAuth();
+  const { api } = useAxios();
+  const { state, dispatch } = useProfile();
+
+  const [editMode, setEditMode] = useState(false);
+  const [bio, setBio] = useState(state.user?.bio ?? "");
+
+  const handleSave = async () => {
+    dispatch({ type: actions.profile.PROFILE_FETCHING });
+
+    try {
+      // ⚠️ Backend quirk: profile update-এ field নাম "firstname" (lowercase n)
+      // কিন্তু registration-এ "firstName" (capital N) — backend inconsistency।
+      // সবসময় Postman দিয়ে confirm করো।
+      const response = await api.patch(`/profile/${auth.user.id}`, { bio });
+      dispatch({
+        type: actions.profile.PROFILE_UPDATED,
+        data: response.data,
+      });
+      setEditMode(false);
+    } catch (error) {
+      dispatch({
+        type: actions.profile.PROFILE_FETCH_ERROR,
+        error: error.message,
+      });
+    }
+  };
+
+  return (
+    <div>
+      {editMode ? (
+        <div>
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            rows={4}
+            placeholder="তোমার সম্পর্কে কিছু লেখো..."
+          />
+          <button onClick={handleSave}>সেভ করো</button>
+          <button onClick={() => setEditMode(false)}>বাতিল</button>
+        </div>
+      ) : (
+        <div>
+          <p>{state.user?.bio || "এখনো কোনো bio যোগ করা হয়নি।"}</p>
+          <button onClick={() => setEditMode(true)}>✏️ Bio এডিট করো</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Bio;
+```
+
+---
+
+## ২৬. Profile Service
+
+```javascript
+// src/services/profileService.js
+import api from "../api/api";
+
+export const getProfile = (id) => api.get(`/profile/${id}`);
+
+// ⚠️ backend quirk: field নাম "firstname" (lowercase n)
+export const updateProfile = (id, { firstname, lastName, bio }) =>
+  api.patch(`/profile/${id}`, { firstname, lastName, bio });
+
+export const uploadAvatar = (id, file, onUploadProgress) => {
+  const formData = new FormData();
+  formData.append("avatar", file);
+
+  return api.post(`/profile/${id}/avatar`, formData, {
+    onUploadProgress: (progressEvent) => {
+      if (!onUploadProgress) return;
+      const percent = Math.round(
+        (progressEvent.loaded * 100) / (progressEvent.total || 1),
+      );
+      onUploadProgress(percent);
+    },
+  });
+};
+```
+
+---
+
+## ২৭. একসাথে একাধিক Request — Promise.all
+
+কোনো page-এ একসাথে profile আর posts দরকার হলে, একটার পর একটা না এনে একসাথে আনো:
+
+```javascript
+// ❌ ধীর: sequential (দুটোর সময় যোগ হয়)
+const profileRes = await api.get(`/profile/${userId}`);
+const postsRes = await api.get("/posts");
+
+// ✅ দ্রুত: parallel (যেটা বেশি সময় নেয় শুধু সেটার সময় লাগে)
+const [profileRes, postsRes] = await Promise.all([
+  api.get(`/profile/${userId}`),
+  api.get("/posts"),
+]);
+
+const profile = profileRes.data;
+const posts = postsRes.data;
+```
+
+দুটো request যদি একে অপরের উপর নির্ভর না করে, সবসময় `Promise.all` ব্যবহার করো।
+
+---
+
+## ২৮. Request Cancel করা — AbortController
+
+Search box-এ প্রতিটা keystroke-এ API call যায়। আগেরটার response যদি নতুনটার পরে আসে, পুরনো data দিয়ে নতুন result overwrite হয়ে যাবে। এটা ঠেকাতে আগের request cancel করো:
+
+```jsx
+import { useEffect, useState } from "react";
+import api from "../api/api";
+
+function useSearchPosts(query) {
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+
+    const controller = new AbortController();
+    setLoading(true);
+
+    api
+      .get("/posts", {
+        params: { search: query },
+        signal: controller.signal,
+      })
+      .then((res) => {
+        setResults(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // "CanceledError" মানে আমরাই cancel করেছি — এটা real error নয়
+        if (err.name !== "CanceledError") {
+          console.error("সার্চ এরর:", err.message);
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      controller.abort(); // পরের keystroke-এ আগের request cancel হবে
+    };
+  }, [query]);
+
+  return { results, loading };
+}
+```
+
+---
+
+## ২৯. সম্পূর্ণ App — React Router দিয়ে সব জোড়া লাগানো
+
+### ২৯.১ Feed Page
+
+```jsx
+// src/pages/FeedPage.jsx
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import CreatePostForm from "../components/CreatePostForm";
+import PostFeed from "../components/PostFeed";
+
+export default function FeedPage() {
+  const { auth, setAuth } = useAuth();
+  const navigate = useNavigate();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleLogout = () => {
+    setAuth(null);
+    navigate("/login");
+  };
+
+  return (
+    <div>
+      <header>
+        <h2>স্বাগতম, {auth?.user?.firstName}!</h2>
+        <button onClick={handleLogout}>লগআউট</button>
+      </header>
+
+      <CreatePostForm onCreated={() => setRefreshKey((k) => k + 1)} />
+
+      {/* key বদলালে PostFeed নতুন করে mount হয়, useEffect আবার চলে */}
+      <PostFeed key={refreshKey} />
+    </div>
+  );
+}
+```
+
+### ২৯.২ Login ও Register Page
+
+```jsx
+// src/pages/LoginPage.jsx
+import { Link } from "react-router-dom";
+import LoginForm from "../components/LoginForm";
+
+export default function LoginPage() {
+  return (
+    <div>
+      <h2>লগইন করো</h2>
+      <LoginForm />
+      <p>
+        একাউন্ট নেই? <Link to="/register">রেজিস্ট্রেশন করো</Link>
+      </p>
+    </div>
+  );
+}
+```
+
+```jsx
+// src/pages/RegisterPage.jsx
+import { Link } from "react-router-dom";
+import RegisterForm from "../components/RegisterForm";
+
+export default function RegisterPage() {
+  return (
+    <div>
+      <h2>নতুন একাউন্ট খোলো</h2>
+      <RegisterForm />
+      <p>
+        আগে থেকে একাউন্ট আছে? <Link to="/login">লগইন করো</Link>
+      </p>
+    </div>
+  );
+}
+```
+
+### ২৯.৩ App.jsx — সব Route এক জায়গায়
+
+```jsx
+// src/App.jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { ProfileProvider } from "./context/ProfileContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import FeedPage from "./pages/FeedPage";
+import ProfilePage from "./pages/ProfilePage";
+
+export default function App() {
+  return (
+    // AuthProvider সবার বাইরে — সব component-এ auth দরকার
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          {/* Protected routes — login করা লাগবে */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <FeedPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                {/* ProfileProvider শুধু ProfilePage-এর জন্য */}
+                <ProfileProvider>
+                  <ProfilePage />
+                </ProfileProvider>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+```
+
+### ২৯.৪ App চালাও ও Test করো
+
+```sh
+npm run dev
+```
+
+`http://localhost:5173` খুলে এই flow test করো:
+
+1. `/register` — নতুন account তৈরি করো। সফল হলে auto login হয়ে Feed page-এ যাবে।
+2. Feed page-এ একটা post তৈরি করো। Network tab-এ দেখো `Authorization: Bearer ...` header যাচ্ছে।
+3. Like, comment, edit, delete test করো।
+4. `/profile` page-এ গিয়ে avatar upload করো এবং bio update করো।
+
+---
+
+## ৩০. সেরা অনুশীলন — Best Practices
+
+**Architecture:**
+
+- ✅ একটাই central `api` instance — প্রতিটা file-এ আলাদা `axios.create()` না।
+- ✅ Service layer আলাদা রাখো — component-এ সরাসরি `axios.get()` না।
+- ✅ Auth-aware requests-এর জন্য `useAxios` hook ব্যবহার করো।
+- ✅ Complex state-এ `useReducer` ব্যবহার করো (যেমন profile system)।
+
+**Interceptors:**
+
+- ✅ `Authorization` header interceptor দিয়ে যোগ করো, manually প্রতিটা call-এ না।
+- ✅ Component unmount হলে interceptor **eject** করো (memory leak ঠেকাতে)।
+- ✅ `_retry` flag ব্যবহার করো — নাহলে infinite refresh loop হতে পারে।
+
+**FormData:**
+
+- ✅ ছবি আপলোডের সময় নিজে `Content-Type: multipart/form-data` সেট করো না।
+- ✅ Browser নিজেই সঠিক `boundary` সহ header বসায় — জোর করলে upload ভাঙবে।
+
+**Error Handling:**
+
+- ✅ `error.response`, `error.request`, `error.message` — তিন case আলাদা করে handle করো।
+- ✅ User-friendly error message দেখাও, raw API error না।
+
+**Performance:**
+
+- ✅ স্বাধীন request গুলো `Promise.all` দিয়ে parallel করো।
+- ✅ Search বা frequent call-এ `AbortController` ব্যবহার করো।
+
+---
+
+## ৩১. Security নোট — Token কোথায় রাখবো?
+
+| পদ্ধতি                   | সুবিধা                | অসুবিধা                                         |
+| ------------------------ | --------------------- | ----------------------------------------------- |
+| **React State (memory)** | XSS-safe, simple      | Page refresh-এ হারায়                           |
+| **localStorage**         | Persist করে           | XSS attack-এ চুরি হতে পারে                      |
+| **httpOnly Cookie**      | XSS-safe, persist করে | CSRF protect করতে হয়, backend cooperation লাগে |
+
+**সুপারিশ:** FaceHook API যেহেতু body-তে token পাঠায়, React state বা `localStorage` উভয়ই practical। Production-এ sensitive token (বিশেষত Refresh Token) httpOnly cookie-তে রাখা সবচেয়ে নিরাপদ। সেক্ষেত্রে `axios.create({ withCredentials: true })` যোগ করলেই হবে।
+
+---
+
+## উপসংহার
+
+এই গাইডে তুমি শিখলে:
+
+- **Basics:** সব HTTP method, configuration, response structure, error handling।
+- **Instance:** একটা central `api` দিয়ে DRY code।
+- **useAxios Hook:** Auth-aware API client, interceptor with cleanup।
+- **JWT Flow:** Access Token → 401 → Refresh → Retry — সম্পূর্ণ automation।
+- **Auth System:** Register, Login, Protected Route, AuthContext।
+- **Post CRUD:** Create, Read, Update, Delete, Like, Comment — সবকিছু।
+- **Profile System:** Reducer + Context pattern, avatar upload with `useRef`, bio update।
+- **Advanced:** `Promise.all`, `AbortController`।
+
+এই pattern গুলো — `api` instance + `useAxios` hook + service layer + Context/Reducer — যেকোনো production React বা Next.js project-এ সরাসরি ব্যবহার করা যাবে। শুধু endpoint আর field name নিজের backend অনুযায়ী বদলে নাও।
 
 ---
 

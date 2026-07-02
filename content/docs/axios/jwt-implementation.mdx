@@ -1,0 +1,241 @@
+# Rongtuli প্রোজেক্টে JWT (JSON Web Token) ইমপ্লিমেন্টেশন
+
+**JWT** ব্যবহার করে **Rongtuli Social Media App**-এ ইউজারের অথেন্টিকেশন এবং অথোরাইজেশন করা হয়েছে। এতে টোকেন এক্সপায়ার হলে **Refresh Token** ব্যবহার করে নতুন টোকেন নেওয়ার সুবিধা রয়েছে। এখানে ধাপে ধাপে পুরো প্রসেসটি ব্যাখ্যা করা হলো।
+
+---
+
+## **স্টেপ ১: লগইন এবং টোকেন রিসিভ করা**
+
+লগইন ফর্ম সাবমিট করার পর নিচের ধাপগুলো ঘটে:
+
+1. **API কল:**
+
+   - ইউজারের দেওয়া ডেটা (ইমেইল এবং পাসওয়ার্ড) ব্যাকএন্ডে পাঠানো হয়।
+   - এই জন্য **Axios POST** ব্যবহার করা হয়।
+
+2. **রেসপন্স:**
+   - সঠিক তথ্য দিলে ব্যাকএন্ড থেকে নিচের ফরম্যাটে ডেটা রিটার্ন হয়:
+
+```json
+{
+  "user": {
+    "id": "a9f2813e-a0a3-4ae0-80a1-570f3d5fbd23",
+    "firstName": "Mojnu",
+    "lastName": "Miah",
+    "avatar": null,
+    "email": "thisismojnu@gmail.com"
+  },
+  "token": {
+    "token": "access_token_value",
+    "refreshToken": "refresh_token_value"
+  }
+}
+```
+
+3. **ডেটা সংরক্ষণ:**
+   - রেসপন্স থেকে `user`, `token`, এবং `refreshToken` আলাদা করে স্টেটে সংরক্ষণ করা হয়।
+   - **Error Handling:** ভুল তথ্য দিলে **try-catch** ব্লকের মাধ্যমে এরর হ্যান্ডল করে UI-তে দেখানো হয়।
+
+**কোড উদাহরণ:**
+
+```jsx
+const submitForm = async (formData) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_SERVER_BASE_URL}/auth/login`,
+      formData
+    );
+
+    if (response.status === 200) {
+      const { user, token } = response.data;
+      const { token: authToken, refreshToken } = token;
+
+      setAuth({ user, authToken, refreshToken }); // স্টেটে সংরক্ষণ
+      navigate("/");
+    }
+  } catch (error) {
+    setError("root.random", { message: error.message });
+  }
+};
+```
+
+---
+
+## **স্টেপ ২: `.env` ফাইলে API URL সেট করা**
+
+অ্যাপ্লিকেশনের বেস ইউআরএল `.env` ফাইলে সেট করা হয়।
+
+```env
+VITE_SERVER_BASE_URL=http://localhost:3000
+```
+
+এই URL ব্যবহার করে অ্যাপ্লিকেশন থেকে API কল করা হয়।
+
+---
+
+## **স্টেপ ৩: টোকেন এক্সপায়ার হলে রিফ্রেশ টোকেন ব্যবহার করা**
+
+JWT-এর মেয়াদ থাকে নির্দিষ্ট সময়ের জন্য (যেমন ৩০ মিনিট)। মেয়াদ শেষ হলে `401 Unauthorized` এরর পাওয়া যায়। এ ক্ষেত্রে **Refresh Token** ব্যবহার করে নতুন টোকেন জেনারেট করা হয়।
+
+---
+
+### **সেন্ট্রালাইজড Axios ইন্সট্যান্স**
+
+অ্যাপ্লিকেশনের প্রতিটি API রিকোয়েস্টে টোকেন ব্যবহারের জন্য **Axios ইন্সট্যান্স** তৈরি করা হয়েছে।
+
+1. **Request Interceptor:**
+
+   - প্রতিটি রিকোয়েস্টের হেডারে **Authorization Token** যোগ করা হয়।
+
+2. **Response Interceptor:**
+   - টোকেন এক্সপায়ার হয়ে গেলে **Refresh Token** ব্যবহার করে নতুন টোকেন জেনারেট করা হয় এবং আগের রিকোয়েস্টটি পুনরায় করা হয়।
+
+**কোড উদাহরণ (Axios Instance):**
+
+```js
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_SERVER_BASE_URL,
+});
+
+export default api;
+```
+
+---
+
+## **স্টেপ ৪: Custom Hook (useAxios) তৈরি করা**
+
+এই **custom hook**-এর মাধ্যমে:
+
+1. প্রতিটি API রিকোয়েস্টে টোকেন **auto-attach** করা হয়।
+2. `401 Unauthorized` ইরোর ক্ষেত্রে টোকেন রিফ্রেশ করে আবার রিকোয়েস্ট করা হয়।
+
+**কোড: hooks>>useAxios.js**
+
+```jsx
+import { useEffect } from "react";
+import api from "../api";
+import useAuth from "./useAuth";
+
+const useAxios = () => {
+  const { auth, setAuth } = useAuth();
+
+  useEffect(() => {
+    const requestIntercept = api.interceptors.request.use(
+      (config) => {
+        const authToken = auth?.authToken;
+        if (authToken) {
+          config.headers.Authorization = `Bearer ${authToken}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    const responseIntercept = api.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+
+          try {
+            const response = await api.post("/auth/refresh-token", {
+              refreshToken: auth?.refreshToken,
+            });
+
+            const { token } = response.data;
+            setAuth({ ...auth, authToken: token });
+
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return api(originalRequest);
+          } catch (err) {
+            return Promise.reject(err);
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      api.interceptors.request.eject(requestIntercept);
+      api.interceptors.response.eject(responseIntercept);
+    };
+  }, [auth]);
+
+  return { api };
+};
+
+export default useAxios;
+```
+
+---
+
+## **স্টেপ ৫: প্রোফাইল ডেটা ফেচ করা (Authorized Resource Access)**
+
+লগইন করা ইউজারের প্রোফাইল ডেটা ফেচ করতে হলে, আমরা টোকেনসহ API কল করি।
+
+**কোড: pages>>ProfilePage.jsx**
+
+```jsx
+import { useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
+
+export default function ProfilePage() {
+  const { auth } = useAuth();
+  console.log(auth);
+
+  const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const { api } = useAxios();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await api.get(
+          `${import.meta.env.VITE_SERVER_BASE_URL}/profile/${auth?.user?.id}`
+        );
+        setUser(response?.data?.user);
+        setPosts(response?.data?.posts);
+      } catch (error) {
+        setError("Error fetching profile:", error.message);
+        console.log(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  if (loading) {
+    return <div>fetching profile data...</div>;
+  }
+  return (
+    <div>
+      <p>{error && user === null ? "Error when fetching profile" : null}</p>
+      <h1>Welcome, {user?.firstName + " " + user?.lastName}</h1>
+      <p>You have {posts?.length} post</p>
+    </div>
+  );
+}
+```
+
+---
+
+## **স্টেপ ৬: সারাংশ**
+
+1. **লগইন:** ইউজার লগইন করলে **Access Token** এবং **Refresh Token** জেনারেট হয়।
+2. **Token Handling:**
+   - প্রতিটি API রিকোয়েস্টে টোকেন ব্যবহার করা হয়।
+   - টোকেন এক্সপায়ার হলে **Refresh Token** দিয়ে নতুন টোকেন আনা হয়।
+3. **Custom Hook:** `useAxios` হুক ব্যবহার করে সেন্ট্রালাইজড ইন্টারসেপ্টর ইমপ্লিমেন্ট করা হয়েছে।
+4. **প্রোফাইল ডেটা ফেচ:** লগইন করা ইউজারের প্রোফাইল ডেটা টোকেনসহ ফেচ করা হয়েছে।
+
+এই স্টেপগুলো অনুসরণ করে **Rongtuli App**-এ সুরক্ষিত অথেন্টিকেশন ও অথোরাইজেশন ইমপ্লিমেন্ট করা হয়েছে।
