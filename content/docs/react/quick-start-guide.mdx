@@ -1,110 +1,182 @@
 ---
-title: React JS Bangla Course. Pdf
-description: Learn React JS Bangla in this Course step by step tutorial and pdf
+title: React JS Quick Start Guide — বাংলায় সম্পূর্ণ গাইড
+description: React শেখার সম্পূর্ণ বাংলা গাইড — JSX, Component, Props, State, Hooks, Router সহ হাতে-কলমে একটি Facebook News Feed Clone প্রজেক্ট
 ---
 
-> React শেখার শুরু: আশা রাখছি-> এই লেখায় আপনার React এর ৮০% কনসেপ্ট ক্লিয়ার হয়ে যাবে!
+> 🎯 **লক্ষ্য:** এই একটি টিউটোরিয়াল পড়লে React-এর ৮০%+ প্র্যাকটিক্যাল কনসেপ্ট ক্লিয়ার হয়ে যাবে — এবং আপনি নিজে একটি পূর্ণাঙ্গ, রিয়েল-ওয়ার্ল্ড অ্যাপ বানাতে পারবেন।
 
-এই লেখাটি যদি আপনি মন দিয়ে পড়েন আর বুঝে প্রাকটিস করেন, আমি আশা করি, _**React-এর জরুরি ধারণাগুলো আপনার ব্রেনে ঢুকে যাবে**_, যা আপনার প্রতিদিনের কোডিং এ কাজে লাগবে।
+এই লেখাটি যদি মন দিয়ে পড়েন আর প্রতিটি কোড নিজে টাইপ করেন, আমি নিশ্চিত আপনি **React-এর জরুরি ধারণাগুলো আত্মস্থ করতে পারবেন** — এবং সেটা প্রতিদিনের কোডিংয়ে কাজে লাগবে।
+
+---
+
+## 🗂️ এই টিউটোরিয়ালে যা যা পাবেন
+
+- **Vite** দিয়ে React প্রজেক্ট শুরু, ফাইল/ফোল্ডার স্ট্রাকচার
+- **JSX** — HTML-like syntax কীভাবে JavaScript-এ কাজ করে
+- **Component** — UI-কে ছোট ছোট পুনর্ব্যবহারযোগ্য ব্লকে ভাগ করা
+- **Props** — Parent থেকে Child-এ ডাটা পাঠানো
+- **State (useState)** — UI-কে ডায়নামিক করা
+- **Events** — ইউজারের ইন্টারঅ্যাকশন ধরা
+- **List ও Keys** — অ্যারে থেকে UI রেন্ডার করা
+- **Conditional Rendering** — শর্ত অনুযায়ী UI দেখানো বা লুকানো
+- **Forms** — Controlled Input দিয়ে পোস্ট তৈরি করা
+- **useEffect** — API কল, localStorage, cleanup
+- **Lifting State Up ও Context API** — Component-এর মধ্যে ডাটা শেয়ার
+- **React Router** — মাল্টিপেজ Navigation
+- **Custom Hook** — Reusable logic আলাদা করা
+- **Performance** — memo, useMemo, useCallback
+- **Build ও Deploy** — Vercel-এ live করা
+
+---
+
+## 📌 সারা টিউটোরিয়ালের কমন প্রজেক্ট: **Facebook News Feed**
+
+আমরা সারা টিউটোরিয়াল জুড়ে একটিমাত্র প্রজেক্ট বানাবো — একটি ছোট্ট **Facebook News Feed Clone**। কেন এই উদাহরণ? কারণ প্রায় প্রতিটা বাংলাদেশি ডেভেলপারই ফেসবুকের ইন্টারফেস দিনে বহুবার দেখেন — নতুন পোস্ট দেওয়া, লাইক দেওয়া, কমেন্ট গোনা, প্রোফাইল দেখা। ফলে "কেন এই কোড লিখছি" — এই প্রশ্নের উত্তর সবসময় সহজাতভাবেই বোঝা যাবে।
+
+আমাদের অ্যাপে থাকবে:
+
+- একটা নিউজফিড, যেখানে পোস্টগুলো কার্ড আকারে দেখা যাবে
+- নতুন পোস্ট লেখার বক্স (ছবিসহ বা ছবি ছাড়া)
+- লাইক বাটন — ক্লিক করলে লাইক সংখ্যা বাড়বে/কমবে
+- ভেরিফায়েড ব্যাজ — শর্ত অনুযায়ী দেখানো
+- একজনের সব পোস্ট দেখার প্রোফাইল পেজ
+- একটা পোস্টের বিস্তারিত পেজ (আলাদা URL সহ)
+- সার্ভার থেকে পোস্ট লোড হওয়ার সিমুলেশন, আর localStorage-এ ডাটা সংরক্ষণ
+
+প্রতিটি কনসেপ্ট শেখার সাথে সাথে এই প্রজেক্টে সেটা যোগ হবে। শেষে আপনার কাছে একটি পূর্ণাঙ্গ, কার্যকর মিনি-ফেসবুক থাকবে।
+
+---
+
+## সূচিপত্র
+
+1. [React কী এবং কেন?](#1-react-কী-এবং-কেন)
+2. [প্রি-রেকুইজিট ও Environment Setup](#2-প্রি-রেকুইজিট-ও-environment-setup)
+3. [Vite দিয়ে প্রজেক্ট তৈরি](#3-vite-দিয়ে-প্রজেক্ট-তৈরি)
+4. [প্রজেক্ট ফোল্ডার স্ট্রাকচার](#4-প্রজেক্ট-ফোল্ডার-স্ট্রাকচার)
+5. [JSX — JavaScript-এর ভেতরে HTML](#5-jsx--javascript-এর-ভেতরে-html)
+6. [Component — UI-এর ছোট ব্লক](#6-component--ui-এর-ছোট-ব্লক)
+7. [Props — Parent থেকে Child-এ ডাটা](#7-props--parent-থেকে-child-এ-ডাটা)
+8. [State ও useState — UI জীবন্ত করা](#8-state-ও-usestate--ui-জীবন্ত-করা)
+9. [Events — ইউজারের ইন্টারঅ্যাকশন](#9-events--ইউজারের-ইন্টারঅ্যাকশন)
+10. [List ও Keys — অ্যারে থেকে UI](#10-list-ও-keys--অ্যারে-থেকে-ui)
+11. [Conditional Rendering](#11-conditional-rendering)
+12. [Forms ও Controlled Components](#12-forms-ও-controlled-components)
+13. [useEffect — Side Effects ও API Call](#13-useeffect--side-effects-ও-api-call)
+14. [Lifting State Up ও Context API](#14-lifting-state-up-ও-context-api)
+15. [React Router — Multipage Navigation](#15-react-router--multipage-navigation)
+16. [Custom Hook — Reusable Logic](#16-custom-hook--reusable-logic)
+17. [Performance Optimization](#17-performance-optimization)
+18. [Build ও Deployment](#18-build-ও-deployment)
+19. [প্রজেক্ট আইডিয়া ও পরবর্তী ধাপ](#19-প্রজেক্ট-আইডিয়া-ও-পরবর্তী-ধাপ)
+
+---
+
+## 1. React কী এবং কেন?
+
+**React** হলো Facebook (Meta)-এর তৈরি একটি **JavaScript UI Library** — কাকতালীয়ভাবে হলেও, আমাদের উদাহরণের সাথে বেশ মানানসই! এটা দিয়ে আমরা ওয়েব অ্যাপ্লিকেশনের **User Interface (UI)** বানাই।
+
+### React কেন ব্যবহার করবো?
+
+ধরুন, আপনি পুরনো পদ্ধতিতে (Plain JavaScript + সরাসরি DOM Manipulation) একটা নিউজফিড বানালেন। কেউ লাইক দিলে, নতুন পোস্ট এলে, বা কমেন্ট বাড়লে — প্রতিবার আপনাকে হাতে করে ঠিক কোন `<div>`, কোন `<span>` বদলাতে হবে খুঁজে বের করতে হবে। অ্যাপ যত বড় হবে, এই কাজ তত জটিল আর ভুলে ভরা হয়ে উঠবে।
+
+React-এ আছে **Virtual DOM** — একটা হালকা, মেমোরিতে রাখা কপি। State বদলালে React প্রথমে নতুন Virtual DOM তৈরি করে, আগেরটার সাথে তুলনা করে (**Diffing**), আর শুধু যেটুকু আসলেই বদলেছে সেটুকুই আসল DOM-এ আপডেট করে (**Reconciliation**)। যেমন — একটা পোস্টে লাইক দিলে, পুরো ফিড না এঁকে, শুধু সেই একটা লাইক-কাউন্টার বদলাবে।
 
 <AudioPlayer
   src="/audios/learn-react-quick-start-guide.wav"
   title="React Quick Start Guide"
 />
 
-এই লেখাতে কি কি পাবেন:
+### React-এর মূল মানসিকতা (Mental Model)
 
-- (Vite) দিয়ে একটি প্রোজেক্ট ইনিশিয়ালাইজ, ফাইল/ফোল্ডার স্ট্রাকচার
-- JSX, Components, Props, State (useState) — ব্যাখ্যা ও উদাহরণসহ
-- Events, Lists & keys, Conditional rendering, Forms, useEffect (ডেটা ফেচিং)
-- Lifting state up, Context, Router, Custom hooks, পারফরম্যান্স টিপস
-- ডেপ্লয়মেন্ট, প্রজেক্ট-বেসড এক্সারসাইজ ও শেখার রোডম্যাপ
+```
+UI = f(state)
+```
 
----
-
-## সূচিপত্র
-
-1. পরিচিতি ও কী কী শিখবেন
-2. প্রয়োজনীয়তা (প্রি-রেকুইজিট) ও সেটআপ
-3. প্রথম React অ্যাপ — Vite ব্যবহার করে প্রজেক্ট তৈরি
-4. JSX — কী, কিভাবে ও প্র্যাকটিস
-5. কম্পোনেন্ট — ফাংশনাল বনাম ক্লাস (সংক্ষিপ্ত)
-6. Props: ডাটা পাসিং সোজা করে বলা
-7. State ও useState: UI এর অবস্থা বদলানো
-8. ইভেন্ট ও ইউজার ইন্টারঅ্যাকশন
-9. লিস্ট, key ও রেন্ডার অপ্টিমাইজেশন
-10. কন্ডিশনাল রেন্ডারিং
-11. ফর্ম ও ইনপুট হ্যান্ডলিং
-12. useEffect: ডেটা ফেচিং ও সাইড-ইফেক্ট
-13. কম্পোনেন্টদের মধ্যে ডাটা শেয়ার — Lifting state up ও Context
-14. রিয়েক্ট রাউটিং (React Router) — পেজ সমূহ
-15. কাস্টম হুক ও রিইউজেবল লজিক
-16. পারফরম্যান্স টিপস (memo, useMemo, useCallback)
-17. টেস্টিং ও ডিবাগিং (সংক্ষেপে)
-18. বিল্ডিং ও ডেপ্লয়মেন্ট
-19. প্রজেক্ট আইডিয়া, চ্যালেঞ্জ ও এক্সারসাইজ
-20. সংক্ষেপে: শেখার রোডম্যাপ ও রিসোর্স
+অর্থাৎ — **UI হলো state-এর একটি ফাংশন।** আমাদের ফিডের "লাইক সংখ্যা ২৪" এই UI-টা আসলে `likes` নামের একটা state ভ্যালুর প্রতিচ্ছবি মাত্র। State বদলালেই UI স্বয়ংক্রিয়ভাবে আপডেট হয় — আপনাকে হাতে করে DOM ধরে টানাটানি করতে হয় না।
 
 ---
 
-## 1. পরিচিতি ও লক্ষ্য
+## 2. প্রি-রেকুইজিট ও Environment Setup
 
-এই টিউটোরিয়ালের লক্ষ্য — **React শেখানো এমনভাবে যাতে ৮০% ব্যবহারিক কাজ আপনি এই টিউটোরিয়াল পড়ে করে ফেলতে পারেন।** আপনি যদি প্রতিটি অংশ মনোযোগ দিয়ে পড়েন এবং অনুশীলন করেন, তাহলে আপনি ছোট ও মাঝারি সাইজ প্রজেক্ট বানাতে সক্ষম হবেন।
+### যা জানা থাকতে হবে
 
----
+| টপিক                  | কী কী লাগবে                                                                                                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **HTML**              | Tags, Attributes, Forms                                                                                                                                                   |
+| **CSS**               | Selectors, Box Model, Flexbox                                                                                                                                             |
+| **JavaScript (ES6+)** | `let/const`, Arrow Function, Template Literal, Destructuring, Spread Operator, Array Method (`map`, `filter`, `reduce`), Module (`import/export`), Promise, `async/await` |
 
-## 2. প্রি-রেকুইজিট ও সেটআপ
+> ⚠️ JavaScript ES6+ ভালোভাবে না জেনে React শেখা কঠিন হয়ে যায়। দুর্বল লাগলে আগে JavaScript-টা ঝালাই করে নিন।
 
-### প্রি-রেকুইজিট
+### সফটওয়্যার ইনস্টল করুন
 
-- HTML, CSS (মৌলিক ধারণা)
-- আধুনিক JavaScript (ES6+) — `let/const`, arrow functions, template strings, destructuring, modules
+1. **Node.js** (v18 বা তার উপরে) — [nodejs.org](https://nodejs.org) থেকে LTS ভার্সন নামান
+2. **VS Code** — [code.visualstudio.com](https://code.visualstudio.com)
+3. **VS Code Extension:**
+   - **ES7+ React/Redux/React-Native Snippets** — শর্টকাটে কোড লিখুন
+   - **Prettier** — কোড ফরম্যাট করুন
+   - **Auto Rename Tag** — JSX ট্যাগ রিনেম সহজ করে
 
-### কম্পিউটার সেটআপ
-
-1. Node.js ও npm (বা pnpm/yarn) ইন্সটল করুন
-2. কোড এডিটর: VS Code (ইনস্টল)
-
-কম্পিউটারে পরিবেশ তৈরি জন্য বিস্তারিত পড়ুনঃ [এখানে](/learn-react-environment-set-up)
-
-### প্রজেক্ট তৈরি (Vite)
-
-বর্তমান সময়ে vite দিয়ে React এপ্লিকেশন তৈরি খুব জনপ্রিয় হয়ে উঠেছে। কারণ- এটি খুব দ্রুত ডেভ সার্ভার চালু করে এবং কোড পরিবর্তনের সাথে সাথে তৎক্ষণাত আপডেট দেখায় (HMR), ফলে ডেভেলপমেন্ট অনেক দ্রুত হয়। এছাড়া Vite খুব কম কনফিগারেশনে কাজ করে, তাই নতুন প্রজেক্ট শুরু করাও সহজ। আধুনিক টুলিং (যেমন esbuild ও Rollup) ব্যবহার করার কারণে প্রোডাকশন বিল্ডও দ্রুত ও অপ্টিমাইজড হয়। Tailwind, TypeScriptসহ বিভিন্ন প্লাগইনও সহজে যুক্ত করা যায়। সব মিলিয়ে দ্রুততা, হালকা সেটআপ এবং ভালো ডেভেলপার অভিজ্ঞতার কারণে React প্রজেক্টে Vite এখন সবচেয়ে জনপ্রিয় পছন্দ।
+টার্মিনাল খুলে যাচাই করুন:
 
 ```bash
-# নতুন প্রজেক্ট
-npm create vite@latest loan-management -- --template react
-cd loan-management
+node -v    # v18.x.x বা তার উপরে দেখাবে
+npm -v     # 9.x.x বা তার উপরে দেখাবে
+```
+
+আপনার কম্পিউটারের পরিবেশ তৈরি জন্য বিস্তারিত পড়ুনঃ [এখানে](/docs/react/environment-set-up)
+
+---
+
+## 3. Vite দিয়ে প্রজেক্ট তৈরি
+
+### Vite কেন?
+
+পুরনো `create-react-app` এখন বেশ ধীর। **Vite** আধুনিক JavaScript বান্ডলার, যা:
+
+- **esbuild** ব্যবহার করে — অনেক দ্রুত ট্রান্সপাইল করে
+- **Hot Module Replacement (HMR)** দেয় — কোড সেভ করলেই ব্রাউজার আপডেট হয়, পুরো পেজ রিফ্রেশ ছাড়াই
+- প্রোডাকশন বিল্ডে **Rollup** ব্যবহার করে — অপটিমাইজড আউটপুট দেয়
+
+### প্রজেক্ট তৈরি
+
+```bash
+# Vite দিয়ে React প্রজেক্ট তৈরি
+npm create vite@latest facebook-news-feed -- --template react
+
+# প্রজেক্ট ফোল্ডারে যান
+cd facebook-news-feed
+
+# ডিপেন্ডেন্সি ইনস্টল করুন
 npm install
+
+# ডেভেলপমেন্ট সার্ভার চালু করুন
 npm run dev
 ```
 
-> Vite দ্রুত, হট-রিলোড আছে — তাই Vite দিয়ে রিয়েক্ট প্রোজেক্ট শুরু করা ভালো।
+ব্রাউজারে `http://localhost:5173` খুলুন — React অ্যাপ দেখতে পাবেন।
 
-#### Tailwindcss সেটআপ করে নিন।
+### Tailwind CSS সেটআপ
 
-বর্তমান স্টাইলিং এর জন্য রেডিমেট ক্লাস ব্যবহার করি। Tailwind CSS আমাদের রেডিমেট ইউটিলিটি ক্লাস দেয়।
-
-##### 1. install tailwindcss
+আমরা স্টাইলিংয়ের জন্য **Tailwind CSS** ব্যবহার করবো — একটি utility-first CSS framework, যেখানে প্রতিটা class একটা নির্দিষ্ট CSS property নিয়ন্ত্রণ করে।
 
 ```bash
 npm install tailwindcss @tailwindcss/vite
 ```
 
-##### 2. **vite.config.js ফাইল এ গিয়ে নিচের কোডটা পেস্ট করুন**
+**`vite.config.js`** আপডেট করুন:
 
 ```js
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
 });
 ```
 
-##### 3. index.css এ tailwindcss import করুন
+**`src/index.css`**-এ Tailwind import করুন:
 
 ```css
 @import "tailwindcss";
@@ -112,179 +184,840 @@ export default defineConfig({
 
 ---
 
-## 3. আপনার প্রথম React অ্যাপ্লিকেশন: প্রোজেক্ট ফাইল ও ফোল্ডার স্ট্রাকচার
+## 4. প্রজেক্ট ফোল্ডার স্ট্রাকচার
 
-বর্তমানে মানুষজন প্রোজেক্ট শুরু করে `Scaffolding` দিয়ে, এটা হলো-> আগে ফোল্ডার স্ট্রাকচার এবং প্রয়োজনীর কিছু প্যাকেজ, কম্পোনেন্টস দিয়ে তৈরি করা প্রোজেক্ট। যেটা ডেভেলপারদের কাজ অনেক সহজ করে, ডেভেলপার দ্রুত বুঝতে পারে-> এখন তার কিভাবে আগানো উচিত? তখন একনজর দেখলে সবকিছু মনে পড়ে যায়। কারণ- প্রত্যেকটা প্রোজেক্টের সিস্টেম তো একই হয়!
+**Scaffolding** মানে — প্রজেক্ট শুরুর আগেই একটা সুসংগঠিত ফোল্ডার কাঠামো তৈরি করা, যাতে পরে কোড কোথায় রাখতে হবে খুঁজতে সময় নষ্ট না হয়।
+
+আমাদের **Facebook News Feed** প্রজেক্টের জন্য:
 
 ```
-loan-management/
+facebook-news-feed/
   ├─ index.html
-  ├─ src/
-  │   ├─ data/
-  │   │   └─ creditors.json      (or any data files you want)
-  │   │
-  │   ├─ main.jsx
-  │   ├─ App.jsx
-  │   ├─ components/
-  │   │   ├─ TotalLoan.jsx
-  │   │   ├─ Creditors.jsx
-  │   │   └─ Creditor.jsx
-  │   └─ styles.css
-  └─ package.json
-
+  ├─ vite.config.js
+  ├─ package.json
+  └─ src/
+      ├─ main.jsx               ← Entry point: ReactDOM.createRoot এখানে
+      ├─ App.jsx                ← Root component / Route definitions
+      ├─ index.css              ← Global styles + Tailwind
+      │
+      ├─ data/
+      │   └─ posts.js           ← Static/mock পোস্ট ডাটা
+      │
+      ├─ components/
+      │   ├─ Header.jsx         ← ফেসবুক-স্টাইল টপ নেভবার
+      │   ├─ CreatePostBox.jsx  ← নতুন পোস্ট লেখার ফর্ম
+      │   ├─ Feed.jsx           ← পোস্টের লিস্ট
+      │   ├─ PostCard.jsx       ← একটা পোস্টের কার্ড
+      │   └─ EngagementBar.jsx  ← লাইক/কমেন্ট/শেয়ার বার
+      │
+      ├─ pages/
+      │   ├─ HomePage.jsx       ← মূল ফিড পেজ
+      │   ├─ PostDetailPage.jsx ← একটা পোস্টের বিস্তারিত
+      │   ├─ ProfilePage.jsx    ← একজনের সব পোস্ট
+      │   └─ NotFoundPage.jsx   ← ৪০৪ পেজ
+      │
+      ├─ hooks/
+      │   ├─ useFetchPosts.js   ← Custom hook: API থেকে পোস্ট লোড
+      │   └─ useLocalStorage.js ← Custom hook: localStorage sync
+      │
+      └─ context/
+          └─ PostContext.jsx    ← Context API দিয়ে গ্লোবাল state
 ```
 
-`main.jsx` থেকে `App` ফাইলকে রেন্ডার করে: এখানে `ReactDOM.createRoot(...).render(<App />)` থাকবে।
+### এই স্ট্রাকচারের নিয়ম
 
----
+- **`components/`** — ছোট, পুনর্ব্যবহারযোগ্য UI টুকরো
+- **`pages/`** — একটা নির্দিষ্ট রুট/URL-এর সাথে বাঁধা বড় কম্পোনেন্ট
+- **`data/`** — স্ট্যাটিক ডাটা বা mock API response
+- **`hooks/`** — কাস্টম React hook
+- **`context/`** — গ্লোবাল স্টেট ম্যানেজমেন্ট
 
-### প্রোজেক্ট শুরুর আগে ফাস্ট আমাদের ডাটা স্ট্রাকচার নিয়ে ভাবতে হবে।
+### আমাদের Data Structure
 
-React অ্যাপের জন্য ছোট-medium প্রোজেক্টে Single Source of Truth ব্যবহার করা ভালো। অর্থাৎ সব সম্পর্কিত ডাটা (যেমন creditors, loans) এক জায়গায় centralized রাখা। এতে ডাটা consistent থাকে, update সহজ হয় এবং bug কম থাকে। ছোট component গুলো props বা context থেকে ডাটা নেবে। বড় বা কমপ্লেক্স অ্যাপে আলাদা slices বা state management library ব্যবহার করা যায়, কিন্তু শুরুতে centralized structure সবচেয়ে সিম্পল ও কার্যকর।
-
-**আমাদের প্রোজেক্টের জন্য ডাটা স্ট্রাকচার নিচের মতো করে নিতে পারি-**
-
-```jsx
-export const creditors = [
+```js
+// src/data/posts.js
+export const posts = [
   {
     id: 1,
-    name: "John Doe",
-    loanAmount: 15000,
-    interestRate: 0,
-    dueDate: "2024-12-31",
+    author: "রাফি হাসান",
+    avatar: "🧑‍💻",
+    verified: true,
+    content: "আজকে React শেখা শুরু করলাম! 🚀 নতুন কিছু শেখার অনুভূতিই আলাদা।",
+    image: null,
+    likes: 24,
+    comments: 5,
+    shares: 2,
+    timestamp: "২ ঘণ্টা আগে",
   },
   {
     id: 2,
-    name: "Jane Smith",
-    loanAmount: 25000,
-    interestRate: 0,
-    dueDate: "2025-06-30",
+    author: "নাদিয়া ইসলাম",
+    avatar: "👩‍🎨",
+    verified: false,
+    content:
+      "প্রথমবার নিজের পোর্টফোলিও সাইট React দিয়ে বানালাম। লিংক কমেন্টে দিলাম!",
+    image: "https://picsum.photos/seed/portfolio/600/400",
+    likes: 58,
+    comments: 12,
+    shares: 4,
+    timestamp: "৫ ঘণ্টা আগে",
   },
   {
     id: 3,
-    name: "Acme Corp",
-    loanAmount: 10000,
-    interestRate: 0,
-    dueDate: "2025-12-31",
+    author: "সাকিব রহমান",
+    avatar: "🧑‍🚀",
+    verified: true,
+    content:
+      "Next.js শিখছি, মজা লাগছে খুব! Server Component বিষয়টা মাথায় ঢুকছে আস্তে আস্তে।",
+    image: null,
+    likes: 41,
+    comments: 8,
+    shares: 1,
+    timestamp: "১ দিন আগে",
   },
 ];
 ```
 
-## 4. JSX — দেখতে HTML-এর মত মনে হলেও কিন্তু JS এর ভিতর
+> 💡 **Single Source of Truth:** সব পোস্ট এক জায়গায় (`posts.js`) রাখলে ডাটা কনসিস্টেন্ট থাকে, বাগ কম হয়, মেইনটেইন করাও সহজ হয়।
 
-JSX হলো JavaScript এর ভিতরে HTML-এর মত সিনট্যাক্স। এখন আমরা একটি `TotalLoan` কম্পোনেন্টটি বানাবো। যেখানে `{totalAmout}` প্রোপস আকারে আসবে। প্রোপস কি, সেটা একটু পর বুঝিয়ে বলছি।
+---
 
-**মনে রাখার নিয়ম**
+## 5. JSX — JavaScript-এর ভেতরে HTML
 
-- JSX-এ attribute `className` ব্যবহার করতে হবে।
-- একাধিক ট্যাগ হলে এক parent লাগবে (বা `<>...</>` fragment)।
-- JavaScript expression `{}` দিয়ে লিখতে হবে।
+**JSX (JavaScript XML)** হলো JavaScript-এর একটা **syntax extension** — দেখতে HTML-এর মতো, কিন্তু আসলে JavaScript। ব্রাউজার সরাসরি JSX বোঝে না — Vite/Babel এটাকে প্লেইন JavaScript-এ রূপান্তর করে।
 
-_**নিচের এই কোডটি কপি করুন এবং TotalLoan কম্পোনেন্টে পেস্ট করুন**_
+### JSX আসলে কী করে?
 
 ```jsx
-export default function TotalLoan({ totalLoan }) {
+// আপনি লিখুন:
+const element = <h3 className="author-name">রাফি হাসান</h3>;
+
+// Babel রূপান্তর করে:
+const element = React.createElement(
+  "h3",
+  { className: "author-name" },
+  "রাফি হাসান",
+);
+```
+
+অর্থাৎ JSX মূলত `React.createElement()`-এর syntactic sugar মাত্র।
+
+### JSX-এর নিয়মাবলি
+
+**নিয়ম ১ — একটি Root Element থাকতে হবে:**
+
+```jsx
+// ❌ ভুল — দুটো sibling element
+return (
+  <h3>রাফি হাসান</h3>
+  <p>আজকে React শেখা শুরু করলাম!</p>
+);
+
+// ✅ সঠিক — একটা wrapper div
+return (
+  <div>
+    <h3>রাফি হাসান</h3>
+    <p>আজকে React শেখা শুরু করলাম!</p>
+  </div>
+);
+
+// ✅ আরও ভালো — Fragment (DOM-এ এক্সট্রা div যোগ হয় না)
+return (
+  <>
+    <h3>রাফি হাসান</h3>
+    <p>আজকে React শেখা শুরু করলাম!</p>
+  </>
+);
+```
+
+**নিয়ম ২ — `class` নয়, `className`:**
+
+```jsx
+// ❌ ভুল
+<div class="post-card">...</div>
+
+// ✅ সঠিক (কারণ 'class' JavaScript-এ reserved keyword)
+<div className="post-card">...</div>
+```
+
+**নিয়ম ৩ — JavaScript Expression `{}` দিয়ে:**
+
+```jsx
+const author = "রাফি হাসান";
+const likes = 24;
+
+return (
+  <div>
+    <h3>{author}</h3>
+    <p>{likes} জন লাইক দিয়েছে</p>
+    <p>{likes > 50 ? "🔥 ভাইরাল পোস্ট!" : "নতুন পোস্ট"}</p>
+  </div>
+);
+```
+
+> `{}`-এর ভেতরে **expression** লেখা যায় (যেমন ভ্যারিয়েবল, ফাংশন কল, টার্নারি), কিন্তু **statement** (যেমন `if`, `for`) সরাসরি লেখা যায় না।
+
+**নিয়ম ৪ — Self-closing Tag:**
+
+```jsx
+// ❌ HTML-এ চলে, JSX-এ না
+<img src="avatar.jpg">
+<br>
+
+// ✅ JSX-এ সবসময় বন্ধ করতে হবে
+<img src="avatar.jpg" />
+<br />
+```
+
+### আমাদের প্রজেক্ট: `EngagementBar.jsx` (প্রথম সংস্করণ)
+
+```jsx
+// src/components/EngagementBar.jsx
+
+export default function EngagementBar() {
+  const likes = 24;
+  const comments = 5;
+  const shares = 2;
+
   return (
-    <div className="flex flex-col items-center justify-center p-4 shadow-md bg-white">
-      <h2 className="text-lg font-semibold mb-2">Total Loan Amount</h2>
-      <p className="text-xl font-bold">{totalLoan}</p>
+    <div className="flex justify-between text-sm text-gray-500 border-t pt-2">
+      <span>👍 {likes}</span>
+      <span>💬 {comments} মন্তব্য</span>
+      <span>↗️ {shares} শেয়ার</span>
     </div>
   );
 }
 ```
 
+এখানে ডাটা এখনো হার্ডকোড করা — সব পোস্টেই ২৪টা লাইক দেখাবে, যেটা কাজের কথা না। এটা ঠিক করব পরের অধ্যায়ে, Props দিয়ে।
+
 ---
 
-## 5. React কম্পোনেন্ট কি— ছোট ছোট UI ব্লক
+## 6. Component — UI-এর ছোট ছোট ব্লক
 
-React-এ প্রতিটি UI অংশই একটা করে কম্পোনেন্ট চিন্তা করতে পারি। ফাংশনাল কম্পোনেন্ট সবচেয়ে জনপ্রিয়।
+**Component** React-এর সবচেয়ে মূল ধারণা। প্রতিটা Component একটা **পুনর্ব্যবহারযোগ্য (reusable) UI ব্লক** — যেটা নিজের data (state) রাখতে পারে আর বাইরে থেকে data (props) নিতে পারে।
 
-**নিচের কোডটি App.jsx কম্পোনেন্ট এ পেস্ট করুন।** এখানে আমরা যে কাজটি করেছি, তা হলো-- data/creditors থেকে `creditors data` import করেছি। এবং App কম্পোনেন্টের এর মধ্যে totalLoan ক্যালকুলেট করেছি।
+### Functional Component
+
+আজকের React-এ শুধু **Functional Component** ব্যবহার হয়। এটা একটা সাধারণ JavaScript ফাংশন যা JSX রিটার্ন করে।
 
 ```jsx
-import CreditorList from "./components/CreditorList";
-import TotalLoan from "./components/TotalLoan";
-import { creditors } from "./data/creditors";
+function Greeting() {
+  return <h1>স্বাগতম, আপনার নিউজফিডে! 👋</h1>;
+}
+
+export default Greeting;
+```
+
+**কনভেনশন:**
+
+- Component-এর নাম সবসময় **PascalCase** — যেমন `PostCard`, `CreatePostBox`
+- ফাইলের নামও Component-এর নামের মতো — `PostCard.jsx`
+
+### Component Tree (কম্পোনেন্ট গাছ)
+
+আমাদের অ্যাপের কম্পোনেন্ট ট্রি এভাবে সাজানো:
+
+```
+App
+└── HomePage
+    ├── Header
+    ├── CreatePostBox
+    └── Feed
+        └── PostCard (একাধিক)
+            └── EngagementBar
+```
+
+Parent component তার child-কে data দেয় **props** দিয়ে — অনেকটা লেগো ব্লকের মতো, ছোট ছোট টুকরো আলাদাভাবে বানিয়ে পরে জোড়া লাগানো হয়।
+
+### আমাদের `App.jsx` (প্রাথমিক সংস্করণ)
+
+```jsx
+// src/App.jsx
+import Header from "./components/Header";
+import CreatePostBox from "./components/CreatePostBox";
+import Feed from "./components/Feed";
+import { posts } from "./data/posts";
 
 export default function App() {
-  const totalLoan = creditors.reduce(
-    (sum, creditor) => sum + creditor.loanAmount,
-    0,
-  );
-
   return (
-    <div className="max-w-md mx-auto flex flex-col gap-4 p-4 min-h-screen">
-      <TotalLoan totalLoan={totalLoan} />
-      <CreditorList creditors={creditors} />
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <main className="max-w-xl mx-auto p-4 flex flex-col gap-4">
+        <CreatePostBox />
+        <Feed posts={posts} />
+      </main>
     </div>
   );
 }
 ```
 
-কোম্পোনেন্ট রিইউজ করা সহজ — যেমন ওয়েবসাইটের `<Header />`, `<Footer />` কম্পোনেন্ট একাধিক ফাইলে ব্যবহার করুন।
+### Class Component (ঐতিহাসিক জ্ঞান)
 
----
-
-### React ক্লাস কম্পোনেন্ট (এখনকার সময় খুব কম ব্যবহার হয়)
-
-React-এ কম্পোনেন্ট দুইভাবে বানানো যায়: **ফাংশনাল** আর **ক্লাস**। ক্লাস কম্পোনেন্ট পুরনো স্টাইল, কিন্তু এখনও কাজ করে।
-
-**উদাহরণ:**
+React-এর পুরনো ভার্সনে **Class Component** ব্যবহার হতো। এখন প্রায় দেখাই যায় না, তবে পুরনো কোডবেস বুঝতে কাজে আসে।
 
 ```jsx
-import React, { Component } from "react";
+import { Component } from "react";
 
 export default class Header extends Component {
   render() {
     return (
-      <header>
-        <h1>React-Bangla</h1>
+      <header className="bg-blue-700 text-white p-4 font-bold text-xl">
+        facebook
       </header>
     );
   }
 }
 ```
 
-**কী জিনিস:**
+**Class vs Functional:**
 
-1. `class Header extends Component` → কম্পোনেন্ট তৈরি করা হলো।
-2. `render()` → এখানে UI JSX রিটার্ন হয়।
-3. `<Header />` → যেকোনো জায়গায় ব্যবহার করা যায়।
+| বিষয়      | Class Component               | Functional Component     |
+| ---------- | ----------------------------- | ------------------------ |
+| Syntax     | `class Foo extends Component` | `function Foo()`         |
+| State      | `this.state`                  | `useState` Hook          |
+| Lifecycle  | `componentDidMount` ইত্যাদি   | `useEffect` Hook         |
+| জনপ্রিয়তা | পুরনো, কমে আসছে               | আধুনিক, সবাই ব্যবহার করে |
 
-**সংক্ষেপে:**
-
-- ক্লাস কম্পোনেন্ট হলো **পুরনো স্টাইলের React কম্পোনেন্ট**, যেটাতে `render()` মেথড থাকে।
-- ফাংশনাল কম্পোনেন্টের মতো একাধিক বার রিইউজ করা যায়।
+> ✅ **সিদ্ধান্ত:** সবসময় **Functional Component** লিখুন। বাকি পুরো গাইডে আমরা তাই করব।
 
 ---
 
-## 6. Props — ডাটা পাস করা
+## 7. Props — Parent থেকে Child-এ ডাটা
 
-Props হলো কম্পোনেন্টে বাইরের ডাটা পাঠানোর উপায়।
+**Props (Properties)** হলো Component-এ বাইরে থেকে ডাটা পাঠানোর উপায়। Props **read-only** — child component কখনো নিজের props পরিবর্তন করতে পারে না।
 
-১। **CreditorList.jsx ফাইল ক্রিয়েট করুন। নিচের কোডটি পেস্ট করুন।**
+### Props কীভাবে কাজ করে
 
 ```jsx
-export default function CreditorList({ creditors }) {
+// Parent (Feed.jsx) থেকে props পাঠানো হচ্ছে
+<PostCard
+  author="রাফি হাসান"
+  avatar="🧑‍💻"
+  content="আজকে React শেখা শুরু করলাম! 🚀"
+  likes={24}
+/>;
+
+// Child (PostCard.jsx) props গ্রহণ করছে
+function PostCard({ author, avatar, content, likes }) {
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-2">Creditor List</h2>
-      {creditors.map((creditor) => (
-        <Creditor key={creditor.id} creditor={creditor} />
+      <h3>
+        {avatar} {author}
+      </h3>
+      <p>{content}</p>
+      <p>{likes} জন লাইক দিয়েছে</p>
+    </div>
+  );
+}
+```
+
+### Destructuring Props
+
+```jsx
+// ❌ পুরনো উপায় — verbose
+function PostCard(props) {
+  return <h3>{props.author}</h3>;
+}
+
+// ✅ আধুনিক উপায় — Destructuring
+function PostCard({ author }) {
+  return <h3>{author}</h3>;
+}
+```
+
+### Default Props
+
+Props না পাঠালে ডিফল্ট মান ব্যবহার করা যায়:
+
+```jsx
+function PostCard({ author = "অজানা ব্যবহারকারী", likes = 0 }) {
+  return (
+    <div>
+      <h3>{author}</h3>
+      <p>{likes} লাইক</p>
+    </div>
+  );
+}
+```
+
+### আমাদের `PostCard.jsx` (props-চালিত সংস্করণ)
+
+```jsx
+// src/components/PostCard.jsx
+import EngagementBar from "./EngagementBar";
+
+export default function PostCard({
+  author,
+  avatar,
+  content,
+  likes,
+  comments,
+  shares,
+  timestamp,
+}) {
+  return (
+    <div className="bg-white rounded-lg shadow p-4 flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <span className="text-2xl">{avatar}</span>
+        <div>
+          <p className="font-semibold text-gray-800">{author}</p>
+          <p className="text-xs text-gray-400">{timestamp}</p>
+        </div>
+      </div>
+      <p className="text-gray-700">{content}</p>
+      <EngagementBar likes={likes} comments={comments} shares={shares} />
+    </div>
+  );
+}
+```
+
+### আপডেটেড `EngagementBar.jsx`
+
+```jsx
+// src/components/EngagementBar.jsx
+
+export default function EngagementBar({ likes, comments, shares }) {
+  return (
+    <div className="flex justify-between text-sm text-gray-500 border-t pt-2">
+      <span>👍 {likes}</span>
+      <span>💬 {comments} মন্তব্য</span>
+      <span>↗️ {shares} শেয়ার</span>
+    </div>
+  );
+}
+```
+
+এখন `PostCard` একটা ছাঁচ (mold) এর মতো — একবার বানিয়ে, প্রতিটা ভিন্ন পোস্টের জন্য আলাদা props দিয়ে বারবার ব্যবহার করা যাবে।
+
+> ⚠️ **মনে রাখবেন:** Props সবসময় **Read-Only (Immutable)**। এটা React-এর **Unidirectional Data Flow (একমুখী ডেটা প্রবাহ)** নীতির অংশ — ডেটা সবসময় Parent → Child দিকে যায়। Child থেকে Parent-কে কিছু জানাতে হলে ফাংশন (Callback) পাঠাতে হয় — এটা অধ্যায় ৯ ও ১৪-এ বিস্তারিত দেখব।
+
+---
+
+## 8. State ও useState — UI জীবন্ত করা
+
+**State** হলো Component-এর নিজস্ব **মনে রাখার ক্ষমতা**। State পরিবর্তন হলে React স্বয়ংক্রিয়ভাবে UI **রি-রেন্ডার** করে।
+
+### useState Hook — প্রথমে একটা ছোট উদাহরণ
+
+```jsx
+import { useState } from "react";
+
+function LikeCounterDemo() {
+  // Syntax: const [stateValue, setterFunction] = useState(initialValue);
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>লাইক: {count}</p>
+      <button onClick={() => setCount(count + 1)}>👍 লাইক দিন</button>
+    </div>
+  );
+}
+```
+
+### State-এর গুরুত্বপূর্ণ নিয়মাবলি
+
+**নিয়ম ১ — State সরাসরি মিউটেট (mutate) করবেন না:**
+
+```jsx
+// ❌ ভুল — React জানতেই পারবে না state বদলেছে
+const [posts, setPosts] = useState([...]);
+posts.push(newPost); // রি-রেন্ডার হবে না!
+
+// ✅ সঠিক — নতুন array তৈরি করুন
+setPosts([newPost, ...posts]); // রি-রেন্ডার হবে
+```
+
+**নিয়ম ২ — পুরনো state-এর উপর নির্ভর করলে functional update ব্যবহার করুন:**
+
+```jsx
+// ❌ সম্ভাব্য সমস্যা (stale closure)
+setLikes(likes + 1);
+
+// ✅ নিরাপদ (functional update)
+setLikes((prevLikes) => prevLikes + 1);
+```
+
+**নিয়ম ৩ — Object/Array state আপডেটে Spread Operator ব্যবহার করুন:**
+
+```jsx
+const [post, setPost] = useState({ author: "রাফি হাসান", likes: 24 });
+
+// ❌ ভুল — পুরো object replace হয়ে যায়
+setPost({ likes: 25 }); // author হারিয়ে যাবে!
+
+// ✅ সঠিক — spread করে নতুন object তৈরি
+setPost({ ...post, likes: 25 });
+```
+
+### আমাদের প্রজেক্টে State যোগ করা
+
+এখন `App.jsx` আপডেট করুন — পোস্টগুলো এখন state-এ থাকবে, নতুন পোস্ট যোগ করা, ডিলিট করা, এবং লাইক টগল করার ফাংশন তৈরি করব:
+
+```jsx
+// src/App.jsx (আপডেটেড)
+import { useState } from "react";
+import Header from "./components/Header";
+import CreatePostBox from "./components/CreatePostBox";
+import Feed from "./components/Feed";
+import { posts as initialPosts } from "./data/posts";
+
+export default function App() {
+  const [posts, setPosts] = useState(initialPosts);
+
+  // নতুন পোস্ট সবার উপরে যোগ করা
+  function handleAddPost(newPost) {
+    setPosts([
+      {
+        ...newPost,
+        id: Date.now(),
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        timestamp: "এখনই",
+      },
+      ...posts,
+    ]);
+  }
+
+  // পোস্ট মুছে ফেলা
+  function handleDeletePost(id) {
+    setPosts(posts.filter((post) => post.id !== id));
+  }
+
+  // লাইক বাড়ানো/কমানো
+  function handleToggleLike(id, delta) {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === id ? { ...post, likes: post.likes + delta } : post,
+      ),
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <main className="max-w-xl mx-auto p-4 flex flex-col gap-4">
+        <CreatePostBox onAddPost={handleAddPost} />
+        <Feed
+          posts={posts}
+          onDeletePost={handleDeletePost}
+          onToggleLike={handleToggleLike}
+        />
+      </main>
+    </div>
+  );
+}
+```
+
+লক্ষ্য করুন — `handleToggleLike`-এ আমরা `.map()` ব্যবহার করেছি, `.push()` বা সরাসরি ভ্যালু বদলানো নয়। এটা ঠিক উপরের **নিয়ম ১** মেনে চলা — একটা নতুন অ্যারে তৈরি হচ্ছে, শুধু যে পোস্টের `id` মিলছে তারই `likes` বদলে।
+
+> ✅ **প্রফেশনাল টিপ:** State-এর প্রতিটা "সরাসরি বদলানো" (`post.likes++` বা `posts[0] = ...`) একটা রেড ফ্ল্যাগ। সবসময় Setter ফাংশন দিয়ে **নতুন** ভ্যালু/অ্যারে/অবজেক্ট তৈরি করুন — একে বলে State-এর **Immutability** মেনে চলা।
+
+---
+
+## 9. Events — ইউজারের ইন্টারঅ্যাকশন
+
+React-এ Event Handler হলো এমন ফাংশন, যা ইউজার কিছু করলে (click, type, submit) কল হয়।
+
+### Event Handler-এর নিয়ম
+
+```jsx
+function LikeButton() {
+  function handleLikeClick() {
+    console.log("লাইক বাটনে ক্লিক হয়েছে!");
+  }
+
+  // ✅ সঠিক — function reference পাস করা হচ্ছে
+  return <button onClick={handleLikeClick}>👍 লাইক</button>;
+
+  // ❌ ভুল — render-এর সময়েই function call হয়ে যাবে!
+  // return <button onClick={handleLikeClick()}>👍 লাইক</button>;
+}
+```
+
+> ⚠️ **বাংলাদেশি ডেভেলপারদের সবচেয়ে কমন ভুল:** শেষে বন্ধনী `()` যোগ করে দেওয়া। `onClick={handleLikeClick()}` লিখলে জাভাস্ক্রিপ্ট ফাংশনটাকে **তখনই** কল করে ফেলে — প্রতিবার কম্পোনেন্ট রেন্ডার হওয়ার সময়েই, বাটনে ক্লিক না করেও। `onClick`-এ তখন assign হয় ফাংশনের রিটার্ন ভ্যালু, ফাংশন নিজে নয়।
+
+### Event Object
+
+প্রতিটা Event Handler একটা **SyntheticEvent** অবজেক্ট পায় — ব্রাউজারের নেটিভ ইভেন্টের উপর একটা wrapper, যা সব ব্রাউজারে একই রকম আচরণ নিশ্চিত করে।
+
+```jsx
+function handleChange(event) {
+  console.log(event.target.value); // টেক্সটবক্সে যা টাইপ হচ্ছে
+  console.log(event.target.name); // input-এর name অ্যাট্রিবিউট
+}
+
+<textarea onChange={handleChange} />;
+```
+
+### PostCard-এ Delete বাটন, EngagementBar-এ Like বাটন যোগ করা
+
+এখন `PostCard`-এ একটা ডিলিট বাটন, আর `EngagementBar`-এ লাইক বাটনকে সত্যিকারের ক্লিকযোগ্য করি। এই দুটো কম্পোনেন্ট `App`-এর দেওয়া `onDeletePost` আর `onToggleLike` ফাংশন কল করবে — অর্থাৎ কাজটা আসলে হবে উপরে, `App`-এ, কিন্তু "অনুরোধ" আসবে নিচ থেকে।
+
+```jsx
+// src/components/EngagementBar.jsx
+import { useState } from "react";
+
+export default function EngagementBar({
+  postId,
+  likes,
+  comments,
+  shares,
+  onToggleLike,
+}) {
+  const [liked, setLiked] = useState(false);
+
+  function handleLikeClick() {
+    const nextLiked = !liked;
+    setLiked(nextLiked);
+    onToggleLike(postId, nextLiked ? 1 : -1);
+  }
+
+  return (
+    <div className="flex justify-between text-sm border-t pt-2">
+      <button
+        onClick={handleLikeClick}
+        className={liked ? "text-blue-600 font-semibold" : "text-gray-500"}
+      >
+        👍 {likes} {liked ? "· লাইক দেওয়া হয়েছে" : "· লাইক"}
+      </button>
+      <span className="text-gray-500">💬 {comments} মন্তব্য</span>
+      <span className="text-gray-500">↗️ {shares} শেয়ার</span>
+    </div>
+  );
+}
+```
+
+> 💡 **এখানে দুই স্তরের State কাজ করছে:** `liked` (আমি নিজে লাইক দিয়েছি কিনা) — এটা `EngagementBar`-এর **লোকাল** State, বাইরের কারো দরকার নেই। কিন্তু `likes` (মোট কতজন লাইক দিয়েছে) — এটা `App`-এর State, যেটা `onToggleLike` কলব্যাকের মাধ্যমে আপডেট হয়। এই প্যাটার্নটা মাথায় গেঁথে রাখুন, অধ্যায় ১৪-এ আমরা এটাকেই আরও গুছিয়ে ফেলব।
+
+---
+
+## 10. List ও Keys — অ্যারে থেকে UI
+
+React-এ array-এর প্রতিটা item থেকে UI তৈরি করতে JavaScript-এর `Array.map()` ব্যবহার করা হয়।
+
+### `key` কেন দরকার?
+
+React যখন একটা লিস্ট রেন্ডার করে, প্রতিটা আইটেমকে একটা **unique key** দিয়ে চিহ্নিত করে। State বদলালে React শুধু সেই আইটেমটাই আপডেট করে যার ডাটা বদলেছে — পুরো লিস্ট নতুন করে আঁকে না। এটাই **Reconciliation**-এর মূল নীতি।
+
+আমাদের অ্যাপে এটা বিশেষভাবে গুরুত্বপূর্ণ, কারণ `handleAddPost`-এ আমরা নতুন পোস্টকে অ্যারের **সবার সামনে** বসাচ্ছি (`[newPost, ...posts]`)। যদি `key` হিসেবে array-এর `index` ব্যবহার করতাম, তাহলে নতুন পোস্ট যোগ হওয়ার সাথে সাথে সব পুরনো পোস্টের index একধাপ করে বদলে যেত — React বিভ্রান্ত হয়ে পুরনো পোস্টের সাথে ভুল `liked` state জুড়ে দিতে পারত (মানে যেটাতে আপনি লাইক দেননি, সেটাতেই "লাইক দেওয়া হয়েছে" দেখাতে পারত)!
+
+```jsx
+// ❌ key নেই — React ঠিকভাবে ট্র্যাক করতে পারবে না
+{
+  posts.map((post) => <PostCard post={post} />);
+}
+
+// ❌ index key — নতুন পোস্ট সামনে যোগ হলে সব index বদলে যায়, বাগ হবে
+{
+  posts.map((post, index) => <PostCard key={index} post={post} />);
+}
+
+// ✅ unique id key — সবসময় সঠিক পোস্টের সাথে সঠিক state জুড়ে থাকে
+{
+  posts.map((post) => <PostCard key={post.id} post={post} />);
+}
+```
+
+### `Feed.jsx` — এখন পুরো `post` object পাঠাই
+
+যেহেতু প্রতিটা পোস্টে এখন অনেকগুলো ফিল্ড (author, avatar, content, likes...), প্রতিটা আলাদা prop হিসেবে না পাঠিয়ে পুরো `post` object-টাই একটা প্রপ হিসেবে পাঠানো অনেক পরিষ্কার:
+
+```jsx
+// src/components/Feed.jsx
+import PostCard from "./PostCard";
+
+export default function Feed({ posts, onDeletePost, onToggleLike }) {
+  return (
+    <div className="flex flex-col gap-4">
+      {posts.map((post) => (
+        <PostCard
+          key={post.id}
+          post={post}
+          onDelete={onDeletePost}
+          onToggleLike={onToggleLike}
+        />
       ))}
     </div>
   );
 }
 ```
 
-২। **Creditor.jsx ফাইল ক্রিয়েট করুন। নিচের কোডটি পেস্ট করুন।**
+### `PostCard.jsx`-কে `post` object নেওয়ার জন্য রিফ্যাক্টর করা
 
 ```jsx
-export default function Creditor({ creditor }) {
+// src/components/PostCard.jsx
+import EngagementBar from "./EngagementBar";
+
+export default function PostCard({ post, onDelete, onToggleLike }) {
+  const { id, author, avatar, content, likes, comments, shares, timestamp } =
+    post;
+
   return (
-    <div className="p-2 mb-2 border rounded bg-white">
-      <h3 className="text-md font-medium">{creditor.name}</h3>
-      <p>Loan Amount: {creditor.loanAmount}</p>
+    <div className="bg-white rounded-lg shadow p-4 flex flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl">{avatar}</span>
+          <div>
+            <p className="font-semibold text-gray-800">{author}</p>
+            <p className="text-xs text-gray-400">{timestamp}</p>
+          </div>
+        </div>
+        <button
+          onClick={() => onDelete(id)}
+          className="text-gray-400 hover:text-red-500"
+        >
+          🗑️
+        </button>
+      </div>
+      <p className="text-gray-700">{content}</p>
+      <EngagementBar
+        postId={id}
+        likes={likes}
+        comments={comments}
+        shares={shares}
+        onToggleLike={onToggleLike}
+      />
+    </div>
+  );
+}
+```
+
+> ⚠️ **সতর্কতা:** Array-এর `index`-কে `key` হিসেবে ব্যবহার করবেন না, যদি লিস্টের আইটেম add/remove/reorder হতে পারে — আমাদের ফিডের মতোই। এতে subtle, খুঁজে বের করা কঠিন বাগ তৈরি হয়।
+
+---
+
+## 11. Conditional Rendering
+
+React-এ শর্ত অনুযায়ী UI দেখানো বা লুকানোর জন্য বিভিন্ন পদ্ধতি আছে।
+
+### পদ্ধতি ১ — Short-circuit (`&&`)
+
+ভেরিফায়েড ব্যাজ শুধু তখনই দেখাবে, যখন `verified` সত্যি:
+
+```jsx
+<p className="font-semibold text-gray-800">
+  {author}{" "}
+  {verified && (
+    <span className="text-blue-500" title="ভেরিফায়েড">
+      ✔️
+    </span>
+  )}
+</p>
+```
+
+> ⚠️ **সতর্কতা:** `0 && <Component />` লিখলে স্ক্রিনে `0` দেখা যাবে (কারণ `0` একটা valid React child)। তাই সংখ্যার ক্ষেত্রে `count > 0 && <Component />` বা `!!count && <Component />` লিখুন, শুধু `count && <Component />` নয়।
+
+### পদ্ধতি ২ — Ternary Operator
+
+পোস্টে ছবি থাকলে দেখাও, না থাকলে দেখিও না:
+
+```jsx
+{
+  post.image ? (
+    <img src={post.image} alt="পোস্টের ছবি" className="rounded-lg w-full" />
+  ) : null;
+}
+
+// একই জিনিস, আরও ছোট করে:
+{
+  post.image && (
+    <img src={post.image} alt="পোস্টের ছবি" className="rounded-lg w-full" />
+  );
+}
+```
+
+### পদ্ধতি ৩ — Early Return (খালি ফিড সামলানো)
+
+```jsx
+// src/components/Feed.jsx (আপডেটেড)
+import PostCard from "./PostCard";
+
+export default function Feed({ posts, onDeletePost, onToggleLike }) {
+  if (posts.length === 0) {
+    return (
+      <div className="text-center py-10 text-gray-400">
+        <p className="text-4xl mb-2">📭</p>
+        <p>এখনো কোনো পোস্ট নেই। প্রথম পোস্টটি আপনিই দিন!</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      {posts.map((post) => (
+        <PostCard
+          key={post.id}
+          post={post}
+          onDelete={onDeletePost}
+          onToggleLike={onToggleLike}
+        />
+      ))}
+    </div>
+  );
+}
+```
+
+### সম্পূর্ণ `PostCard.jsx` — ছবি ও ভেরিফায়েড ব্যাজসহ
+
+```jsx
+// src/components/PostCard.jsx (আপডেটেড)
+import EngagementBar from "./EngagementBar";
+
+export default function PostCard({ post, onDelete, onToggleLike }) {
+  const {
+    id,
+    author,
+    avatar,
+    verified,
+    content,
+    image,
+    likes,
+    comments,
+    shares,
+    timestamp,
+  } = post;
+
+  return (
+    <div className="bg-white rounded-lg shadow p-4 flex flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl">{avatar}</span>
+          <div>
+            <p className="font-semibold text-gray-800">
+              {author}{" "}
+              {verified && (
+                <span className="text-blue-500" title="ভেরিফায়েড">
+                  ✔️
+                </span>
+              )}
+            </p>
+            <p className="text-xs text-gray-400">{timestamp}</p>
+          </div>
+        </div>
+        <button
+          onClick={() => onDelete(id)}
+          className="text-gray-400 hover:text-red-500"
+        >
+          🗑️
+        </button>
+      </div>
+
+      <p className="text-gray-700">{content}</p>
+
+      {image && (
+        <img src={image} alt="পোস্টের ছবি" className="rounded-lg w-full" />
+      )}
+
+      <EngagementBar
+        postId={id}
+        likes={likes}
+        comments={comments}
+        shares={shares}
+        onToggleLike={onToggleLike}
+      />
     </div>
   );
 }
@@ -292,229 +1025,806 @@ export default function Creditor({ creditor }) {
 
 ---
 
-## 7. State ও useState — UI কে জীবন্ত করা
+## 12. Forms ও Controlled Components
 
-State হলো লোকাল ডাটা যা কম্পোনেন্ট লাইফটাইম ধরে রাখে।
+React-এ form handling-এর সবচেয়ে নির্ভরযোগ্য পদ্ধতি হলো **Controlled Component** — যেখানে প্রতিটা input-এর value React state-এ রাখা হয়।
+
+### Controlled vs Uncontrolled
+
+|                  | Controlled          | Uncontrolled        |
+| ---------------- | ------------------- | ------------------- |
+| Data রাখে        | React state         | DOM                 |
+| Access           | `state` value দিয়ে | `ref` দিয়ে         |
+| Validation       | সহজ, real-time      | কঠিন                |
+| **ব্যবহার করুন** | ✅ সবসময়           | শুধু বিশেষ ক্ষেত্রে |
+
+### আমাদের `CreatePostBox.jsx`
 
 ```jsx
+// src/components/CreatePostBox.jsx
 import { useState } from "react";
 
-function Counter() {
-  const [count, setCount] = useState(0);
-  return (
-    <div>
-      <p>সংখ্য়া: {count}</p>
-      <button onClick={() => setCount(count + 1)}>বড়াও</button>
-    </div>
-  );
-}
-```
+const initialFormData = { content: "", imageUrl: "" };
 
-কিছু টিপস:
+export default function CreatePostBox({ onAddPost }) {
+  const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState("");
 
-- `setCount` asynchronous হতে পারে — যদি নতুন মান পুরোনোর ওপর নির্ভর করে, `setCount(c => c + 1)` ব্যবহার করুন।
-- প্রতিটি কম্পোনেন্টের state আলাদা।
-
----
-
-## 8. ইভেন্ট ও ইউজার ইন্টারঅ্যাকশন
-
-ইভেন্ট হ্যান্ডলার পাস করুন যেমন `onClick`, `onChange`।
-
-```jsx
-function MyButton() {
-  function handleClick() {
-    alert("আপনি ক্লিক করেছেন!");
+  // একটিমাত্র handler দিয়ে দুটো input-ই পরিচালনা
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (error) setError("");
   }
-  return <button onClick={handleClick}>ক্লিক করো</button>;
-}
-```
 
-মনে রাখবেন `onClick={handleClick}` — না `handleClick()`।
+  function handleSubmit(event) {
+    event.preventDefault(); // পেজ রিলোড বন্ধ করা
 
----
+    if (!formData.content.trim()) {
+      setError("কিছু একটা তো লিখুন!");
+      return;
+    }
 
-## 9. লিস্ট, key ও রেন্ডার অপ্টিমাইজেশন
+    onAddPost({
+      author: "আপনি",
+      avatar: "🙂",
+      verified: false,
+      content: formData.content.trim(),
+      image: formData.imageUrl.trim() || null,
+    });
 
-**List render**
+    setFormData(initialFormData); // ফর্ম রিসেট
+  }
 
-```jsx
-const items = [
-  { id: 1, text: "A" },
-  { id: 2, text: "B" },
-];
-return (
-  <ul>
-    {items.map((i) => (
-      <li key={i.id}>{i.text}</li>
-    ))}
-  </ul>
-);
-```
-
-Key দিন যাতে React প্রতিটি আইটেম ট্র্যাক করতে পারে।
-
----
-
-## 10. কন্ডিশনাল রেন্ডারিং
-
-```jsx
-return <div>{isLoggedIn ? <Profile /> : <Login />}</div>;
-// অথবা
-return <div>{isAdmin && <AdminPanel />}</div>;
-```
-
----
-
-## 11. ফর্ম ও ইনপুট হ্যান্ডলিং
-
-Controlled component প্যাটার্ন:
-
-```jsx
-function NameForm() {
-  const [name, setName] = useState("");
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        alert(name);
-      }}
+      onSubmit={handleSubmit}
+      className="bg-white rounded-lg shadow p-4 flex flex-col gap-2"
     >
-      <input value={name} onChange={(e) => setName(e.target.value)} />
-      <button type="submit">সাবমিট</button>
+      <textarea
+        name="content"
+        value={formData.content}
+        onChange={handleChange}
+        placeholder="আপনার মনে কী চলছে?"
+        rows={3}
+        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+      />
+
+      <input
+        type="text"
+        name="imageUrl"
+        value={formData.imageUrl}
+        onChange={handleChange}
+        placeholder="ছবির লিংক (ঐচ্ছিক)"
+        className="w-full border rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+
+      <button
+        type="submit"
+        className="self-end bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        পোস্ট করুন
+      </button>
     </form>
   );
 }
 ```
 
+লক্ষ্য করুন — `name="content"` আর `name="imageUrl"` অ্যাট্রিবিউট থাকায় একটামাত্র `handleChange` ফাংশন দিয়েই দুটো input সামলানো যাচ্ছে। `[name]: value` — এই **Computed Property Name** সিনট্যাক্স দিয়ে ঠিক যে input বদলেছে, ফর্ম-state-এ সেই key-টাই আপডেট হয়।
+
 ---
 
-## 12. useEffect — সাইড-ইফেক্ট ও ডেটা ফেচিং
+## 13. useEffect — Side Effects ও API Call
 
-`useEffect` ব্যবহার করে API কল বা সাবস্ক্রিপশন করা হয়।
+React নিজে থেকে সবকিছু করতে পারে না। অনেক সময় আমাদের দরকার হয় React-এর নিয়ন্ত্রণের বাইরের কোনো কাজ — যেমন সার্ভার থেকে পোস্ট আনা, localStorage-এ ডাটা রাখা, বা টাইমার সেট করা। এগুলোকে বলে **Side Effects**।
+
+এই কাজের জন্য React দেয় `useEffect` হুক।
+
+### useEffect-এর Syntax
 
 ```jsx
-import { useEffect, useState } from "react";
+useEffect(() => {
+  // ১. এখানে side effect কোড লেখা হয়
 
-function Users() {
-  const [users, setUsers] = useState([]);
+  return () => {
+    // ২. Cleanup ফাংশন (ঐচ্ছিক) —
+    //    কম্পোনেন্ট Unmount হওয়ার আগে বা
+    //    effect আবার চলার আগে এটা কল হয়
+  };
+}, [dependency1, dependency2]); // ৩. Dependency array
+```
+
+| Dependency Array | কখন Effect চলে                   |
+| ---------------- | -------------------------------- |
+| না দিলে          | প্রতি render-এর পরে              |
+| `[]` (খালি)      | শুধু প্রথম render-এর পরে (Mount) |
+| `[value]`        | প্রথম render ও `value` পরিবর্তনে |
+
+### সার্ভার থেকে পোস্ট লোড হওয়ার সিমুলেশন
+
+এখন পর্যন্ত আমরা `posts.js` থেকে সরাসরি ডাটা import করছিলাম। বাস্তব অ্যাপে ডাটা আসে সার্ভার থেকে, আর সেটা আসতে একটু সময় লাগে। `App.jsx` আপডেট করি:
+
+```jsx
+// src/App.jsx (useEffect যোগ করা হলো)
+import { useState, useEffect } from "react";
+import Header from "./components/Header";
+import CreatePostBox from "./components/CreatePostBox";
+import Feed from "./components/Feed";
+import { posts as mockServerPosts } from "./data/posts";
+
+export default function App() {
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((r) => r.json())
-      .then(setUsers);
-  }, []); // খালি ডিপেন্ডেন্সি → মাউন্টের সময় একবার
+    // বাস্তবে এখানে fetch("/api/posts") দিয়ে সার্ভার থেকে ডাটা আনা হতো।
+    // আমরা setTimeout দিয়ে নেটওয়ার্ক দেরি সিমুলেট করছি।
+    const timerId = setTimeout(() => {
+      setPosts(mockServerPosts);
+      setIsLoading(false);
+    }, 800);
+
+    // ক্লিনআপ — কম্পোনেন্ট Unmount হয়ে গেলে টাইমার বাতিল করা
+    return () => clearTimeout(timerId);
+  }, []); // খালি অ্যারে — শুধু Mount-এ একবারই চলবে
+
+  // students... থুড়ি, posts state ও handler ফাংশনগুলো আগের মতোই থাকবে
+  function handleAddPost(newPost) {
+    setPosts([
+      {
+        ...newPost,
+        id: Date.now(),
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        timestamp: "এখনই",
+      },
+      ...posts,
+    ]);
+  }
+
+  function handleDeletePost(id) {
+    setPosts(posts.filter((post) => post.id !== id));
+  }
+
+  function handleToggleLike(id, delta) {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === id ? { ...post, likes: post.likes + delta } : post,
+      ),
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <p className="text-center p-10 text-gray-400">পোস্ট লোড হচ্ছে... ⏳</p>
+    );
+  }
 
   return (
-    <ul>
-      {users.map((u) => (
-        <li key={u.id}>{u.name}</li>
-      ))}
-    </ul>
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <main className="max-w-xl mx-auto p-4 flex flex-col gap-4">
+        <CreatePostBox onAddPost={handleAddPost} />
+        <Feed
+          posts={posts}
+          onDeletePost={handleDeletePost}
+          onToggleLike={handleToggleLike}
+        />
+      </main>
+    </div>
   );
 }
 ```
 
-**Cleanup:** সাবস্ক্রিপশন বা টাইমার থাকলে `return` করে ক্লিনআপ লিখুন।
+### বাস্তব API কল — `fetch` ও `AbortController`
 
----
-
-## 13. কম্পোনেন্টদের মধ্যে ডাটা শেয়ার
-
-### Lifting state up
-
-যদি দুই চাইল্ড একই স্টেট শেয়ার করে, প্যারেন্টে state রাখুন ও props দিয়ে পাঠান।
-
-### Context API
-
-কমনভাবে ব্যবহার্য থিম বা ইউজার অবজেক্ট শেয়ার করা হলে `React.createContext()` ব্যবহার করুন।
-
----
-
-## 14. রিয়েক্ট রাউটিং (React Router)
-
-React Router দিয়ে মাল্টিপেজ UI বানান। সংক্ষিপ্ত উদাহরণ:
+আসল সার্ভারের সাথে কথা বললে এভাবে লেখা হয়, যাতে কম্পোনেন্ট Unmount হয়ে গেলে চলমান রিকোয়েস্টও বাতিল হয়ে যায়:
 
 ```jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+useEffect(() => {
+  const controller = new AbortController();
 
-<BrowserRouter>
-  <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/about" element={<About />} />
-  </Routes>
-</BrowserRouter>;
+  async function fetchPosts() {
+    try {
+      setIsLoading(true);
+      const response = await fetch("https://api.example.com/posts", {
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+      const data = await response.json();
+      setPosts(data);
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        console.error(err.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  fetchPosts();
+  return () => controller.abort(); // Unmount হলে রিকোয়েস্ট বাতিল
+}, []);
 ```
 
----
-
-## 15. কাস্টম হুক — reusable logic
-
-যদি অনেক কম্পোনেন্টে একই লজিক লাগে, কাস্টম হুক বানান:
+### localStorage-এ পোস্ট সংরক্ষণ
 
 ```jsx
-import { useState, useEffect } from "react";
+useEffect(() => {
+  if (!isLoading) {
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }
+}, [posts, isLoading]);
+```
 
-export function useFetch(url) {
-  const [data, setData] = useState(null);
+> 💡 **মনে রাখা ভালো:** `useEffect`-এর কোড কম্পোনেন্ট রেন্ডার হওয়ার এবং ব্রাউজারের DOM-এ **কমিট** হওয়ার _পরে_ চলে — রেন্ডারের সময় নয়। তাই `useEffect`-এর ভেতরে State বদলালেও প্রথম রেন্ডারকে ব্লক করে না, বরং একটা নতুন রি-রেন্ডার ট্রিগার করে।
+
+---
+
+## 14. Lifting State Up ও Context API
+
+### Lifting State Up — যা আমরা ইতিমধ্যে করেছি
+
+`likes` (মোট লাইক সংখ্যা) State-টা প্রতিটা আলাদা `PostCard`-এ না রেখে, আমরা তাদের কমন প্যারেন্ট `App`-এ রেখেছি, আর নিচে `onToggleLike` কলব্যাক দিয়ে পাঠিয়েছি। এটাই **Lifting State Up** — যে ডেটা একাধিক Component-এর দরকার, সেটাকে তাদের নিকটতম কমন Parent-এ নিয়ে যাওয়া।
+
+```
+App (posts state এখানে)
+├── CreatePostBox (onAddPost → App)
+└── Feed (posts ← App)
+    └── PostCard (onDelete, onToggleLike ← App)
+```
+
+### Context API — Props Drilling সমাধান
+
+আমাদের অ্যাপ এখনো ছোট, তাই props সরাসরি ২-৩ ধাপ নিচে পাঠানো সহজ। কিন্তু অ্যাপ বড় হলে — ধরুন `PostCard`-এর অনেক গভীরে থাকা একটা `CommentInput`-কেও `posts` দরকার হলে — প্রতিটা মাঝের কম্পোনেন্টের মধ্য দিয়ে props বয়ে নিয়ে যেতে হয়। একে বলে **Props Drilling**, আর এটা মেইনটেইন করা কষ্টকর। এই সমস্যার সমাধান **Context API**।
+
+```jsx
+// src/context/PostContext.jsx
+import { createContext, useContext, useState, useEffect } from "react";
+import { posts as mockServerPosts } from "../data/posts";
+
+// ধাপ ১: Context তৈরি করা
+const PostContext = createContext(null);
+
+// ধাপ ২: Provider Component তৈরি করা
+export function PostProvider({ children }) {
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    fetch(url)
-      .then((r) => r.json())
-      .then(setData);
-  }, [url]);
-  return data;
+    const timerId = setTimeout(() => {
+      setPosts(mockServerPosts);
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timerId);
+  }, []);
+
+  function addPost(newPost) {
+    setPosts((prev) => [
+      {
+        ...newPost,
+        id: Date.now(),
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        timestamp: "এখনই",
+      },
+      ...prev,
+    ]);
+  }
+
+  function deletePost(id) {
+    setPosts((prev) => prev.filter((post) => post.id !== id));
+  }
+
+  function toggleLike(id, delta) {
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.id === id ? { ...post, likes: post.likes + delta } : post,
+      ),
+    );
+  }
+
+  const value = { posts, isLoading, addPost, deletePost, toggleLike };
+
+  return <PostContext.Provider value={value}>{children}</PostContext.Provider>;
+}
+
+// ধাপ ৩: কাস্টম হুক দিয়ে সহজে ব্যবহার
+export function usePosts() {
+  const context = useContext(PostContext);
+  if (!context) {
+    throw new Error("usePosts অবশ্যই PostProvider-এর ভেতরে ব্যবহার করতে হবে");
+  }
+  return context;
+}
+```
+
+```jsx
+// src/main.jsx — Provider দিয়ে App wrap করা
+import { PostProvider } from "./context/PostContext";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <PostProvider>
+      <App />
+    </PostProvider>
+  </React.StrictMode>,
+);
+```
+
+এখন যেকোনো কম্পোনেন্ট — যত গভীরেই থাকুক না কেন — props ছাড়াই সরাসরি পোস্ট ডেটা পেতে পারে:
+
+```jsx
+// src/pages/HomePage.jsx
+import Header from "../components/Header";
+import CreatePostBox from "../components/CreatePostBox";
+import Feed from "../components/Feed";
+import { usePosts } from "../context/PostContext";
+
+export default function HomePage() {
+  const { posts, isLoading, addPost, deletePost, toggleLike } = usePosts();
+
+  if (isLoading) {
+    return (
+      <p className="text-center p-10 text-gray-400">পোস্ট লোড হচ্ছে... ⏳</p>
+    );
+  }
+
+  return (
+    <>
+      <CreatePostBox onAddPost={addPost} />
+      <Feed posts={posts} onDeletePost={deletePost} onToggleLike={toggleLike} />
+    </>
+  );
+}
+```
+
+> ✅ **কখন Context, কখন Props?** ছোট, ২-৩ ধাপের কম্পোনেন্ট ট্রিতে সরাসরি props-ই ভালো — সহজে বোঝা যায়, ডেটা কোথা থেকে আসছে তা স্পষ্ট থাকে। যখন অনেক গভীরে বা অনেক জায়গায় একই ডেটা দরকার হয়, তখনই Context বা Redux/Zustand-এর মতো লাইব্রেরির কথা ভাবুন।
+
+---
+
+## 15. React Router — Multipage Navigation
+
+**React Router** (v6) দিয়ে একটা Single Page Application (SPA)-এ একাধিক "পেজ"-এর মতো Navigation করা যায়।
+
+```bash
+npm install react-router-dom
+```
+
+### আমাদের অ্যাপের Pages
+
+```
+/                    → HomePage (মূল নিউজফিড)
+/post/:id            → PostDetailPage (একটা পোস্টের বিস্তারিত)
+/profile/:author     → ProfilePage (একজনের সব পোস্ট)
+```
+
+### Setup
+
+```jsx
+// src/main.jsx
+import { BrowserRouter } from "react-router-dom";
+import { PostProvider } from "./context/PostContext";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <PostProvider>
+        <App />
+      </PostProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
+);
+```
+
+```jsx
+// src/App.jsx — এখন শুধু Route ডিফাইন করে
+import { Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import HomePage from "./pages/HomePage";
+import PostDetailPage from "./pages/PostDetailPage";
+import ProfilePage from "./pages/ProfilePage";
+import NotFoundPage from "./pages/NotFoundPage";
+
+export default function App() {
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <main className="max-w-xl mx-auto p-4 flex flex-col gap-4">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/post/:id" element={<PostDetailPage />} />
+          <Route path="/profile/:author" element={<ProfilePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+```
+
+### Navigation — `Link`, `useNavigate`, `useParams`
+
+```jsx
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+// Link — anchor ট্যাগের মতো, কিন্তু পেজ রিলোড হয় না
+<Link to={`/profile/${author}`} className="font-semibold hover:underline">
+  {author}
+</Link>;
+```
+
+### `PostDetailPage.jsx`
+
+```jsx
+// src/pages/PostDetailPage.jsx
+import { useParams, Link } from "react-router-dom";
+import { usePosts } from "../context/PostContext";
+import EngagementBar from "../components/EngagementBar";
+
+export default function PostDetailPage() {
+  const { id } = useParams(); // /post/123 → id = "123"
+  const { posts, toggleLike } = usePosts();
+
+  const post = posts.find((p) => p.id === Number(id));
+
+  if (!post) {
+    return (
+      <div className="text-center py-10 text-gray-400">
+        <p>এই পোস্টটি খুঁজে পাওয়া যায়নি।</p>
+        <Link to="/" className="text-blue-600">
+          ফিডে ফিরে যান
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow p-6 flex flex-col gap-3">
+      <Link to="/" className="text-sm text-blue-600">
+        ← ফিডে ফিরে যান
+      </Link>
+      <div className="flex items-center gap-2">
+        <span className="text-3xl">{post.avatar}</span>
+        <div>
+          <Link
+            to={`/profile/${post.author}`}
+            className="font-semibold text-gray-800 hover:underline"
+          >
+            {post.author}
+          </Link>
+          <p className="text-xs text-gray-400">{post.timestamp}</p>
+        </div>
+      </div>
+      <p className="text-gray-700 text-lg">{post.content}</p>
+      {post.image && (
+        <img src={post.image} alt="পোস্টের ছবি" className="rounded-lg w-full" />
+      )}
+      <EngagementBar
+        postId={post.id}
+        likes={post.likes}
+        comments={post.comments}
+        shares={post.shares}
+        onToggleLike={toggleLike}
+      />
+    </div>
+  );
+}
+```
+
+### `ProfilePage.jsx` — `useParams` দিয়ে ফিল্টার করা
+
+```jsx
+// src/pages/ProfilePage.jsx
+import { useParams } from "react-router-dom";
+import { usePosts } from "../context/PostContext";
+import Feed from "../components/Feed";
+
+export default function ProfilePage() {
+  const { author } = useParams(); // /profile/রাফি হাসান → author
+  const { posts, deletePost, toggleLike } = usePosts();
+
+  const authorPosts = posts.filter((post) => post.author === author);
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="bg-white rounded-lg shadow p-4">
+        <h2 className="text-xl font-bold">{author}</h2>
+        <p className="text-sm text-gray-500">{authorPosts.length}টি পোস্ট</p>
+      </div>
+      <Feed
+        posts={authorPosts}
+        onDeletePost={deletePost}
+        onToggleLike={toggleLike}
+      />
+    </div>
+  );
 }
 ```
 
 ---
 
-## 16. পারফরম্যান্স টিপস
+## 16. Custom Hook — Reusable Logic
 
-- বড় লিস্টে virtualization ব্যবহার করুন (`react-window`)।
-- `React.memo` দিয়ে প্রপস না বদলালে রিরেন্ডার রোধ করুন।
-- `useCallback` ও `useMemo` ব্যবহার করে ফাংশন/ভ্যালুকেও ক্যাশ করুন — কিন্তু অপ্রয়োজনীয় হলে ব্যবহার করবেন না।
+**Custom Hook** হলো এমন একটা JavaScript ফাংশন, যার নাম `use` দিয়ে শুরু আর ভেতরে React Hook ব্যবহার করা হয়। এটা দিয়ে একই লজিক বারবার লেখা এড়ানো যায়।
+
+### `useFetchPosts` — API থেকে পোস্ট লোড করার লজিক আলাদা করা
+
+```jsx
+// src/hooks/useFetchPosts.js
+import { useState, useEffect } from "react";
+
+export function useFetchPosts(url) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!url) return;
+
+    const controller = new AbortController();
+
+    async function fetchData() {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const res = await fetch(url, { signal: controller.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        setData(json);
+      } catch (err) {
+        if (err.name !== "AbortError") setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchData();
+    return () => controller.abort();
+  }, [url]);
+
+  return { data, isLoading, error };
+}
+```
+
+```jsx
+// যেকোনো কম্পোনেন্টে সহজে ব্যবহার
+function RemoteFeed() {
+  const {
+    data: posts,
+    isLoading,
+    error,
+  } = useFetchPosts("https://api.example.com/posts");
+
+  if (isLoading) return <p>লোড হচ্ছে...</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
+
+  return <Feed posts={posts} />;
+}
+```
+
+### `useLocalStorage` — localStorage-এর সাথে State সিঙ্ক রাখা
+
+```jsx
+// src/hooks/useLocalStorage.js
+import { useState, useEffect } from "react";
+
+export function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+```
+
+```jsx
+// PostContext.jsx-এ ব্যবহার — posts এখন রিফ্রেশ করলেও থেকে যাবে
+const [posts, setPosts] = useLocalStorage("posts", []);
+```
+
+> 💡 **কেন Custom Hook বানাই?** `useFetchPosts` আর `useLocalStorage`-এর ভেতরের কোড জটিল — `AbortController`, `try/catch/finally`, `JSON.parse` ইত্যাদি। এই জটিলতা একবার লিখে হুকের ভেতরে "লুকিয়ে" রাখলে, বাকি কম্পোনেন্টগুলো শুধু simple, readable একটা লাইনেই কাজ চালাতে পারে।
 
 ---
 
-## 17. টেস্টিং ও ডিবাগিং (সংক্ষেপে)
+## 17. Performance Optimization
 
-- ইউনিট টেস্ট: Jest + React Testing Library
-- ব্রাউজার DevTools + React DevTools দিয়ে কম্পোনেন্ট ট্রি দেখা যায়।
+### কখন Optimize করবো?
+
+> "Premature optimization is the root of all evil" — Donald Knuth
+
+আগে কোড ঠিকমতো কাজ করুক, তারপর প্রয়োজন হলে অপটিমাইজ করুন।
+
+### `React.memo` — অপ্রয়োজনীয় রি-রেন্ডার রোধ
+
+`App`/`Feed` রি-রেন্ডার হলে, props না বদলালেও ডিফল্টভাবে প্রতিটা `PostCard` রি-রেন্ডার হয়। `React.memo` এটা রোধ করে — props অপরিবর্তিত থাকলে কম্পোনেন্ট রি-রেন্ডার স্কিপ করে।
+
+```jsx
+import { memo } from "react";
+
+const PostCard = memo(function PostCard({ post, onDelete, onToggleLike }) {
+  console.log("রেন্ডার হচ্ছে:", post.author);
+  // ... বাকি কোড আগের মতোই
+});
+
+export default PostCard;
+```
+
+### `useCallback` — ফাংশন রেফারেন্স স্থির রাখা
+
+```jsx
+// ❌ সমস্যা — প্রতি render-এ নতুন ফাংশন তৈরি হয়
+//    → React.memo কাজ করে না, কারণ props প্রতিবার "নতুন" মনে হয়
+function PostProvider({ children }) {
+  function deletePost(id) {
+    /* ... */
+  } // প্রতিবার নতুন reference!
+  // ...
+}
+
+// ✅ সমাধান — useCallback দিয়ে ফাংশন memoize করা
+function PostProvider({ children }) {
+  const deletePost = useCallback((id) => {
+    setPosts((prev) => prev.filter((post) => post.id !== id));
+  }, []); // dependency নেই, একই ফাংশন সবসময়
+
+  // ...
+}
+```
+
+### `useMemo` — খরচসাধ্য হিসাব ক্যাশ করা
+
+```jsx
+function HomePage() {
+  const { posts } = usePosts();
+
+  // ✅ totalLikes শুধু posts পরিবর্তনে recalculate হবে
+  const totalLikes = useMemo(() => {
+    return posts.reduce((sum, post) => sum + post.likes, 0);
+  }, [posts]);
+
+  // ✅ sortedPosts শুধু posts পরিবর্তনে recalculate হবে
+  const sortedPosts = useMemo(() => {
+    return [...posts].sort((a, b) => b.likes - a.likes);
+  }, [posts]);
+
+  return (
+    <>
+      <p>মোট লাইক: {totalLikes} ❤️</p>
+      <Feed posts={sortedPosts} />
+    </>
+  );
+}
+```
+
+### Code Splitting — Lazy Loading
+
+বড় অ্যাপে সবকিছু একসাথে load না করে, প্রয়োজন হলেই load করুন:
+
+```jsx
+import { lazy, Suspense } from "react";
+
+// Lazy load — /profile-এ না গেলে এই কোড লোড হবে না
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+
+function App() {
+  return (
+    <Suspense fallback={<p>পেজ লোড হচ্ছে...</p>}>
+      <Routes>
+        <Route path="/profile/:author" element={<ProfilePage />} />
+      </Routes>
+    </Suspense>
+  );
+}
+```
 
 ---
 
-## 18. বিল্ডিং ও ডেপ্লয়মেন্ট
+## 18. Build ও Deployment
 
-`npm run build` পরে `dist/` ফোল্ডারকে Netlify / Vercel / GitHub Pages-এ ডেপ্লয় করুন। Vercel খুবই সোজা (Git push → auto-deploy)।
+### Production Build তৈরি
+
+```bash
+npm run build
+```
+
+এটা `dist/` ফোল্ডারে অপটিমাইজড স্ট্যাটিক ফাইল তৈরি করে:
+
+- JavaScript মিনিফাই ও বান্ডল হয়
+- CSS পার্জ হয় (অব্যবহৃত স্টাইল বাদ যায়)
+- Assets হ্যাশ করা হয় (cache busting-এর জন্য)
+
+### Vercel-এ Deploy (সবচেয়ে সহজ)
+
+1. [vercel.com](https://vercel.com)-এ GitHub দিয়ে সাইন আপ করুন
+2. **"New Project"** → আপনার GitHub রেপো সিলেক্ট করুন
+3. **Deploy** বাটনে ক্লিক করুন
+4. ৩০ সেকেন্ডে লাইভ! 🚀
+
+প্রতিবার `git push` করলে স্বয়ংক্রিয়ভাবে ডিপ্লয় হবে।
+
+### Netlify-তে Deploy
+
+```bash
+npm install -g netlify-cli
+npm run build
+netlify deploy --prod --dir=dist
+```
 
 ---
 
-## 19. প্রজেক্ট আইডিয়া ও এক্সারসাইজ
+## 19. প্রজেক্ট আইডিয়া ও পরবর্তী ধাপ
 
-**প্রজেক্ট-1:** একটি টুডু অ্যাপ — Add, Toggle complete, Remove, Filter
-**প্রজেক্ট-2:** লগইন পেজ + প্রটেক্টেড রুট (Context ব্যবহার)
-**প্রজেক্ট-3:** News fetcher — API ব্যবহার করে List & Pagination
+### আমাদের Facebook News Feed উন্নত করতে পারেন
 
-প্রতি প্রজেক্টের জন্য ছোট ছোট টাস্ক— যেমন: responsive বানাও, localStorage-এ সেভ করো, unit tests যোগ করো।
+- [ ] **Comment System** — প্রতিটা পোস্টে আসল কমেন্ট লেখা ও দেখার ফিচার
+- [ ] **Search** — লেখক বা কনটেন্ট দিয়ে পোস্ট খোঁজা
+- [ ] **Dark Mode** — Context API দিয়ে থিম টগল করা
+- [ ] **Infinite Scroll** — স্ক্রল করলে নতুন পোস্ট লোড হওয়া
+- [ ] **Image Upload** — লিংকের বদলে আসল ফাইল আপলোড
+- [ ] **Authentication** — লগইন করে শুধু নিজের পোস্ট এডিট/ডিলিট করার অনুমতি
+
+### পরবর্তী শেখার রোডম্যাপ
+
+```
+React Basics ✅ (এই টিউটোরিয়াল)
+    ↓
+TypeScript with React
+    ↓
+React Query (TanStack Query) — Server State Management
+    ↓
+Zustand বা Redux Toolkit — Client State Management
+    ↓
+Next.js — Full Stack React Framework (SSR, SSG, API Routes)
+    ↓
+Testing — React Testing Library + Vitest
+```
+
+### উপকারী রিসোর্স
+
+- 📘 [React Official Docs](https://react.dev) — সবচেয়ে ভালো রেফারেন্স
+- 🎮 [React Tic-Tac-Toe Tutorial](https://react.dev/learn/tutorial-tic-tac-toe) — হাতে-কলমে প্র্যাকটিস
+- 📺 [JavaScript.info](https://javascript.info) — JavaScript দুর্বল হলে
 
 ---
 
-**অতিরিক্ত রিসোর্স:** React official docs, MDN, JavaScript.info — নিয়মিত রেফারেন্স রাখুন।
+## 🎉 আপনি করে ফেলেছেন!
+
+একটু পেছনে ফিরে তাকান — এই একটি টিউটোরিয়ালে আপনি শিখেছেন:
+
+✅ Vite দিয়ে React প্রজেক্ট সেটআপ
+✅ JSX লেখার নিয়ম
+✅ Functional Component তৈরি
+✅ Props দিয়ে ডাটা পাস করা
+✅ useState দিয়ে ডায়নামিক UI
+✅ Event Handling
+✅ List রেন্ডার ও Key-এর গুরুত্ব
+✅ Conditional Rendering
+✅ Controlled Form Input ও ভ্যালিডেশন
+✅ useEffect দিয়ে API Call ও Cleanup
+✅ Lifting State Up ও Context API
+✅ React Router দিয়ে Navigation
+✅ Custom Hook
+✅ Performance Optimization
+✅ Production Deployment
+
+এবার শুধু পড়লে হবে না — **নিজে হাতে কোড লিখুন।** প্রতিটা অংশ নিজে টাইপ করুন, পরিবর্তন করুন, ভাঙুন, আবার ঠিক করুন। এভাবেই আসল শেখা হয়।
+
+> 💬 **পরামর্শ:** এই টিউটোরিয়ালের Facebook News Feed সম্পূর্ণ করার পর, **React-এর অফিশিয়াল Tic-Tac-Toe টিউটোরিয়াল** করুন — দেখবেন সব কনসেপ্ট আরও পরিষ্কার হয়ে গেছে।
 
 ---
 
-ব্যস\! আপনি কিন্তু React-এর সবচেয়ে দরকারি বিষয়গুলো শিখে ফেলেছেন। এগুলোই মূল ভিত্তি।
-
-এবার শুধু পড়লে হবে না, নিজে হাতে কোড করতে হবে। আমার পরামর্শ হলো, আপনি **[React-এর অফিশিয়াল টিক-ট্যাক-টো টিউটোরিয়ালটা](https://react.dev/learn/tutorial-tic-tac-toe)** করে ফেলুন। দেখবেন, এই সবকিছু ব্যবহার করে একটা গেম বানালে আপনার আত্মবিশ্বাস অনেক বেড়ে যাবে\!
-
-<Donate />
-<hr />
-<GiscusComments
-  repo="codedbyMojnu/react-bangla-tutorial"
-  repoId="R_kgDOLDE87Q"
-  category="General"
-  categoryId="DIC_kwDOLDE87c4CtCIY"
-  mapping="pathname"
-  inputPosition="top"
-  theme="preferred_color_scheme"
-  lang="en"
-/>
+**শুভকামনা! Happy Coding! 🚀**
