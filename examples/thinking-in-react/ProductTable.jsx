@@ -17,7 +17,7 @@ export default function ProductTable({ products, filterText, inStockOnly }) {
         <ProductCategoryRow
           category={product.category}
           key={product.category}
-        />
+        />,
       );
     }
     rows.push(<ProductRow product={product} key={product.name} />);
@@ -25,14 +25,25 @@ export default function ProductTable({ products, filterText, inStockOnly }) {
   });
 
   return (
-    <table>
+    <table className="product-table">
       <thead>
         <tr>
           <th>Name</th>
           <th>Price</th>
+          <th>Status</th>
         </tr>
       </thead>
-      <tbody>{rows}</tbody>
+      <tbody>
+        {rows.length > 0 ? (
+          rows
+        ) : (
+          <tr>
+            <td colSpan="3" className="no-results">
+              No products found
+            </td>
+          </tr>
+        )}
+      </tbody>
     </table>
   );
 }

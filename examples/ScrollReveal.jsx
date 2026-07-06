@@ -1,42 +1,111 @@
-import React from "react";
 import { motion } from "framer-motion";
 
-const Box = ({ text }) => (
-  <motion.div
-    style={{
-      width: 128,
-      height: 128,
-      margin: 16,
-      borderRadius: 8,
-      background: "#f9a8d4",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    }}
-    initial={{ opacity: 0, x: -50 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    transition={{ duration: 1 }}
-    viewport={{ once: true }}
-  >
-    <span style={{ color: "#111", fontSize: 20 }}>{text}</span>
-  </motion.div>
-);
+const FEATURES = [
+  {
+    icon: "⚡",
+    title: "GPU Accelerated",
+    desc: "60fps animation, zero jank।",
+    color: "#fef3c7",
+  },
+  {
+    icon: "🎨",
+    title: "সহজ API",
+    desc: "initial, animate, transition — তিনটা prop-ই যথেষ্ট।",
+    color: "#ede9fe",
+  },
+  {
+    icon: "📱",
+    title: "Gesture Support",
+    desc: "hover, tap, drag — সব built-in।",
+    color: "#dbeafe",
+  },
+  {
+    icon: "🔁",
+    title: "AnimatePresence",
+    desc: "Mount/unmount-এ smooth exit animation।",
+    color: "#dcfce7",
+  },
+  {
+    icon: "📜",
+    title: "Scroll-linked",
+    desc: "useScroll দিয়ে parallax, progress bar।",
+    color: "#fce7f3",
+  },
+  {
+    icon: "🧩",
+    title: "Variants",
+    desc: "Parent-child stagger orchestration।",
+    color: "#f0fdf4",
+  },
+];
 
 export default function ScrollReveal() {
-  const items = ["হ্যালো", "আসসালামু আলাইকুম", "স্বাগতম", "শুভেচ্ছা", "আসুন"];
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 40,
-      }}
-    >
-      {items.map((item, i) => (
-        <Box key={i} text={item} />
-      ))}
+    <div style={{ padding: "16px 18px", fontFamily: "system-ui, sans-serif" }}>
+      <motion.p
+        initial={{ opacity: 0, y: -12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        style={{
+          textAlign: "center",
+          fontWeight: 700,
+          fontSize: 15,
+          color: "#111",
+          marginBottom: 16,
+        }}
+      >
+        কেন Framer Motion? 🤔
+      </motion.p>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 10,
+        }}
+      >
+        {FEATURES.map((f, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{
+              delay: i * 0.07,
+              duration: 0.45,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
+            style={{
+              padding: 14,
+              background: f.color,
+              borderRadius: 14,
+              cursor: "default",
+            }}
+          >
+            <div style={{ fontSize: 22, marginBottom: 6 }}>{f.icon}</div>
+            <p
+              style={{
+                fontWeight: 700,
+                fontSize: 12,
+                color: "#111",
+                margin: "0 0 4px",
+              }}
+            >
+              {f.title}
+            </p>
+            <p
+              style={{
+                fontSize: 11,
+                color: "#555",
+                margin: 0,
+                lineHeight: 1.5,
+              }}
+            >
+              {f.desc}
+            </p>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }

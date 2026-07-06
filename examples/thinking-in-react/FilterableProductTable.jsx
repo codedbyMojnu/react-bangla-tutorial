@@ -7,7 +7,7 @@ export default function FilterableProductTable({ products }) {
   const [inStockOnly, setInStockOnly] = useState(false);
 
   return (
-    <div>
+    <>
       <SearchBar
         filterText={filterText}
         inStockOnly={inStockOnly}
@@ -19,6 +19,6 @@ export default function FilterableProductTable({ products }) {
         filterText={filterText}
         inStockOnly={inStockOnly}
       />
-    </div>
+    </>
   );
 }

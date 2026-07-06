@@ -1,22 +1,22 @@
----
-title: Framer Motion Animation | React Bangla Tutorial
-description: Framer Motion দিয়ে React-এ সহজ ও স্মুথ অ্যানিমেশন শেখার বাংলা টিউটোরিয়াল। ইনস্টলেশন, বেসিক থেকে অ্যাডভান্সড উদাহরণ, লাইভ কোড, এবং Next.js SEO সহ।
+﻿---
+title: Framer Motion দিয়ে Daily-Use Animation
+description: প্রতিদিনের React app-এ যে animations লাগে — modal, toast, form, tab, card, scroll — সব একজায়গায়। Copy করুন, paste করুন, কাজ করুন।
 openGraph:
-  title: Framer Motion Animation | React Bangla Tutorial
-  description: Framer Motion দিয়ে React-এ সহজ ও স্মুথ অ্যানিমেশন শেখার বাংলা টিউটোরিয়াল। ইনস্টলেশন, বেসিক থেকে অ্যাডভান্সড উদাহরণ, লাইভ কোড, এবং Next.js SEO সহ।
+  title: Framer Motion Daily-Use Animation | React Bangla Tutorial
+  description: প্রতিদিনের React app-এ যে animations লাগে — modal, toast, form, tab, card, scroll — সব একজায়গায়।
   url: https://react-bangla.vercel.app/framer-motion-animation
   siteName: React Bangla Tutorial
   images:
     - url: https://react-bangla.vercel.app/og-image.png
       width: 1200
       height: 630
-      alt: Framer Motion Animation
+      alt: Framer Motion Daily-Use Animation
   locale: bn_BD
   type: article
 twitter:
   card: summary_large_image
-  title: Framer Motion Animation | React Bangla Tutorial
-  description: Framer Motion দিয়ে React-এ সহজ ও স্মুথ অ্যানিমেশন শেখার বাংলা টিউটোরিয়াল।
+  title: Framer Motion Daily-Use Animation | React Bangla Tutorial
+  description: প্রতিদিনের React app-এ যে animations লাগে। Copy-paste ready।
   images:
     - https://react-bangla.vercel.app/og-image.png
 ---
@@ -24,669 +24,773 @@ twitter:
 import {
   basicAnimationAppCode,
   basicAnimationCode,
+  cardHoverCode,
   counterCode,
   dragExampleCode,
+  formAnimationCode,
   gestureAnimationCode,
   keyframeAnimationCode,
+  modalAnimationCode,
   pathAnimationCode,
   scrollAnimationCode,
+  scrollProgressCode,
   scrollRevealCode,
   springAnimationCode,
   staggerListCode,
+  tabAnimationCode,
+  toastAnimationCode,
 } from "./index.examples";
 
-# Framer Motion: React-এ স্মুথ অ্যানিমেশন খুব সহজে 🚀
+# Framer Motion: Daily-Use Animation Guide 🎨
 
-Framer Motion হলো React-এর জন্য সহজ ও শক্তিশালী অ্যানিমেশন লাইব্রেরি।  
-এই টিউটোরিয়ালে ধাপে ধাপে দেখানো আছে কিভাবে বেসিক থেকে অ্যাডভান্সড অ্যানিমেশন করবেন।
+আমি প্রতিদিন React app বানাই। আর প্রতিদিনই animation দরকার হয় —  
+button press করলে feedback চাই, modal খুললে smooth হোক, form submit হলে ইউজার বুঝুক কী হলো।
 
----
-
-## ১. Framer Motion কী?
-
-Framer Motion হলো একটা ওপেন সোর্স React লাইব্রেরি।  
-এটা দিয়ে fade, scale, slide, drag, gesture, scroll—সব ধরনের অ্যানিমেশন সহজে করা যায়।  
-প্রোডাকশন-রেডি, পারফরম্যান্স ভালো, আর ডকুমেন্টেশনও সহজ।
+এই পুরো doc-টা আমার নিজের **copy-paste library**।  
+আপনার জন্যও তাই। কোড দেখুন, বুঝুন, নিজের app-এ ব্যবহার করুন।
 
 ---
 
-## ২. Framer Motion ইনস্টল করুন
-
-প্রথমে আপনার React প্রজেক্টে Framer Motion যোগ করুন।
+## ইনস্টল করুন
 
 ```bash
 npm install framer-motion
-# অথবা
-yarn add framer-motion
 ```
 
 ---
 
-## ৩. বেসিক অ্যানিমেশন: Fade-in + Scale-up
+## ৩০ সেকেন্ডে Core Concepts
 
-Framer Motion-এ `motion` নামে স্পেশাল কম্পোনেন্ট আছে।  
-এটা দিয়ে আপনি যেকোনো div, button, img ইত্যাদিতে অ্যানিমেশন দিতে পারবেন।
+Framer Motion-এর পুরো power মাত্র কয়েকটা concept-এর উপর দাঁড়িয়ে —
+
+| Concept           | কাজ                                                      |
+| ----------------- | -------------------------------------------------------- |
+| `initial`         | animation শুরুর অবস্থা                                   |
+| `animate`         | animation শেষের অবস্থা                                   |
+| `exit`            | component সরে যাওয়ার সময়ের animation                   |
+| `transition`      | কতক্ষণ, কীভাবে animate হবে                               |
+| `whileHover`      | hover করলে যা হবে                                        |
+| `whileTap`        | click/tap করলে যা হবে                                    |
+| `whileInView`     | viewport-এ এলে animate হবে                               |
+| `variants`        | variants-এর ভেতরে প্রতিটি state (hidden, visible, hover) |
+| `AnimatePresence` | unmount-এর সময় exit animation                           |
+| `useScroll`       | scroll position track করে                                |
+| `useTransform`    | একটা value থেকে আরেকটা তৈরি করে                          |
+
+এই ১১টা জিনিস ভালো বুঝলে Framer Motion দিয়ে যা চাই তাই বানানো যাবে।
+
+---
+
+## ১. Page Load Animation (Fade + Slide)
+
+**কোথায় লাগে:** Hero section, page title, welcome screen, dashboard cards।
+
+যেকোনো element mount হওয়ার সময় smooth করে আনতে `initial` → `animate` ব্যবহার করুন।
 
 ```jsx
 import { motion } from "framer-motion";
 
-export default function BasicAnimation() {
-  return (
-    <motion.div
-      style={{
-        width: 160,
-        height: 160,
-        background: "#ef4444",
-        borderRadius: 12,
-      }}
-      initial={{ opacity: 0, scale: 0.5 }} // শুরু অবস্থা
-      animate={{ opacity: 1, scale: 1 }} // শেষ অবস্থা
-      transition={{ duration: 0.8 }} // কত সময় লাগবে
-    />
-  );
-}
+// Hero heading — নিচ থেকে উপরে আসবে
+<motion.h1
+  initial={{ opacity: 0, y: 24 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+>
+  স্বাগতম!
+</motion.h1>
+
+// Subtitle — একটু দেরিতে আসবে
+<motion.p
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.2, duration: 0.5 }}
+>
+  Subtext...
+</motion.p>
+
+// CTA button — আরও দেরিতে
+<motion.button
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.4, duration: 0.4 }}
+>
+  শুরু করুন →
+</motion.button>
 ```
 
-- `initial` — অ্যানিমেশন শুরুতে কেমন থাকবে
-- `animate` — শেষে কেমন হবে
-- `transition` — কত সময়, কীভাবে হবে
-
----
-
-### লাইভ কোড দেখুন
-
-নিচে আপনি লাইভ কোড এডিটর পাবেন।  
-এখানে কোড বদলালে সাথে সাথে রেজাল্ট দেখতে পারবেন।
+**Pro tip:** `ease: [0.22, 1, 0.36, 1]` হলো iOS-এর native spring easing — এটা সবচেয়ে natural লাগে।
 
 <LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
   files={{
-   "/App.js": {
-      code: basicAnimationAppCode,
-
-      active: true,
-    },
+    "/App.js": { code: basicAnimationAppCode, active: true },
     "/BasicAnimation.jsx": { code: basicAnimationCode },
-
-}}
-template="react"
-/>
-
----
-
-## ৫. Keyframe অ্যানিমেশন (একাধিক ধাপ)
-
-একাধিক ধাপের অ্যানিমেশন করতে চাইলে,  
-`animate`-এ অ্যারে ব্যবহার করুন।
-
-```jsx
-import { motion } from "framer-motion";
-
-export default function KeyframeAnimation() {
-  return (
-    <motion.div
-      style={{
-        width: 160,
-        height: 160,
-        background: "#3b82f6",
-        borderRadius: 12,
-      }}
-      animate={{
-        scale: [1, 1.5, 1, 1.5, 1],
-        rotate: [0, 90, 0, -90, 0],
-        borderRadius: ["20%", "50%", "20%", "50%", "20%"],
-      }}
-      transition={{
-        duration: 2,
-        ease: "easeInOut",
-        times: [0, 0.25, 0.5, 0.75, 1],
-        repeat: Infinity,
-        repeatDelay: 1,
-      }}
-    />
-  );
-}
-```
-
-### লাইভ কোড দেখুন
-
-<LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
-  files={{
-    "/KeyframeAnimation.jsx": { code: keyframeAnimationCode },
-    "/App.js": {
-      code: `import React from "react";
-import KeyframeAnimation from "./KeyframeAnimation";
-
-export default function App() {
-  return (
-    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
-      <KeyframeAnimation />
-    </div>
-  );
-}`,
-      active: true
-    }
   }}
   template="react"
 />
 
 ---
 
-## ৬. Gesture অ্যানিমেশন: Hover & Tap
+## ২. Scroll-এ Card Reveal (whileInView)
 
-ইউজার যখন hover বা tap করবে, তখন অ্যানিমেশন দেখাতে  
-`whileHover` আর `whileTap` ব্যবহার করুন।
+**কোথায় লাগে:** Landing page features, blog posts, product cards, testimonials।
+
+`whileInView` হলো সবচেয়ে বেশি ব্যবহৃত animation। Scroll করলে elements ধীরে ধীরে দেখা যায়।
 
 ```jsx
 import { motion } from "framer-motion";
 
-export default function GestureAnimation() {
-  return (
-    <motion.button
-      style={{
-        padding: "16px 32px",
-        background: "#111827",
-        color: "#fff",
-        borderRadius: 8,
-        fontWeight: "bold",
-        border: "none",
-        fontSize: 18,
-      }}
-      whileHover={{ scale: 1.1, rotate: 3 }}
-      whileTap={{ scale: 0.9, rotate: -3 }}
-      transition={{ type: "spring", stiffness: 300 }}
+// Grid বা list-এর প্রতিটা card
+<motion.div
+  initial={{ opacity: 0, y: 32 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }} // একবারই animate হবে
+  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+>
+  {/* card content */}
+</motion.div>;
+
+// Delay দিয়ে sequential effect
+{
+  items.map((item, i) => (
+    <motion.div
+      key={i}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: i * 0.08 }} // প্রতিটা একটু দেরিতে
     >
-      Click Me
-    </motion.button>
-  );
+      {item}
+    </motion.div>
+  ));
 }
 ```
 
-### লাইভ কোড দেখুন
+**`viewport={{ once: true }}`** — শুধু প্রথমবার animate হবে, বারবার না।
 
 <LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
   files={{
-    "/GestureAnimation.jsx": { code: gestureAnimationCode },
-    "/App.jsx": {
-      code: `import React from "react";
-import GestureAnimation from "./GestureAnimation";
-
-export default function App() {
-  return (
-    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
-      <GestureAnimation />
-    </div>
-  );
-}`,
-      active: true
-    }
+    "/App.js": { code: scrollRevealCode, active: true },
   }}
   template="react"
 />
 
 ---
 
-## ৭. Drag অ্যানিমেশন (এলিমেন্ট সরানো)
+## ৩. Button Interactions (whileHover + whileTap)
 
-কোনো এলিমেন্টকে মাউস দিয়ে সরাতে চাইলে  
-`drag` প্রপ ব্যবহার করুন।
+**কোথায় লাগে:** প্রতিটা button, icon button, like/save action, CTA।
+
+Button-এ animation না থাকলে app dead মনে হয়। `whileHover` + `whileTap` দিয়ে প্রাণ দিন।
 
 ```jsx
 import { motion } from "framer-motion";
 
-export default function DragExample() {
-  return (
-    <motion.div
-      style={{
-        width: 128,
-        height: 128,
-        background: "#22c55e",
-        borderRadius: 12,
-      }}
-      drag
-      dragConstraints={{ top: -50, left: -50, right: 50, bottom: 50 }}
-    />
-  );
-}
+// Primary button
+<motion.button
+  whileHover={{ scale: 1.05, boxShadow: "0 12px 32px rgba(0,0,0,0.15)" }}
+  whileTap={{ scale: 0.95 }}
+  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+>
+  Submit
+</motion.button>
+
+// Icon button — rotate on hover
+<motion.button
+  whileHover={{ scale: 1.15, rotate: 15 }}
+  whileTap={{ scale: 0.85 }}
+>
+  ⚙️
+</motion.button>
+
+// Like button — bounce on click
+<motion.button
+  onClick={() => setLiked(!liked)}
+  animate={liked ? { scale: [1, 1.3, 1] } : {}}
+  transition={{ duration: 0.3 }}
+>
+  {liked ? "❤️" : "🤍"}
+</motion.button>
 ```
 
-### লাইভ কোড দেখুন
-
 <LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
   files={{
-    "/DragExample.jsx": { code: dragExampleCode },
-    "/App.jsx": {
-      code: `import React from "react";
-import DragExample from "./DragExample";
-
-export default function App() {
-  return (
-    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
-      <DragExample />
-    </div>
-  );
-}`,
-      active: true
-    }
+    "/App.js": { code: gestureAnimationCode, active: true },
   }}
   template="react"
 />
 
 ---
 
-## ৮. Variants দিয়ে গ্রুপ অ্যানিমেশন
+## ৪. Stagger List (একের পর এক আসবে)
 
-একাধিক এলিমেন্টে একই অ্যানিমেশন দিতে Variants ব্যবহার করুন।  
-এতে কোড পরিষ্কার থাকে।
+**কোথায় লাগে:** Notification list, search results, menu items, feed।
+
+`variants` + `staggerChildren` দিয়ে parent-child orchestration — প্রতিটা child একটু দেরিতে animate হয়।
 
 ```jsx
 import { motion } from "framer-motion";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.3 },
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.1 }, // প্রতিটা item 100ms দেরিতে
   },
 };
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1 },
+const item = {
+  hidden: { opacity: 0, x: -20 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { type: "spring", stiffness: 300, damping: 24 },
+  },
 };
 
-export default function StaggerList() {
-  const items = ["প্রথম", "দ্বিতীয়", "তৃতীয়"];
-
+function NotificationList({ notifications }) {
   return (
-    <motion.ul
-      style={{ listStyle: "none", padding: 0 }}
-      variants={containerVariants}
+    <motion.div variants={container} initial="hidden" animate="show">
+      {notifications.map((n, i) => (
+        <motion.div key={i} variants={item}>
+          {n.title}
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+}
+```
+
+<LiveCodeEditor
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
+  files={{
+    "/App.js": { code: staggerListCode, active: true },
+  }}
+  template="react"
+/>
+
+---
+
+## ৫. Tab Switcher (AnimatePresence)
+
+**কোথায় লাগে:** Dashboard tabs, settings pages, profile sections, bottom navigation।
+
+`AnimatePresence` দিয়ে active tab বদলানোর সময় content smooth করে transition করে।  
+`layoutId` দিয়ে indicator pill animate হয়।
+
+```jsx
+import { motion, AnimatePresence } from "framer-motion";
+
+// Tab indicator — layoutId দিয়ে smooth slide হয়
+{
+  active === tab.id && (
+    <motion.div
+      layoutId="tab-indicator"
+      style={{ position: "absolute", inset: 0, background: "white" }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+    />
+  );
+}
+
+// Tab content — AnimatePresence দিয়ে exit animation
+<AnimatePresence mode="wait">
+  <motion.div
+    key={activeTab} // key বদলালে exit + enter animate হয়
+    initial={{ opacity: 0, y: 8 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -8 }}
+    transition={{ duration: 0.2 }}
+  >
+    {tabContent}
+  </motion.div>
+</AnimatePresence>;
+```
+
+<LiveCodeEditor
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
+  files={{
+    "/App.js": { code: tabAnimationCode, active: true },
+  }}
+  template="react"
+/>
+
+---
+
+## ৬. Modal / Confirmation Dialog
+
+**কোথায় লাগে:** Delete confirm, logout confirm, payment confirmation, any important action।
+
+Backdrop blur + modal scale-in। `AnimatePresence` দিয়ে close animation হয়।
+
+```jsx
+import { motion, AnimatePresence } from "framer-motion";
+
+<AnimatePresence>
+  {isOpen && (
+    <>
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={() => setIsOpen(false)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,0.45)",
+          backdropFilter: "blur(4px)",
+          zIndex: 40,
+        }}
+      />
+
+      {/* Modal */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.88, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.88, y: 24 }}
+        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          background: "white",
+          borderRadius: 20,
+          padding: 28,
+          zIndex: 50,
+        }}
+      >
+        {/* modal content */}
+      </motion.div>
+    </>
+  )}
+</AnimatePresence>;
+```
+
+**দুটো জিনিস মাথায় রাখুন:**
+
+1. Backdrop আর Modal-এ আলাদা `key` দিন
+2. `AnimatePresence`-এর বাইরে condition রাখুন
+
+<LiveCodeEditor
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
+  files={{
+    "/App.js": { code: modalAnimationCode, active: true },
+  }}
+  template="react"
+/>
+
+---
+
+## ৭. Toast Notification
+
+**কোথায় লাগে:** Success/error feedback, form submission result, real-time alerts।
+
+`AnimatePresence` + `layout` prop দিয়ে toast stack animate হয়।  
+Right corner থেকে slide-in, timeout-এ slide-out।
+
+```jsx
+import { motion, AnimatePresence } from "framer-motion";
+
+// Toast stack container
+<div style={{ position: "fixed", bottom: 20, right: 20 }}>
+  <AnimatePresence initial={false}>
+    {toasts.map((toast) => (
+      <motion.div
+        key={toast.id}
+        layout // নতুন toast আসলে stack reflow animate হয়
+        initial={{ opacity: 0, x: 60, scale: 0.92 }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        exit={{ opacity: 0, x: 60, scale: 0.88 }}
+        transition={{ type: "spring", stiffness: 280, damping: 24 }}
+      >
+        {toast.message}
+      </motion.div>
+    ))}
+  </AnimatePresence>
+</div>;
+```
+
+<LiveCodeEditor
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
+  files={{
+    "/App.js": { code: toastAnimationCode, active: true },
+  }}
+  template="react"
+/>
+
+---
+
+## ৮. Form Animation (Validation + Success State)
+
+**কোথায় লাগে:** Login form, signup form, contact form, subscribe form।
+
+তিনটা animation একসাথে —
+
+- Input shake on validation error
+- Spinner while loading
+- Success state with celebration
+
+```jsx
+import { motion, AnimatePresence } from "framer-motion";
+
+// Input shake — validate error হলে
+<motion.input
+  animate={error ? { x: [-6, 6, -4, 4, 0] } : {}}
+  transition={{ duration: 0.35 }}
+  style={{ border: `1.5px solid ${error ? "#ef4444" : "#e5e7eb"}` }}
+/>
+
+// Error message — slide in/out
+<AnimatePresence>
+  {error && (
+    <motion.p
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+    >
+      {error}
+    </motion.p>
+  )}
+</AnimatePresence>
+
+// Step switch — form → loading → success
+<AnimatePresence mode="wait">
+  <motion.div
+    key={step}                              // step বদলালেই নতুন animation
+    initial={{ opacity: 0, y: 16 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -16 }}
+  >
+    {/* current step content */}
+  </motion.div>
+</AnimatePresence>
+```
+
+<LiveCodeEditor
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
+  files={{
+    "/App.js": { code: formAnimationCode, active: true },
+  }}
+  template="react"
+/>
+
+---
+
+## ৯. Card Hover Effects
+
+**কোথায় লাগে:** Project cards, product cards, blog cards, team member cards।
+
+Lift effect + shadow। Simple কিন্তু premium feel দেয়।
+
+```jsx
+import { motion } from "framer-motion";
+
+<motion.div
+  whileHover={{
+    y: -6,
+    boxShadow: "0 20px 48px rgba(0,0,0,0.12)",
+  }}
+  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+  style={{ borderRadius: 16, background: "white", cursor: "pointer" }}
+>
+  {/* card content */}
+</motion.div>;
+
+// Staggered card list — scroll করলে একের পর এক আসবে
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.4 },
+  }),
+};
+
+{
+  cards.map((card, i) => (
+    <motion.div
+      key={i}
+      custom={i}
+      variants={cardVariants}
       initial="hidden"
       animate="visible"
+      whileHover={{ y: -4 }}
     >
-      {items.map((item, index) => (
-        <motion.li
-          key={index}
-          style={{
-            padding: 16,
-            background: "#6366f1",
-            margin: "8px 0",
-            borderRadius: 8,
-            color: "#fff",
-          }}
-          variants={itemVariants}
-        >
-          {item}
-        </motion.li>
-      ))}
-    </motion.ul>
-  );
+      {/* card */}
+    </motion.div>
+  ));
 }
 ```
 
-### লাইভ কোড দেখুন
-
 <LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
   files={{
-    "/StaggerList.jsx": { code: staggerListCode },
-    "/App.jsx": {
-      code: `import React from "react";
-import StaggerList from "./StaggerList";
-
-export default function App() {
-  return (
-    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
-      <StaggerList />
-    </div>
-  );
-}`,
-      active: true
-    }
+    "/App.js": { code: cardHoverCode, active: true },
   }}
   template="react"
 />
 
 ---
 
-## ৯. Scroll-ভিত্তিক অ্যানিমেশন
+## ১০. Scroll Progress Bar
 
-স্ক্রল করলে অ্যানিমেশন দিতে চাইলে  
-`useScroll` আর `useTransform` হুক ব্যবহার করুন।
+**কোথায় লাগে:** Blog articles, documentation, landing pages, long-form content।
+
+`useScroll` + `useTransform` — scroll position থেকে progress bar width তৈরি হয়।
 
 ```jsx
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-export default function ScrollAnimation() {
-  const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 1], [0.5, 2]);
+function ArticlePage() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ container: containerRef });
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <motion.div
-      style={{
-        scale,
-        width: 160,
-        height: 160,
-        background: "#ec4899",
-        borderRadius: 12,
-      }}
-    />
+    <div ref={containerRef} style={{ height: "100vh", overflowY: "scroll" }}>
+      {/* Sticky progress bar */}
+      <div style={{ position: "sticky", top: 0, zIndex: 10 }}>
+        <motion.div
+          style={{
+            height: 3,
+            background: "linear-gradient(90deg, #667eea, #764ba2)",
+            transformOrigin: "left center",
+            scaleX, // 0 → 1 as you scroll
+          }}
+        />
+      </div>
+      {/* Long content */}
+    </div>
   );
 }
 ```
 
-### লাইভ কোড দেখুন
-
 <LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
   files={{
-    "/ScrollAnimation.jsx": { code: scrollAnimationCode, active: true },
+    "/App.js": { code: scrollProgressCode, active: true },
   }}
   template="react"
 />
 
 ---
 
-## ১০. Counter অ্যানিমেশন
+## ১১. Counter / Stats Animation
 
-সংখ্যা স্মুথলি বাড়াতে চাইলে Motion Value ব্যবহার করুন।
+**কোথায় লাগে:** Stats section, dashboard numbers, achievement counters।
+
+`useMotionValue` + `animate` + `useInView` — viewport-এ এলেই count শুরু হয়।
 
 ```jsx
-import React, { useEffect } from "react";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  animate,
+  useInView,
+} from "framer-motion";
 
-export default function Counter() {
+function AnimatedCounter({ value }) {
   const count = useMotionValue(0);
-  const rounded = useTransform(count, Math.round);
+  const rounded = useTransform(count, (v) => Math.round(v).toLocaleString());
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
 
   useEffect(() => {
-    const animation = animate(count, 100, { duration: 2 });
-    return animation.stop;
-  }, []);
+    if (!inView) return;
+    const ctrl = animate(count, value, { duration: 2.2, ease: "easeOut" });
+    return ctrl.stop;
+  }, [inView, value]);
 
   return (
-    <div style={{ fontSize: 40, fontWeight: "bold" }}>
+    <span ref={ref}>
       <motion.span>{rounded}</motion.span>
-    </div>
+    </span>
   );
 }
+
+// ব্যবহার করুন:
+<AnimatedCounter value={12400} />; // 0 থেকে 12,400 পর্যন্ত count করবে
 ```
 
-### লাইভ কোড দেখুন
-
 <LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
   files={{
-    "/Counter.jsx": { code: counterCode, active: true },
+    "/App.js": { code: counterCode, active: true },
   }}
   template="react"
 />
 
 ---
 
-## ১১. Scroll Reveal Animation
+## ১২. Loading Animations (Spinner, Bounce, Pulse)
 
-স্ক্রল করলে এলিমেন্ট আস্তে আস্তে আসবে।
-
-```jsx
-import React from "react";
-import { motion } from "framer-motion";
-
-const Box = ({ text }) => (
-  <motion.div
-    style={{
-      width: 128,
-      height: 128,
-      margin: 16,
-      borderRadius: 8,
-      background: "#f9a8d4",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    }}
-    initial={{ opacity: 0, x: -50 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    transition={{ duration: 1 }}
-    viewport={{ once: true }}
-  >
-    <span style={{ color: "#111", fontSize: 20 }}>{text}</span>
-  </motion.div>
-);
-
-export default function ScrollReveal() {
-  const items = ["হ্যালো", "আসসালামু আলাইকুম", "স্বাগতম", "শুভেচ্ছা", "আসুন"];
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 40,
-      }}
-    >
-      {items.map((item, i) => (
-        <Box key={i} text={item} />
-      ))}
-    </div>
-  );
-}
-```
-
-### লাইভ কোড দেখুন
-
-<LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
-  files={{
-    "/ScrollReveal.jsx": { code: scrollRevealCode, active: true },
-  }}
-  template="react"
-/>
-
----
-
-## ১২. Spring Physics অ্যানিমেশন
-
-Spring অ্যানিমেশন দিয়ে প্রাকৃতিক গতি তৈরি করা যায়।
+**কোথায় লাগে:** API call চলার সময়, image load হওয়ার আগে, lazy loading।
 
 ```jsx
 import { motion } from "framer-motion";
 
-export default function SpringAnimation() {
-  return (
+// Spinner
+<motion.div
+  animate={{ rotate: 360 }}
+  transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
+  style={{
+    width: 36,
+    height: 36,
+    borderRadius: "50%",
+    border: "3px solid #e5e7eb",
+    borderTopColor: "#667eea",
+  }}
+/>;
+
+// Bouncing dots
+{
+  [0, 1, 2].map((i) => (
     <motion.div
-      style={{
-        width: 160,
-        height: 160,
-        background: "#f59e0b",
-        borderRadius: 12,
-      }}
-      animate={{
-        y: [0, -100, 0],
-        rotate: [0, 180, 360],
-      }}
+      key={i}
+      animate={{ y: [0, -16, 0] }}
       transition={{
-        duration: 2,
-        ease: "easeInOut",
+        duration: 0.55,
         repeat: Infinity,
-        repeatType: "reverse",
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
+        ease: "easeInOut",
+        delay: i * 0.14,
+      }}
+      style={{
+        width: 12,
+        height: 12,
+        borderRadius: "50%",
+        background: "#667eea",
       }}
     />
-  );
+  ));
 }
+
+// Pulse ring (notification bell effect)
+<div style={{ position: "relative" }}>
+  <motion.div
+    animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+    transition={{ duration: 1.3, repeat: Infinity, ease: "easeOut" }}
+    style={{
+      position: "absolute",
+      inset: 0,
+      borderRadius: "50%",
+      background: "#667eea",
+    }}
+  />
+  <div style={{ position: "relative" }}>🔔</div>
+</div>;
 ```
 
-### লাইভ কোড দেখুন
-
 <LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
   files={{
-    "/SpringAnimation.jsx": { code: springAnimationCode, active: true },
+    "/App.js": { code: springAnimationCode, active: true },
   }}
   template="react"
 />
 
 ---
 
-## ১৩. SVG Path অ্যানিমেশন
+## ১৩. Drag Interaction
 
-SVG path-এ অ্যানিমেশন দিতে `motion.path` ব্যবহার করুন।
+**কোথায় লাগে:** Kanban board cards, image reorder, swipe-to-dismiss, carousel।
 
 ```jsx
 import { motion } from "framer-motion";
 
-export default function PathAnimation() {
-  return (
-    <svg width="200" height="200" viewBox="0 0 200 200">
-      <motion.path
-        d="M 50 100 Q 100 50 150 100 T 250 100"
-        stroke="#8b5cf6"
-        strokeWidth="4"
-        fill="none"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 2, ease: "easeInOut" }}
-      />
-      <motion.circle
-        cx="50"
-        cy="100"
-        r="8"
-        fill="#8b5cf6"
-        initial={{ pathOffset: 0 }}
-        animate={{ pathOffset: 1 }}
-        transition={{ duration: 2, ease: "easeInOut" }}
-      />
-    </svg>
-  );
-}
+<motion.div
+  drag                                        // x আর y দুদিকেই drag
+  dragConstraints={{ top: -100, left: -100, right: 100, bottom: 100 }}
+  dragElastic={0.1}                          // কতটা টান দেওয়া যাবে
+  whileDrag={{ scale: 1.1, zIndex: 10 }}
+  style={{ cursor: "grab" }}
+>
+  Drag me!
+</motion.div>
+
+// Only horizontal drag (swipe cards)
+<motion.div
+  drag="x"
+  dragConstraints={{ left: 0, right: 0 }}    // snap back
+  onDragEnd={(e, info) => {
+    if (info.offset.x > 100) handleSwipeRight();
+    if (info.offset.x < -100) handleSwipeLeft();
+  }}
+>
+  Swipe me
+</motion.div>
 ```
 
-### লাইভ কোড দেখুন
-
 <LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest",
-    },
-  }}
+  customSetup={{ dependencies: { "framer-motion": "latest" } }}
   files={{
-    "/PathAnimation.jsx": { code: pathAnimationCode, active: true },
+    "/App.js": { code: dragExampleCode, active: true },
   }}
   template="react"
 />
 
 ---
 
-## লাইভ কোড: সরাসরি কোড পরিবর্তন করে ফলাফল দেখুন
+## Tips: Copy-Paste করার আগে জেনে নিন
 
-<LiveCodeEditor
-  customSetup={{
-    dependencies: {
-      "framer-motion": "latest"
-    }
-  }}
-  files={{
-    // keep the raw example files available
-    "/BasicAnimation.jsx": { code: basicAnimationCode },
-    "/KeyframeAnimation.jsx": { code: keyframeAnimationCode },
-    "/GestureAnimation.jsx": { code: gestureAnimationCode },
-    "/DragExample.jsx": { code: dragExampleCode },
-    "/StaggerList.jsx": { code: staggerListCode },
-    "/ScrollAnimation.jsx": { code: scrollAnimationCode },
-    "/Counter.jsx": { code: counterCode },
-    "/ScrollReveal.jsx": { code: scrollRevealCode },
-    "/SpringAnimation.jsx": { code: springAnimationCode },
-    "/PathAnimation.jsx": { code: pathAnimationCode },
+### সেরা Easing values
 
-    // IMPORTANT: provide a clear entry file that imports an example and exports default App
-    "/App.jsx": {
-      code: `import React from "react";
+```js
+// iOS-style spring (সবচেয়ে natural)
+ease: [0.22, 1, 0.36, 1]
 
-import BasicAnimation from "./BasicAnimation";
+// Snappy
+ease: [0.4, 0, 0.2, 1]
 
-/_
-Change which component is rendered here.
-For other examples, replace BasicAnimation with:
-KeyframeAnimation, GestureAnimation, DragExample, StaggerList, ScrollAnimation, Counter, ScrollReveal, SpringAnimation, PathAnimation
-_/
+// Bounce effect
+type: "spring", stiffness: 400, damping: 25
 
-export default function App() {
-  return (
-    <div style={{ padding: 24, display: "flex", justifyContent: "center" }}>
-      <BasicAnimation />
-    </div>
-  );
-}
-`,
-      active: true
-    },
+// Soft spring
+type: "spring", stiffness: 200, damping: 20
+```
 
-    // optional CSS
-    "/styles.css": { code: "body { font-family: Inter, system-ui, -apple-system; }" }
+### Performance মাথায় রাখুন
 
-}}
-template="react"
-/>
+```js
+// ✅ GPU-accelerated — এগুলো ব্যবহার করুন
+animate={{ opacity, scale, x, y, rotate }}
 
----
+// ⚠️ Layout-triggering — ব্যবহারে সতর্ক থাকুন
+animate={{ width, height, padding, margin }}
 
-## ১৪. কিছু দরকারি টিপস
+// সবসময় will-change hint দিন বড় animation-এ
+style={{ willChange: "transform" }}
+```
 
-- Framer Motion দিয়ে অ্যানিমেশন করা খুবই সহজ।
-- Tailwind CSS বা সাধারণ CSS দুইভাবেই ব্যবহার করতে পারবেন。
-- Variants দিয়ে বড় প্রজেক্টে কোড পরিষ্কার রাখা যায়。
-- Gesture, Drag, Scroll—সব ধরনের ইন্টারঅ্যাকশন সহজে করা যায়。
-- ডকুমেন্টেশন পড়লে আরও মজা পাবেন: [framer.com/motion](https://www.framer.com/motion/)
+### AnimatePresence-এর সাধারণ ভুল
+
+```jsx
+// ❌ ভুল — key নেই, exit animation হবে না
+<AnimatePresence>
+  {show && <motion.div animate={...} exit={...} />}
+</AnimatePresence>
+
+// ✅ সঠিক
+<AnimatePresence>
+  {show && <motion.div key="my-div" animate={...} exit={...} />}
+</AnimatePresence>
+
+// mode="wait" — আগেরটা exit করার পর নতুনটা enter করবে
+<AnimatePresence mode="wait">
+  <motion.div key={activeTab} ... />
+</AnimatePresence>
+```
 
 ---
 
-## ১৩. আরও জানতে
+## আরও জানতে
 
-- [Framer Motion ডকুমেন্টেশন](https://www.framer.com/motion/)
-- [React Bangla Tutorial](https://react-bangla.vercel.app/)
+- [Framer Motion Official Docs](https://motion.dev/docs/react) — সবচেয়ে ভালো ডকুমেন্টেশন
+- [Motion Examples](https://motion.dev/examples) — hundreds of live examples
 
 ---
 
@@ -698,6 +802,6 @@ template="react"
   categoryId="DIC_kwDOLDE87c4CtCIY"
   mapping="pathname"
   inputPosition="top"
-  theme="light"
+  theme="preferred_color_scheme"
   lang="bn"
 />
