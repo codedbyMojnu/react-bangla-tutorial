@@ -57,7 +57,7 @@ npm run dev
 ### ১.১ কেন `fetch`-এর বদলে Axios?
 
 | বিষয়             | `fetch`                            | `axios`                       |
-| ----------------- | ---------------------------------- | ------------------------------ |
+| ----------------- | ---------------------------------- | ----------------------------- |
 | JSON পার্স        | `res.json()` আলাদা call করতে হয়   | অটোমেটিক করে দেয়             |
 | Error ধরা         | শুধু network error, 4xx/5xx ধরে না | সব error সহজে ধরে             |
 | Interceptors      | নেই                                | আছে — request/response উভয়েই |
@@ -92,8 +92,16 @@ npm install -g json-server@0.17.4
 ```json
 {
   "posts": [
-    { "id": "1", "title": "প্রথম পোস্ট", "body": "json-server দিয়ে তৈরি প্রথম পোস্ট।" },
-    { "id": "2", "title": "দ্বিতীয় পোস্ট", "body": "Axios দিয়ে এই ডেটা fetch করা হবে।" }
+    {
+      "id": "1",
+      "title": "প্রথম পোস্ট",
+      "body": "json-server দিয়ে তৈরি প্রথম পোস্ট।"
+    },
+    {
+      "id": "2",
+      "title": "দ্বিতীয় পোস্ট",
+      "body": "Axios দিয়ে এই ডেটা fetch করা হবে।"
+    }
   ],
   "comments": [{ "id": "1", "postId": "1", "text": "সুন্দর পোস্ট!" }]
 }
@@ -111,16 +119,16 @@ json-server --watch db.json --port 8000
 
 json-server তোমার `db.json`-এর প্রতিটা key-কে automatically একটা REST resource বানিয়ে দেয়। সব HTTP method (GET, POST, PUT, PATCH, DELETE) সাপোর্ট করে, আর `http` বা `https` — দুটো দিয়েই request পাঠানো যায়:
 
-| Method | Route               | কাজ                              |
-| ------ | ------------------- | --------------------------------- |
+| Method | Route                | কাজ                               |
+| ------ | -------------------- | --------------------------------- |
 | GET    | `/posts`             | সব পোস্ট দেখা                     |
-| GET    | `/posts/1`           | নির্দিষ্ট একটা পোস্ট দেখা          |
-| GET    | `/posts/1/comments`  | ওই পোস্টের সব কমেন্ট দেখা          |
+| GET    | `/posts/1`           | নির্দিষ্ট একটা পোস্ট দেখা         |
+| GET    | `/posts/1/comments`  | ওই পোস্টের সব কমেন্ট দেখা         |
 | GET    | `/comments?postId=1` | query দিয়ে filter করে কমেন্ট আনা |
-| POST   | `/posts`             | নতুন পোস্ট তৈরি                    |
-| PUT    | `/posts/1`           | পুরো পোস্ট replace করা             |
-| PATCH  | `/posts/1`           | পোস্টের অংশবিশেষ আপডেট             |
-| DELETE | `/posts/1`           | পোস্ট ডিলিট করা                    |
+| POST   | `/posts`             | নতুন পোস্ট তৈরি                   |
+| PUT    | `/posts/1`           | পুরো পোস্ট replace করা            |
+| PATCH  | `/posts/1`           | পোস্টের অংশবিশেষ আপডেট            |
+| DELETE | `/posts/1`           | পোস্ট ডিলিট করা                   |
 
 গোটা এই Part 1 জুড়ে এই `posts` resource-টাই ব্যবহার করবো।
 
@@ -150,35 +158,35 @@ function App() {
 `useEffect`-এর callback function-কে সরাসরি `async` বানানো যায় না। তাই ভেতরে একটা আলাদা `async function` বানিয়ে সেটাকে কল করতে হয়:
 
 ```javascript
-  useEffect(() => {
-    const fetchPosts = async () => {
-      // এখানে axios call হবে
-    };
+useEffect(() => {
+  const fetchPosts = async () => {
+    // এখানে axios call হবে
+  };
 
-    fetchPosts(); // ফাংশনটাকে সাথে সাথে কল করা হচ্ছে
-  }, []); // খালি array মানে এটা শুধু একবার, component mount হওয়ার সময় রান করবে
+  fetchPosts(); // ফাংশনটাকে সাথে সাথে কল করা হচ্ছে
+}, []); // খালি array মানে এটা শুধু একবার, component mount হওয়ার সময় রান করবে
 ```
 
 ### ৩.৩ axios.get() দিয়ে ডেটা আনা
 
 ```javascript
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/posts");
+useEffect(() => {
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/posts");
 
-        // Axios সরাসরি response.data-তে রেজাল্ট দিয়ে দেয়
-        if (response && response.data) {
-          setPosts(response.data);
-        }
-      } catch (err) {
-        setError(err.message);
-        console.error("API Call Error:", err);
+      // Axios সরাসরি response.data-তে রেজাল্ট দিয়ে দেয়
+      if (response && response.data) {
+        setPosts(response.data);
       }
-    };
+    } catch (err) {
+      setError(err.message);
+      console.error("API Call Error:", err);
+    }
+  };
 
-    fetchPosts();
-  }, []);
+  fetchPosts();
+}, []);
 ```
 
 সাধারণ `fetch` ব্যবহার করলে এখানে আরেকটা `.json()` কল লাগত (`const data = await res.json()`)। Axios সেটা নিজেই করে দেয় — `response.data`-তেই আসল ডেটা পাওয়া যায়।
@@ -386,12 +394,18 @@ const handleEditPost = async (postId, updatedFields) => {
 
 **PATCH বনাম PUT — পার্থক্যটা মনে রাখো:**
 
-| Method | কাজ                                               |
+| Method | কাজ                                                |
 | ------ | -------------------------------------------------- |
-| PUT    | পুরো object-টাই নতুন করে replace করে                |
-| PATCH  | শুধু যেই field(গুলো) পাঠানো হয়েছে, ওইটুকুই বদলায়   |
+| PUT    | পুরো object-টাই নতুন করে replace করে               |
+| PATCH  | শুধু যেই field(গুলো) পাঠানো হয়েছে, ওইটুকুই বদলায় |
 
 ভিডিওতে **PATCH** ব্যবহার করা হয়েছে, কারণ পুরো পোস্ট না পাঠিয়ে শুধু পরিবর্তিত অংশটুকু পাঠানোই যথেষ্ট।
+
+তাহলে PUT ছাড়াই শুধু PATCH দিয়ে অ্যাপ বানানো যায়?
+
+হ্যাঁ, পুরোপুরি যায় — এবং এটা খুবই কমন প্র্যাকটিস।
+
+সব field পাঠালে PATCH কার্যত PUT-এর মতোই কাজ করে (পুরো resource replace হয়ে যায়)। কারণ PATCH এক টুল দিয়ে দুই কাজই (partial + full update) সামলাতে পারে, আর extra route/logic maintain করতে হয় না।
 
 ### ৫.৩ ডেটা মুছে ফেলা (Delete / DELETE)
 
