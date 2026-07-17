@@ -15,7 +15,7 @@ HTTP Request করার জন্য JavaScript-এ `fetch` আছে, কি�
 
 এই গাইড দুটো ভাগে:
 
-- **Part 1 (সেকশন ১-৭):** Axios-এর বেসিক — request, config, response, error handling, instance।
+- **Part 1 (সেকশন ১-৭):** Axios-এর বেসিক — একটা mini json-server backend দিয়ে হাতে-কলমে request, config, response, error handling (server vs network error), CRUD (create/update/delete), instance, interceptors এবং CORS সমাধান।
 - **Part 2 (সেকশন ৮-৩১):** রিয়েল প্রজেক্ট **Connectify** — JWT Auth, Auto Refresh, Post CRUD, Profile System, Avatar Upload — সব হাতে-কলমে।
 
 ---
@@ -48,22 +48,22 @@ npm run dev
 
 ---
 
-## ১. Axios কী? কেন ব্যবহার করবো?
+## ১. Axios কী এবং কেন ব্যবহার করবো?
 
 **Axios হলো একটি Promise-based HTTP Client।**
 
 একটা গল্প দিয়ে বোঝাই। তুমি রেস্টুরেন্টে বসে আছো। Waiter (Axios) তোমার অর্ডার (request) নিয়ে রান্নাঘরে (server) যায়, রান্না হলে খাবার (response) নিয়ে ফেরত আসে। এই পুরো প্রক্রিয়াটাকে Axios পরিচালনা করে।
 
-**কেন `fetch`-এর বদলে Axios?**
+### ১.১ কেন `fetch`-এর বদলে Axios?
 
 | বিষয়             | `fetch`                            | `axios`                       |
-| ----------------- | ---------------------------------- | ----------------------------- |
+| ----------------- | ---------------------------------- | ------------------------------ |
 | JSON পার্স        | `res.json()` আলাদা call করতে হয়   | অটোমেটিক করে দেয়             |
 | Error ধরা         | শুধু network error, 4xx/5xx ধরে না | সব error সহজে ধরে             |
 | Interceptors      | নেই                                | আছে — request/response উভয়েই |
 | Browser + Node.js | শুধু Browser                       | দুটোতেই কাজ করে               |
 
-**ইনস্টল:**
+### ১.২ ইনস্টলেশন
 
 ```sh
 npm install axios
@@ -71,103 +71,182 @@ npm install axios
 
 ---
 
-## ২. প্রথম Request — GET
+## ২. প্র্যাকটিসের জন্য একটা ছোট্ট Backend বানানো — json-server
+
+Axios শিখতে একটা আসল সার্ভার লাগবে। প্রতিবার বড় backend চালু করাও ঝামেলার, তাই **json-server** দিয়ে কয়েক মিনিটেই একটা ফেক (fake) কিন্তু সত্যিকারের REST API বানিয়ে নিব।
+
+> **মনে রেখো:** এই json-server শুধু Part 1-এর বেসিক প্র্যাকটিসের জন্য। Part 2-এর আসল Connectify project-এ উপরে বলা `rnext` backend-ই ব্যবহার হবে।
+
+### ২.১ json-server ইনস্টল করা
+
+ভিডিওতে ব্যবহৃত স্টেবল ভার্সন **0.17.4** রাখাই ভালো, কারণ নতুন ভার্সনে মাঝে মাঝে কনফিগারেশন পাল্টে যায়:
+
+```sh
+npm install -g json-server@0.17.4
+```
+
+### ২.২ db.json ফাইল বানানো
+
+প্রজেক্ট ফোল্ডারে একটা `db.json` ফাইল বানাও, ভেতরে কিছু ডামি ডেটা রাখো:
+
+```json
+{
+  "posts": [
+    { "id": "1", "title": "প্রথম পোস্ট", "body": "json-server দিয়ে তৈরি প্রথম পোস্ট।" },
+    { "id": "2", "title": "দ্বিতীয় পোস্ট", "body": "Axios দিয়ে এই ডেটা fetch করা হবে।" }
+  ],
+  "comments": [{ "id": "1", "postId": "1", "text": "সুন্দর পোস্ট!" }]
+}
+```
+
+### ২.৩ সার্ভার চালু করা
+
+```sh
+json-server --watch db.json --port 8000
+```
+
+সার্ভার চালু হলে টার্মিনালে `http://localhost:8000` ঠিকানা দেখাবে। ব্রাউজারে গিয়ে ওই লিংকে চেক করো — `posts` আর `comments` ডেটা JSON আকারে দেখাচ্ছে কিনা।
+
+### ২.৪ json-server-এর Routes চেনা
+
+json-server তোমার `db.json`-এর প্রতিটা key-কে automatically একটা REST resource বানিয়ে দেয়। সব HTTP method (GET, POST, PUT, PATCH, DELETE) সাপোর্ট করে, আর `http` বা `https` — দুটো দিয়েই request পাঠানো যায়:
+
+| Method | Route               | কাজ                              |
+| ------ | ------------------- | --------------------------------- |
+| GET    | `/posts`             | সব পোস্ট দেখা                     |
+| GET    | `/posts/1`           | নির্দিষ্ট একটা পোস্ট দেখা          |
+| GET    | `/posts/1/comments`  | ওই পোস্টের সব কমেন্ট দেখা          |
+| GET    | `/comments?postId=1` | query দিয়ে filter করে কমেন্ট আনা |
+| POST   | `/posts`             | নতুন পোস্ট তৈরি                    |
+| PUT    | `/posts/1`           | পুরো পোস্ট replace করা             |
+| PATCH  | `/posts/1`           | পোস্টের অংশবিশেষ আপডেট             |
+| DELETE | `/posts/1`           | পোস্ট ডিলিট করা                    |
+
+গোটা এই Part 1 জুড়ে এই `posts` resource-টাই ব্যবহার করবো।
+
+---
+
+## ৩. প্রথম Request — ডেটা Read করা (GET)
+
+ধরো, আগে তোমার React কম্পোনেন্টে একটা লোকাল `db.js` ফাইল থেকে ডেটা import করে দেখাতে। এখন সেটা বদলে আসল API (আমাদের json-server) থেকে আনতে হবে।
+
+### ৩.১ State সেটআপ করা
+
+সবার আগে ডেটা আর error রাখার জন্য state বানাও:
 
 ```javascript
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-async function fetchUsers() {
-  try {
-    const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/users",
-    );
-    console.log("ইউজার লিস্ট:", response.data);
-  } catch (error) {
-    console.error("এরর হয়েছে:", error.message);
-  }
+function App() {
+  const [posts, setPosts] = useState([]); // শুরুতে খালি array
+  const [error, setError] = useState(null); // এরর মেসেজ রাখার জন্য
+```
+
+`posts`-কে খালি array (`[]`) দিয়ে শুরু করা হচ্ছে, কারণ শুরুতে সার্ভার থেকে এখনো কোনো ডেটা আসেনি।
+
+### ৩.২ useEffect-এর ভেতরে সরাসরি async কেন লেখা যায় না
+
+`useEffect`-এর callback function-কে সরাসরি `async` বানানো যায় না। তাই ভেতরে একটা আলাদা `async function` বানিয়ে সেটাকে কল করতে হয়:
+
+```javascript
+  useEffect(() => {
+    const fetchPosts = async () => {
+      // এখানে axios call হবে
+    };
+
+    fetchPosts(); // ফাংশনটাকে সাথে সাথে কল করা হচ্ছে
+  }, []); // খালি array মানে এটা শুধু একবার, component mount হওয়ার সময় রান করবে
+```
+
+### ৩.৩ axios.get() দিয়ে ডেটা আনা
+
+```javascript
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/posts");
+
+        // Axios সরাসরি response.data-তে রেজাল্ট দিয়ে দেয়
+        if (response && response.data) {
+          setPosts(response.data);
+        }
+      } catch (err) {
+        setError(err.message);
+        console.error("API Call Error:", err);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+```
+
+সাধারণ `fetch` ব্যবহার করলে এখানে আরেকটা `.json()` কল লাগত (`const data = await res.json()`)। Axios সেটা নিজেই করে দেয় — `response.data`-তেই আসল ডেটা পাওয়া যায়।
+
+### ৩.৪ UI-তে ডেটা এবং এরর দেখানো
+
+```javascript
+  return (
+    <div className="App">
+      <h1>API Request with Axios</h1>
+
+      {/* এরর থাকলে দেখাবে */}
+      {error && (
+        <div style={{ backgroundColor: "pink", padding: "10px", margin: "10px 0" }}>
+          Error: {error}
+        </div>
+      )}
+
+      {/* পোস্ট লিস্ট */}
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>
+            <strong>{post.title}</strong>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
-fetchUsers();
+export default App;
 ```
 
-`response.data`-ই হলো সার্ভার থেকে আসা আসল ডেটা। Axios নিজেই JSON পার্স করে দিয়েছে।
+সার্ভার বন্ধ রেখে test করো — `error` দেখাবে। সার্ভার চালু রেখে test করো — পোস্ট লিস্ট দেখাবে। দুই ধরনের error ঠিক কীভাবে আলাদা করে ধরতে হয়, সেটা সেকশন ৪-এ বিস্তারিত দেখবো।
 
----
-
-## ৩. সব HTTP Methods
+### ৩.৫ Response Object-এর ভেতরে কী কী থাকে
 
 ```javascript
-// GET — ডেটা আনা
-const res = await axios.get("/users");
+const response = await axios.get("http://localhost:8000/posts");
 
-// POST — নতুন ডেটা তৈরি
-const res = await axios.post("/users", { name: "Mojnu", email: "m@m.com" });
-
-// PUT — পুরো ডেটা আপডেট
-const res = await axios.put("/users/1", {
-  name: "Mojnu Miah",
-  email: "m@m.com",
-});
-
-// PATCH — আংশিক আপডেট
-const res = await axios.patch("/users/1", { name: "Mojnu Miah" });
-
-// DELETE — ডেটা মুছে ফেলা
-const res = await axios.delete("/users/1");
+response.data; // আসল ডেটা — সাধারণত এটাই লাগে
+response.status; // HTTP status code: 200, 201, 404, 500
+response.statusText; // "OK", "Created" ইত্যাদি
+response.headers; // Response headers
+response.config; // যে config দিয়ে request করা হয়েছিল
 ```
 
-Config object দিয়েও লেখা যায়:
+### ৩.৬ Request Customize করা — Config Object
 
-```javascript
-axios({
-  method: "post",
-  url: "/users",
-  data: { name: "Mojnu" },
-}).then((res) => console.log(res.data));
-```
-
----
-
-## ৪. Request Configuration
-
-Axios-এ request পাঠানোর সময় অনেক কিছু configure করা যায়:
+GET ছাড়াও আরো অনেক কিছু customize করা যায়:
 
 ```javascript
 const config = {
   url: "/posts",
   method: "get",
 
-  // সব URL-এর আগে যুক্ত হবে
-  baseURL: "http://localhost:3000",
+  baseURL: "http://localhost:8000", // সব URL-এর আগে যুক্ত হবে
 
-  // HTTP Headers
   headers: {
     "Content-Type": "application/json",
     Authorization: "Bearer your-token-here",
   },
 
-  // URL-এ query string: /posts?page=1&limit=10
-  params: { page: 1, limit: 10 },
+  params: { page: 1, limit: 10 }, // URL-এ query string যোগ হবে: /posts?page=1&limit=10
 
-  // Request body (POST, PUT, PATCH-এ)
-  data: { title: "Hello World" },
+  timeout: 10000, // কত millisecond পরে request cancel হবে
 
-  // কত millisecond পরে timeout
-  timeout: 10000,
-
-  // Cookie সহ request পাঠাতে
-  withCredentials: false,
-
-  // Response type: 'json', 'blob', 'text', 'arraybuffer'
-  responseType: "json",
-
-  // Upload progress ট্র্যাক করা
-  onUploadProgress: (progressEvent) => {
-    const percent = Math.round(
-      (progressEvent.loaded * 100) / progressEvent.total,
-    );
-    console.log(`আপলোড: ${percent}%`);
-  },
+  responseType: "json", // 'json', 'blob', 'text', 'arraybuffer'
 };
 
 axios(config).then((res) => console.log(res.data));
@@ -175,49 +254,61 @@ axios(config).then((res) => console.log(res.data));
 
 ---
 
-## ৫. Response-এর কাঠামো
+## ৪. Error Handling — বেসিক থেকে অ্যাডভান্স
 
-Axios যে response object রিটার্ন করে তার ভেতরে:
-
-```javascript
-const response = await axios.get("/users");
-
-response.data; // আসল ডেটা — সাধারণত এটাই ব্যবহার করি
-response.status; // HTTP status code: 200, 201, 404, 500
-response.statusText; // "OK", "Created" ইত্যাদি
-response.headers; // Response headers
-response.config; // যে config দিয়ে request করা হয়েছিল
-```
-
----
-
-## ৬. Error Handling — সঠিকভাবে Error ধরা
-
-Axios-এ error তিন রকম হতে পারে:
+### ৪.১ তিন ধরনের এরর
 
 ```javascript
-async function fetchData() {
-  try {
-    const res = await axios.get("/users");
-    console.log(res.data);
-  } catch (error) {
-    if (error.response) {
-      // সার্ভার response দিয়েছে, কিন্তু 4xx বা 5xx status সহ
-      console.error("সার্ভার এরর:", error.response.status);
-      console.error("বার্তা:", error.response.data?.message);
-    } else if (error.request) {
-      // Request পাঠানো হয়েছে, কিন্তু কোনো response আসেনি
-      // ইন্টারনেট বন্ধ বা সার্ভার বন্ধ
-      console.error("সার্ভার সাড়া দিচ্ছে না।");
-    } else {
-      // Code লেখার সময় কিছু ভুল হয়েছে
-      console.error("Setup এরর:", error.message);
-    }
+catch (error) {
+  if (error.response) {
+    // সার্ভার response দিয়েছে, কিন্তু 4xx বা 5xx status সহ
+  } else if (error.request) {
+    // Request পাঠানো হয়েছে, কিন্তু কোনো response আসেনি
+  } else {
+    // Request বানানোর সময়ই কিছু ভুল হয়েছে
   }
 }
 ```
 
-একটা helper function রেখে দিলে সব জায়গায় কাজে আসে:
+### ৪.২ সার্ভার এরর বনাম নেটওয়ার্ক এরর
+
+ভিডিওর গুরুত্বপূর্ণ একটা পয়েন্ট: `err.response` **আছে কিনা** চেক করেই বোঝা যায় error টা কোন ধরনের।
+
+```javascript
+try {
+  const res = await axios.get("http://localhost:8000/posts");
+  setPosts(res.data);
+} catch (err) {
+  if (err.response) {
+    // err.response থাকা মানে সার্ভার একটা রেসপন্স পাঠিয়েছে,
+    // কিন্তু সেটা ভুল status (যেমন ৪০৪) নিয়ে এসেছে
+    setError(`সার্ভার এরর: ${err.response.status} ${err.response.statusText}`);
+  } else {
+    // err.response নেই মানে request-ই সার্ভার পর্যন্ত পৌঁছায়নি
+    // (Network Error — সার্ভার বন্ধ, বা ইন্টারনেট নেই)
+    setError("সার্ভারের সাথে যোগাযোগ করা যাচ্ছে না।");
+  }
+}
+```
+
+- **URL ভুল দিলে** (যেমন route আছে `/posts`, কিন্তু ভুল করে `/post` লিখলে) → `err.response` পাওয়া যাবে, status হবে `404`।
+- **সার্ভার বন্ধ থাকলে** → `err.response` থাকবে না, এটা **Network Error**।
+
+### ৪.৩ Dynamic Error Message বানানো
+
+`err.response.status` আর `err.response.statusText` ব্যবহার করে ইউজারকে নির্দিষ্ট মেসেজ দেখানো যায়:
+
+```javascript
+setError(
+  err.response
+    ? `${err.response.status}: ${err.response.statusText}`
+    : "নেটওয়ার্ক এরর — সার্ভার সাড়া দিচ্ছে না।",
+);
+```
+
+### ৪.৪ Reusable Error Helper Function
+
+একটা helper function রেখে দিলে পুরো প্রজেক্টের সব জায়গায় কাজে লাগবে:
 
 ```javascript
 function getFriendlyErrorMessage(error) {
@@ -246,35 +337,177 @@ function getFriendlyErrorMessage(error) {
 
 ---
 
-## ৭. Axios Instance — কোড DRY রাখা
+## ৫. ডেটা তৈরি, আপডেট ও ডিলিট করা (CRUD-এর বাকি অংশ)
 
-বড় project-এ প্রতিটা API call-এ `baseURL` আর `headers` বারবার লেখা বিরক্তিকর। **Instance** তৈরি করলে একবারেই সব configure করা যায়:
+এতক্ষণ শুধু **Read** (GET) করেছি। এবার posts **Create, Update আর Delete** করা শিখবো — ঠিক ভিডিওতে যেভাবে দেখানো হয়েছে।
+
+### ৫.১ নতুন ডেটা তৈরি করা (Create / POST)
+
+```javascript
+const handleAddPost = async (title, body) => {
+  try {
+    const newPost = {
+      id: Date.now().toString(), // একটা ইউনিক id বানানো
+      title,
+      body,
+    };
+
+    const response = await axios.post("http://localhost:8000/posts", newPost);
+
+    // সার্ভার সফলভাবে সেভ করার পর যে ডেটা ফেরত দিলো, সেটা দিয়েই local state আপডেট
+    setPosts((prevPosts) => [...prevPosts, response.data]);
+  } catch (err) {
+    setError(getFriendlyErrorMessage(err));
+  }
+};
+```
+
+`handleAddPost`-কে `async` করা হয়েছে, কারণ ভেতরে `await axios.post(...)` ব্যবহার হচ্ছে। POST request-এ দ্বিতীয় argument হিসেবে যে ডেটা পাঠাতে চাও, সেটা যায়।
+
+### ৫.২ ডেটা আপডেট করা (Update / PATCH)
+
+```javascript
+const handleEditPost = async (postId, updatedFields) => {
+  try {
+    const response = await axios.patch(
+      `http://localhost:8000/posts/${postId}`,
+      updatedFields,
+    );
+
+    // পুরনো posts array থেকে শুধু matching id-টা replace হবে, বাকিগুলো অপরিবর্তিত থাকবে
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => (post.id === postId ? response.data : post)),
+    );
+  } catch (err) {
+    setError(getFriendlyErrorMessage(err));
+  }
+};
+```
+
+**PATCH বনাম PUT — পার্থক্যটা মনে রাখো:**
+
+| Method | কাজ                                               |
+| ------ | -------------------------------------------------- |
+| PUT    | পুরো object-টাই নতুন করে replace করে                |
+| PATCH  | শুধু যেই field(গুলো) পাঠানো হয়েছে, ওইটুকুই বদলায়   |
+
+ভিডিওতে **PATCH** ব্যবহার করা হয়েছে, কারণ পুরো পোস্ট না পাঠিয়ে শুধু পরিবর্তিত অংশটুকু পাঠানোই যথেষ্ট।
+
+### ৫.৩ ডেটা মুছে ফেলা (Delete / DELETE)
+
+```javascript
+const handleDeletePost = async (postId) => {
+  const confirmed = window.confirm("পোস্টটা সত্যিই ডিলিট করতে চাও?");
+  if (!confirmed) return;
+
+  try {
+    await axios.delete(`http://localhost:8000/posts/${postId}`);
+
+    // সার্ভার থেকে ডিলিট সফল হলে, সেই id বাদে বাকি সব post রাখা হচ্ছে
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+  } catch (err) {
+    setError(getFriendlyErrorMessage(err));
+  }
+};
+```
+
+লক্ষ্য করো, template literal দিয়ে URL-এর শেষে নির্দিষ্ট id জোড়া দেওয়া হচ্ছে — DELETE আর PATCH দুটোতেই একই প্যাটার্ন।
+
+### ৫.৪ সংক্ষিপ্ত রেফারেন্স — সব HTTP Method এক নজরে
+
+```javascript
+const res = await axios.get("/posts"); // ডেটা আনা
+const res = await axios.post("/posts", data); // নতুন ডেটা তৈরি
+const res = await axios.put("/posts/1", data); // পুরো ডেটা replace
+const res = await axios.patch("/posts/1", data); // আংশিক আপডেট
+const res = await axios.delete("/posts/1"); // ডেটা মুছে ফেলা
+```
+
+---
+
+## ৬. Axios Instance তৈরি করা — কোড DRY রাখা
+
+### ৬.১ সমস্যা
+
+প্রতিটা request-এ বারবার একই `baseURL` (`http://localhost:8000`) লেখা বিরক্তিকর, আর টাইপো হওয়ারও সম্ভাবনা থাকে।
+
+### ৬.২ axios.create() দিয়ে সমাধান
+
+আলাদা একটা ফাইলে (`api.js`) একবারই instance তৈরি করে ফেলো:
 
 ```javascript
 // src/api/api.js
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
-  timeout: 15000,
+  baseURL: "http://localhost:8000",
 });
 
 export default api;
 ```
 
-এরপর যেখানে দরকার:
+### ৬.৩ ব্যবহার করা
 
 ```javascript
 import api from "./api/api";
 
-// baseURL বারবার লিখতে হচ্ছে না
-const users = await api.get("/users");
-const posts = await api.get("/posts");
+const posts = await api.get("/posts"); // baseURL বারবার লিখতে হচ্ছে না
+const newPost = await api.post("/posts", { title: "নতুন পোস্ট" });
 ```
 
-> **মনে রেখো:** এখনই `Authorization` header যোগ করো না। Token যোগ করার কাজটা **Interceptor** দিয়ে dynamically করবো, কারণ user login করার আগে token থাকে না।
+> **মনে রেখো:** এখনই `Authorization` header যোগ করো না। Token dynamically যোগ করার কাজটা **Interceptor** দিয়ে করবো — একদম পরের সেকশনে দেখো।
 
-এই বেসিক জিনিসগুলো জানা হয়ে গেছে। এখন আসল project-এ হাত দেওয়া যাক।
+---
+
+## ৭. Interceptors ও CORS সমস্যার সমাধান
+
+Axios-এর সবথেকে পাওয়ারফুল ফিচার হলো **Interceptors** — request যাওয়ার আগে বা response আসার পরে মাঝখানে বসে কোনো কাজ করার সুযোগ।
+
+### ৭.১ Request Interceptor — Header অটোমেটিক যোগ করা
+
+প্রতিটা request পাঠানোর **ঠিক আগে** এটা কাজ করে। এভাবে প্রতিটা call-এ আলাদা করে token বসাতে হয় না:
+
+```javascript
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+```
+
+### ৭.২ Response Interceptor — কমন Error Handling
+
+সার্ভার থেকে response আসার পর, কিন্তু আমাদের কোডের `catch` ব্লকে পৌঁছানোর **আগে** এটা কাজ করে:
+
+```javascript
+api.interceptors.response.use(
+  (response) => response, // সব ঠিক থাকলে response সেভাবেই পাস হয়ে যাবে
+  (error) => {
+    console.error("API Error:", getFriendlyErrorMessage(error));
+    return Promise.reject(error);
+  },
+);
+```
+
+এর ফলে প্রতিটা ফাংশনে আলাদা করে common error handling লজিক লিখতে হয় না — একবার interceptor-এ লিখলেই পুরো অ্যাপে কাজ করবে।
+
+### ৭.৩ CORS Error — কেন হয়
+
+Custom header (যেমন `Authorization`) পাঠানোর সময় ব্রাউজার নিরাপত্তার কারণে অনেক সময় request block করে দেয় — একেই বলে **CORS (Cross-Origin Resource Sharing) Error**। Browser console-এ লাল অক্ষরে এই error দেখা যায়।
+
+### ৭.৪ json-server-এ CORS সমাধান
+
+```sh
+json-server --watch db.json --port 8000 --no-cors
+```
+
+`--no-cors` ফ্ল্যাগ যোগ করলে json-server ব্রাউজারকে বলে দেয় cross-origin request-এ কোনো সমস্যা নেই। আসল production backend-এ CORS ঠিক করতে হয় server-side কনফিগারেশন দিয়ে — সেটা Part 2-এ দেখবো।
+
+---
+
+এই বেসিক জিনিসগুলো জানা হয়ে গেছে — Read, Create, Update, Delete, Instance, Interceptor আর CORS পর্যন্ত। এখন আসল project-এ হাত দেওয়া যাক।
 
 ---
 
