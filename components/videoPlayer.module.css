@@ -63,3 +63,7 @@
   height: 100%;
   z-index: 3; /* Sits on top of everything */
 }
+
+.inlineQuote {
+  color: #fff;
+}

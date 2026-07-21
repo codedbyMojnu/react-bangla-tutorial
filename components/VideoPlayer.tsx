@@ -6,9 +6,27 @@ interface VideoPlayerProps {
   optionalMessage?: string;
 }
 
-export default function VideoPlayer({ src, title, optionalMessage }: VideoPlayerProps) {
+function getEmbedUrl(src: string): string {
+  let videoId = "";
+
+  if (src.includes("youtu.be/")) {
+    videoId = src.split("youtu.be/")[1].split(/[?&]/)[0];
+  } else if (src.includes("watch?v=")) {
+    videoId = src.split("watch?v=")[1].split("&")[0];
+  } else if (src.includes("/embed/")) {
+    return src; // already an embed URL
+  }
+
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : src;
+}
+
+export default function VideoPlayer({
+  src,
+  title,
+  optionalMessage,
+}: VideoPlayerProps) {
   // Convert a normal YouTube link into an embeddable one
-  const embedUrl = src.replace("watch?v=", "embed/");
+  const embedUrl = getEmbedUrl(src);
 
   return (
     <div className={styles.videoContainer}>
@@ -26,7 +44,11 @@ export default function VideoPlayer({ src, title, optionalMessage }: VideoPlayer
         </div>
 
         <div className={styles.videoFooter}>
-          {optionalMessage && <blockquote className={styles.inlineQuote}>{optionalMessage}</blockquote>}
+          {optionalMessage && (
+            <blockquote className={styles.inlineQuote}>
+              {optionalMessage}
+            </blockquote>
+          )}
         </div>
       </div>
     </div>

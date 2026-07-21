@@ -60,16 +60,6 @@ User Interaction
 
 ### ২. ফিচার লিস্ট ও ইউজার স্টোরি
 
-তাপস ভাই এই ভিডিওতে দেখিয়েছেন, একটা সিনেমা রেন্টাল পোর্টালে আসলে কী কী ফিচার থাকা দরকার:
-
-<video width="600" controls>
-  <source
-    src="/videos/MoviePortal/movie-portal-app-feature.webm"
-    type="video/webm"
-  />
-  আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
-</video>
-
 ফিচারগুলোকে শুধু একটা লিস্ট হিসেবে না রেখে **User Story** ফরম্যাটে লিখলে একটা বাড়তি সুবিধা পাওয়া যায় — প্রতিটা ফিচারের পেছনের টেকনিক্যাল চাহিদাটা (কোন state, কোন component লাগবে) আগেই স্পষ্ট হয়ে যায়:
 
 | Feature             | User Story                                                                                       | Technical Implication                                            |
@@ -142,13 +132,11 @@ _আপনার স্কেচ UI-কে এভাবে ভেঙে ফে�
 
 তাপস ভাই দেখিয়েছেন কীভাবে UI breakdown করতে হয়:
 
-<video width="600" controls>
-  <source
-    src="/videos/MoviePortal/components-breakdown.webm"
-    type="video/webm"
-  />
-  আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
-</video>
+<VideoPlayer
+  src="https://www.youtube.com/watch?v=HJH-MdSZw6A"
+  title="UX Design to React Components"
+  optionalMessage="🚀 মাতৃভাষায় React ও Next JS শেখার সেরা কোর্স- Learn With Sumit রিয়্যাক্টিভ এক্সিলারেটর কোর্স।"
+/>
 
 UI দেখে ঠিক করুন কোন কোন অংশ আলাদা কম্পোনেন্ট হবে। _(যেমন: Header, Footer, MovieCard, SearchBar, Sidebar)_
 
@@ -156,23 +144,13 @@ UI দেখে ঠিক করুন কোন কোন অংশ আলা�
 
 **Component Hierarchy** মানে হলো — কোন কম্পোনেন্টের ভেতরে কোনটা থাকবে, অর্থাৎ component tree-র parent-child সম্পর্ক ঠিক করা। এটাই পরে ঠিক করে দেবে data কোন দিক থেকে কোন দিকে যাবে — React-এ ডেটা সবসময় **unidirectional**: উপর থেকে নিচে props, নিচ থেকে উপরে callback function।
 
-<img
-  src="/movie-portal-project/components-hierarchy.png"
-  alt="component hierarchy"
-  width="600"
+<VideoPlayer
+  src="https://www.youtube.com/watch?v=jfq_XHvh-7k"
+  title="Understanding React Component Hierarchy"
+  optionalMessage="🚀 মাতৃভাষায় React ও Next JS শেখার সেরা কোর্স- Learn With Sumit রিয়্যাক্টিভ এক্সিলারেটর কোর্স।"
 />
 
 কোন কম্পোনেন্টের ভেতরে কোনটা থাকবে, সেটা একটা Tree আকারে সাজিয়ে ফেলুন। _(App → Header, Main → Sidebar, MovieList → MovieCard)_
-
-তাপস ভাই দেখিয়েছেন কীভাবে Component Hierarchy বানাতে হয়:
-
-<video width="600" controls>
-  <source
-    src="/videos/MoviePortal/components-hierarchy.webm"
-    type="video/webm"
-  />
-  আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
-</video>
 
 ### ৬. Data Flow / State Planning
 
@@ -184,10 +162,10 @@ UI দেখে ঠিক করুন কোন কোন অংশ আলা�
 
 কোন Data কোন কম্পোনেন্টে দরকার, আর MovieData কীভাবে Cart-এ পৌঁছাবে — তার একটা সমস্যা-চিত্র:
 
-<img
-  src="/movie-portal-project/data-passing-hierarchy.png"
-  alt="data passing"
-  width="600"
+<VideoPlayer
+  src="https://www.youtube.com/watch?v=eWN9UP9NAEM"
+  title="Data Passing. Parent to Child. Lifting State Up."
+  optionalMessage="🚀 মাতৃভাষায় React ও Next JS শেখার সেরা কোর্স- Learn With Sumit রিয়্যাক্টিভ এক্সিলারেটর কোর্স।"
 />
 
 আমাদের অ্যাপে: `Movies List` আর `Selected Movie Details` থাকবে component-local state হিসেবে। আর `Cart Items` ও `Theme` থাকবে global Context-এ — কারণ `Navbar` (কার্ট আইকনের জন্য), `MovieCard` (Add to Cart বাটনের জন্য) আর `CartPage` — তিনজনেরই একই cart data দরকার, অথচ component tree-তে এরা একে অপর থেকে অনেক দূরে।
@@ -361,13 +339,11 @@ HTML Template/UX হাতে পেয়ে গেলে, প্রথম ক�
 
 তাপস ভাই নিচের ভিডিওতে দেখিয়েছেন কীভাবে HTML থেকে JSX-এ রূপান্তর করতে হয়, আর ফটো/আইকন গুলো JSX-এ কীভাবে বসাতে হয়:
 
-<video width="600" controls>
-  <source
-    src="/videos/MoviePortal/html-template-to-jsx.webm"
-    type="video/webm"
-  />
-  আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
-</video>
+<VideoPlayer
+  src="https://www.youtube.com/watch?v=1CGgKer0GRY"
+  title="Convert HTML to a React Component"
+  optionalMessage="🚀 মাতৃভাষায় React ও Next JS শেখার সেরা কোর্স- Learn With Sumit রিয়্যাক্টিভ এক্সিলারেটর কোর্স।"
+/>
 
 ### এই ধাপের পুরো ওয়ার্কফ্লো
 
