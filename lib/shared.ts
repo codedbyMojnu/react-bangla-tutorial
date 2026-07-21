@@ -8,6 +8,6 @@ export const docsContentRoute = '/llms.mdx/docs';
 
 export const gitConfig = {
   user: 'codedbyMojnu',
-  repo: 'react-bangla',
+  repo: 'react-bangla-tutorial',
   branch: 'main',
 };
