@@ -1,0 +1,309 @@
+---
+title: ইন্টারভিউ প্রশ্নব্যাংক — React
+description: React JS ফ্রন্টএন্ড ইন্টারভিউয়ে সচরাচর জিজ্ঞেস করা ইন্টারভিউ প্রশ্ন ও উত্তর। বাস্তব জীবনের উদাহরণ ও রিয়েল প্রজেক্টের কোড সহ।
+---
+
+React .js ফ্রন্টএন্ড ইন্টারভিউয়ের জন্য সচরাচর জিজ্ঞেস করা প্রশ্নগুলো সহজ বাংলায় সাজানো হয়েছে, যাতে প্র্যাকটিক্যাল কোড দেখে দ্রুত রিভিশন দেওয়া যায়।
+
+প্রতিটি প্রশ্নে থাকছে ৪টি অংশ:
+
+- **এটি কী:** একদম সহজ টেকনিক্যাল সংজ্ঞা।
+- **রিয়েল-লাইফ এনালজি:** দৈনন্দিন জীবনের সাথে মিল রেখে তৈরি উদাহরণ।
+- **কোথায় ব্যবহার হয়:** বাস্তব অ্যাপে এটার আসল কাজ।
+- **কোড:** রিয়েল-লাইফ প্রজেক্টের কমেন্টসহ কোড।
+
+## React
+
+### ১১. React Component কখন Re-render হয়?
+
+**এটি কী:**
+React Component প্রধানত ৪টি কারণে Re-render হয়:
+
+1. নিজের `useState` বা `useReducer`-এর মান বদলালে।
+2. প্যারেন্ট কম্পোনেন্ট Re-render হলে (ডিফল্টভাবে চাইল্ড কম্পোনেন্টও রেন্ডার হয়)।
+3. `props`-এর মান বদলালে।
+4. `useContext`-এর মান পরিবর্তিত হলে।
+
+**রিয়েল-লাইফ এনালজি:**
+স্টেডিয়ামের ডিজিটাল স্কোরবোর্ড। খেলায় রান বা উইকেট (State/Props) বদলালেই কেবল স্ক্রিনের ডিসপ্লে রিফ্রেশ হয়ে নতুন রান দেখায়।
+
+**কোড:**
+
+```jsx
+// প্রোডাক্ট পেজ
+function ProductPage() {
+  const [quantity, setQuantity] = useState(1);
+
+  return (
+    <div>
+      <h3>প্রোডাক্ট সংখ্যা: {quantity}</h3>
+      <button onClick={() => setQuantity(quantity + 1)}>সংখ্যা বাড়ান</button>
+
+      {/* quantity বদলালে ProductPage Re-render হবে, 
+          ফলে ReviewSection-ও অহেতুক Re-render হবে (যদি Optmized না থাকে) */}
+      <ReviewSection productId="p-101" />
+    </div>
+  );
+}
+```
+
+---
+
+### ১২. অপ্রয়োজনীয় Re-render কীভাবে আটকাবেন? (`memo`, `useCallback`)
+
+**এটি কী:**
+
+- `React.memo`: চাইল্ড কম্পোনেন্টের Props না বদলালে তাকে রেন্ডার হতে বাধা দেয়।
+- `useCallback`: কম্পোনেন্টের ভেতরের ফাংশনের মেমোরি রেফারেন্স স্থির রাখে, যেন `React.memo` সঠিকভাবে কাজ করতে পারে।
+
+**রিয়েল-লাইফ এনালজি:**
+ঘরের স্মার্ট এসি (AC) থার্মোস্ট্যাট। ঘরের তাপমাত্রা যদি না বদলায়, এসি তার কম্প্রেসর অন করে নতুন করে ঠাণ্ডা বাতাসে শক্তি অপচয় করে না (`memo` চেক)।
+
+**কোড:**
+
+```jsx
+import React, { useState, useCallback, memo } from "react";
+
+// চাইল্ড কম্পোনেন্ট: React.memo দিয়ে আটকানো হলো
+const CartButton = memo(function CartButton({ onAddToCart }) {
+  console.log("CartButton রেন্ডার হলো!");
+  return <button onClick={onAddToCart}>কার্টে যোগ করুন</button>;
+});
+
+function ProductCard() {
+  const [likeCount, setLikeCount] = useState(0);
+
+  // useCallback দেওয়াতে likeCount বাড়লেও এই ফাংশনের রেফারেন্স বদলাবে না
+  const handleAddToCart = useCallback(() => {
+    console.log("প্রোডাক্ট কার্টে যোগ হয়েছে");
+  }, []);
+
+  return (
+    <div>
+      <button onClick={() => setLikeCount(likeCount + 1)}>
+        ❤️ {likeCount}
+      </button>
+      {/* লাইক বাড়লেও CartButton অহেতুক re-render হবে না */}
+      <CartButton onAddToCart={handleAddToCart} />
+    </div>
+  );
+}
+```
+
+---
+
+### ১৩. `useEffect` বনাম `useLayoutEffect`
+
+**এটি কী:**
+
+- **`useEffect`:** ব্রাউজার স্ক্রিনে UI দেখানোর **পরে** চলে (নরমাল এপিআই ডাটা লোড করার জন্য এটি পারফেক্ট)।
+- **`useLayoutEffect`:** ব্রাউজার স্ক্রিনে UI দেখানোর **ঠিক আগে** চলে। কোনো এলিমেন্টের সাইজ বা পজিশন মেপে ডিসপ্লে flickering বন্ধ করতে এটি লাগে।
+
+**রিয়েল-লাইফ এনালজি:**
+
+- `useLayoutEffect`: বাড়ি থেকে বের হওয়ার **আগে** আয়নায় নিজের পোশাক ঠিক করে নেওয়া (বাইরের মানুষ কোনো ভুল দেখতে পাবে না)।
+- `useEffect`: বাড়ি থেকে বের হওয়ার **পর** বন্ধুদের মেসেজ দেওয়া (হাঁটায় কোনো বাধা আসে না)।
+
+**কোড:**
+
+```jsx
+import { useState, useRef, useLayoutEffect } from "react";
+
+// টুলটিপ পজিশন ঠিক করার কম্পোনেন্ট
+function Tooltip({ buttonRef, text }) {
+  const [topPosition, setTopPosition] = useState(0);
+
+  // useLayoutEffect ব্যবহার করায় ইউজার ভুল পজিশন দেখবে না (Flicker হবে না)
+  useLayoutEffect(() => {
+    const rect = buttonRef.current.getBoundingClientRect();
+    setTopPosition(rect.top - 30); // স্ক্রিনে আকার আগেই পজিশন সেট হবে
+  }, [buttonRef]);
+
+  return <div style={{ position: "absolute", top: topPosition }}>{text}</div>;
+}
+```
+
+---
+
+### ১৪. Controlled বনাম Uncontrolled Components
+
+**এটি কী:**
+
+- **Controlled Component:** ইনপুট ফিল্ডের মান পুরোপুরি React State দিয়ে কন্ট্রোল হয় (`value` + `onChange`)।
+- **Uncontrolled Component:** ইনপুটের মান DOM নিজেই ধরে রাখে, আমরা `useRef` দিয়ে দরকারের সময় মান পড়ে নিই (যেমন: ফাইল আপলোড)।
+
+**রিয়েল-লাইফ এনালজি:**
+
+- **Controlled:** ড্রাইভ করার সময় স্টিয়ারিং হুইলে সবসময় হাত রাখা (প্রতিটি মুভমেন্ট স্ট্যাটাসের আওতায়)।
+- **Uncontrolled:** পোস্টাল ড্রপবক্সে চিঠি ফেলা (চিঠি ফেলার সময় হাত দেওয়ার দরকার নেই, ডাকপিয়ন খোলার সময় চিঠি পড়ে নেবেন)।
+
+**কোড:**
+
+```jsx
+function UserProfileForm() {
+  // Controlled: ব্যবহারকারীর নাম প্রতি কি-স্ট্রোকে স্টেট আপডেট করছে
+  const [username, setUsername] = useState("");
+
+  // Uncontrolled: ফাইল ইনপুট স্টেটে রাখা যায় না, তাই Ref ব্যবহার
+  const avatarRef = useRef(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const file = avatarRef.current.files[0];
+    console.log(`ইউজার: ${username}, আপলোড ফাইল: ${file?.name}`);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input type="file" ref={avatarRef} />
+      <button type="submit">সেভ করুন</button>
+    </form>
+  );
+}
+```
+
+---
+
+### ১৫. বড় React App অপটিমাইজ করার কৌশল
+
+**এটি কী:**
+
+1. **Virtualization:** বিশাল লিস্ট থাকলে শুধু স্ক্রিনে যতটুকু দেখা যায় ততটুকুই রেন্ডার করা (`react-window`)।
+2. **Code Splitting (Lazy Loading):** পুরো অ্যাপ একসাথে লোড না করে রুট অনুযায়ী প্রয়োজনীয় কোড লোড করা।
+
+**রিয়েল-লাইফ এনালজি:**
+একটি বিশাল সুপারমার্কেট। সব মালামাল একসাথে গেটে এনে না রেখে, কাস্টমার যে ডিসপ্লে সেলফে যাবেন শুধু সেই সেলফেই মালামাল এনে সাজিয়ে রাখা।
+
+**কোড:**
+
+```jsx
+import React, { lazy, Suspense } from "react";
+import { FixedSizeList } from "react-window";
+
+// ১. Lazy Loading: এডমিন পেজ প্রয়োজন হলেই কেবল লোড হবে
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+
+// ২. Virtualization: ১০,০০০ প্রোডাক্টের লিস্ট স্ক্রিনে শুধু ১০টি দেখাবে
+function HugeProductList({ products }) {
+  return (
+    <FixedSizeList
+      height={400}
+      itemCount={products.length}
+      itemSize={50}
+      width={300}
+    >
+      {({ index, style }) => (
+        <div style={style}>
+          {products[index].name} - ৳{products[index].price}
+        </div>
+      )}
+    </FixedSizeList>
+  );
+}
+```
+
+---
+
+### ১৬. React-এ সুরক্ষিত Authentication Flow
+
+**এটি কী:**
+
+- **Access Token:** মেমোরিতে (React State) রাখা হয়, যা দিয়ে সংক্ষিপ্ত সময়ের জন্য এপিআই কল করা যায়।
+- **Refresh Token:** কুকিতে (`httpOnly` + `Secure`) রাখা হয়, যা দিয়ে Access Token মেয়ার শেষ হলে নতুন টোকেন আনা হয়।
+- **Axios Interceptor:** 401 Unauthorized এরর এলে ব্যাকগ্রাউন্ডে সাইレントভাবে Refresh Token পাঠায়।
+
+**রিয়েল-লাইফ এনালজি:**
+ওয়াটার পার্কে প্রবেশের রিস্টব্যান্ড (Access Token), যা কিছু সময় পর পর বাতিল হয়ে যায়। পকেটে থাকা জাতীয় পরিচয়পত্র (Refresh Token) দেখিয়ে কাউন্টার থেকে নতুন রিস্টব্যান্ড নিয়ে নিতে হয়।
+
+**কোড:**
+
+```js
+// Axios Interceptor দিয়ে অটো-টোকেন রিফ্রেশ লজিক
+import axios from "axios";
+
+const api = axios.create({ baseURL: "https://api.myApp.com" });
+let accessToken = null;
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // টোকেনের মেয়াদ শেষ হয়ে ৪০১ এরর এলে
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        // ব্যাকগ্রাউন্ডে নতুন Access Token চাওয়া
+        const res = await axios.post(
+          "/api/refresh-token",
+          {},
+          { withCredentials: true },
+        );
+        accessToken = res.data.accessToken;
+
+        // নতুন টোকেন দিয়ে আগের আটকে যাওয়া এপিআই আবার কল করা
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        return api(originalRequest);
+      } catch (err) {
+        window.location.href = "/login"; // রিফ্রেশ টোকেনও এক্সপায়ার হলে লগইন পেজে পাঠানো
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+```
+
+---
+
+### ১৭. Redux Toolkit (RTK) কেন ব্যবহার করা হয়?
+
+**এটি কী:**
+প্লেইন Redux-এর প্রচুর অতিরিক্ত কোড (Boilerplate) কমানোর জন্য RTK ব্যবহার করা হয়।
+
+- `createSlice`: Action ও Reducer একসাথে তৈরি করে।
+- `Immer` সাপোর্ট: Reducer-এর ভেতর স্টেট মিউটেট করার মতো কোড লিখলেও তা নিরাপদে Immutable ভাবে কাজ করে।
+
+**রিয়েল-লাইফ এনালজি:**
+ইনস্ট্যান্ট কফি প্যাকেট (RTK)। দুধ, চিনি, কফি বিন মেপে তৈরি করার ভেজাল নেই—গরম পানিতে গুলিয়ে নিলেই কফি রেডি (Traditional Redux-এ সব ম্যানুয়ালি মেপে মেশাতে হতো)।
+
+**কোড:**
+
+```js
+// ই-কমার্স শপিং কার্ট স্লাইস (RTK)
+import { createSlice } from "@reduxjs/toolkit";
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState: { items: [], totalAmount: 0 },
+  reducers: {
+    // Immer-এর কারণে আমরা সরাসরি push করতে পারছি
+    addToCart: (state, action) => {
+      state.items.push(action.payload);
+      state.totalAmount += action.payload.price;
+    },
+    clearCart: (state) => {
+      state.items = [];
+      state.totalAmount = 0;
+    },
+  },
+});
+
+export const { addToCart, clearCart } = cartSlice.actions;
+export default cartSlice.reducer;
+```
+
+---
+
+<Donate />
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>

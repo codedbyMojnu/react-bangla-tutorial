@@ -1,0 +1,7 @@
+{
+  "pages": ["index", "javascript", "react"],
+  "title": "Interview Questions",
+  "description": "JavaScript, React এবং অন্যান্য প্রযুক্তির ইন্টারভিউ প্রশ্ন ও উত্তর।",
+  "icon": "CircleHelp",
+  "root": true
+}

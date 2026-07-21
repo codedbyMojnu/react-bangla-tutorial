@@ -109,6 +109,12 @@ const collections: {
     description: "ক্যারিয়ার পরামর্শ",
     emoji: "💼",
   },
+  {
+    href: "/docs/interview-questions",
+    title: "Interview Questions",
+    description: "প্রযুক্তিভিত্তিক ইন্টারভিউ প্রশ্নব্যাংক",
+    emoji: "🎯",
+  },
 ];
 
 export default function HomePage() {

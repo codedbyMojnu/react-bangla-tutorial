@@ -1,0 +1,397 @@
+---
+title: ইন্টারভিউ প্রশ্নব্যাংক — JavaScript
+description: JavaScript ফ্রন্টএন্ড ইন্টারভিউয়ে সচরাচর জিজ্ঞেস প্রশ্ন ও উত্তর। বাস্তব জীবনের উদাহরণ ও রিয়েল প্রজেক্টের কোড সহ।
+---
+
+JavaScript ফ্রন্টএন্ড ইন্টারভিউয়ে সচরাচর জিজ্ঞেস করা প্রশ্নগুলো সহজ বাংলায় সাজানো হয়েছে, যাতে প্র্যাকটিক্যাল কোড দেখে দ্রুত রিভিশন দেওয়া যায়।
+
+প্রতিটি প্রশ্নে থাকছে ৪টি অংশ:
+
+- **এটি কী:** একদম সহজ টেকনিক্যাল সংজ্ঞা।
+- **রিয়েল-লাইফ এনালজি:** দৈনন্দিন জীবনের সাথে মিল রেখে তৈরি উদাহরণ।
+- **কোথায় ব্যবহার হয়:** বাস্তব অ্যাপে এটার আসল কাজ।
+- **কোড:** রিয়েল-লাইফ প্রজেক্টের কমেন্টসহ কোড।
+
+---
+
+## JavaScript
+
+### ১. Arrow Function কেন আনা হলো? Traditional Function-এর সমস্যা কী ছিল?
+
+**এটি কী:**
+Arrow Function হলো ES6-এর সংক্ষিপ্ত ফাংশন। এর নিজের কোনো `this` নেই। এটি তার বাইরের স্কোপ থেকে `this` ধরে রাখে (যাকে **lexical scope** বলে)। কিন্তু Traditional Function-এর `this` নির্ভর করে ফাংশনটি **কোথা থেকে বা কীভাবে কল করা হচ্ছে** তার ওপর—যা রিয়েল অ্যাপে বাগ তৈরি করে।
+
+**রিয়েল-লাইফ এনালজি:**
+
+- **Traditional Function:** ফোনের লাউডস্পিকারের মতো। আপনি যে ঘরে নিয়ে যাবেন, সেই ঘরের সব মানুষ কথা শুনবে (পরিস্থিতি অনুযায়ী আচরণ বদলায়)।
+- **Arrow Function:** আপনার কানে থাকা ব্লুটুথ ইয়ারফোনের মতো। আপনি যে ঘরেই যান না কেন, ইয়ারফোন সবসময় আপনার ফোনের সাথেই কানেক্টেড থাকবে (নিজের স্কোপ ধরে রাখে)।
+
+**কোথায় ব্যবহার হয়:**
+React কম্পোনেন্ট, `setTimeout` বা ইভেন্ট লিসেনারের ভেতর যখন ক্লাস বা বাইরের অবজেক্টের `this` দরকার হয়।
+
+**কোড:**
+
+```js
+// ই-কমার্স অ্যাপের অটো-সেভ ড্রাফট ফিচার
+class BlogEditor {
+  constructor() {
+    this.title = "আমার নতুন পোস্ট";
+  }
+
+  // ❌ ভুল নিয়ম: Traditional Function
+  autoSaveBroken() {
+    setTimeout(function () {
+      // এখানে `this` হলো window/undefined, তাই টাইটেল পাবে না
+      console.log(`সেভ হচ্ছে: ${this.title}`); // Output: undefined
+    }, 1000);
+  }
+
+  // ✅ সঠিক নিয়ম: Arrow Function
+  autoSaveCorrect() {
+    setTimeout(() => {
+      // Arrow function বাইরের `this` (BlogEditor) মনে রেখেছে
+      console.log(`সেভ হচ্ছে: ${this.title}`); // Output: সেভ হচ্ছে: আমার নতুন পোস্ট
+    }, 1000);
+  }
+}
+
+const editor = new BlogEditor();
+editor.autoSaveCorrect();
+```
+
+---
+
+### ২. Event Loop কীভাবে কাজ করে?
+
+**এটি কী:**
+JavaScript একবারে একটাই কাজ করে (Single-threaded)। তবুও ভারী কাজগুলো থামিয়ে না রেখে ব্যাকগ্রাউন্ডে সামলায় **Event Loop**।
+
+Event Loop-এর কাজ হলো Call Stack খালি আছে কিনা দেখা। খালি হলে সে আগে **Microtask Queue** (Promise)-এর সব কাজ শেষ করে, তারপর **Macrotask Queue** (`setTimeout`)-এর কাজ হাতে নেয়।
+
+**রিয়েল-লাইফ এনালজি:**
+হাসপাতালের ডাক্তারের চেম্বার (Call Stack):
+
+- ডাক্তার রোগী দেখছেন।
+- ইমার্জেন্সি সিরিয়ালের রোগীরা (Microtask Queue) সাধারণ লাইনের রোগীদের (Macrotask Queue) আগেই ডাক্তার ফাঁকা হওয়া মাত্র ছাড় পান।
+
+**কোথায় ব্যবহার হয়:**
+এপিআই ডাটা লোড হওয়া, ব্যাকগ্রাউন্ড ট্র্যাকিং পাঠানো এবং ইউজার ইন্টারফেস (UI) স্মুথ রাখার কাজ সামলাতে।
+
+**কোড:**
+
+```js
+// সোশ্যাল মিডিয়া অ্যাপে পোস্ট লাইক দেওয়ার সিস্টেম
+function handleLikeButton() {
+  console.log("১. ইউজার লাইক বাটনে চাপ দিল");
+
+  // Macrotask: ব্যাকগ্রাউন্ডে এনালিটিক্স পাঠানো (কম গুরুত্বপূর্ণ)
+  setTimeout(() => {
+    console.log("৪. সার্ভারে এনালিটিক্স ডাটা পাঠানো হলো (Macrotask)");
+  }, 0);
+
+  // Microtask: ডেটাবেজে লাইক কাউন্ট আপডেট করা (বেশি গুরুত্বপূর্ণ)
+  Promise.resolve().then(() => {
+    console.log("৩. ডাটাবেজ ও UI-তে লাইক কাউন্ট বেড়ে গেল (Microtask)");
+  });
+
+  console.log("২. বাটনের অ্যানিমেশন শুরু হলো");
+}
+
+handleLikeButton();
+// আউটপুট অর্ডার: ১ -> ২ -> ৩ -> ৪
+```
+
+---
+
+### ৩. Callback কী? Microtask ও Macrotask Queue-র মধ্যে পার্থক্য কী?
+
+**এটি কী:**
+Callback হলো এমন একটি ফাংশন যা অন্য কোনো ফাংশনের ভেতর প্যারামিটার হিসেবে পাঠানো হয় এবং পরে প্রয়োজনমতো কল করা হয়।
+
+- **Microtask Queue:** Promise, `async/await` (প্রাধিকার বা priority সবচেয়ে বেশি)।
+- **Macrotask Queue:** `setTimeout`, DOM Click Event (Microtask সম্পূর্ণ খালি হলে এটি রান হয়)।
+
+**রিয়েল-লাইফ এনালজি:**
+ব্যাংকের কাউন্টার:
+
+- **Microtask:** সিনিয়র সিটিজেন বা ভিআইপি টোকেনধারী। লাইনে নতুন একজন ভিআইপি আসলেও তাকে সাধারণ কাস্টমারের আগে সার্ভিস দেওয়া হবে।
+- **Macrotask:** সাধারণ টোকেনধারী কাস্টমার।
+
+**কোথায় ব্যবহার হয়:**
+পেমেন্ট গেটওয়ে প্রসেস করার সময় আগে পেমেন্ট কনফার্ম (Promise) করা এবং পরে পপআপ বন্ধ করার মতো কাজে।
+
+**কোড:**
+
+```js
+// রাইড শেয়ারিং অ্যাপের রাইড বুকিং লজিক
+function bookRide() {
+  // Macrotask
+  setTimeout(() => {
+    console.log(
+      "৩. ড্রাইভারের কাছে রাইড রিকোয়েস্টের নোটিফিকেশন গেল (Macrotask)",
+    );
+  }, 0);
+
+  // Microtask
+  Promise.resolve().then(() => {
+    console.log("২. পেমেন্ট মেথড চেক ও টাকা হোল্ড করা হলো (Microtask)");
+  });
+
+  console.log("১. রাইড বুকিং প্রসেস শুরু");
+}
+
+bookRide();
+// আউটপুট: ১ -> ২ -> ৩
+```
+
+---
+
+### ৪. Hoisting কীভাবে কাজ করে?
+
+**এটি কী:**
+কোড রান করার আগে JavaScript ভ্যারিয়েবল ও ফাংশনের **ডিক্লেয়ারেশনকে** তাদের স্কোপের একদম উপরে তুলে নেয়। তবে মনে রাখতে হবে—শুধু ডিক্লেয়ারেশন উপরে ওঠে, তাদের মান (value) নিচে যেখানে লিখেছেন সেখানেই থাকে।
+
+**রিয়েল-লাইফ এনালজি:**
+পরীক্ষার হলের সিট প্ল্যান। পরীক্ষার আগেই বেঞ্চে রোল নম্বর (ডিক্লেয়ারেশন) আঠা দিয়ে লাগিয়ে রাখা হয়। কিন্তু ছাত্র (Value) তো পরীক্ষা শুরু হলেই সেই সিটে এসে বসে। ছাত্র না আসা পর্যন্ত সিট খালি থাকে।
+
+**কোথায় ব্যবহার হয়:**
+ফাইলের যেকোনো জায়গা থেকে ইউটিলিটি হেল্পার ফাংশন কল করতে সাহায্য করে।
+
+**কোড:**
+
+```js
+// শপিং কার্ট প্রোডাক্ট প্রসেসিং
+console.log(`কার্ট টোটাল: ${cartTotal}`); // Output: undefined (এরর দেবে না, কারণ ডিক্লেয়ারেশন উপরে উঠেছে)
+var cartTotal = 1500;
+
+// হেল্পার ফাংশন নিচে ডিফাইন করা হলেও উপরে কাজ করবে
+const formattedPrice = formatCurrency(cartTotal);
+console.log(formattedPrice); // Output: ৳1,500
+
+function formatCurrency(amount) {
+  return `৳${amount.toLocaleString()}`;
+}
+```
+
+---
+
+### ৫. Hoisting-এর দিক থেকে `var`, `let`, `const`-এর মধ্যে পার্থক্য কী?
+
+**এটি কী:**
+তিনটাই hoist হয়। তবে:
+
+- `var`: hoist হয়ে সঙ্গে সঙ্গে `undefined` ভ্যালু পেয়ে যায়।
+- `let` ও `const`: hoist হলেও ডিক্লেয়ার করার লাইনে পৌঁছানোর আগে এদের এক্সেস করা যায় না। এই বিপজ্জনক সময়টাকে বলে **Temporal Dead Zone (TDZ)**। ডিক্লেয়ার করার আগে ডাকলে `ReferenceError` দেবে।
+
+**রিয়েল-লাইফ এনালজি:**
+
+- `var`: রেস্তোরাঁর রিজার্ভ করা টেবিল। প্লেট খালি, ঢুকতে কোনো বাধা নেই (`undefined`)।
+- `let`/`const`: ব্যাংকের লকার রুম। সময় হওয়ার আগে তালা খোলার চেষ্টা করলে সিকিউরিটি এলার্ম বেজে উঠবে (`ReferenceError`)।
+
+**কোড:**
+
+```js
+function applyCoupon() {
+  console.log(oldDiscount); // Output: undefined
+  var oldDiscount = 50;
+
+  console.log(newDiscount); // ❌ Uncaught ReferenceError: Cannot access 'newDiscount' before initialization (TDZ)
+  let newDiscount = 100;
+}
+applyCoupon();
+```
+
+---
+
+### ৬. Generator Function কী? কখন লাগবে?
+
+**এটি কী:**
+Generator Function (`function*`) হলো এমন এক বিশেষ ফাংশন যা রান হতে হতে মাঝপথে `yield` কীওয়ার্ডে থেমে যেতে পারে। পরে বাইরে থেকে `.next()` কল করলে আবার সেখান থেকেই চালু হয়।
+
+**রিয়েল-লাইফ এনালজি:**
+টিভি সিরিজের এপিসোড দেখা। আপনি ২ নম্বর পর্ব দেখে পজ (pause) করে রাখলেন। পরদিন প্লে বাটনে চাপ দিলে সিরিজটি আবার ৩ নম্বর পর্ব থেকেই চলা শুরু করবে, শুরু থেকে না।
+
+**কোথায় ব্যবহার হয়:**
+অনলাইন শপের ইউনিক অর্ডার আইডি তৈরি, pagination, বা অ্যাপের মাল্টি-স্টেপ অনবোর্ডিং (Step 1 -> Step 2 -> Step 3) সামলাতে।
+
+**কোড:**
+
+```js
+// ই-কমার্স অ্যাপে ইউনিক টোকেন নাম্বার জেনারেটর
+function* generateOrderToken() {
+  let tokenId = 1001;
+  while (true) {
+    yield `ORDER-${tokenId++}`; // প্রতিবার জেনারেট করে থেমে যাবে
+  }
+}
+
+const tokenSystem = generateOrderToken();
+
+console.log(tokenSystem.next().value); // Output: ORDER-1001
+console.log(tokenSystem.next().value); // Output: ORDER-1002
+console.log(tokenSystem.next().value); // Output: ORDER-1003
+```
+
+---
+
+### ৭. Closure কী? বাস্তব প্রজেক্টে এটার কাজ কী?
+
+**এটি কী:**
+Outer Function-এর কাজ শেষ হয়ে বন্ধ হয়ে যাওয়ার পরও, যদি Inner Function তার বাইরের স্কোপের ভ্যারিয়েবলগুলোকে মেমোরিতে মনে রাখতে পারে, তবে তাকে Closure বলে।
+
+**রিয়েল-লাইফ এনালজি:**
+ওয়াইফাই পাসওয়ার্ড। আপনি কোনো ক্যাফে থেকে বের হয়ে গেলেও আপনার মোবাইলের মেমোরিতে ক্যাফের ওয়াইফাই পাসওয়ার্ড সেভ থাকে। পরবর্তীতে ওই ক্যাফের কাছে গেলেই অটো-কানেক্ট হয়ে যায়।
+
+**কোথায় ব্যবহার হয়:**
+সার্চ বক্সে অহেতুক এপিআই কল কমানোর জন্য **Debounce** ফাংশন বানাতে।
+
+**কোড:**
+
+```js
+// লাইভ সার্চ ইনপুটের জন্য Debounce Utility
+function createDebounceHandler(apiCallFunc, delay) {
+  let timer; // Closure-এর মাধ্যমে timer আইডি মেমোরিতে সেভ থাকে
+
+  return function (searchTerm) {
+    clearTimeout(timer); // আগের টাইমার বাতিল করা
+    timer = setTimeout(() => {
+      apiCallFunc(searchTerm); // নির্দিষ্ট সময় পর API কল করা
+    }, delay);
+  };
+}
+
+// প্রোডাক্ট সার্চ এপিআই
+const searchProducts = (query) => console.log(`এপিআই থেকে ডাটা আসছে: ${query}`);
+
+// ৫০০ মিলিসেকেন্ডের ডিবাউন্স তৈরি
+const handleSearchInput = createDebounceHandler(searchProducts, 500);
+
+// ইউজার টাইপ করছে
+handleSearchInput("samsung");
+handleSearchInput("samsung s24"); // আগের টাইমার ক্লিয়ার হবে, শুধু এটি রান হবে
+```
+
+---
+
+### ৮. Output-based প্রশ্ন: Async Execution Order
+
+**এটি কী:**
+মেমোরি স্ট্যাক, মাইক্রোটাস্ক এবং ম্যাক্রোটাস্কের এক্সিকিউশন অর্ডার ইন্টারভিউতে টেস্ট করার জন্য এই প্রশ্ন দেওয়া হয়।
+
+**কোড:**
+
+```js
+// মোবাইল ব্যাংকিং অ্যাপের ট্রানজেকশন প্রসেসিং
+async function processPayment() {
+  console.log("১. ট্রানজেকশন রিকোয়েস্ট শুরু");
+
+  setTimeout(() => {
+    console.log("৪. এসএমএস নোটিফিকেশন পাঠানো হলো (Macrotask)");
+  }, 0);
+
+  await null; // await-এর পরের অংশ Microtask হয়ে যায়
+
+  console.log("৩. একাউন্ট ব্যালেন্স আপডেট হলো (Microtask)");
+}
+
+console.log("০. ইউজার পিন দিল");
+processPayment();
+console.log("২. স্ক্রিনে লোডার দেখানো হচ্ছে");
+
+// আউটপুট ক্রম:
+// ০. ইউজার পিন দিল
+// ১. ট্রানজেকশন রিকোয়েস্ট শুরু
+// ২. স্ক্রিনে লোডার দেখানো হচ্ছে
+// ৩. একাউন্ট ব্যালেন্স আপডেট হলো (Microtask)
+// ৪. এসএমএস নোটিফিকেশন পাঠানো হলো (Macrotask)
+```
+
+---
+
+### ৯. Nested Array Flatten করা (Nested Category Tree)
+
+**এটি কী:**
+একাধিক লেয়ারের ভেতরের Array-কে ভেঙে একটিমাত্র Flat Array-তে রূপান্তর করা।
+
+**রিয়েল-লাইফ এনালজি:**
+ডেলিভারির বাক্সের ভেতর ছোট বাক্স, তার ভেতর আরও ছোট বাক্স। সব বাক্স খুলে ভেতরের সব প্রোডাক্ট বের করে একটা টেবিলের ওপর পাশাপাশি সাজিয়ে রাখা।
+
+**কোথায় ব্যবহার হয়:**
+ক্যাটাগরির ভেতরে সাব-ক্যাটাগরি বা কমেন্টের নিচে নেস্টেড রিপ্লাইগুলোকে একটা সিঙ্গেল লিস্টে দেখানোর জন্য।
+
+**কোড:**
+
+```js
+// ই-কমার্স নেস্টেড ক্যাটাগরি ডাটা
+const categories = [
+  "ইলেকট্রনিক্স",
+  ["মোবাইল", ["স্যামসাং", "আইফোন"]],
+  "ফ্যাশন",
+];
+
+// ১. প্র্যাকটিক্যাল রিকার্সিভ ফাংশন
+function flattenCategories(items) {
+  let flatList = [];
+
+  for (const item of items) {
+    if (Array.isArray(item)) {
+      flatList.push(...flattenCategories(item)); // সাব-অ্যারে হলে আবার রান হবে
+    } else {
+      flatList.push(item);
+    }
+  }
+
+  return flatList;
+}
+
+console.log(flattenCategories(categories));
+// Output: ['ইলেকট্রনিক্স', 'মোবাইল', 'স্যামসাং', 'আইফোন', 'ফ্যাশন']
+
+// ২. মডার্ন বিল্ট-ইন শর্টকাট
+const easyWay = categories.flat(Infinity);
+```
+
+---
+
+### ১০. `map()`, `filter()`, `reduce()`, এবং `forEach()`-এর পার্থক্য
+
+| মেথড        | বাস্তব কাজের ধরন                                  | রিটার্ন                 |
+| :---------- | :------------------------------------------------ | :---------------------- |
+| `map()`     | প্রতিটি প্রোডাক্টের দাম ৫% বৃদ্ধি করা             | নতুন Array              |
+| `filter()`  | শুধু স্টকে থাকা (In-stock) প্রোডাক্ট বাছাই করা    | নতুন Array              |
+| `reduce()`  | শপিং কার্টের সব প্রোডাক্টের মোট দাম যোগ করা       | একটি মান (Single Value) |
+| `forEach()` | প্রতিটি প্রোডাক্ট কনসোলে বা ডিসপ্লেতে প্রিন্ট করা | কিছুই না (`undefined`)  |
+
+**কোড:**
+
+```js
+const cartItems = [
+  { name: "শার্ট", price: 1000, inStock: true },
+  { name: "প্যান্ট", price: 1500, inStock: false },
+  { name: "জুতো", price: 2000, inStock: true },
+];
+
+// ১. map: শুধু সব প্রোডাক্টের নাম বের করা
+const itemNames = cartItems.map((item) => item.name); // ['শার্ট', 'প্যান্ট', 'জুতো']
+
+// ২. filter: যেসব প্রোডাক্ট স্টকে আছে সেগুলো নেওয়া
+const availableItems = cartItems.filter((item) => item.inStock); // শার্ট ও জুতো
+
+// ৩. reduce: কার্টের মোট দাম হিসাব করা
+const totalPrice = cartItems.reduce((total, item) => total + item.price, 0); // 4500
+
+// ৪. forEach: নোটিফিকেশন লগ করা
+cartItems.forEach((item) => console.log(`প্রোডাক্ট: ${item.name}`));
+```
+
+<Donate />
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>
