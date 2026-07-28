@@ -749,16 +749,12 @@ const useAxios = () => {
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
-
-        // FormData (ছবি আপলোড) হলে Content-Type নিজে সেট করবেন না।
-        // Browser নিজেই সঠিক boundary সহ multipart/form-data বসিয়ে দেয়।
-        // জোর করে set করলে boundary হারিয়ে যাবে, আপলোড ভাঙবে।
+        // FormData (ছবি আপলোড) হলে Content-Type নিজে সেট করবেন না
         if (config.data instanceof FormData) {
           delete config.headers["Content-Type"];
         } else {
           config.headers["Content-Type"] = "application/json";
         }
-
         return config;
       },
       (error) => Promise.reject(error),
@@ -766,30 +762,31 @@ const useAxios = () => {
 
     // Response Interceptor — প্রতিটা response আসার পরে চলে
     const responseIntercept = api.interceptors.response.use(
-      (response) => response, // সফল হলে সরাসরি পাঠান
-
+      (response) => response,
       async (error) => {
         const originalRequest = error.config;
 
-        // 401 এসেছে এবং এই request আগে retry হয়নি?
-        if (error.response?.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true; // অসীম loop ঠেকানোর জন্য
+        // originalRequest.alreadyRetried এখনো false/undefined মানে —
+        // এই request-এর জন্য আমরা এখনো একবারও refresh চেষ্টা করিনি।
+        const isFirstFailure = error.response?.status === 401 && !originalRequest.alreadyRetried;
+
+        if (isFirstFailure) {
+          // মার্ক করে দিলাম: "এই request একবার retry হচ্ছে"
+          // এর ফলে refresh token নিজেও যদি fail করে, তখন এই if-এ
+          // আর দ্বিতীয়বার ঢুকবে না — infinite loop বন্ধ হয়ে যায়
+          originalRequest.alreadyRetried = true;
 
           try {
-            const response = await api.post("/auth/refresh-token", {
+            const { data } = await api.post("/auth/refresh-token", {
               refreshToken: auth?.refreshToken,
             });
 
-            const { token } = response.data;
+            setAuth((prev) => ({ ...prev, authToken: data.token }));
 
-            // নতুন token দিয়ে auth state আপডেট করুন
-            setAuth((prev) => ({ ...prev, authToken: token }));
-
-            // আগের request-এ নতুন token বসিয়ে আবার পাঠান
-            originalRequest.headers.Authorization = `Bearer ${token}`;
+            originalRequest.headers.Authorization = `Bearer ${data.token}`;
             return api(originalRequest);
           } catch (refreshError) {
-            // Refresh Token-ও কাজ করলো না — session শেষ
+            // Refresh token-ও কাজ করলো না — session শেষ, logout
             setAuth(null);
             window.location.href = "/login";
             return Promise.reject(refreshError);
@@ -800,13 +797,11 @@ const useAxios = () => {
       },
     );
 
-    // Cleanup: Component unmount হলে interceptor সরান
-    // না হলে memory leak হয় এবং interceptor বারবার যোগ হতে থাকে
     return () => {
       api.interceptors.request.eject(requestIntercept);
       api.interceptors.response.eject(responseIntercept);
     };
-  }, [auth]); // auth বদলালে interceptor নতুন করে বসবে
+  }, [auth]);
 
   return { api };
 };
