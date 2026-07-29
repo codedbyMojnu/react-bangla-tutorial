@@ -75,7 +75,7 @@ npm install axios
 
 Axios শিখতে একটা আসল সার্ভার লাগবে। প্রতিবার বড় backend চালু করাও ঝামেলার, তাই **json-server** দিয়ে কয়েক মিনিটেই একটা ফেক (fake) কিন্তু সত্যিকারের REST API বানিয়ে নিব।
 
-> **মনে রাখুন:** এই json-server শুধু Part 1-এর বেসিক প্র্যাকটিসের জন্য। Part 2-এর আসল Connectify project-এ উপরে বলা `rnext` backend-ই ব্যবহার হবে।
+> **মনে রাখুন:** এই json-server শুধু Part 1-এর বেসিক প্র্যাকটিসের জন্য। Part 2-এর আসল fb-feed project-এ উপরে বলা `rnext` backend-ই ব্যবহার হবে।
 
 ### ২.১ json-server ইনস্টল করা
 
@@ -533,9 +533,9 @@ json-server --watch db.json --port 8000 --no-cors
 
 ---
 
-## ৮. প্রজেক্ট পরিচিতি: "Connectify"
+## ৮. প্রজেক্ট পরিচিতি: "fb-feed"
 
-আমরা একটা মিনি সোশ্যাল মিডিয়া অ্যাপ বানাবো — নাম **Connectify**। Backend হিসেবে আগে setup করা **FaceHook API** ব্যবহার করবো।
+আমরা একটা মিনি সোশ্যাল মিডিয়া অ্যাপ বানাবো — নাম **fb-feed**। Backend হিসেবে আগে setup করা **FaceHook API** ব্যবহার করবো।
 
 | Feature         | Endpoint                        | Method |
 | --------------- | ------------------------------- | ------ |
@@ -565,8 +565,8 @@ Posts ও Profile-এর প্রায় সব endpoint-এ **Bearer Token**
 Backend চলমান রেখে নতুন টার্মিনালে:
 
 ```sh
-npm create vite@latest connectify-frontend -- --template react
-cd connectify-frontend
+npm create vite@latest fb-feed-frontend -- --template react
+cd fb-feed-frontend
 npm install
 npm install axios react-router-dom
 ```
