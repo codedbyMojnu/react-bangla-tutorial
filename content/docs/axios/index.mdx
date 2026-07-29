@@ -732,7 +732,6 @@ export default useAuth;
 2. `401` পেলে Refresh Token দিয়ে নতুন Access Token নিয়ে আগের request আবার পাঠায়।
 3. Component unmount হলে interceptor সরিয়ে দেয় (memory leak বন্ধ করা)।
 
-
 ```javascript
 // src/hooks/useAxios.js
 import { useEffect } from "react";
@@ -769,7 +768,8 @@ const useAxios = () => {
 
         // originalRequest.alreadyRetried এখনো false/undefined মানে —
         // এই request-এর জন্য আমরা এখনো একবারও refresh চেষ্টা করিনি।
-        const isFirstFailure = error.response?.status === 401 && !originalRequest.alreadyRetried;
+        const isFirstFailure =
+          error.response?.status === 401 && !originalRequest.alreadyRetried;
 
         if (isFirstFailure) {
           // মার্ক করে দিলাম: "এই request একবার retry হচ্ছে"
@@ -808,7 +808,7 @@ const useAxios = () => {
 };
 
 export default useAxios;
-``` 
+```
 
 ### এই Hook (`useAxios`) কী কাজ করে?
 
@@ -816,15 +816,15 @@ export default useAxios;
 
 #### ১৩.১ Request পাঠানোর আগে
 
-* User login করা থাকলে `Authorization` header-এ **Bearer Token** যুক্ত করে।
-* যদি `FormData` (যেমন: ছবি আপলোড) পাঠানো হয়, তাহলে `Content-Type` header মুছে দেয়। কারণ browser নিজেই সঠিক `Content-Type` সেট করে। জোর করে সেট করলে file upload সমস্যা হতে পারে।
+- User login করা থাকলে `Authorization` header-এ **Bearer Token** যুক্ত করে।
+- যদি `FormData` (যেমন: ছবি আপলোড) পাঠানো হয়, তাহলে `Content-Type` header মুছে দেয়। কারণ browser নিজেই সঠিক `Content-Type` সেট করে। জোর করে সেট করলে file upload সমস্যা হতে পারে।
 
 #### ১৩.২ Response আসার পরে
 
-* Token expire হয়ে গেলে (401 Unauthorized), `refreshToken` ব্যবহার করে নতুন token আনে।
-* `setAuth()` দিয়ে নতুন token state-এ সংরক্ষণ করে।
-* এরপর নতুন token দিয়ে আগের request আবার (retry) পাঠায়।
-* যদি refresh token দিয়েও নতুন token না পাওয়া যায়, তাহলে user-কে logout করে `/login` পেজে পাঠিয়ে দেয়।
+- Token expire হয়ে গেলে (401 Unauthorized), `refreshToken` ব্যবহার করে নতুন token আনে।
+- `setAuth()` দিয়ে নতুন token state-এ সংরক্ষণ করে।
+- এরপর নতুন token দিয়ে আগের request আবার (retry) পাঠায়।
+- যদি refresh token দিয়েও নতুন token না পাওয়া যায়, তাহলে user-কে logout করে `/login` পেজে পাঠিয়ে দেয়।
 
 ### Retry কী?
 
@@ -842,22 +842,22 @@ Component unmount হলে request ও response interceptor দুটিই rem
 
 ---
 
-- Public API (Login, Register ইত্যাদি) → import { api } from "../api" ব্যবহার করা যেতে পারে। 
-- Protected API (Token লাগে) → const { api } = useAxios() ব্যবহার করো। 
+- Public API (Login, Register ইত্যাদি) → `import { api } from "../api`" ব্যবহার করা যেতে পারে।
+- Protected API (Token লাগে) → `const { api } = useAxios()` ব্যবহার করো।
 
-**আসলে const { api } = useAxios() সব API call-এর জন্যই ব্যবহার করতে পারো, এমনকি Login/Register-এর জন্যও।** 
+**আসলে `const { api } = useAxios()` সব API call-এর জন্যই ব্যবহার করতে পারো, এমনকি Login/Register-এর জন্যও।**
 
-
-* ✅ `const { api } = useAxios()` **সব API call-এর জন্য ব্যবহার করা যাবে** (Public + Protected)।
-* ✅ এটি ব্যবহার করলে একই Axios instance থাকবে এবং interceptor-এর সব সুবিধা (Authorization, Refresh Token, 401 Retry) স্বয়ংক্রিয়ভাবে কাজ করবে।
-* ✅ Codebase consistent ও maintainable থাকবে।
-* ❌ `import { api } from "../api"` আলাদাভাবে ব্যবহার করার প্রয়োজন নেই, যদি `useAxios()` সব জায়গায় ব্যবহার করো।
+- ✅ `const { api } = useAxios()` **সব API call-এর জন্য ব্যবহার করা যাবে** (Public + Protected)।
+- ✅ এটি ব্যবহার করলে একই Axios instance থাকবে এবং interceptor-এর সব সুবিধা (Authorization, Refresh Token, 401 Retry) স্বয়ংক্রিয়ভাবে কাজ করবে।
+- ✅ Codebase consistent ও maintainable থাকবে।
+- ❌ `import { api } from "../api"` আলাদাভাবে ব্যবহার করার প্রয়োজন নেই, যদি `useAxios()` সব জায়গায় ব্যবহার করো।
 
 **Recommendation:** পুরো project-এ একটি pattern অনুসরণ করো—
 
 ```js
 const { api } = useAxios();
 ```
+
 এবং সব API request এই `api` দিয়েই করো। এতে ভবিষ্যতে maintenance অনেক সহজ হবে।
 
 ---
