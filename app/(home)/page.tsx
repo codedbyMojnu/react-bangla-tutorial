@@ -110,10 +110,10 @@ const collections: {
     emoji: "💼",
   },
   {
-    href: "/docs/interview-questions",
-    title: "Interview Questions",
-    description: "প্রযুক্তিভিত্তিক ইন্টারভিউ প্রশ্নব্যাংক",
-    emoji: "🎯",
+    href: "/docs/productive-muslim",
+    title: "Productive Muslim",
+    description: "দুনিয়া ও আখিরাতের ব্যালেন্সে প্রোডাক্টিভ হওয়ার গাইড",
+    emoji: "🕌",
   },
 ];
 
