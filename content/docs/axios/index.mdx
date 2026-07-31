@@ -75,7 +75,7 @@ npm install axios
 
 Axios শিখতে একটা আসল সার্ভার লাগবে। প্রতিবার বড় backend চালু করাও ঝামেলার, তাই **json-server** দিয়ে কয়েক মিনিটেই একটা ফেক (fake) কিন্তু সত্যিকারের REST API বানিয়ে নিব।
 
-> **মনে রাখুন:** এই json-server শুধু Part 1-এর বেসিক প্র্যাকটিসের জন্য। Part 2-এর আসল Connectify project-এ উপরে বলা `rnext` backend-ই ব্যবহার হবে।
+> **মনে রাখুন:** এই json-server শুধু Part 1-এর বেসিক প্র্যাকটিসের জন্য। Part 2-এর আসল fb-feed project-এ উপরে বলা `rnext` backend-ই ব্যবহার হবে।
 
 ### ২.১ json-server ইনস্টল করা
 
@@ -533,9 +533,9 @@ json-server --watch db.json --port 8000 --no-cors
 
 ---
 
-## ৮. প্রজেক্ট পরিচিতি: "Connectify"
+## ৮. প্রজেক্ট পরিচিতি: "fb-feed"
 
-আমরা একটা মিনি সোশ্যাল মিডিয়া অ্যাপ বানাবো — নাম **Connectify**। Backend হিসেবে আগে setup করা **FaceHook API** ব্যবহার করবো।
+আমরা একটা মিনি সোশ্যাল মিডিয়া অ্যাপ বানাবো — নাম **fb-feed**। Backend হিসেবে আগে setup করা **FaceHook API** ব্যবহার করবো।
 
 | Feature         | Endpoint                        | Method |
 | --------------- | ------------------------------- | ------ |
@@ -565,8 +565,8 @@ Posts ও Profile-এর প্রায় সব endpoint-এ **Bearer Token**
 Backend চলমান রেখে নতুন টার্মিনালে:
 
 ```sh
-npm create vite@latest connectify-frontend -- --template react
-cd connectify-frontend
+npm create vite@latest fb-feed-frontend -- --template react
+cd fb-feed-frontend
 npm install
 npm install axios react-router-dom
 ```
@@ -864,21 +864,65 @@ const { api } = useAxios();
 
 ## ১৪. Auth Service — Login ও Register
 
-```javascript
-// src/services/authService.js
-import api from "../api/api";
+**Service Layer ব্যবহার করা ভালো**, তবে **ছোট project-এ এটি বাধ্যতামূলক নয়**।
 
-// নতুন একাউন্ট তৈরি
-// payload: { firstName, lastName, email, password }
-export const registerUser = (payload) => {
-  return api.post("/auth/register", payload);
-};
+### আমার Recommendation
 
-// Login করা
-export const loginUser = (email, password) => {
-  return api.post("/auth/login", { email, password });
-};
+#### ✅ ছোট Project (5–10 API)
+
+Service layer না থাকলেও সমস্যা নেই।
+
+```js
+const api = useAxios();
+
+await api.get("/posts");
+await api.post("/posts");
 ```
+
+#### ✅ Medium/Large Project (Recommended)
+
+Service layer ব্যবহার করো।
+
+```js
+// authService.js
+export const loginUser = (api, email, password) =>
+  api.post("/auth/login", { email, password });
+
+export const registerUser = (api, payload) =>
+  api.post("/auth/register", payload);
+```
+
+```js
+// Component
+const { api } = useAxios();
+
+await loginUser(api, email, password);
+```
+
+### কেন Service Layer ভালো?
+
+* ✅ সব API endpoint এক জায়গায় থাকে।
+* ✅ Component পরিষ্কার (clean) থাকে।
+* ✅ Endpoint পরিবর্তন হলে এক জায়গায় পরিবর্তন করলেই হয়।
+* ✅ একই API অনেক Component-এ reuse করা যায়।
+* ✅ বড় project maintain করা সহজ হয়।
+
+### আমার ক্ষেত্রে কী করতাম?
+
+**Architecture:**
+
+```
+Component
+    ↓
+useAxios()
+    ↓
+Service Layer
+    ↓
+API
+```
+
+এটি clean, scalable এবং professional pattern।
+
 
 এই function গুলো শুধু API call করে। State management বা navigation এখানে করা হয়নি। এতে service file clean ও testable থাকে।
 
