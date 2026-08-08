@@ -1,0 +1,91 @@
+# Prisma Migration — প্রতিদিনের সহজ গাইড
+
+একটা গল্প দিয়ে শুরু করি। ধরুন আপনি একটা বাড়ি বানাচ্ছেন।
+
+- **`schema.prisma`** হলো আপনার বাড়ির **নকশা (blueprint)** — আপনি কী বানাতে চান তার প্ল্যান।
+- **Migration file** হলো **নির্মাণ কাজের ধাপ** — নকশা অনুযায়ী আসলে কী কী কাজ (ইট গাঁথা, রঙ করা) হয়েছে তার লগ।
+- **Database** হলো **তৈরি হয়ে যাওয়া বাড়িটা** নিজে।
+
+নকশা বদলালেই বাড়ি বদলে যায় না — আপনাকে নির্মাণ কাজ (migration) করতে হয়। Prisma এই পুরো জিনিসটাই command দিয়ে ম্যানেজ করে।
+
+---
+
+## Table: রোজকার ৩টা Command
+
+| Command                             | কখন ব্যবহার করবেন                                                                |
+| ----------------------------------- | -------------------------------------------------------------------------------- |
+| `npx prisma migrate dev --name xxx` | schema-তে নতুন change করেছেন, আর নিজের local/dev database-এ apply করতে চান       |
+| `npx prisma migrate deploy`         | migration file already আছে, শুধু database-এ apply করতে চান (অন্য মেশিন/সার্ভারে) |
+| `npx prisma migrate status`         | কিছু নিয়ে confuse — schema আর database sync আছে কিনা check করতে                 |
+
+এই তিনটা মনে থাকলেই দৈনন্দিন কাজের ৯৫% কভার হয়ে যায়।
+
+---
+
+## দিনের কাজ: নতুন Schema Change করলে
+
+```powershell
+# ১. schema.prisma এডিট করুন
+# ২. migration বানান + local DB-তে apply করুন
+npx prisma migrate dev --name add_video_table
+
+# ৩. ঠিকঠাক হলো কিনা check করুন
+npx prisma migrate status
+
+# ৪. Git-এ commit করুন (migration file বাদ দেওয়া যাবে না!)
+git add prisma/schema
+git commit -m "Add video table migration"
+git push
+```
+
+> **নাম দেওয়ার সময়:** `add_video_table` টাইপ meaningful নাম দিন। `update`, `test` — এমন নাম দেবেন না, পরে বুঝবেন না কী করেছিলেন।
+
+---
+
+## অন্য মেশিন/সার্ভারে migration আনতে (নিজে নতুন migration বানাবেন না)
+
+```powershell
+git pull
+npm install
+npx prisma generate
+npx prisma migrate deploy
+npx prisma migrate status
+```
+
+শেষে যদি লেখা আসে **"Database schema is up to date!"** — বুঝবেন সব ঠিক আছে।
+
+---
+
+## দুইটা জিনিস মনে রাখুন
+
+1. **`migrate dev` বনাম `migrate deploy`**
+   - নতুন change করেছেন? → `migrate dev`
+   - Migration file আগে থেকেই আছে, শুধু apply করবেন? → `migrate deploy`
+
+2. **`db push` কখন?**
+   শুধু disposable/experiment database-এ দ্রুত টেস্ট করার জন্য। আপনার আসল dev বা Supabase database-এ কখনো `db push` না — কারণ এতে migration history তৈরি হয় না, পরে history আর database out-of-sync হয়ে যাবে।
+
+---
+
+## যদি কখনো Error দেখেন
+
+সবসময় প্রথম command একটাই:
+
+```powershell
+npx prisma migrate status
+```
+
+এটা বলে দেবে সমস্যা কোথায় — তারপর সিদ্ধান্ত নিন। কিছু বুঝতে না পারলে `resolve --applied` বা `migrate reset` এর মতো risky command চালানোর আগে দুইবার ভাবুন — এগুলো migration history/database সরাসরি বদলে দেয়।
+
+---
+
+## এক নজরে (Cheat Sheet)
+
+```
+Schema বদলেছেন           →  npx prisma migrate dev --name xxx
+Migration আছে, apply করবেন →  npx prisma migrate deploy
+কিছু বুঝছেন না             →  npx prisma migrate status
+নতুন মেশিনে ক্লোন করেছেন    →  npm i → prisma generate → migrate deploy
+```
+
+ব্যস, এই চারটা লাইনই আপনার প্রতিদিনের Prisma migration workflow।
