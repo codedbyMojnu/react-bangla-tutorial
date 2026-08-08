@@ -116,6 +116,14 @@ const collections: {
     emoji: "🎯",
   },
   {
+    href: "/docs/prisma",
+    title: "Prisma সম্পূর্ণ গাইড",
+    description:
+      "Schema, Migration, Relation থেকে শুরু করে প্রোডাকশন পর্যন্ত — সম্পূর্ণ Prisma কোর্স",
+    emoji: "🗄️",
+  },
+
+  {
     href: "/docs/productive-muslim",
     title: "Productive Muslim",
     description: "দুনিয়া ও আখিরাতের ব্যালেন্সে প্রোডাক্টিভ হওয়ার গাইড",
