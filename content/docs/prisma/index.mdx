@@ -1,0 +1,27 @@
+---
+title: Prisma Tutorial
+description: ধাপে ধাপে বাংলায় Prisma শিখুন — বেসিক থেকে অ্যাডভান্সড প্যাটার্ন পর্যন্ত।
+---
+
+এই সিরিজে আমরা আলোচনা করব — Prisma দিয়ে কীভাবে Node.js/Next.js প্রজেক্টে ডেটাবেজ ম্যানেজ করতে হয়, একদম বেসিক সেটআপ থেকে শুরু করে প্রোডাকশন-রেডি migration workflow পর্যন্ত। আমরা শুরু করব **schema.prisma** দিয়ে, তারপর শিখব relations, migration command, seeding — এইভাবে ধাপে ধাপে নিচের টেবিলের টপিকগুলো নিয়ে আলোচনা করব।
+
+### কেন Prisma শিখবেন?
+
+Raw SQL query লিখে ডেটাবেজের সাথে কাজ করা সহজ না — বানান ভুল, type mismatch, relation ভুলে যাওয়া, এসব common সমস্যা। Prisma একটা **type-safe ORM**, যেটা আপনার schema থেকে অটোমেটিক Client জেনারেট করে দেয়, VS Code-এ autocomplete পাওয়া যায়, আর migration দিয়ে ডেটাবেজ history ট্র্যাক করা যায়।
+
+---
+
+### Table 1: Prisma Tutorial-এর টপিকসমূহ
+
+| পৃষ্ঠা                    | কী শিখবেন                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------- |
+| **Setup**                 | Prisma ইনস্টল করা, PostgreSQL/Supabase কানেক্ট করা, প্রথম `schema.prisma` ফাইল বানানো |
+| **Schema Basics**         | Model, field type, id, default value — schema লেখার নিয়মকানুন                        |
+| **Relations**             | One-to-one, one-to-many, many-to-many রিলেশন কীভাবে ডিফাইন করবেন                      |
+| **Migration Command**     | `migrate dev`, `migrate deploy`, `migrate status` — প্রতিদিনের migration ওয়ার্কফ্লো  |
+| **Seeding**               | ডামি/স্টার্টার ডেটা দিয়ে ডেটাবেজ প্রি-ফিল করা                                        |
+| **Supabase + PostgreSQL** | Supabase-এ Prisma কানেক্ট করা, pooler URL, প্রোডাকশন ডিপ্লয়মেন্ট                     |
+
+---
+
+চলুন শুরু করি **Setup** সেকশন দিয়ে — প্রথমে একটা প্রজেক্টে Prisma ইনস্টল করে দেখি।

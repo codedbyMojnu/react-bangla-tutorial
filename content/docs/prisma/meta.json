@@ -1,3 +1,7 @@
 {
-  "pages": ["prisma-migration-command"]
+  "pages": ["index", "prisma-migration-command"],
+  "title": "Prisma",
+  "description": "ধাপে ধাপে বাংলায় Prisma শিখুন — বেসিক থেকে অ্যাডভান্সড প্যাটার্ন পর্যন্ত।",
+  "icon": "Database",
+  "root": true
 }
