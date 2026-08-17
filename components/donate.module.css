@@ -9,25 +9,32 @@
   font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  color: #2563eb; /* Tailwind blue-600 */
+  color: #2563eb;
+}
+
+.subtitle {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  color: #1f2937;
 }
 
 .card {
   background: #f9fafb;
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .text {
   font-size: 1rem;
   margin-bottom: 1.5rem;
   line-height: 1.6;
-  color: #374151; /* gray-700 */
+  color: #374151;
 }
 
 .highlight {
-  color: #9333ea; /* purple-600 */
+  color: #9333ea;
   font-weight: 600;
 }
 
@@ -39,10 +46,92 @@
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   text-decoration: none;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(99,102,241,0.3);
+  box-shadow: 0 6px 14px rgba(99, 102, 241, 0.3);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d1d5db, transparent);
+  margin: 1.75rem 0;
+}
+
+.paymentList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.paymentRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+}
+
+.paymentInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.paymentBadge {
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+}
+
+.paymentNumber {
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: 0.02em;
+}
+
+.copyButton {
+  background: #eef2ff;
+  color: #4338ca;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.copyButton:hover {
+  background: #e0e7ff;
+}
+
+.whatsappButton {
+  display: inline-block;
+  background: linear-gradient(90deg, #25d366, #128c7e);
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.whatsappButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(37, 211, 102, 0.3);
 }
