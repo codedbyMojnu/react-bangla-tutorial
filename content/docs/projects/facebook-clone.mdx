@@ -1,0 +1,1788 @@
+---
+title: "দেশিবুক facebook clone Project— Context API + Axios Advanced"
+description: >-
+  Real-world একটি API (FaceHook API) ব্যবহার করে হাতে-কলমে বানাবো "Deshi Book" — মিনি ফেসবুক ক্লোন। কভার করবো দুইটা ফিচার সম্পূর্ণভাবে — News Feed আর Profile Feed। থাকছে Context API, useReducer, Axios instance + interceptors + auto refresh-token, service layer, আর React Router।
+---
+
+# Deshi Book — একটি সম্পূর্ণ হাতে-কলমে প্রজেক্ট (Part 2)
+
+Part 1-এ আমরা Axios-এর বেসিক শিখেছি — GET/POST/PUT/PATCH/DELETE, instance, interceptors, error handling। এখন আসল প্রজেক্টে হাত দিব।
+
+[Part 1: Complete Axios Tutorial with React Bangla](/docs/axios)
+
+আমরা বানাবো **Deshi Book** — মিনি একটা Facebook clone। নাম শুনে ভয় পাওয়ার কিছু নেই — পুরো Facebook বানাচ্ছি না। ইচ্ছা করেই আমরা স্কোপ ছোট রাখছি, কিন্তু যা বানাবো সেটা **১০০% functional** হবে। শুধু দুইটা ফিচার কভার করব:
+
+1. **News Feed** — সব ইউজারের পোস্ট একসাথে দেখা, নতুন পোস্ট (টেক্সট + ছবি) দেওয়া, Edit, Delete, Like/Unlike, Comment করা, Comment Delete করা।
+2. **Profile Feed** — নিজের প্রোফাইল (নাম, Avatar) দেখা ও Update করা, আর নিজের করা পোস্টগুলো (own feed) আলাদাভাবে দেখা।
+
+> এই দুইটা ফিচারের পেছনে থাকা **Login/Register/Protected Route** সিস্টেমটাও বানাতে হবে — কারণ ছাড়া Feed বা Profile কোনোটাই কাজ করবে না। এটাকে তৃতীয় "ফিচার" হিসেবে না ভেবে বাকি দুইটা ফিচারের **ভিত্তি (infrastructure)** হিসেবে ভাবুন।
+
+ব্যবহার করবো:
+
+- **Context API** — Auth state আর Profile state পুরো app জুড়ে শেয়ার করতে।
+- **Axios Advanced** — Instance, Interceptors, FormData upload, Auto Refresh-Token, `Promise.all`, `AbortController`।
+- **Service Layer** — সব endpoint এক জায়গায় সংগঠিত।
+- **React Router** — Multi-page feel, Protected Route।
+
+---
+
+## ৮. প্রজেক্ট পরিচিতি — Deshi Book আসলে কী?
+
+আমাদের Backend হিসেবে আমরা ব্যবহার করব আগে থেকে তৈরি একটা real API — **FaceHook API** (LearnWithSumit)। এই গাইডের সব endpoint, field name, আর request/response ফরম্যাট আমরা সরাসরি এর **আসল Postman Collection** থেকে verify করে নিয়েছি — তাই এই টিউটোরিয়াল অনুসরণ করলে আপনার কোড সত্যিকারের API-র সাথে কাজ করবে।
+
+### ৮.১ প্রস্তুতি — Backend রেডি আছে তো?
+
+শুরুর আগে নিশ্চিত করুন:
+
+- আপনার FaceHook API backend `http://localhost:3000` পোর্টে চলছে (Postman Collection-এর `BASE_URL` variable-ও এটাই)।
+- Postman-এ Collection import করে নিন — কোনো endpoint-এর response নিয়ে সন্দেহ হলে সরাসরি Postman দিয়ে টেস্ট করে দেখে নিতে পারবেন। **এই habit-টা সারাজীবন কাজে দিবে** — কোনো real-world API-ই ১০০% predictable documentation দেয় না, নিজে টেস্ট করে verify করাটাই আসল স্কিল।
+
+**১. Repository ক্লোন করুন**
+
+```sh
+git clone https://github.com/Learn-with-Sumit/rnext.git
+```
+
+**২. প্রজেক্ট ডিরেক্টরিতে যান**
+
+```sh
+cd rnext
+```
+
+**৩. সঠিক ব্রাঞ্চে switch করুন**
+
+```sh
+git switch 5.15
+```
+
+**৪. Backend ফোল্ডারে যান**
+
+```sh
+cd backend-server
+```
+
+**৫. Dependency ইনস্টল করুন**
+
+```sh
+npm i
+```
+
+**৬. Dev server চালু করুন**
+
+```sh
+npm run dev
+```
+
+সব ঠিক থাকলে backend `http://localhost:3000`-এ চলবে (Postman Collection-এর `BASE_URL`-এর সাথে মিলে যাবে)। এই টার্মিনালটা চালু রেখে আরেকটা নতুন টার্মিনালে frontend-এর কাজ (সেকশন ৯) শুরু করবেন।
+
+> মনে রাখবেন — backend চালু না থাকলে Login/Register থেকে শুরু করে সবকিছুতেই `Network Error` আসবে, তাই এই স্টেপ সবার আগে নিশ্চিত করে নেওয়া জরুরি।
+
+### ৮.২ Endpoints — verified reference
+
+_Table 8.1: FaceHook API — সব Endpoint (Postman Collection থেকে verified)_
+
+| Feature        | Method | Endpoint                        | Auth লাগে? | Body / Notes                                             |
+| -------------- | ------ | ------------------------------- | ---------- | -------------------------------------------------------- |
+| রেজিস্ট্রেশন   | POST   | `/auth/register`                | ❌ না      | `{ email, password, firstName, lastName }`               |
+| লগইন           | POST   | `/auth/login`                   | ❌ না      | `{ email, password }`                                    |
+| Token রিফ্রেশ  | POST   | `/auth/refresh-token`           | ❌ না      | `{ refreshToken }` → response: `{ token, refreshToken }` |
+| সব পোস্ট       | GET    | `/posts`                        | ✅ হ্যাঁ   | —                                                        |
+| একটা পোস্ট     | GET    | `/posts/:id`                    | ✅ হ্যাঁ   | —                                                        |
+| পোস্ট তৈরি     | POST   | `/posts`                        | ✅ হ্যাঁ   | FormData: `postType`, `content`, `image` (ঐচ্ছিক ফাইল)   |
+| পোস্ট আপডেট    | PATCH  | `/posts/:id`                    | ✅ হ্যাঁ   | FormData: `content`                                      |
+| পোস্ট ডিলিট    | DELETE | `/posts/:id`                    | ✅ হ্যাঁ   | —                                                        |
+| লাইক/আনলাইক    | PATCH  | `/posts/:id/like`               | ✅ হ্যাঁ   | body লাগে না — toggle                                    |
+| কমেন্ট করা     | PATCH  | `/posts/:id/comment`            | ✅ হ্যাঁ   | `{ comment }`                                            |
+| কমেন্ট ডিলিট   | DELETE | `/posts/:id/comment/:commentId` | ✅ হ্যাঁ   | —                                                        |
+| প্রোফাইল দেখা  | GET    | `/profile/:id`                  | ✅ হ্যাঁ   | —                                                        |
+| প্রোফাইল আপডেট | PATCH  | `/profile/:id`                  | ✅ হ্যাঁ   | `{ firstname, lastName }` ⚠️ নিচে দেখুন                  |
+| Avatar আপলোড   | POST   | `/profile/:id/avatar`           | ✅ হ্যাঁ   | FormData: `avatar` (ফাইল)                                |
+| ছবি Preview    | GET    | `/uploads/:filename`            | —          | Static file — শুধু `<img src>`-এ ব্যবহার হবে             |
+
+> ### ⚠️ একটা জরুরি "backend quirk" — এখনই মাথায় গেঁথে নিন
+>
+> সব ভালো API perfectly consistent হয় না — বাস্তবের API-তে এমন inconsistency প্রায়ই দেখবেন। এই API-তেই দুইটা উদাহরণ:
+>
+> 1. **Registration**-এ field-এর নাম `firstName` (বড় হাতের N), কিন্তু **Profile Update**-এ field-এর নাম `firstname` (ছোট হাতের n)। আর একই body-তে `lastName`-এ আবার বড় হাতের N। মানে একই request body-তে `{ firstname, lastName }` — দুইটা আলাদা কেসিং, একসাথে!
+> 2. **Post তৈরি**র সময় form field-এর নাম `content`, কিন্তু Documentation-এর example response-এ post-এর টেক্সট ফিল্ডটাকে দেখানো হয়েছে `body` নামে।
+>
+> এগুলো typo না, এগুলোই real backend-এর বাস্তবতা। টাইপ করার সময় **হুবহু যেভাবে দেখানো হয়েছে সেভাবেই টাইপ করুন** — নিজের বুদ্ধিতে "ঠিক" করতে যাবেন না, নাহলে `undefined` পাবেন। আমরা কোডে এই জায়গাগুলোয় আলাদা করে মন্তব্য (comment) লিখে রাখব যাতে ভুলে না যান।
+
+---
+
+## ৯. প্রজেক্ট Setup
+
+### ৯.১ Vite দিয়ে Frontend তৈরি করা
+
+Backend চালু রেখে নতুন টার্মিনালে:
+
+```sh
+npm create vite@latest deshi-book -- --template react
+cd deshi-book
+npm install
+```
+
+### ৯.২ Tailwind CSS
+
+```sh
+npm install tailwindcss @tailwindcss/vite
+```
+
+`vite.config.js` আপডেট করুন:
+
+```javascript
+// vite.config.js
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+```
+
+`src/index.css`-এ:
+
+```css
+@import "tailwindcss";
+```
+
+### ৯.৩ axios আর react-router ইনস্টল করা
+
+```sh
+npm install axios react-router
+```
+
+> ### 🚨 `react-router-dom` না, শুধু `react-router`
+>
+> পুরনো টিউটোরিয়ালে `react-router-dom` ইনস্টল করতে দেখবেন — এখন আর সেটার দরকার নেই। বর্তমান React Router (v8, ২০২৬-এ current release) থেকে `react-router-dom` প্যাকেজটাই আর নেই। এখন সবকিছু — `BrowserRouter`, `Routes`, `Route`, `Link`, `Navigate`, `useNavigate` — সবই সরাসরি **`react-router`** প্যাকেজ থেকে import হয়। পুরনো ব্লগ/ভিডিও দেখে `react-router-dom` বসালে build-ই fail করবে। এই টিউটোরিয়ালের সব জায়গায় আমরা `"react-router"` থেকেই import করব — মনে রাখবেন।
+
+### ৯.৪ Folder Structure
+
+```text
+src/
+├── actions/
+│   └── index.js               ← সব action type এক জায়গায়
+├── api/
+│   └── api.js                 ← মূল Axios instance
+├── context/
+│   ├── AuthContext.jsx        ← Login state সবখানে শেয়ার
+│   └── ProfileContext.jsx     ← Profile state সবখানে শেয়ার
+├── hooks/
+│   ├── useAuth.js             ← AuthContext-এর সহজ hook
+│   ├── useAxios.js            ← Auth-aware API hook (interceptors সহ)
+│   └── useProfile.js          ← ProfileContext-এর সহজ hook
+├── reducers/
+│   └── profileReducer.js      ← Profile state management
+├── services/
+│   ├── authService.js         ← register, login, refresh
+│   ├── postService.js         ← News Feed-এর সব CRUD
+│   └── profileService.js      ← Profile Feed-এর profile ও avatar
+├── components/
+│   ├── LoginForm.jsx
+│   ├── RegisterForm.jsx
+│   ├── ProtectedRoute.jsx
+│   ├── Navbar.jsx
+│   ├── feed/
+│   │   ├── PostFeed.jsx
+│   │   ├── CreatePostForm.jsx
+│   │   └── PostCard.jsx
+│   └── profile/
+│       ├── ProfileImage.jsx
+│       └── ProfileNameEditor.jsx
+├── pages/
+│   ├── LoginPage.jsx
+│   ├── RegisterPage.jsx
+│   ├── FeedPage.jsx           ← News Feed
+│   └── ProfilePage.jsx        ← Profile Feed
+└── App.jsx
+```
+
+### ৯.৫ .env ফাইল
+
+প্রজেক্টের root-এ:
+
+```bash
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+### ৯.৬ Axios Instance তৈরি
+
+```javascript
+// src/api/api.js
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  timeout: 15000,
+});
+
+export default api;
+```
+
+> এখনই Authorization header বসাবেন না — সেটা `useAxios` hook-এ Interceptor দিয়ে dynamically করবো, সেকশন ১৩-এ।
+
+---
+
+## ১০. JWT কী? কেন দরকার?
+
+Login সফল হলে server দুটো জিনিস ফেরত দেয় — একটা `user` object আর একটা `token` object (`token` আর `refreshToken`)।
+
+**Access Token** — আপনার পরিচয়পত্র। প্রতিটা protected API call-এ (Posts আর Profile — উপরের টেবিলে ✅ দেওয়া সব রুট) Header-এ এটা পাঠাতে হয়। মেয়াদ কম — সাধারণত ১৫–৩০ মিনিট।
+
+**Refresh Token** — মেয়াদ শেষে নতুন Access Token চাওয়ার জন্য। মেয়াদ বেশি — কয়েক দিন থেকে সপ্তাহ। Access Token expire হলে user-কে না জানিয়ে চুপচাপ নতুন Access Token আনা যায়।
+
+**আমাদের কাজ:**
+
+1. Login-এর পর দুটো token state-এ save করা।
+2. প্রতিটা protected request-এ Access Token পাঠানো।
+3. `401` পেলে চুপচাপ Refresh Token দিয়ে নতুন Access Token নেওয়া, তারপর আগের request-টা আবার পাঠানো।
+4. Refresh Token-ও কাজ না করলে logout করে login page-এ পাঠানো।
+
+এই পুরো flow-টা একটা **Interceptor** দিয়ে অটোমেট করব — এটাই "Axios Advanced"-এর সবচেয়ে গুরুত্বপূর্ণ অংশ।
+
+---
+
+## ১১. Actions — State পরিবর্তনের নাম এক জায়গায়
+
+```javascript
+// src/actions/index.js
+export const actions = {
+  profile: {
+    PROFILE_FETCHING: "PROFILE_FETCHING",
+    PROFILE_FETCHED: "PROFILE_FETCHED",
+    PROFILE_FETCH_ERROR: "PROFILE_FETCH_ERROR",
+    PROFILE_UPDATED: "PROFILE_UPDATED",
+    IMAGE_UPDATED: "IMAGE_UPDATED",
+  },
+};
+```
+
+এভাবে string literal সরাসরি না লিখে একটা constant object-এ রাখলে IDE autocomplete দেয়, আর typo হলে সাথে সাথে ধরা পড়ে।
+
+---
+
+## ১২. AuthContext — Login State সবখানে শেয়ার করা
+
+```jsx
+// src/context/AuthContext.jsx
+import { createContext, useState } from "react";
+
+const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState(null);
+  // auth object: { user: { id, firstName, lastName, email, avatar }, authToken, refreshToken }
+
+  return (
+    <AuthContext.Provider value={{ auth, setAuth }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export default AuthContext;
+```
+
+```javascript
+// src/hooks/useAuth.js
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
+
+const useAuth = () => useContext(AuthContext);
+
+export default useAuth;
+```
+
+`AuthProvider` পুরো app-এর সবচেয়ে বাইরের স্তরে বসবে (App.jsx-এ দেখবো), যাতে যেকোনো component থেকে `useAuth()` কল করে login state পাওয়া যায়।
+
+---
+
+## ১৩. useAxios Hook — Auth-aware API Client (Axios Advanced-এর মূল অংশ)
+
+এই hook-ই এই পুরো প্রজেক্টের সবচেয়ে গুরুত্বপূর্ণ অংশ। এটা তিনটা কাজ করে:
+
+1. প্রতিটা request-এর আগে automatic `Authorization` header বসায়।
+2. `401` পেলে Refresh Token দিয়ে নতুন Access Token নিয়ে আগের request আবার পাঠায় (retry)।
+3. Component unmount হলে interceptor সরিয়ে ফেলে (memory leak বন্ধ করা)।
+
+```javascript
+// src/hooks/useAxios.js
+import { useEffect } from "react";
+import api from "../api/api";
+import useAuth from "./useAuth";
+
+const useAxios = () => {
+  const { auth, setAuth } = useAuth();
+
+  useEffect(() => {
+    // Request Interceptor — প্রতিটা request পাঠানোর ঠিক আগে চলে
+    const requestIntercept = api.interceptors.request.use(
+      (config) => {
+        const token = auth?.authToken;
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        // FormData (ছবি আপলোড) হলে Content-Type নিজে সেট করবেন না —
+        // browser নিজেই সঠিক boundary সহ multipart/form-data বসায়
+        if (config.data instanceof FormData) {
+          delete config.headers["Content-Type"];
+        } else {
+          config.headers["Content-Type"] = "application/json";
+        }
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
+
+    // Response Interceptor — response আসার পরে, catch-এ পৌঁছানোর আগে চলে
+    const responseIntercept = api.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+
+        // এখনো একবারও refresh চেষ্টা করা হয়নি — এমন 401 হলে retry করব
+        const isFirstFailure =
+          error.response?.status === 401 && !originalRequest.alreadyRetried;
+
+        if (isFirstFailure) {
+          // মার্ক করে দিলাম — এই request একবার retry হয়ে গেছে
+          // এর ফলে refresh নিজেও fail করলে আবার এই if-এ ঢুকবে না — infinite loop বন্ধ
+          originalRequest.alreadyRetried = true;
+
+          try {
+            const { data } = await api.post("/auth/refresh-token", {
+              refreshToken: auth?.refreshToken,
+            });
+
+            setAuth((prev) => ({
+              ...prev,
+              authToken: data.token,
+              refreshToken: data.refreshToken,
+            }));
+
+            originalRequest.headers.Authorization = `Bearer ${data.token}`;
+            return api(originalRequest);
+          } catch (refreshError) {
+            // Refresh token-ও কাজ করলো না — session শেষ
+            setAuth(null);
+            window.location.href = "/login";
+            return Promise.reject(refreshError);
+          }
+        }
+
+        return Promise.reject(error);
+      },
+    );
+
+    return () => {
+      api.interceptors.request.eject(requestIntercept);
+      api.interceptors.response.eject(responseIntercept);
+    };
+  }, [auth]);
+
+  return { api };
+};
+
+export default useAxios;
+```
+
+### ১৩.১ Retry কী, আর `alreadyRetried` কেন লাগলো?
+
+`Retry` মানে একটা request আরেকবার চেষ্টা করা। এখানে `alreadyRetried` ফ্ল্যাগ ব্যবহার করা হয়েছে, যাতে একই request শুধু **একবারই** retry হয়। এটা না থাকলে — refresh token নিজেও যদি ব্যর্থ হয়, তাহলে সেই ব্যর্থতাও আবার `401` দেবে, আর কোড আবার refresh চেষ্টা করবে — infinite loop।
+
+### ১৩.২ Public API vs Protected API
+
+- Register, Login-এর মতো public route-এ token লাগে না, কিন্তু ক্ষতিও নেই — `useAxios()`-এর `api` দিয়েই এগুলো কল করা যায়।
+- **সুপারিশ:** পুরো প্রজেক্টে একটাই pattern অনুসরণ করুন — `const { api } = useAxios();` — সব API call এই দিয়েই করুন। এতে ভবিষ্যতে maintenance সহজ হয়।
+
+---
+
+## ১৪. Service Layer — কেন এবং কখন দরকার?
+
+Service layer মানে হলো, `api.get(...)`, `api.post(...)` — এই raw axios call গুলো component-এ সরাসরি না লিখে আলাদা function-এ মুড়িয়ে রাখা।
+
+_Table 14.1: ছোট vs বড় প্রজেক্টে service layer_
+
+| প্রজেক্টের আকার                   | সুপারিশ                                                              |
+| --------------------------------- | -------------------------------------------------------------------- |
+| ছোট (৫–১০টা endpoint)             | সরাসরি `api.get()`/`api.post()` লিখলেও চলে                           |
+| Medium/Large (আমাদের এই প্রজেক্ট) | Service layer ব্যবহার করুন — endpoint বদলালে এক জায়গায় বদলালেই হবে |
+
+**Architecture pattern:**
+
+```
+Component → useAxios() → Service Layer (postService/profileService) → API
+```
+
+এই pattern পুরো টিউটোরিয়াল জুড়ে অনুসরণ করব।
+
+---
+
+## ১৫. Auth Service — Register, Login, Refresh
+
+```javascript
+// src/services/authService.js
+import api from "../api/api";
+
+export const registerUser = ({ email, password, firstName, lastName }) =>
+  api.post("/auth/register", { email, password, firstName, lastName });
+
+export const loginUser = (email, password) =>
+  api.post("/auth/login", { email, password });
+
+export const refreshAccessToken = (refreshToken) =>
+  api.post("/auth/refresh-token", { refreshToken });
+```
+
+> লক্ষ্য করুন — Register/Login-এর body-তে `firstName`/`lastName` — দুটোতেই বড় হাতের **N**। এই দুটো route-এ কোনো quirk নেই। Quirk শুধু Profile Update-এ, সেকশন ২৬-এ দেখবো।
+
+---
+
+## ১৬. Login Form
+
+```jsx
+// src/components/LoginForm.jsx
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
+import { loginUser } from "../services/authService";
+
+export default function LoginForm() {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await loginUser(form.email, form.password);
+
+      // Server থেকে আসা response: { user: {...}, token: { token, refreshToken } }
+      const { user, token } = response.data;
+      const { token: authToken, refreshToken } = token;
+
+      setAuth({ user, authToken, refreshToken });
+      navigate("/");
+    } catch (err) {
+      setError(
+        err.response?.data?.error || "লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-sm mx-auto mt-10 space-y-3 bg-white p-6 rounded-lg shadow border"
+    >
+      <h2 className="text-xl font-bold mb-2">লগইন করুন</h2>
+      <input
+        name="email"
+        type="email"
+        placeholder="ইমেইল"
+        value={form.email}
+        onChange={handleChange}
+        className="w-full border rounded p-2"
+        required
+      />
+      <input
+        name="password"
+        type="password"
+        placeholder="পাসওয়ার্ড"
+        value={form.password}
+        onChange={handleChange}
+        className="w-full border rounded p-2"
+        required
+      />
+      {error && <p className="text-red-600 text-sm">{error}</p>}
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-60"
+      >
+        {loading ? "লগইন হচ্ছে..." : "লগইন করুন"}
+      </button>
+    </form>
+  );
+}
+```
+
+> ⚠️ Login response-এর ঠিক shape (`user` object-এ `firstName`/`lastName` ঠিক কোন casing-এ আসে) Postman collection-এ কোনো saved example নেই। প্রথমবার login টেস্ট করে **`console.log(response.data)`** দিয়ে verify করে নিন, তারপর প্রয়োজনে উপরের কোড এডজাস্ট করুন। এটাই real-world API-র সাথে কাজ করার সঠিক অভ্যাস।
+
+---
+
+## ১৭. Register Form
+
+```jsx
+// src/components/RegisterForm.jsx
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
+import { registerUser, loginUser } from "../services/authService";
+
+export default function RegisterForm() {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      // প্রথমে register — এই route auto-login response দেয় কিনা কনফার্ম নেই,
+      // তাই safe approach: register-এর পর আলাদা করে login call করা
+      await registerUser(form);
+
+      const loginRes = await loginUser(form.email, form.password);
+      const { user, token } = loginRes.data;
+      const { token: authToken, refreshToken } = token;
+
+      setAuth({ user, authToken, refreshToken });
+      navigate("/");
+    } catch (err) {
+      setError(
+        err.response?.data?.error ||
+          "রেজিস্ট্রেশন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-sm mx-auto mt-10 space-y-3 bg-white p-6 rounded-lg shadow border"
+    >
+      <h2 className="text-xl font-bold mb-2">নতুন একাউন্ট খুলুন</h2>
+      <input
+        name="firstName"
+        placeholder="প্রথম নাম"
+        value={form.firstName}
+        onChange={handleChange}
+        className="w-full border rounded p-2"
+        required
+      />
+      <input
+        name="lastName"
+        placeholder="শেষ নাম"
+        value={form.lastName}
+        onChange={handleChange}
+        className="w-full border rounded p-2"
+        required
+      />
+      <input
+        name="email"
+        type="email"
+        placeholder="ইমেইল"
+        value={form.email}
+        onChange={handleChange}
+        className="w-full border rounded p-2"
+        required
+      />
+      <input
+        name="password"
+        type="password"
+        placeholder="পাসওয়ার্ড"
+        value={form.password}
+        onChange={handleChange}
+        className="w-full border rounded p-2"
+        required
+      />
+      {error && <p className="text-red-600 text-sm">{error}</p>}
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-60"
+      >
+        {loading ? "একাউন্ট তৈরি হচ্ছে..." : "রেজিস্ট্রেশন করুন"}
+      </button>
+    </form>
+  );
+}
+```
+
+---
+
+## ১৮. ProtectedRoute — অননুমোদিত প্রবেশ আটকানো
+
+Login না করে কেউ যেন সরাসরি Feed বা Profile page-এ না যেতে পারে:
+
+```jsx
+// src/components/ProtectedRoute.jsx
+import { Navigate } from "react-router";
+import useAuth from "../hooks/useAuth";
+
+export default function ProtectedRoute({ children }) {
+  const { auth } = useAuth();
+
+  if (!auth) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+```
+
+---
+
+# ফিচার ১: News Feed
+
+এখন থেকে আমরা প্রথম ফিচার — **News Feed** বানানো শুরু করব। সব ইউজারের পোস্ট এখানে একসাথে দেখা যাবে, নতুন পোস্ট দেওয়া যাবে (টেক্সট + ছবি), লাইক/কমেন্ট করা যাবে, নিজের পোস্ট Edit/Delete করা যাবে।
+
+## ১৯. Post Service — News Feed-এর সব CRUD Function এক জায়গায়
+
+```javascript
+// src/services/postService.js
+import api from "../api/api";
+
+// সব পোস্ট আনা (News Feed)
+export const getPosts = () => api.get("/posts");
+
+// একটা পোস্ট আনা
+export const getPost = (id) => api.get(`/posts/${id}`);
+
+// নতুন পোস্ট তৈরি (টেক্সট, ছবি, অথবা দুইটাই)
+export const createPost = ({ content, image }, onUploadProgress) => {
+  const formData = new FormData();
+
+  // postType তিন রকম হতে পারে: 'text' | 'image' | 'both'
+  const postType = image && content ? "both" : image ? "image" : "text";
+  formData.append("postType", postType);
+  formData.append("content", content);
+  if (image) {
+    formData.append("image", image);
+  }
+
+  return api.post("/posts", formData, {
+    onUploadProgress: (progressEvent) => {
+      if (!onUploadProgress) return;
+      const percent = Math.round(
+        (progressEvent.loaded * 100) / (progressEvent.total || 1),
+      );
+      onUploadProgress(percent);
+    },
+  });
+};
+
+// পোস্ট আপডেট (শুধু টেক্সট — ছবি বদলানো এই endpoint সাপোর্ট করে না)
+export const updatePost = (id, { content }) => {
+  const formData = new FormData();
+  formData.append("content", content);
+  return api.patch(`/posts/${id}`, formData);
+};
+
+// পোস্ট ডিলিট
+export const deletePost = (id) => api.delete(`/posts/${id}`);
+
+// লাইক / আনলাইক — toggle, body লাগে না
+export const toggleLike = (id) => api.patch(`/posts/${id}/like`);
+
+// কমেন্ট করা
+export const addComment = (postId, comment) =>
+  api.patch(`/posts/${postId}/comment`, { comment });
+
+// কমেন্ট ডিলিট
+export const deleteComment = (postId, commentId) =>
+  api.delete(`/posts/${postId}/comment/${commentId}`);
+```
+
+> **এই `api` কোথা থেকে token পাচ্ছে?** এই file-এ সরাসরি token বসানো নেই। JavaScript module singleton-এর কারণে এটা কাজ করে — `useAxios` hook যে `api` instance-এ interceptor বসায় (সেকশন ১৩), সেটাই এই service file-এর `api` — দুটোই একই `src/api/api.js` থেকে import করা। তাই যখন কোনো component `useAxios()` কল করে, পুরো app জুড়ে সেই একই `api`-তে interceptor কাজ করতে থাকে।
+
+## ২০. PostFeed — News Feed-এর মূল লিস্ট
+
+```jsx
+// src/components/feed/PostFeed.jsx
+import { useEffect, useState } from "react";
+import useAxios from "../../hooks/useAxios";
+import { getPosts } from "../../services/postService";
+import PostCard from "./PostCard";
+
+export default function PostFeed() {
+  useAxios(); // interceptor activate করতে হবে — return value এখানে দরকার নেই
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchPosts = async () => {
+      try {
+        const res = await getPosts();
+        if (isMounted) setPosts(res.data);
+      } catch {
+        if (isMounted) setError("পোস্ট লোড করা যায়নি। পরে আবার চেষ্টা করুন।");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchPosts();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (loading) return <p className="text-center mt-10">পোস্ট লোড হচ্ছে...</p>;
+  if (error) return <p className="text-red-600 text-center mt-10">{error}</p>;
+  if (posts.length === 0)
+    return <p className="text-center mt-10">এখনো কোনো পোস্ট নেই।</p>;
+
+  return (
+    <div className="space-y-4">
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} onListChange={setPosts} />
+      ))}
+    </div>
+  );
+}
+```
+
+`isMounted` flag কেন? — Component unmount হওয়ার পরেও কখনো কখনো async API call শেষ হয়ে `setState` কল করার চেষ্টা করে। React এতে warning দেয়; `isMounted` দিয়ে সেটা ঠেকানো হয়।
+
+## ২১. CreatePostForm — ছবি আপলোড + Progress Bar
+
+```jsx
+// src/components/feed/CreatePostForm.jsx
+import { useState } from "react";
+import useAxios from "../../hooks/useAxios";
+import { createPost } from "../../services/postService";
+
+export default function CreatePostForm({ onCreated }) {
+  useAxios();
+  const [content, setContent] = useState("");
+  const [image, setImage] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!content.trim() && !image) return;
+
+    setLoading(true);
+    setProgress(0);
+    setError("");
+
+    try {
+      const res = await createPost({ content, image }, setProgress);
+      onCreated?.(res.data);
+      setContent("");
+      setImage(null);
+    } catch (err) {
+      setError(
+        err.response?.data?.error || "পোস্ট তৈরি হয়নি। আবার চেষ্টা করুন।",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white border rounded-lg p-4 shadow-sm space-y-3"
+    >
+      <textarea
+        rows={3}
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="আপনি কী ভাবছেন?"
+        className="w-full border rounded p-2 resize-none"
+      />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+      />
+      {loading && (
+        <div className="flex items-center gap-2">
+          <progress value={progress} max="100" className="w-full" />
+          <span className="text-sm text-gray-500">{progress}%</span>
+        </div>
+      )}
+      {error && <p className="text-red-600 text-sm">{error}</p>}
+      <div className="text-right">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 disabled:opacity-60"
+        >
+          {loading ? "পোস্ট হচ্ছে..." : "পোস্ট করুন"}
+        </button>
+      </div>
+    </form>
+  );
+}
+```
+
+## ২২. PostCard — Edit, Delete, Like, Comment (সব একসাথে)
+
+```jsx
+// src/components/feed/PostCard.jsx
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
+import {
+  updatePost,
+  deletePost,
+  toggleLike,
+  addComment,
+  deleteComment,
+} from "../../services/postService";
+
+export default function PostCard({ post, onListChange }) {
+  useAxios();
+  const { auth } = useAuth();
+
+  const [editing, setEditing] = useState(false);
+  // ⚠️ কোন field নাম response-এ আসবে (content নাকি body) নিশ্চিত না —
+  // তাই দুটোই fallback হিসেবে চেক করা হচ্ছে
+  const [content, setContent] = useState(post.content ?? post.body ?? "");
+  const [commentText, setCommentText] = useState("");
+
+  const removeFromList = (id) =>
+    onListChange((prev) => prev.filter((p) => p.id !== id));
+
+  // পুরো list re-fetch না করে শুধু একটা পোস্ট update করা
+  const replaceInList = (updated) =>
+    onListChange((prev) =>
+      prev.map((p) => (p.id === updated.id ? updated : p)),
+    );
+
+  const handleUpdate = async () => {
+    try {
+      const res = await updatePost(post.id, { content });
+      replaceInList(res.data);
+      setEditing(false);
+    } catch (err) {
+      console.error("আপডেট ব্যর্থ:", err.message);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("পোস্টটা কি সত্যিই মুছবে?")) return;
+    try {
+      await deletePost(post.id);
+      removeFromList(post.id);
+    } catch (err) {
+      console.error("ডিলিট ব্যর্থ:", err.message);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const res = await toggleLike(post.id);
+      replaceInList(res.data);
+    } catch (err) {
+      console.error("লাইক ব্যর্থ:", err.message);
+    }
+  };
+
+  const handleComment = async (e) => {
+    e.preventDefault();
+    if (!commentText.trim()) return;
+    try {
+      const res = await addComment(post.id, commentText);
+      replaceInList(res.data);
+      setCommentText("");
+    } catch (err) {
+      console.error("কমেন্ট ব্যর্থ:", err.message);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const res = await deleteComment(post.id, commentId);
+      replaceInList(res.data);
+    } catch (err) {
+      console.error("কমেন্ট ডিলিট ব্যর্থ:", err.message);
+    }
+  };
+
+  // post.author-এ firstname/lastname (ছোট হাতের অক্ষর) — Postman
+  // collection-এর Create Post example response থেকে confirmed
+  const authorName =
+    `${post.author?.firstname ?? ""} ${post.author?.lastname ?? ""}`.trim() ||
+    "Deshi Book User";
+
+  const isOwner = post.author?.id === auth?.user?.id;
+
+  // likes array-এ id বা object — কোন shape আসবে নিশ্চিত না, দুটোই handle করা হচ্ছে
+  const likedByMe = post.likes?.some((l) => (l?.id ?? l) === auth?.user?.id);
+
+  return (
+    <div className="bg-white p-4 rounded-lg shadow border space-y-3">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-gray-300" />
+        <div>
+          <h3 className="font-semibold">{authorName}</h3>
+          <p className="text-xs text-gray-500">
+            {post.createAt
+              ? new Date(post.createAt).toLocaleString()
+              : "Just now"}
+          </p>
+        </div>
+      </div>
+
+      {editing ? (
+        <div className="space-y-2">
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="w-full border rounded p-2"
+            rows={3}
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={handleUpdate}
+              className="bg-blue-600 text-white px-3 py-1 rounded"
+            >
+              সেভ করুন
+            </button>
+            <button
+              onClick={() => setEditing(false)}
+              className="px-3 py-1 rounded border"
+            >
+              বাতিল
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          <p className="whitespace-pre-wrap">{post.content ?? post.body}</p>
+          {post.image && (
+            <img
+              src={`${import.meta.env.VITE_API_BASE_URL}/${post.image}`}
+              alt="পোস্টের ছবি"
+              className="rounded-lg max-h-96 object-cover"
+            />
+          )}
+          {isOwner && (
+            <div className="flex gap-3 text-sm">
+              <button
+                onClick={() => setEditing(true)}
+                className="text-blue-600"
+              >
+                এডিট
+              </button>
+              <button onClick={handleDelete} className="text-red-600">
+                ডিলিট
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="flex items-center gap-4 border-t pt-2 text-sm">
+        <button
+          onClick={handleLike}
+          className={
+            likedByMe ? "text-blue-600 font-semibold" : "text-gray-600"
+          }
+        >
+          👍 লাইক ({post.likes?.length ?? 0})
+        </button>
+        <span className="text-gray-500">
+          💬 {post.comments?.length ?? 0} কমেন্ট
+        </span>
+      </div>
+
+      <ul className="space-y-1 text-sm">
+        {post.comments?.map((c) => (
+          <li key={c.id} className="flex justify-between items-start">
+            <span>
+              <strong>
+                {c.author?.firstname ?? c.author?.firstName ?? "User"}:
+              </strong>{" "}
+              {c.comment}
+            </span>
+            <button
+              onClick={() => handleDeleteComment(c.id)}
+              className="text-gray-400 hover:text-red-600 ml-2"
+              title="কমেন্ট ডিলিট করুন"
+            >
+              ✕
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <form onSubmit={handleComment} className="flex gap-2">
+        <input
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          placeholder="একটা কমেন্ট লিখুন..."
+          className="flex-1 border rounded p-2 text-sm"
+        />
+        <button
+          type="submit"
+          className="bg-gray-800 text-white px-3 rounded text-sm"
+        >
+          কমেন্ট
+        </button>
+      </form>
+    </div>
+  );
+}
+```
+
+**একটা কৌশল লক্ষ্য করুন:** Like, Comment, বা Update-এর পর পুরো post list আবার fetch করা হচ্ছে না। প্রতিটা endpoint-ই updated পোস্টের পুরো object ফেরত দেয় (Create Post-এর example response দেখুন — সেকশন ৮.২), তাই শুধু সেই একটা post-কে server থেকে আসা নতুন data দিয়ে replace করা হচ্ছে — App অনেক দ্রুত মনে হয়।
+
+---
+
+# ফিচার ২: Profile Feed
+
+এবার দ্বিতীয় ফিচার — নিজের **Profile** (নাম + Avatar) দেখা/আপডেট করা, আর নিজের করা পোস্টগুলো (own feed) আলাদা করে দেখা।
+
+## ২৩. Profile System — Reducer + Context Pattern
+
+Profile page-এ একসাথে অনেক ধরনের action চলে — data fetch, avatar বদলানো, নাম update করা। এত কিছু শুধু `useState` দিয়ে component-এ রাখলে component বিশাল আর জট পাকানো হয়ে যায়। এর সমাধান — **Reducer** pattern, যেটা Redux-এর মতোই কাজ করে কিন্তু কোনো external library ছাড়াই, শুধু React-এর built-in `useReducer` দিয়ে।
+
+### ২৩.১ Profile Reducer
+
+```javascript
+// src/reducers/profileReducer.js
+import { actions } from "../actions";
+
+export const initialState = {
+  user: null,
+  posts: [],
+  loading: false,
+  error: null,
+};
+
+const profileReducer = (state, action) => {
+  switch (action.type) {
+    case actions.profile.PROFILE_FETCHING:
+      return { ...state, loading: true, error: null };
+
+    case actions.profile.PROFILE_FETCHED:
+      return {
+        ...state,
+        user: action.data.user,
+        posts: action.data.posts,
+        loading: false,
+        error: null,
+      };
+
+    case actions.profile.PROFILE_FETCH_ERROR:
+      return { ...state, loading: false, error: action.error };
+
+    case actions.profile.PROFILE_UPDATED:
+      return {
+        ...state,
+        user: { ...state.user, ...action.data },
+        loading: false,
+      };
+
+    case actions.profile.IMAGE_UPDATED:
+      // শুধু avatar বদলাও, বাকি user data ঠিক রাখো
+      return {
+        ...state,
+        user: { ...state.user, avatar: action.data.avatar },
+        loading: false,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export default profileReducer;
+```
+
+### ২৩.২ ProfileContext ও Hook
+
+```jsx
+// src/context/ProfileContext.jsx
+import { createContext, useReducer } from "react";
+import profileReducer, { initialState } from "../reducers/profileReducer";
+
+const ProfileContext = createContext(null);
+
+export const ProfileProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(profileReducer, initialState);
+
+  return (
+    <ProfileContext.Provider value={{ state, dispatch }}>
+      {children}
+    </ProfileContext.Provider>
+  );
+};
+
+export default ProfileContext;
+```
+
+```javascript
+// src/hooks/useProfile.js
+import { useContext } from "react";
+import ProfileContext from "../context/ProfileContext";
+
+const useProfile = () => useContext(ProfileContext);
+
+export default useProfile;
+```
+
+## ২৪. Profile Service
+
+```javascript
+// src/services/profileService.js
+import api from "../api/api";
+
+export const getProfile = (id) => api.get(`/profile/${id}`);
+
+// ⚠️ Real backend quirk (Postman collection থেকে confirmed) —
+// field নাম "firstname" (ছোট হাতের n), কিন্তু "lastName" (বড় হাতের N)।
+// দুটো ভিন্ন casing একই request body-তে! নিজের বুদ্ধিতে "ঠিক" করবেন না —
+// backend যেভাবে আশা করে, ঠিক সেভাবেই পাঠাতে হবে।
+export const updateProfile = (id, { firstname, lastName }) =>
+  api.patch(`/profile/${id}`, { firstname, lastName });
+
+export const uploadAvatar = (id, file, onUploadProgress) => {
+  const formData = new FormData();
+  formData.append("avatar", file);
+
+  return api.post(`/profile/${id}/avatar`, formData, {
+    onUploadProgress: (progressEvent) => {
+      if (!onUploadProgress) return;
+      const percent = Math.round(
+        (progressEvent.loaded * 100) / (progressEvent.total || 1),
+      );
+      onUploadProgress(percent);
+    },
+  });
+};
+```
+
+## ২৫. ProfilePage — Own Profile + Own Feed একসাথে আনা (`Promise.all`)
+
+Profile page-এ আমাদের একইসাথে দুইটা জিনিস দরকার — profile info, আর সেই ইউজারের পোস্টগুলো। এই দুইটা request একে অপরের ওপর নির্ভরশীল না, তাই sequential না করে parallel-এ আনব — এটাই "Axios Advanced"-এর আরেকটা গুরুত্বপূর্ণ কৌশল।
+
+```jsx
+// src/pages/ProfilePage.jsx
+import { useEffect } from "react";
+import { actions } from "../actions";
+import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
+import useProfile from "../hooks/useProfile";
+import { getProfile } from "../services/profileService";
+import { getPosts } from "../services/postService";
+import ProfileImage from "../components/profile/ProfileImage";
+import ProfileNameEditor from "../components/profile/ProfileNameEditor";
+import PostCard from "../components/feed/PostCard";
+
+export default function ProfilePage() {
+  const { auth } = useAuth();
+  useAxios();
+  const { state, dispatch } = useProfile();
+
+  useEffect(() => {
+    if (!auth?.user?.id) return;
+
+    const fetchProfileAndPosts = async () => {
+      dispatch({ type: actions.profile.PROFILE_FETCHING });
+
+      try {
+        // ✅ দ্রুত: দুইটা independent request parallel-এ পাঠানো হচ্ছে
+        const [profileRes, postsRes] = await Promise.all([
+          getProfile(auth.user.id),
+          getPosts(),
+        ]);
+
+        // News Feed API-তে filter নেই, তাই client-side-এ নিজের পোস্ট আলাদা করছি
+        const ownPosts = postsRes.data.filter(
+          (post) => post.author?.id === auth.user.id,
+        );
+
+        dispatch({
+          type: actions.profile.PROFILE_FETCHED,
+          data: { user: profileRes.data, posts: ownPosts },
+        });
+      } catch (error) {
+        dispatch({
+          type: actions.profile.PROFILE_FETCH_ERROR,
+          error: error.response?.data?.message || error.message,
+        });
+      }
+    };
+
+    fetchProfileAndPosts();
+  }, [auth?.user?.id]);
+
+  if (state.loading)
+    return <p className="text-center mt-10">প্রোফাইল লোড হচ্ছে...</p>;
+  if (state.error)
+    return <p className="text-red-600 text-center mt-10">এরর: {state.error}</p>;
+  if (!state.user) return null;
+
+  return (
+    <div className="max-w-2xl mx-auto p-5 space-y-6">
+      <div className="bg-white rounded-lg shadow border p-6 flex flex-col items-center text-center">
+        <ProfileImage />
+        <ProfileNameEditor />
+      </div>
+
+      <div>
+        <h2 className="font-semibold mb-3">
+          আমার পোস্ট ({state.posts.length})
+        </h2>
+        <div className="space-y-4">
+          {state.posts.length === 0 ? (
+            <p className="text-gray-500">এখনো কোনো পোস্ট করেননি।</p>
+          ) : (
+            state.posts.map((post) => (
+              <PostCard key={post.id} post={post} onListChange={() => {}} />
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+> `PostCard`-কে এখানে reuse করা হচ্ছে — News Feed আর Profile Feed দুই জায়গাতেই একই component কাজ করছে, আলাদা করে লেখার দরকার নেই। এটাই component reuse-এর আসল সুবিধা।
+
+## ২৬. ProfileImage — Avatar আপলোড, `useRef` দিয়ে
+
+`useRef` ব্যবহার করে লুকানো file input-এ programmatically click করা হচ্ছে — এতে নিজের styled button দেখানো যায়, browser-এর ডিফল্ট কুৎসিত file input না দেখিয়ে।
+
+```jsx
+// src/components/profile/ProfileImage.jsx
+import { useRef, useState } from "react";
+import { actions } from "../../actions";
+import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
+import useProfile from "../../hooks/useProfile";
+import { uploadAvatar } from "../../services/profileService";
+
+export default function ProfileImage() {
+  const { auth } = useAuth();
+  useAxios();
+  const { state, dispatch } = useProfile();
+  const fileInputRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
+
+  // Edit বাটনে ক্লিক করলে লুকানো file input খুলবে
+  const handleEditClick = (e) => {
+    e.preventDefault();
+    fileInputRef.current.click();
+  };
+
+  // ফাইল select হলে সাথে সাথে upload হবে
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const response = await uploadAvatar(auth.user.id, file);
+      dispatch({
+        type: actions.profile.IMAGE_UPDATED,
+        data: response.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: actions.profile.PROFILE_FETCH_ERROR,
+        error: err.message,
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Server avatar path হিসেবে একটা relative path দেয় (যেমন "uploads/avatar.jpg")
+  // পুরো URL বানাতে base URL যোগ করতে হয়
+  const avatarUrl = state.user?.avatar
+    ? `${import.meta.env.VITE_API_BASE_URL}/${state.user.avatar}`
+    : "https://placehold.co/180x180?text=Avatar";
+
+  return (
+    <div className="relative w-[140px] h-[140px] mb-3">
+      <img
+        src={avatarUrl}
+        alt={state.user?.firstname ?? state.user?.firstName}
+        className="w-full h-full rounded-full object-cover border"
+      />
+
+      <button
+        onClick={handleEditClick}
+        disabled={uploading}
+        className="absolute bottom-1 right-1 bg-black/60 text-white rounded-full p-2"
+        title="ছবি বদলান"
+      >
+        {uploading ? "..." : "✏️"}
+      </button>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+    </div>
+  );
+}
+```
+
+## ২৭. ProfileNameEditor — নাম Update করা (editMode দিয়ে)
+
+```jsx
+// src/components/profile/ProfileNameEditor.jsx
+import { useState } from "react";
+import { actions } from "../../actions";
+import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
+import useProfile from "../../hooks/useProfile";
+import { updateProfile } from "../../services/profileService";
+
+export default function ProfileNameEditor() {
+  const { auth } = useAuth();
+  useAxios();
+  const { state, dispatch } = useProfile();
+
+  const [editMode, setEditMode] = useState(false);
+  const [firstname, setFirstname] = useState(
+    state.user?.firstname ?? state.user?.firstName ?? "",
+  );
+  const [lastName, setLastName] = useState(
+    state.user?.lastName ?? state.user?.lastname ?? "",
+  );
+
+  const handleSave = async () => {
+    try {
+      // ⚠️ backend quirk মনে আছে তো? এখানে firstname (ছোট n) + lastName (বড় N)
+      const response = await updateProfile(auth.user.id, {
+        firstname,
+        lastName,
+      });
+      dispatch({
+        type: actions.profile.PROFILE_UPDATED,
+        data: response.data,
+      });
+      setEditMode(false);
+    } catch (error) {
+      dispatch({
+        type: actions.profile.PROFILE_FETCH_ERROR,
+        error: error.message,
+      });
+    }
+  };
+
+  if (editMode) {
+    return (
+      <div className="space-y-2 w-full max-w-xs">
+        <input
+          value={firstname}
+          onChange={(e) => setFirstname(e.target.value)}
+          placeholder="প্রথম নাম"
+          className="w-full border rounded p-2 text-center"
+        />
+        <input
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder="শেষ নাম"
+          className="w-full border rounded p-2 text-center"
+        />
+        <div className="flex gap-2 justify-center">
+          <button
+            onClick={handleSave}
+            className="bg-blue-600 text-white px-4 py-1 rounded"
+          >
+            সেভ করুন
+          </button>
+          <button
+            onClick={() => setEditMode(false)}
+            className="px-4 py-1 rounded border"
+          >
+            বাতিল
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h1 className="text-xl font-bold">
+        {state.user?.firstname ?? state.user?.firstName}{" "}
+        {state.user?.lastName ?? state.user?.lastname}
+      </h1>
+      <button
+        onClick={() => setEditMode(true)}
+        className="text-blue-600 text-sm mt-1"
+      >
+        ✏️ নাম এডিট করুন
+      </button>
+    </div>
+  );
+}
+```
+
+---
+
+## ২৮. সবকিছু জোড়া লাগানো — React Router দিয়ে App.jsx
+
+### ২৮.১ Navbar — News Feed আর Profile Feed-এর মধ্যে যাতায়াত
+
+```jsx
+// src/components/Navbar.jsx
+import { Link, useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
+
+export default function Navbar() {
+  const { auth, setAuth } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setAuth(null);
+    navigate("/login");
+  };
+
+  return (
+    <nav className="bg-white border-b p-4 flex justify-between items-center max-w-2xl mx-auto">
+      <Link to="/" className="font-bold text-lg text-blue-600">
+        Deshi Book
+      </Link>
+      <div className="flex items-center gap-4 text-sm">
+        <Link to="/">News Feed</Link>
+        <Link to="/profile">আমার প্রোফাইল</Link>
+        <span className="text-gray-500">
+          {auth?.user?.firstName ?? auth?.user?.firstname}
+        </span>
+        <button onClick={handleLogout} className="text-red-600">
+          লগআউট
+        </button>
+      </div>
+    </nav>
+  );
+}
+```
+
+### ২৮.২ FeedPage — News Feed-এর পেজ
+
+```jsx
+// src/pages/FeedPage.jsx
+import { useState } from "react";
+import CreatePostForm from "../components/feed/CreatePostForm";
+import PostFeed from "../components/feed/PostFeed";
+
+export default function FeedPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  return (
+    <div className="max-w-2xl mx-auto p-5 space-y-4">
+      <CreatePostForm onCreated={() => setRefreshKey((k) => k + 1)} />
+      {/* key বদলালে PostFeed নতুন করে mount হয়, useEffect আবার চলে */}
+      <PostFeed key={refreshKey} />
+    </div>
+  );
+}
+```
+
+### ২৮.৩ LoginPage ও RegisterPage
+
+```jsx
+// src/pages/LoginPage.jsx
+import { Link } from "react-router";
+import LoginForm from "../components/LoginForm";
+
+export default function LoginPage() {
+  return (
+    <div>
+      <LoginForm />
+      <p className="text-center mt-4 text-sm">
+        একাউন্ট নেই?{" "}
+        <Link to="/register" className="text-blue-600">
+          রেজিস্ট্রেশন করুন
+        </Link>
+      </p>
+    </div>
+  );
+}
+```
+
+```jsx
+// src/pages/RegisterPage.jsx
+import { Link } from "react-router";
+import RegisterForm from "../components/RegisterForm";
+
+export default function RegisterPage() {
+  return (
+    <div>
+      <RegisterForm />
+      <p className="text-center mt-4 text-sm">
+        আগে থেকে একাউন্ট আছে?{" "}
+        <Link to="/login" className="text-blue-600">
+          লগইন করুন
+        </Link>
+      </p>
+    </div>
+  );
+}
+```
+
+### ২৮.৪ App.jsx — সব Route এক জায়গায়
+
+```jsx
+// src/App.jsx
+import { BrowserRouter, Routes, Route } from "react-router";
+import { AuthProvider } from "./context/AuthContext";
+import { ProfileProvider } from "./context/ProfileContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import FeedPage from "./pages/FeedPage";
+import ProfilePage from "./pages/ProfilePage";
+
+function Layout({ children }) {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      {children}
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    // AuthProvider সবার বাইরে — সব component-এ auth দরকার হতে পারে
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          {/* Protected: News Feed */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <FeedPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected: Profile Feed */}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                {/* ProfileProvider শুধু ProfilePage-এর জন্য দরকার */}
+                <ProfileProvider>
+                  <Layout>
+                    <ProfilePage />
+                  </Layout>
+                </ProfileProvider>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+```
+
+> লক্ষ্য করুন — `BrowserRouter`, `Routes`, `Route` সব **`react-router`** থেকে import হয়েছে (সেকশন ৯.৩-এ যা বলা হয়েছিল)। `react-router-dom` কোথাও নেই।
+
+### ২৮.৫ App চালানো ও টেস্ট করা
+
+```sh
+npm run dev
+```
+
+`http://localhost:5173` খুলে এই checklist ধরে টেস্ট করুন:
+
+1. `/register`-এ নতুন account খুলুন — সফল হলে auto login হয়ে News Feed-এ চলে যাবে।
+2. News Feed-এ একটা টেক্সট পোস্ট, তারপর একটা ছবিসহ পোস্ট করুন। Browser DevTools-এর Network tab-এ দেখুন `Authorization: Bearer ...` header যাচ্ছে কিনা।
+3. Like দিন, Comment করুন, Comment ডিলিট করুন।
+4. নিজের একটা পোস্ট Edit করুন, তারপর Delete করুন।
+5. `/profile`-এ গিয়ে Avatar আপলোড করুন এবং নাম বদলান — Save করার পর reload করে দেখুন data persist করছে কিনা।
+6. Profile page-এ নিজের করা পোস্টগুলো (own feed) আলাদা করে দেখাচ্ছে কিনা যাচাই করুন।
+7. Logout করুন — `/` বা `/profile`-এ সরাসরি যাওয়ার চেষ্টা করলে `/login`-এ redirect হচ্ছে কিনা দেখুন।
+
+---
+
+## ২৯. বোনাস Axios Advanced প্যাটার্ন — `AbortController`
+
+`Promise.all` আমরা ইতিমধ্যে ব্যবহার করেছি (সেকশন ২৫)। আরেকটা দরকারি advanced প্যাটার্ন হলো request cancel করা — উদাহরণস্বরূপ, ভবিষ্যতে যদি News Feed-এ একটা সার্চ বক্স যোগ করেন, প্রতিটা keystroke-এ API call যাবে। আগের request-এর response যদি নতুনটার পরে আসে, পুরনো data দিয়ে নতুন result overwrite হয়ে যেতে পারে। এটা ঠেকাতে আগের request cancel করতে হয়:
+
+```jsx
+import { useEffect, useState } from "react";
+import api from "../api/api";
+
+function useSearchPosts(query) {
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+
+    const controller = new AbortController();
+    setLoading(true);
+
+    api
+      .get("/posts", { signal: controller.signal })
+      .then((res) => {
+        const filtered = res.data.filter((p) =>
+          (p.content ?? p.body ?? "")
+            .toLowerCase()
+            .includes(query.toLowerCase()),
+        );
+        setResults(filtered);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // "CanceledError" মানে আমরাই cancel করেছি — real error না
+        if (err.name !== "CanceledError") {
+          console.error("সার্চ এরর:", err.message);
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      controller.abort(); // পরের keystroke-এ আগের request cancel হবে
+    };
+  }, [query]);
+
+  return { results, loading };
+}
+```
+
+> এই API-তে server-side search query support নেই, তাই client-side filter করা হয়েছে — কিন্তু `AbortController` প্যাটার্নটা যেকোনো real search feature-এই একইভাবে কাজ করবে।
+
+---
+
+## ৩০. আপনার জন্য একটা কাজ
+
+`ProfilePage.jsx`-এ লক্ষ্য করুন, `PostCard`-কে `onListChange={() => {}}` দিয়ে পাঠানো হয়েছে — মানে Profile Feed-এ Like/Comment/Edit করলেও ওই পোস্টের আপডেট শুধু local state-এ reflect হয় না, পরের বার reload করলে দেখা যাবে।
+
+**নির্দেশনা:**
+
+1. `ProfilePage`-এ `state.posts` আপডেট করার জন্য নতুন একটা action যোগ করুন — যেমন `POST_IN_PROFILE_UPDATED`।
+2. `profileReducer.js`-এ সেই action handle করুন — `state.posts` array-এ matching `id`-র পোস্টটা replace করুন।
+3. `ProfilePage`-এ একটা function বানান (যেমন `updateOwnPost`) যেটা `dispatch` কল করে, আর `PostCard`-এর `onListChange`-এ সেই function পাঠান (`PostFeed.jsx`-এ `setPosts` যেভাবে পাঠানো হয়েছে, ঠিক একই ধাঁচে)।
+4. টেস্ট করুন — Profile page-এ থেকেই কোনো পোস্ট Like করুন, reload না করেই লাইক কাউন্ট বদলে যাচ্ছে কিনা দেখুন।
+
+এটা আপনাকে Reducer pattern-এর সাথে array update logic মেলানোর হাতে-কলমে অনুশীলন দেবে — ঠিক Part 1-এর "See More" exercise-এর মতোই।
+
+---
+
+## ৩১. সেরা অনুশীলন — Best Practices
+
+**Architecture:**
+
+- ✅ একটাই central `api` instance — প্রতিটা file-এ আলাদা `axios.create()` না।
+- ✅ Service layer আলাদা রাখুন — component-এ সরাসরি `axios.get()` না।
+- ✅ Auth-aware request-এর জন্য `useAxios` hook ব্যবহার করুন।
+- ✅ জটিল state-এ (Profile System) `useReducer` ব্যবহার করুন।
+- ✅ একই component (`PostCard`) News Feed আর Profile Feed দুই জায়গাতেই reuse করুন — duplicate কোড লিখবেন না।
+
+**Interceptors:**
+
+- ✅ `Authorization` header interceptor দিয়ে যোগ করুন, manually প্রতিটা call-এ না।
+- ✅ Component unmount হলে interceptor **eject** করুন।
+- ✅ `alreadyRetried` flag ব্যবহার করুন — নাহলে infinite refresh loop হতে পারে।
+
+**FormData:**
+
+- ✅ ছবি আপলোডের সময় নিজে `Content-Type: multipart/form-data` সেট করবেন না — Browser নিজেই সঠিক `boundary` সহ header বসায়।
+
+**Real-world API নিয়ে কাজ করার অভ্যাস:**
+
+- ✅ Field নাম নিয়ে সন্দেহ হলে সবসময় Postman দিয়ে verify করুন, বা `console.log(response.data)` দিয়ে দেখে নিন — অনুমান করবেন না।
+- ✅ Inconsistent field casing (যেমন `firstname` vs `lastName`) দেখলে সেটাকে "ঠিক করার" চেষ্টা করবেন না — backend যা আশা করে ঠিক সেভাবেই পাঠান।
+- ✅ Response-এ একাধিক সম্ভাব্য field নাম (`content`/`body`) থাকতে পারলে fallback (`??`) দিয়ে defensive কোড লিখুন।
+
+**Error Handling:**
+
+- ✅ `error.response`, `error.request`, `error.message` — তিন case আলাদা করে handle করুন।
+- ✅ User-friendly error message দেখান, raw API error না।
+
+**Performance:**
+
+- ✅ স্বাধীন request গুলো `Promise.all` দিয়ে parallel করুন (Profile + Posts একসাথে আনা)।
+- ✅ Frequent/repeated call-এ `AbortController` ব্যবহার করুন।
+
+---
+
+## ৩২. Security নোট — Token কোথায় রাখবো?
+
+_Table 32.1: Token storage — সুবিধা/অসুবিধা_
+
+| পদ্ধতি                   | সুবিধা                | অসুবিধা                                         |
+| ------------------------ | --------------------- | ----------------------------------------------- |
+| **React State (memory)** | XSS-safe, simple      | Page refresh-এ হারায়                           |
+| **localStorage**         | Persist করে           | XSS attack-এ চুরি হতে পারে                      |
+| **httpOnly Cookie**      | XSS-safe, persist করে | CSRF protect করতে হয়, backend cooperation লাগে |
+
+**সুপারিশ:** FaceHook API body-তে token পাঠায়, তাই React state বা `localStorage` — দুটোই practical। Production-এ sensitive token (বিশেষত Refresh Token) httpOnly cookie-তে রাখা সবচেয়ে নিরাপদ — সেক্ষেত্রে `axios.create({ withCredentials: true })` যোগ করলেই যথেষ্ট।
+
+---
+
+## উপসংহার
+
+এই গাইডে আপনি Deshi Book বানিয়ে শিখলেন:
+
+- **Setup:** Vite + Tailwind + `react-router` (v8, `react-router-dom` ছাড়াই) + Axios instance।
+- **Context API:** `AuthContext` দিয়ে login state, `ProfileContext` + `useReducer` দিয়ে জটিল profile state।
+- **Axios Advanced:** central instance, request/response interceptors, auto refresh-token retry, FormData upload with progress, `Promise.all`, `AbortController`।
+- **Service Layer:** `authService`, `postService`, `profileService` — সব endpoint সংগঠিত, component clean।
+- **News Feed (Feature ১):** পোস্ট দেখা, তৈরি (টেক্সট + ছবি), Edit, Delete, Like/Unlike, Comment, Comment Delete — সব fully functional।
+- **Profile Feed (Feature ২):** নিজের প্রোফাইল দেখা/আপডেট, Avatar আপলোড (`useRef` দিয়ে), আর নিজের পোস্ট (own feed) আলাদা করে দেখা — `Promise.all` দিয়ে দুটো request parallel-এ।
+- **React Router:** Protected Route, News Feed আর Profile Feed-এর মধ্যে navigation।
+- **Real-world API habit:** Documentation সবসময় সঠিক হয় না — field casing-এর inconsistency (`firstname` vs `lastName`) নিজে verify করে, defensive fallback কোড লিখে সামলানো শিখলেন।
+
+এই pattern গুলো — `api` instance + `useAxios` hook + service layer + Context/Reducer — যেকোনো production React বা Next.js প্রজেক্টে সরাসরি ব্যবহার করা যাবে। শুধু endpoint আর field name নিজের backend অনুযায়ী বদলে নিন।
+
+---
+
+<Donate />
+<GiscusComments
+  repo="codedbyMojnu/react-bangla-tutorial"
+  repoId="R_kgDOLDE87Q"
+  category="General"
+  categoryId="DIC_kwDOLDE87c4CtCIY"
+  mapping="pathname"
+  inputPosition="top"
+  theme="preferred_color_scheme"
+  lang="en"
+/>
