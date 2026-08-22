@@ -20,6 +20,12 @@ const collections: {
     emoji: "⚛️",
   },
   {
+    href: "/docs/projects",
+    title: "Complete Projects",
+    description: "রিয়েল-ওয়ার্ল্ড প্রজেক্ট",
+    emoji: "🚀",
+  },
+  {
     href: "/docs/nextjs",
     title: "Next.js",
     description: "App Router সহ সম্পূর্ণ গাইড",
@@ -97,12 +103,7 @@ const collections: {
     description: "অবজেক্ট-ওরিয়েন্টেড PHP",
     emoji: "🐘",
   },
-  {
-    href: "/docs/projects",
-    title: "Complete Projects",
-    description: "রিয়েল-ওয়ার্ল্ড প্রজেক্ট",
-    emoji: "🚀",
-  },
+
   {
     href: "/docs/career",
     title: "Career ও Developer Hacks",

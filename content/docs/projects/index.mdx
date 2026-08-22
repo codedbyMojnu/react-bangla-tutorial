@@ -28,19 +28,29 @@ description: বাংলাদেশি ডেভেলপারদের জ�
 
 এখানে শিখবেন Axios instance, request/response interceptors, auto refresh-token, FormData upload, `Promise.all`, `AbortController`, আর service layer pattern।
 
-### ২. Redux + Axios Advanced
 
-**Stack:** Redux + Axios Advanced + React Router + Modern Design Pattern (Endpoints + Service Layer)
+### ২. দেশি দোকান (Deshi Dokan) — Redux + RTK Query
 
-_(প্রজেক্টের বিস্তারিত শীঘ্রই যুক্ত করা হবে)_
+**Stack:** Redux Toolkit + RTK Query + Tailwind CSS + React Router + json-server Mock Backend + Modern Design Pattern (Endpoints + Service Layer)
 
-### ৩. Redux + RTK Query
+একটা সম্পূর্ণ ফাংশনাল ই-কমার্স স্টোর — real API থেকে প্রোডাক্ট fetch, শপিং কার্ট, চেকআউট, আর অর্ডার হিস্ট্রি। কভার করা হয়েছে চারটা ফিচার:
 
-**Stack:** Redux + RTK Query + React Router + Modern Design Pattern (Endpoints + Service Layer)
+- **প্রোডাক্ট ব্রাউজিং** — Category filter, Search, Product Details
+- **শপিং কার্ট** — Add/Remove/Quantity বাড়ানো-কমানো, localStorage persistence
+- **চেকআউট** — RTK Query Mutation দিয়ে অর্ডার তৈরি
+- **অর্ডার হিস্ট্রি** (বোনাস) — RTK Query-র automatic cache invalidation নিজের চোখে দেখা
 
-_(প্রজেক্টের বিস্তারিত শীঘ্রই যুক্ত করা হবে)_
+<Cards>
+  <Card
+    href="/docs/projects/deshi-dokan"
+    title="দেশি দোকান"
+    description="দেশি দোকান — Redux Toolkit + RTK Query ই-কমার্স প্রোজেক্ট"
+  />
+</Cards>
 
-### ৪. Redux + React Query
+এখানে শিখবেন Redux Toolkit (`createSlice`, `configureStore`), RTK Query (`createApi`, `fetchBaseQuery`, auto-generated hooks), `tagTypes`/`providesTags`/`invalidatesTags` দিয়ে cache invalidation, আর json-server দিয়ে নিজের mock backend বানানো।
+
+### ৩. Redux + React Query
 
 **Stack:** Redux + React Query + React Router + Modern Design Pattern (Endpoints + Service Layer)
 
