@@ -1,5 +1,11 @@
 {
-  "pages": ["index", "facebook-clone", "movie-portal", "weather-dashboard"],
+  "pages": [
+    "index",
+    "facebook-clone",
+    "deshi-dokan",
+    "movie-portal",
+    "weather-dashboard"
+  ],
   "title": "Complete Projects",
   "description": "বাংলায় স্টেপ বাই স্টেপ সম্পূর্ণ রিয়েল-ওয়ার্ল্ড প্রজেক্ট তৈরি করা শিখুন।",
   "icon": "Rocket",
