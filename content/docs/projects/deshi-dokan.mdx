@@ -32,21 +32,23 @@ description: >-
 
 ---
 
+> দেশি বাজার/দোকান কম্পিলিট প্রোজেক্ট রিপোজিটরি: `https://github.com/codedbyMojnu/deshi-dokan.git`
+
 ## ১. প্রজেক্ট পরিচিতি — কী বানাচ্ছি, কেন এই Approach?
 
 ### ১.১ Reference প্রজেক্ট থেকে Next Level-এ কী কী বদলাচ্ছি
 
 _Table 1.1: আগের ধরনের basic cart প্রজেক্ট vs আমাদের "দেশি দোকান"_
 
-| যেভাবে সাধারণত বানানো হয়          | আমরা যেভাবে বানাবো                                                |
-| ---------------------------------- | ------------------------------------------------------------------ |
-| Context API + `useReducer`         | **Redux Toolkit** — `createSlice` + `configureStore`               |
-| Static hardcoded product array     | **RTK Query** দিয়ে real API (mock backend) থেকে fetch              |
-| Inline style / plain CSS           | **Tailwind CSS** দিয়ে আধুনিক, রেসপন্সিভ UI                          |
-| Cart data রিফ্রেশে হারিয়ে যায়     | localStorage-এ persist — রিফ্রেশ দিলেও cart থেকে যায়               |
-| শুধু Cart + Checkout                | + Search, Category Filter, আর Order History (cache invalidation)   |
-| Manual `useState` + `useEffect`    | RTK Query-র auto-generated hooks — loading/error/caching সব built-in |
-| প্রজেক্ট শেষে একবারে commit         | প্রতিটা ফিচার শেষে আলাদা, অর্থপূর্ণ Git commit + push                |
+| যেভাবে সাধারণত বানানো হয়       | আমরা যেভাবে বানাবো                                                   |
+| ------------------------------- | -------------------------------------------------------------------- |
+| Context API + `useReducer`      | **Redux Toolkit** — `createSlice` + `configureStore`                 |
+| Static hardcoded product array  | **RTK Query** দিয়ে real API (mock backend) থেকে fetch               |
+| Inline style / plain CSS        | **Tailwind CSS** দিয়ে আধুনিক, রেসপন্সিভ UI                          |
+| Cart data রিফ্রেশে হারিয়ে যায় | localStorage-এ persist — রিফ্রেশ দিলেও cart থেকে যায়                |
+| শুধু Cart + Checkout            | + Search, Category Filter, আর Order History (cache invalidation)     |
+| Manual `useState` + `useEffect` | RTK Query-র auto-generated hooks — loading/error/caching সব built-in |
+| প্রজেক্ট শেষে একবারে commit     | প্রতিটা ফিচার শেষে আলাদা, অর্থপূর্ণ Git commit + push                |
 
 ### ১.২ কী কী শিখবেন
 
@@ -73,13 +75,13 @@ _Table 1.1: আগের ধরনের basic cart প্রজেক্ট vs 
 
 _Table 1.2: Conventional Commit প্রিফিক্স_
 
-| প্রিফিক্স | কখন ব্যবহার হয়                                  |
-| ---------- | -------------------------------------------------- |
-| `feat:`    | নতুন ফিচার যোগ করলে                                |
-| `chore:`   | সেটআপ, টুলিং, dependency install-এর মতো কাজে      |
-| `style:`   | শুধু স্টাইলিং/ফরম্যাটিং পরিবর্তনে (লজিক বদলায় না) |
-| `docs:`    | ডকুমেন্টেশন (README ইত্যাদি) পরিবর্তনে             |
-| `fix:`     | কোনো বাগ ঠিক করলে                                  |
+| প্রিফিক্স | কখন ব্যবহার হয়                                    |
+| --------- | -------------------------------------------------- |
+| `feat:`   | নতুন ফিচার যোগ করলে                                |
+| `chore:`  | সেটআপ, টুলিং, dependency install-এর মতো কাজে       |
+| `style:`  | শুধু স্টাইলিং/ফরম্যাটিং পরিবর্তনে (লজিক বদলায় না) |
+| `docs:`   | ডকুমেন্টেশন (README ইত্যাদি) পরিবর্তনে             |
+| `fix:`    | কোনো বাগ ঠিক করলে                                  |
 
 ---
 
@@ -647,13 +649,13 @@ Deshi Book প্রজেক্টে ডাটা আনার জন্য �
 
 _Table 5.1: Manual Axios + useEffect vs RTK Query_
 
-| বিষয়                          | Axios + `useEffect` (ম্যানুয়াল)              | RTK Query                                          |
-| ------------------------------ | ---------------------------------------------- | --------------------------------------------------- |
-| Loading state                  | নিজে `useState` দিয়ে ম্যানেজ করতে হয়          | `isLoading`/`isFetching` — hook থেকেই পাওয়া যায়   |
-| Error state                    | নিজে `try/catch` লিখতে হয়                      | `isError`/`error` — hook থেকেই পাওয়া যায়           |
-| Caching                        | নেই — একই ডাটা বারবার ফেচ হয়                   | Automatic — একই query আবার চাইলে cache থেকে দেয়     |
-| Mutation-এর পর লিস্ট আপডেট     | নিজে state আপডেট করতে হয়/manual re-fetch        | `invalidatesTags` দিলে **automatic re-fetch**       |
-| প্রতি API-এর জন্য কোড           | ১৫-২০ লাইন (useState + useEffect + cleanup)     | ৩-৫ লাইনের endpoint definition, বাকিটা auto-generate |
+| বিষয়                      | Axios + `useEffect` (ম্যানুয়াল)            | RTK Query                                            |
+| -------------------------- | ------------------------------------------- | ---------------------------------------------------- |
+| Loading state              | নিজে `useState` দিয়ে ম্যানেজ করতে হয়      | `isLoading`/`isFetching` — hook থেকেই পাওয়া যায়    |
+| Error state                | নিজে `try/catch` লিখতে হয়                  | `isError`/`error` — hook থেকেই পাওয়া যায়           |
+| Caching                    | নেই — একই ডাটা বারবার ফেচ হয়               | Automatic — একই query আবার চাইলে cache থেকে দেয়     |
+| Mutation-এর পর লিস্ট আপডেট | নিজে state আপডেট করতে হয়/manual re-fetch   | `invalidatesTags` দিলে **automatic re-fetch**        |
+| প্রতি API-এর জন্য কোড      | ১৫-২০ লাইন (useState + useEffect + cleanup) | ৩-৫ লাইনের endpoint definition, বাকিটা auto-generate |
 
 সহজভাবে বললে — **RTK Query হলো "data fetching + caching লাইব্রেরি", যেটা Redux-এর উপরেই বানানো**। এটা আপনার হয়ে API call করে, ফলাফল Redux store-এ cache করে রাখে, আর একটা React hook জেনারেট করে দেয় যেটা কল করলেই `data`, `isLoading`, `isError` — সবকিছু রেডি পাওয়া যায়।
 
@@ -663,12 +665,12 @@ _Table 5.1: Manual Axios + useEffect vs RTK Query_
 
 _Table 6.1: আমাদের json-server mock backend-এর সব endpoint_
 
-| ফিচার              | Method | Endpoint         | Query/Body                                                              | নোট                                             |
-| ------------------- | ------ | ----------------- | -------------------------------------------------------------------------- | -------------------------------------------------- |
-| সব প্রোডাক্ট        | GET    | `/products`       | `?category=Fashion`, `?q=kurti`                                          | `category=All` দিলে filter হবে না                |
-| একটা প্রোডাক্ট      | GET    | `/products/:id`   | —                                                                        | —                                                |
-| নতুন অর্ডার তৈরি    | POST   | `/orders`         | `{ customerName, phone, address, items, totalPrice, createdAt }`         | json-server নিজেই auto-increment `id` বসিয়ে দেয় |
-| সব অর্ডার           | GET    | `/orders`         | —                                                                        | Order History পেজে ব্যবহার হবে                   |
+| ফিচার            | Method | Endpoint        | Query/Body                                                       | নোট                                               |
+| ---------------- | ------ | --------------- | ---------------------------------------------------------------- | ------------------------------------------------- |
+| সব প্রোডাক্ট     | GET    | `/products`     | `?category=Fashion`, `?q=kurti`                                  | `category=All` দিলে filter হবে না                 |
+| একটা প্রোডাক্ট   | GET    | `/products/:id` | —                                                                | —                                                 |
+| নতুন অর্ডার তৈরি | POST   | `/orders`       | `{ customerName, phone, address, items, totalPrice, createdAt }` | json-server নিজেই auto-increment `id` বসিয়ে দেয় |
+| সব অর্ডার        | GET    | `/orders`       | —                                                                | Order History পেজে ব্যবহার হবে                    |
 
 > json-server real production backend না — এটা শুধু `db.json` ফাইল read/write করা একটা fake REST API, শেখার আর প্রোটোটাইপিং-এর জন্য। প্রোডাকশনে গেলে এটার জায়গায় আপনার নিজের real backend (Express/Node, বা অন্য যেকোনো) বসাবেন — **RTK Query-র কোড প্রায় অপরিবর্তিতই থাকবে**, শুধু `baseUrl` আর হয়তো field name-গুলো নিজের backend অনুযায়ী বদলাবেন।
 
@@ -955,9 +957,7 @@ export default function ProductCard({ product }) {
         </h3>
 
         <div className="flex items-center gap-2">
-          <span className="font-bold text-emerald-700">
-            ৳{product.price}
-          </span>
+          <span className="font-bold text-emerald-700">৳{product.price}</span>
           {product.oldPrice && (
             <span className="text-xs text-gray-400 line-through">
               ৳{product.oldPrice}
@@ -1064,8 +1064,12 @@ export default function HomePage() {
 
   // category বা search বদলালে RTK Query নিজে থেকেই নতুন query args দেখে
   // re-fetch করবে — এখানে useEffect বা manual fetch লেখার দরকার নেই
-  const { data: products = [], isLoading, isFetching, isError } =
-    useGetProductsQuery({ category, search });
+  const {
+    data: products = [],
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetProductsQuery({ category, search });
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
@@ -1105,10 +1109,10 @@ export default function HomePage() {
 
 _Table 15.1: isLoading vs isFetching_
 
-| স্টেট         | কখন `true` হয়                                                             |
-| -------------- | ---------------------------------------------------------------------------- |
-| `isLoading`    | শুধু **প্রথমবার** ডাটা fetch হওয়ার সময় (কোনো cache data-ই নেই তখনো)        |
-| `isFetching`   | প্রথমবার fetch-এও true হয়, **আবার category/search বদলে re-fetch হওয়ার সময়ও** true হয় |
+| স্টেট        | কখন `true` হয়                                                                           |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| `isLoading`  | শুধু **প্রথমবার** ডাটা fetch হওয়ার সময় (কোনো cache data-ই নেই তখনো)                    |
+| `isFetching` | প্রথমবার fetch-এও true হয়, **আবার category/search বদলে re-fetch হওয়ার সময়ও** true হয় |
 
 `isLoading` দিয়ে প্রথম লোডে full-page loading message দেখানো হয়েছে, আর `isFetching` দিয়ে filter বদলানোর সময় পুরনো ডাটা আবছা (opacity কমিয়ে) দেখিয়ে রাখা হয়েছে — যাতে UI হঠাৎ খালি হয়ে না যায়। শুধু `isLoading` ব্যবহার করলে প্রতিবার filter বদলালেও পুরো গ্রিড হঠাৎ মুছে গিয়ে আবার loading text দেখাত — অভিজ্ঞতা খারাপ হতো।
 
@@ -1165,9 +1169,7 @@ export default function ProductDetailsPage() {
   const { data: product, isLoading, isError } = useGetProductByIdQuery(id);
 
   if (isLoading) {
-    return (
-      <p className="text-center text-gray-500 mt-10">লোড হচ্ছে...</p>
-    );
+    return <p className="text-center text-gray-500 mt-10">লোড হচ্ছে...</p>;
   }
 
   if (isError || !product) {
@@ -1196,9 +1198,7 @@ export default function ProductDetailsPage() {
 
         <div className="space-y-3">
           <p className="text-sm text-gray-500">{product.category}</p>
-          <h1 className="text-2xl font-bold text-gray-800">
-            {product.name}
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800">{product.name}</h1>
 
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold text-emerald-700">
@@ -1450,7 +1450,11 @@ export default function CheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({ customerName: "", phone: "", address: "" });
+  const [form, setForm] = useState({
+    customerName: "",
+    phone: "",
+    address: "",
+  });
 
   // useCreateOrderMutation থেকে trigger function আর { isLoading, isError } state পাওয়া যায়
   const [createOrder, { isLoading, isError }] = useCreateOrderMutation();
@@ -1490,7 +1494,9 @@ export default function CheckoutPage() {
   if (cartItems.length === 0) {
     return (
       <div className="text-center mt-16">
-        <p className="text-gray-500">কার্ট খালি — চেকআউট করার আগে প্রোডাক্ট যোগ করুন।</p>
+        <p className="text-gray-500">
+          কার্ট খালি — চেকআউট করার আগে প্রোডাক্ট যোগ করুন।
+        </p>
         <Link to="/" className="text-emerald-700 underline">
           শপিং শুরু করুন
         </Link>
@@ -1654,9 +1660,7 @@ export default function OrdersPage() {
 
   if (isError) {
     return (
-      <p className="text-center text-red-600 mt-10">
-        অর্ডার লোড করা যায়নি।
-      </p>
+      <p className="text-center text-red-600 mt-10">অর্ডার লোড করা যায়নি।</p>
     );
   }
 
@@ -1857,14 +1861,14 @@ store.subscribe(() => {
 
 _Table 27.1: Mock backend vs Real backend_
 
-| বিষয়              | এই টিউটোরিয়ালে (json-server)         | প্রোডাকশনে যা করবেন                                          |
-| ------------------- | --------------------------------------- | ---------------------------------------------------------------- |
-| Backend             | `db.json` ফাইলে read/write             | Real backend (Express/Node + database) — আপনার Farhan MCQ স্ট্যাকের মতোই |
-| Authentication      | নেই                                     | Login/JWT দরকার হলে যোগ করুন (Deshi Book প্রজেক্টের প্যাটার্ন অনুসরণযোগ্য) |
-| Order data storage  | ফাইলে, সার্ভার রিস্টার্টে টিকে থাকে না  | Database (PostgreSQL/Prisma ইত্যাদি) — persist ও query-able    |
-| Cart storage        | Browser-এর localStorage                | ছোট/মাঝারি অ্যাপে localStorage যথেষ্ট; বড় অ্যাপে (লগইন করা ইউজারের জন্য cross-device sync দরকার হলে) backend-এ cart সেভ করা বিবেচনা করুন |
-| Environment variable | `.env`-এ `VITE_API_BASE_URL`           | প্রতিটা environment (dev/staging/prod)-এর জন্য আলাদা env variable, Vercel/Render-এর dashboard-এ সেট করুন — `.env` কখনো commit করবেন না |
-| Deployment          | ম্যানুয়ালি `npm run build`             | GitHub repo-কে Vercel/Render-এর সাথে যুক্ত করলে প্রতিটা `git push`-এই auto-deploy হয়ে যাবে |
+| বিষয়                | এই টিউটোরিয়ালে (json-server)          | প্রোডাকশনে যা করবেন                                                                                                                       |
+| -------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Backend              | `db.json` ফাইলে read/write             | Real backend (Express/Node + database) — আপনার Farhan MCQ স্ট্যাকের মতোই                                                                  |
+| Authentication       | নেই                                    | Login/JWT দরকার হলে যোগ করুন (Deshi Book প্রজেক্টের প্যাটার্ন অনুসরণযোগ্য)                                                                |
+| Order data storage   | ফাইলে, সার্ভার রিস্টার্টে টিকে থাকে না | Database (PostgreSQL/Prisma ইত্যাদি) — persist ও query-able                                                                               |
+| Cart storage         | Browser-এর localStorage                | ছোট/মাঝারি অ্যাপে localStorage যথেষ্ট; বড় অ্যাপে (লগইন করা ইউজারের জন্য cross-device sync দরকার হলে) backend-এ cart সেভ করা বিবেচনা করুন |
+| Environment variable | `.env`-এ `VITE_API_BASE_URL`           | প্রতিটা environment (dev/staging/prod)-এর জন্য আলাদা env variable, Vercel/Render-এর dashboard-এ সেট করুন — `.env` কখনো commit করবেন না    |
+| Deployment           | ম্যানুয়ালি `npm run build`            | GitHub repo-কে Vercel/Render-এর সাথে যুক্ত করলে প্রতিটা `git push`-এই auto-deploy হয়ে যাবে                                               |
 
 ---
 
@@ -1909,20 +1913,20 @@ chore: scaffold project with vite and react
 
 _Table 28.1: এই টিউটোরিয়ালে ব্যবহৃত Git কমান্ডগুলো_
 
-| কমান্ড                           | কী করে                                                    |
-| ---------------------------------- | ------------------------------------------------------------ |
-| `git init`                        | নতুন Git repository শুরু করে                                |
-| `git status`                      | কোন ফাইল বদলেছে/staged আছে দেখায়                            |
-| `git add <file/folder>`           | নির্দিষ্ট ফাইল/ফোল্ডার commit-এর জন্য stage করে             |
-| `git add .`                       | বর্তমান ফোল্ডারের সব পরিবর্তন stage করে                     |
-| `git commit -m "message"`         | staged পরিবর্তনগুলোর একটা snapshot (commit) তৈরি করে         |
-| `git log --oneline`               | সংক্ষিপ্ত commit history দেখায়                              |
-| `git diff`                        | staged না-করা পরিবর্তনগুলো লাইন-বাই-লাইন দেখায়              |
-| `git branch -M main`              | বর্তমান branch-এর নাম `main` করে দেয়                        |
-| `git remote add origin <url>`     | GitHub repo-র সাথে লোকাল repo যুক্ত করে                      |
-| `git push -u origin main`         | প্রথমবার push করে, ভবিষ্যতের push-এর জন্য default সেট করে   |
-| `git push`                        | নতুন commit-গুলো GitHub-এ পাঠায়                              |
-| `git pull`                        | GitHub থেকে নতুন commit লোকালে নিয়ে আসে                      |
+| কমান্ড                        | কী করে                                                    |
+| ----------------------------- | --------------------------------------------------------- |
+| `git init`                    | নতুন Git repository শুরু করে                              |
+| `git status`                  | কোন ফাইল বদলেছে/staged আছে দেখায়                         |
+| `git add <file/folder>`       | নির্দিষ্ট ফাইল/ফোল্ডার commit-এর জন্য stage করে           |
+| `git add .`                   | বর্তমান ফোল্ডারের সব পরিবর্তন stage করে                   |
+| `git commit -m "message"`     | staged পরিবর্তনগুলোর একটা snapshot (commit) তৈরি করে      |
+| `git log --oneline`           | সংক্ষিপ্ত commit history দেখায়                           |
+| `git diff`                    | staged না-করা পরিবর্তনগুলো লাইন-বাই-লাইন দেখায়           |
+| `git branch -M main`          | বর্তমান branch-এর নাম `main` করে দেয়                     |
+| `git remote add origin <url>` | GitHub repo-র সাথে লোকাল repo যুক্ত করে                   |
+| `git push -u origin main`     | প্রথমবার push করে, ভবিষ্যতের push-এর জন্য default সেট করে |
+| `git push`                    | নতুন commit-গুলো GitHub-এ পাঠায়                          |
+| `git pull`                    | GitHub থেকে নতুন commit লোকালে নিয়ে আসে                  |
 
 ---
 
