@@ -3,7 +3,7 @@
 import { useState } from "react";
 import styles from "./donate.module.css";
 
-const whatsappNumber = "8801XXXXXXXXX"; // TODO: replace with your real WhatsApp number
+const whatsappNumber = "8801788262433"; // TODO: replace with your real WhatsApp number
 
 const paymentMethods = [
   { name: "bKash", number: "01788262433", color: "#E2136E" },

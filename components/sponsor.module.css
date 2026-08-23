@@ -32,7 +32,7 @@ a.sponsorCard:hover {
   align-items: center;
   justify-content: center;
   height: 110px;
-  padding: 1.25rem;
+  padding: 0.25rem;
   background: #f9fafb;
 }
 
@@ -91,4 +91,21 @@ a.sponsorCard:hover {
   .logoContainer {
     height: 90px;
   }
+}
+
+.detailsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4338ca;
+  text-decoration: none;
+  transition: gap 0.15s ease;
+}
+
+.detailsLink:hover {
+  gap: 8px;
+  text-decoration: underline;
 }

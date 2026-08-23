@@ -9,10 +9,12 @@ interface SponsorProps {
   title: string;
   /** Short description of the sponsor or their contribution. */
   description: string;
-  /** Optional link to the sponsor's website — wraps the card when set. */
+  /** Optional link to the sponsor's website — shown as a "details" link when set. */
   url?: string;
   /** Optional label, e.g. "মাসিক স্পনসর" or "বাৎসরিক স্পনসর". */
   tier?: string;
+  /** Optional override for the details link text. Defaults to "বিস্তারিত". */
+  detailsLabel?: string;
 }
 
 // Neutral placeholder shown if a logo fails to load, so a missing/broken
@@ -37,14 +39,10 @@ export default function Sponsor({
   description,
   url,
   tier,
+  detailsLabel = "বিস্তারিত",
 }: SponsorProps) {
-  const CardTag = url ? "a" : "div";
-  const cardProps = url
-    ? { href: url, target: "_blank", rel: "noopener noreferrer" }
-    : {};
-
   return (
-    <CardTag className={styles.sponsorCard} {...cardProps}>
+    <div className={styles.sponsorCard}>
       <div className={styles.logoContainer}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -60,7 +58,17 @@ export default function Sponsor({
         {tier && <span className={styles.tierBadge}>{tier}</span>}
         <h3 className={styles.sponsorTitle}>{title}</h3>
         <p className={styles.sponsorDescription}>{description}</p>
+        {url && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.detailsLink}
+          >
+            {detailsLabel} →
+          </a>
+        )}
       </div>
-    </CardTag>
+    </div>
   );
 }
