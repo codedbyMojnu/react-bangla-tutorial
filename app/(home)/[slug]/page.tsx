@@ -1,10 +1,12 @@
-import { getMDXComponents } from '@/components/mdx';
-import { pagesSource } from '@/lib/pages-source';
-import { siteUrl } from '@/lib/shared';
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { getMDXComponents } from "@/components/mdx";
+import { pagesSource } from "@/lib/pages-source";
+import { siteUrl } from "@/lib/shared";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-export default async function Page(props: { params: Promise<{ slug: string }> }) {
+export default async function Page(props: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await props.params;
   const page = pagesSource.getPage([slug]);
   if (!page) notFound();
@@ -12,7 +14,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
   const MDX = page.data.body;
 
   return (
-    <article className="prose mx-auto w-full max-w-3xl flex-1 px-4 py-12">
+    <article className="prose mx-auto w-full max-w-4xl flex-1 px-4 py-12">
       <h1>{page.data.title}</h1>
       <MDX components={getMDXComponents()} />
     </article>
@@ -37,7 +39,7 @@ export async function generateMetadata(props: {
     openGraph: {
       title: page.data.title,
       description: page.data.description,
-      type: 'profile',
+      type: "profile",
       url: page.url,
     },
   };

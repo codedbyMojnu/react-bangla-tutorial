@@ -7,10 +7,11 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: <Logo />,
     },
+
     links: [
-      { text: "me", url: "/my-resume" },
-      { text: "About", url: "/about" },
-      { text: "Sponsor", url: "/sponsor" },
+      { text: "me", url: "/my-resume", on: "nav" },
+      { text: "About", url: "/about", on: "nav" },
+      { text: "💚 Sponsor", url: "/sponsor" },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
