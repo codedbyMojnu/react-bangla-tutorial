@@ -41,8 +41,15 @@ export default function Sponsor({
   tier,
   detailsLabel = "বিস্তারিত",
 }: SponsorProps) {
+  const CardTag = url ? "a" : "div";
+
   return (
-    <div className={styles.sponsorCard}>
+    <CardTag
+      className={styles.sponsorCard}
+      {...(url
+        ? { href: url, target: "_blank", rel: "noopener noreferrer" }
+        : {})}
+    >
       <div className={styles.logoContainer}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -58,17 +65,8 @@ export default function Sponsor({
         {tier && <span className={styles.tierBadge}>{tier}</span>}
         <h3 className={styles.sponsorTitle}>{title}</h3>
         <p className={styles.sponsorDescription}>{description}</p>
-        {url && (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.detailsLink}
-          >
-            {detailsLabel} →
-          </a>
-        )}
+        {url && <span className={styles.detailsLink}>{detailsLabel} →</span>}
       </div>
-    </div>
+    </CardTag>
   );
 }
