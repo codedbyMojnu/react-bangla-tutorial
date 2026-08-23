@@ -16,7 +16,7 @@ export default function Logo() {
           style={{
             fontWeight: 700,
             fontSize: "20px",
-            color: "#2563EB",
+            color: "#006A4E", // green — Bangladesh's nature
             letterSpacing: "0.04em",
           }}
         >
@@ -26,7 +26,7 @@ export default function Logo() {
           style={{
             fontSize: "20px",
             letterSpacing: "0.02em",
-            color: "#D93334",
+            color: "#F42A41", // red — blood for freedom
           }}
         >
           বাংলা
