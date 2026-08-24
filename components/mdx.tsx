@@ -5,11 +5,14 @@ import type { ComponentType } from "react";
 import AudioPlayer from "./AudioPlayer";
 import CollaborateSection from "./CollaborateSection";
 import CoursePromotion from "./CoursePromotion";
+import Ebook from "./Ebook";
+import EbookGrid from "./EbookGrid";
 import PdfDownloader from "./PdfDownloader";
 import Pitfall from "./Pitfall";
 import Reveal from "./Reveal";
 import Showcase from "./Showcase";
 import Sponsor from "./Sponsor";
+import SponsorGrid from "./SponsorGrid";
 import VideoPlayer from "./VideoPlayer";
 
 const GiscusComments = dynamic(
@@ -33,6 +36,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     GiscusComments,
     Showcase,
     Sponsor,
+    SponsorGrid,
+    Ebook,
+    EbookGrid,
     CollaborateSection,
     CoursePromotion,
     ...components,

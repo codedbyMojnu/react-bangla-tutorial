@@ -14,7 +14,7 @@ export default async function Page(props: {
   const MDX = page.data.body;
 
   return (
-    <article className="prose mx-auto w-full max-w-4xl flex-1 px-4 py-12">
+    <article className="prose mx-auto w-full max-w-5xl flex-1 px-4 py-12">
       <h1>{page.data.title}</h1>
       <MDX components={getMDXComponents()} />
     </article>

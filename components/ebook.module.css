@@ -1,0 +1,255 @@
+/* 📚 ebook.module.css */
+
+/* Grid container — <EbookGrid> wraps the <Ebook /> cards in .mdx so the
+   column count is exact at each breakpoint, not an approximation from flex-wrap:
+     mobile (default):     1 column
+     medium  (≥768px):     2 columns
+     extra-large (≥1280px):   3 columns */
+.ebookGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  align-items: start; /* FIXED: Cards without chapters won't stretch to match taller cards */
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .ebookGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .ebookGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Card — fills its grid cell width while scaling height naturally to content. */
+.ebookCard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px; /* Caps max width so 2:3 aspect ratio doesn't make card too tall */
+  margin-left: auto;
+  margin-right: auto;
+  height: auto; /* FIXED: Auto height so cards without chapters shrink naturally */
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.ebookCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+}
+
+/* Cover — 2:3 book-cover aspect ratio, cropped to fill */
+.coverWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  max-height: 250px; /* Prevents image height from growing insanely tall */
+  overflow: hidden;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.ebookCard:hover .cover {
+  transform: scale(1.05);
+}
+
+/* Status ribbon — top-left corner */
+.statusRibbon {
+  position: absolute;
+  top: 12px;
+  left: -34px;
+  transform: rotate(-45deg);
+  width: 140px;
+  padding: 0.3rem 0;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.statusPreorder {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.statusOrder {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+/* Discount badge — top-right corner */
+.discountBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.3rem 0.55rem;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.5);
+}
+
+/* Content Area */
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.1rem 1.15rem;
+  gap: 0.55rem;
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.subTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+  line-height: 1.4;
+  margin-top: -0.15rem;
+}
+
+/* Chapters Box & List Styling */
+.chaptersCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  margin: 0.2rem 0;
+}
+
+.chaptersHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1f2937;
+  border-bottom: 1px dashed #d1d5db;
+  padding-bottom: 0.35rem;
+}
+
+.chaptersList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.chapterItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.chapterBadge {
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.chapterText {
+  font-size: 0.78rem;
+  color: #374151;
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+/* Pricing and Info */
+.releaseInfo {
+  font-size: 0.8rem;
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.oldPrice {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.newPrice {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #dc2626;
+}
+
+/* CTA Button — WhatsApp green */
+.ctaButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.65rem 0.75rem;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.55);
+}
+
+/* Responsive text sizing */
+@media (max-width: 480px) {
+  .title {
+    font-size: 1rem;
+  }
+
+  .newPrice {
+    font-size: 1.2rem;
+  }
+}
