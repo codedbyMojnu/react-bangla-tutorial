@@ -8,9 +8,9 @@
     "adding-interactivity",
     "managing-state",
     "escape-hatches",
+    "design-patterns",
     "react-suspense",
-    "react-lazy-loading",
-    "design-patterns"
+    "react-lazy-loading"
   ],
   "title": "React",
   "description": "ধাপে ধাপে বাংলায় React.js শিখুন — বেসিক থেকে অ্যাডভান্সড প্যাটার্ন পর্যন্ত।",

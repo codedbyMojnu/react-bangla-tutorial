@@ -22,6 +22,7 @@ export function baseOptions(): BaseLayoutProps {
           </span>
         ),
         url: "/ebook",
+        on: "nav",
       },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
